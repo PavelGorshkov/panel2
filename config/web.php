@@ -5,16 +5,21 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'panel2',
+    'name'=>'Панель',
+    'language'=>'ru',
     'basePath' => dirname(__DIR__),
+
     'bootstrap' => ['log'],
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules'=>[
+
+    ],
     'components' => [
-        'ajax' => [
-            'class'=>'app\modules\core\components\AsyncResponse',
-        ],
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
@@ -46,14 +51,16 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => false,
+            'suffix' => '.html',
             'rules' => [
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
@@ -70,8 +77,8 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'allowedIPs' => ['127.0.0.1', '::1'],
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 
