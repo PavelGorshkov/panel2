@@ -96,6 +96,12 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionTest() {
+
+        printr(\app\helpers\ModuleList::getModules(false));
+    }
+
+
     /**
      * Displays contact page.
      *

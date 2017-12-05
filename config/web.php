@@ -3,6 +3,8 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+
+
 $config = [
     'id' => 'panel2',
     'name'=>'Панель',
@@ -15,9 +17,12 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+
     'modules'=>[
+        'core'=>['class'=>'\app\modules\core\Module.php'],
 
     ],
+
     'components' => [
 
         'request' => [
@@ -51,6 +56,7 @@ $config = [
             ],
         ],
         'db' => $db,
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -62,6 +68,7 @@ $config = [
             ],
         ],
     ],
+
     'params' => $params,
 ];
 
