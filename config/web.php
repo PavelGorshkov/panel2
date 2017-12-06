@@ -19,8 +19,16 @@ $config = [
     ],
 
     'modules'=>[
-        'core'=>['class'=>'\app\modules\core\Module.php'],
+        /*'user' => [
+            'class'=>'app\modules\user\Module',
+        ],*/
+        'user' => [
+            'class' => 'dektrium\user\Module',
+        ],
+        'core'=> [
 
+            'class' => 'app\modules\core\Module',
+        ]
     ],
 
     'components' => [

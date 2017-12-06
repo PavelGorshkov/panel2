@@ -2,7 +2,7 @@
 
     function printr($data, $isDie = false) {
 
-        if (!((defined('YII_ENV') && YII_ENV === 'dev') && (defined('YII_DEBUG') && YII_DEBUG))) return;
+        //if (!((defined('YII_ENV') && YII_ENV === 'dev') && (defined('YII_DEBUG') && YII_DEBUG))) return;
 
         echo '<pre>',print_r($data, 1),'</pre>';
 
@@ -15,4 +15,12 @@
     function app() {
 
         return Yii::$app;
+    }
+
+
+    function file_crc32($file) {
+
+        if (!file_exists($file)) return 0;
+
+        return crc32(file_get_contents($file));
     }
