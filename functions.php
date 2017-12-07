@@ -18,6 +18,15 @@
     }
 
 
+    /**
+     * @return mixed|\yii\web\User
+     */
+    function user() {
+
+        return Yii::$app->user;
+    }
+
+
     function file_crc32($file) {
 
         if (!file_exists($file)) return 0;

@@ -13,6 +13,8 @@ $config = [
 
     'bootstrap' => ['log'],
 
+    'layout' => '@app/modules/core/views/layouts/admin.php',
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -74,6 +76,10 @@ $config = [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
+        ],
+
+        'view'=>[
+            'class' => 'app\modules\core\components\View',
         ],
     ],
 

@@ -1,10 +1,14 @@
 <?php
 namespace app\modules\core\components;
 
+use Yii;
 use \yii\base\Module as BaseModule;
 
 
-class WebModule extends BaseModule {
+abstract class Module
+    extends BaseModule
+    implements ModuleInterface, ModuleSettingsInterface, ModuleMenuInterface
+{
 
     const CHECK_ERROR = 'danger';
 
@@ -18,6 +22,10 @@ class WebModule extends BaseModule {
 
     public static $logCategory = 'application';
 
+    use ModuleTrait;
+    use ModuleSettingsTrait;
+    use ModuleMenuTrait;
+
     /**
      * @var int
      */
@@ -30,83 +38,16 @@ class WebModule extends BaseModule {
     public $newFileMode = 0777;
 
 
-    public static function dependsOnModules()
-    {
-        return [];
-    }
-
-
-    public function getMenuAdmin()
-    {
-        return [];
-    }
-
-
-    public function getMenuMain()
-    {
-        return [];
-    }
-
-
-    public function getMenuRedactor()
-    {
-        return [];
-    }
-
-
-    public function getMenuUrl($url = self::OBSERVER_URL) {
-
-        return [
-            '/'.$this->id.'/'.trim($url, '/')
-        ];
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getParamGroups()
-    {
-        return [];
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getParamLabels()
-    {
-        return [];
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getParamsDropdown()
-    {
-        return [];
-    }
-
-
     /**
      * @return string
-     */
+     *
     public static function getSystemType()
     {
         return (self::isSystem()
             ? '<span class="label label-warning">Cистемный модуль</span>'
             : '<span class="label label-success">Модуль</span>');
     }
-
-    /**
-     * Обязательный
-     * @return null
-     */
-    public static function getTitle() {
-
-        return null;
-    }
+    */
 
 
     /**
@@ -120,11 +61,21 @@ class WebModule extends BaseModule {
 
     public function init()
     {
+        parent::init();
         $module = $this->id;
+
+        if (Yii::$app instanceof \yii\console\Application) {
+
+            $this->controllerNamespace = 'app\\modules\\'.$module.'\\commands';
+        } else {
+
+            $this->controllerNamespace = 'app\\modules\\'.$module.'\\controllers';
+        }
 
         // app()->migrator->updateToLatestSystem();
         // app()->migrator->updateToLatest($this->id);
 
+       /*
         $settings = ModuleSettings::model()->$module;
 
         if (count($settings)) {
@@ -135,6 +86,6 @@ class WebModule extends BaseModule {
             }
         }
 
-        parent::init();
+       */
     }
 }
