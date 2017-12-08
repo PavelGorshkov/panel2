@@ -4,14 +4,20 @@
 
         //if (!((defined('YII_ENV') && YII_ENV === 'dev') && (defined('YII_DEBUG') && YII_DEBUG))) return;
 
-        echo '<pre>',print_r($data, 1),'</pre>';
+        if ($data === null) {
+
+            echo  '<pre>Parameter is null</pre>';
+        } else {
+
+            echo '<pre>', print_r($data, 1), '</pre>';
+        }
 
         if ($isDie) die();
     }
 
     /**
-     * @return \yii\console\Application|\yii\web\Application
-     */
+    * @return \app\modules\core\components\Application
+    */
     function app() {
 
         return Yii::$app;

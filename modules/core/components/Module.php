@@ -7,7 +7,7 @@ use \yii\base\Module as BaseModule;
 
 abstract class Module
     extends BaseModule
-    implements ModuleInterface, ModuleSettingsInterface, ModuleMenuInterface
+    implements ModuleSettingsInterface, ModuleParamsInterface, ModuleMenuInterface
 {
 
     const CHECK_ERROR = 'danger';
@@ -20,10 +20,10 @@ abstract class Module
 
     const OBSERVER_URL = 'observer/index';
 
-    public static $logCategory = 'application';
+    public $logCategory = 'application';
 
-    use ModuleTrait;
     use ModuleSettingsTrait;
+    use ModuleParamsTrait;
     use ModuleMenuTrait;
 
     /**

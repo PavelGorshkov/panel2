@@ -13,6 +13,7 @@ namespace app\modules\core\components;
  * @package app\modules\core\components
  *
  * @property View $view
+ * $property Module $module
  */
 class WebController extends \yii\web\Controller {
 

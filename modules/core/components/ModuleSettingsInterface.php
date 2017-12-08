@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: pastet
  * Date: 07.12.2017
- * Time: 9:04
+ * Time: 8:38
  */
 
 namespace app\modules\core\components;
@@ -12,25 +12,18 @@ namespace app\modules\core\components;
 interface ModuleSettingsInterface {
 
     /**
-     * Возвращает список параметров, хранимых в системе
-     *
-     * @return array
+     * Обязательный
+     * @return null
      */
-    public function getParamGroups();
+    public static function Title();
 
 
     /**
-     * Возвращает список названий параметров
+     * Выводит список модулей, от которых он будет зависеть
      *
-     * @return array
+     * @return []
      */
-    public function getParamLabels();
+    public static function dependsOnModules();
 
 
-    /**
-     * Возвращает список функций для select
-     *
-     * @return array
-     */
-    public function getParamsDropdown();
 }

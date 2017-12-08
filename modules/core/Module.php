@@ -9,6 +9,11 @@ class Module extends \app\modules\core\components\Module {
 
     public $coreCacheTime = 3600;
 
+    public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
+
+    public $logCategory = 'core';
+
+
     public static function Title() {
 
         return 'Ядро приложения';

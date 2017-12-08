@@ -61,6 +61,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        app()->migrator->updateToLatestModule('core');
+
         return $this->render('index');
     }
 

@@ -6,9 +6,11 @@
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
 use app\modules\core\widgets\MenuWidget;
+use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-$icon = Html::img(implode('/',[
+$icon = Html::img(implode('/', [
     app()->getRequest()->getBaseUrl(true),
     app()->getModule('core')->uploadPath,
     app()->getModule('core')->imageUploadPath,
@@ -17,45 +19,47 @@ $icon = Html::img(implode('/',[
 
 AdminLteAssets::register($this);
 ICheckAssets::register($this);
+
+include __DIR__ . '/_blocks.php';
 ?>
-<?php $this->beginPage()?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?=$this->title ? (Html::encode(strip_tags($this->title)) . ' - ') : '';?><?= app()->name;?></title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <?php $this->head() ?>
-    <!-- Theme style -->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript">
-        var panelTokenName = '<?= app()->getRequest()->csrfParam;?>';
-        var panelToken = '<?= app()->getRequest()->csrfToken;?>';
-    </script>
-</head>
-<body class="
+<?php $this->beginPage() ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><?= $this->title ? (Html::encode(strip_tags($this->title)) . ' - ') : ''; ?><?= app()->name; ?></title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?= Html::csrfMetaTags() ?>
+        <?php $this->head() ?>
+        <!-- Theme style -->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+            var panelTokenName = '<?= app()->getRequest()->csrfParam;?>';
+            var panelToken = '<?= app()->getRequest()->csrfToken;?>';
+        </script>
+    </head>
+    <body class="
     hold-transition
     sidebar-mini
     skin-green-light
-    <?//=(isset(Setting::model()->skinTemplate)?Setting::model()->skinTemplate:'')?>"
->
-<?php $this->beginBody() ?>
+    <? //=(isset(Setting::model()->skinTemplate)?Setting::model()->skinTemplate:'')?>"
+        >
+    <?php $this->beginBody() ?>
     <div class="wrapper">
 
         <header class="main-header">
-            <a href="<?= app()->homeUrl?>" class="logo">
+            <a href="<?= app()->homeUrl ?>" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><?=$icon?></span>
+                <span class="logo-mini"><?= $icon ?></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><?=$icon?> <?=app()->name?></span>
+                <span class="logo-lg"><?= $icon ?> <?= app()->name ?></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -64,24 +68,7 @@ ICheckAssets::register($this);
                     <span class="sr-only">Toggle navigation</span>
                 </a>
                 <!-- Navbar Top Menu -->
-                <?=MenuWidget::widget([
-                    'menu'=>'admin',
-                    'view'=>'top_menu'
-                ]); //$this->widget('\core\widgets\menuPanel', ['menu'=>'admin', 'view'=>'top_menu']);?>
-                <?php if (!user()->isGuest):?>
-                    <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav">
-                            <!-- User Account: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu">
-                                <?php //$this->widget('\user\widgets\userInfoMenu');?>
-                            </li>
-                            <!-- Control Sidebar Toggle Button -->
-                            <li>
-                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                <?php endif?>
+                <?= $this->blocks['navbarTopMenu']; ?>
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
@@ -90,9 +77,9 @@ ICheckAssets::register($this);
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <?= MenuWidget::widget([
-                    'menu'=>'main',
-                    'view'=>'left_menu'
-                ]);?>
+                    'menu' => 'main',
+                    'view' => 'left_menu'
+                ]); ?>
             </section>
             <!-- /.sidebar -->
         </aside>
@@ -100,30 +87,33 @@ ICheckAssets::register($this);
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1><?=$this->getTitle()?><small><?=$this->getSmallTitle()?></small></h1>
-                <?php if (isset($this->breadcrumbs)):?>
-                    <?php
-                    $this->widget('core.widgets.Breadcrumb',
-                        [
-                            'links' => $this->breadcrumbs,
-                            'homeLink' => \CHtml::link('<i class="fa fa-home"></i> Личный кабинет', ['/user/profile/index']),
-                        ]
-                    );?>
-                <?php endif;?>
-
+                <h1><?= $this->getTitle() ?>
+                    <small><?= $this->getSmallTitle() ?></small>
+                </h1>
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]) ?>
             </section>
 
             <!-- Main content -->
             <section class="content">
-                <div id="notifications"></div>
+                <?= Alert::widget() ?>
                 <?php // $this->widget('user\widgets\FlashMessages'); ?>
-                <?=$content?>
-            </section><!-- /.content -->
-        </div><!-- /.content-wrapper -->
+                <?= $content ?>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
 
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs"></div>
+            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Все права защищены</strong>
+        </footer>
 
-    </div><!-- ./wrapper -->
-<?php $this->endBody() ?>
-</body >
-</html>
-<?php $this->endPage() ?>
+        <?= $this->blocks['controlSidebar']; ?>
+    </div>
+    <!-- ./wrapper -->
+    <?php $this->endBody() ?>
+    </body>
+    </html>
+<?php $this->endPage();
