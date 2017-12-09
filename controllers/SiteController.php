@@ -100,7 +100,7 @@ class SiteController extends Controller
 
     public function actionTest() {
 
-        printr(\app\helpers\ModuleList::getModules(false));
+
     }
 
 

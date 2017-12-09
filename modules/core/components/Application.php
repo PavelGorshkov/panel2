@@ -14,5 +14,6 @@ namespace app\modules\core\components;
  *
  * @property Migrator $migrator
  * @property WebController $controller
+ * @property ModuleManager $moduleManager
  */
 class Application extends \yii\web\Application {}

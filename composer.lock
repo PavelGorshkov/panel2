@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce453a2c30062e993e3b2958a2e7cb61",
+    "content-hash": "65f1eacbe19e0ed51ede2f0cdfe771c9",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -397,6 +397,53 @@
                 "html"
             ],
             "time": "2017-06-03T02:28:16+00:00"
+        },
+        {
+            "name": "iiifx-production/yii2-folder-dependency",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iiifx-production/yii2-folder-dependency.git",
+                "reference": "65868234ada2be4d382515f01a7d52503ec417c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iiifx-production/yii2-folder-dependency/zipball/65868234ada2be4d382515f01a7d52503ec417c4",
+                "reference": "65868234ada2be4d382515f01a7d52503ec417c4",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*@stable"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*@stable"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "iiifx\\cache\\dependency\\": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT License"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaliy IIIFX Khomenko",
+                    "email": "iiifx@yandex.com"
+                }
+            ],
+            "description": "Folder dependency for Yii2 framework",
+            "homepage": "https://github.com/iiifx-production/yii2-folder-dependency.git",
+            "keywords": [
+                "cache",
+                "dependency",
+                "directory",
+                "folder",
+                "yii2"
+            ],
+            "time": "2015-07-06T05:46:09+00:00"
         },
         {
             "name": "imagine/imagine",

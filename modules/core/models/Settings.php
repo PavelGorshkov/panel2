@@ -77,16 +77,23 @@ class Settings extends \yii\db\ActiveRecord
 
     public static function findAllModuleData() {
 
-        $temp = self::find()
-           ->select('module', 'param_name', 'param_value')
-           ->where('module != :module', [':module'=>self::USER_DATA])
-           ->asArray()
-           ->all();
+        $data = cache()->get('find_all_module_data');
 
-        $data = [];
-        foreach ($temp as $v) {
+        if ($data === false) {
 
-            $data[$v['module']][$v['param_name']] = $v['param_value'];
+            $temp = self::find()
+                ->select('module', 'param_name', 'param_value')
+                ->where('module != :module', [':module' => self::USER_DATA])
+                ->asArray()
+                ->all();
+
+            $data = [];
+            foreach ($temp as $v) {
+
+                $data[$v['module']][$v['param_name']] = $v['param_value'];
+            }
+
+            cache()->set('find_all_module_data', $data);
         }
 
         return $data;
@@ -95,13 +102,22 @@ class Settings extends \yii\db\ActiveRecord
 
     public static function findAllUserData() {
 
-        $temp = self::find()
-            ->select('param_name', 'param_value')
-            ->where('module = :module and user_id = :user', [':module'=>self::USER_DATA, ':user'=>(int) user()->id])
-            ->asArray()
-            ->all();
+        $data = cache()->get('find_all_user_data');
 
-        return ArrayHelper::map($temp, 'param_name', 'param_value');
+        if ($data === false) {
+
+            $temp = self::find()
+                ->select('param_name', 'param_value')
+                ->where('module = :module and user_id = :user', [':module' => self::USER_DATA, ':user' => (int)user()->id])
+                ->asArray()
+                ->all();
+
+            $data = ArrayHelper::map($temp, 'param_name', 'param_value');
+
+            cache()->set('find_all_user_data', $data);
+        }
+
+        return $data;
     }
 
 
@@ -118,6 +134,48 @@ class Settings extends \yii\db\ActiveRecord
 
         $model->param_value = $value;
 
+        cache()->delete('find_all_user_data');
+
         return $model->save();
+    }
+
+
+    public static function saveModuleData($module, $data=[]) {
+
+        $models = self::findAll('module = :module', [':module'=>$module]);
+
+        if (!count($data)) return true;
+
+        foreach ($models as $model) {
+
+            if (isset($data[$model->param_name])) {
+
+                if ($data[$model->param_name] != $model->param_value) {
+
+                    $model->param_value = $data[$model->param_name];
+                    $model->save();
+                }
+
+                unset($data[$model->param_name]);
+            }
+        }
+
+        if (count($data)) {
+
+            foreach ($data as $param => $value) {
+
+                $model = new self;
+                $model->module = $module;
+                $model->param_name = $param;
+                $model->param_value = $value;
+                $model->user_id = 0;
+
+                $model->save();
+            }
+        }
+
+        cache()->delete('find_all_module_data');
+
+        return true;
     }
 }

@@ -42,8 +42,12 @@ $config = [
         'migrator'=>[
             'class'=>'\app\modules\core\components\Migrator',
         ],
+        'moduleManager'=>[
+            'class'=>'\app\modules\core\components\ModuleManager',
+        ],
         'cache' => [
             'class' => '\yii\caching\FileCache',
+            //'class' => 'yii\caching\MemCache',
         ],
         'user' => [
             'identityClass' => '\app\models\User',

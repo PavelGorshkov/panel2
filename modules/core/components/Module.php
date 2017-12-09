@@ -20,8 +20,6 @@ abstract class Module
 
     const OBSERVER_URL = 'observer/index';
 
-    public $logCategory = 'application';
-
     use ModuleSettingsTrait;
     use ModuleParamsTrait;
     use ModuleMenuTrait;

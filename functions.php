@@ -33,6 +33,16 @@
     }
 
 
+    /**
+     * @return \yii\caching\CacheInterface
+     */
+    function cache() {
+
+        return Yii::$app->cache;
+    }
+
+
+
     function file_crc32($file) {
 
         if (!file_exists($file)) return 0;

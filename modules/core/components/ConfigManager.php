@@ -237,7 +237,7 @@ class ConfigManager {
     /**
      * Очистка cache
      */
-    protected function flushCache() {
+    public function flushCache() {
 
         if (is_dir($this->getCachePath())) {
 
