@@ -15,5 +15,9 @@ namespace app\modules\core\components;
  * @property Migrator $migrator
  * @property WebController $controller
  * @property ModuleManager $moduleManager
+ * @property \app\modules\user\components\PhpManager $authManager
+ * @property \app\modules\user\components\WebUser $user
+ * @property \app\modules\user\components\BuildAuthManager $buildAuthManager
+ *
  */
 class Application extends \yii\web\Application {}

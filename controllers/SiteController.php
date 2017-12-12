@@ -100,7 +100,11 @@ class SiteController extends Controller
 
     public function actionTest() {
 
+        $path = require Yii::getAlias('@app/runtime/rbac/rules.php');
 
+        printr(unserialize($path['isAuthor']));
+
+        printr($path, 1);
     }
 
 

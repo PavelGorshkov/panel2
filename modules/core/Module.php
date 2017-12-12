@@ -1,9 +1,11 @@
 <?php
 namespace app\modules\core;
 
+use app\modules\core\components\Module as ParentModule;
 use yii\helpers\ArrayHelper;
 
-class Module extends \app\modules\core\components\Module {
+class Module extends ParentModule
+{
 
     public $uploadPath = 'uploads';
 
@@ -12,6 +14,8 @@ class Module extends \app\modules\core\components\Module {
     public $coreCacheTime = 3600;
 
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
+
+
 
     public static function Title() {
 
@@ -36,5 +40,14 @@ class Module extends \app\modules\core\components\Module {
                 'visible' => true,//user()->checkAccess(TaskModule::OPERATION_READ)
             ],
         ]);
+
+        return [
+            [
+                'label' => '<span class="hidden-xs">Система</span>',
+                'icon' => 'fa fa-fw fa-cog',
+                'items' => $items,
+                'visible' => user()->checkAccess(Roles::ADMIN),
+            ]
+        ];
     }
 }

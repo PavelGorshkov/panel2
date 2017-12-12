@@ -94,8 +94,8 @@ class Migration extends \yii\db\Migration {
             new Exception(sprintf('parameter "table" not defined in class "%s" method "%s"', get_called_class(), 'createUserColumns'));
         }
 
-        $this->addColumn($table, 'created_user', $this->integer()->null());
-        $this->addColumn($table, 'updated_user', $this->integer()->null());
+        $this->addColumn($table, 'created_by', $this->integer()->null());
+        $this->addColumn($table, 'updated_by', $this->integer()->null());
     }
 
 

@@ -1,11 +1,19 @@
 <?php
 namespace app\modules\core\controllers;
 
-use app\modules\core\components\WebController;
+use app\modules\core\components\RedactorController;
+use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\HtmlPurifier;
 
-class ModuleController extends WebController {
+class ModuleController extends RedactorController{
+
+    protected $actionMenu = [
+        'index'=>'Установленные модули',
+        'disabled'=>'Неустановленные модули',
+        'flush'=>'Очистить кеш',
+    ];
 
     public function behaviors() {
 
@@ -33,12 +41,46 @@ class ModuleController extends WebController {
 
     public function actionIndex() {
 
-        app()->moduleManager->getAllModules();
-        app()->moduleManager->getEnabledModules();
-        app()->moduleManager->getDisabledModules();
+        $modules = app()->moduleManager->getEnabledModules();
 
-        printr(app()->moduleManager, 1);
+        if ($post = app()->request->post('States')) {
 
+            $error = false;
 
+            if (!is_array($post)) $error = true;
+            else {
+
+                foreach ($post as $module => $v) {
+
+                    if (!isset($modules[$module])) {$error = true; break;}
+                    elseif ($modules[$modules]['is_system']) {
+
+                        unset($post[$module]);
+                        continue;
+                    }
+                    else {
+
+                        $v = trim(HtmlPurifier::process($v, [
+                            'HTML.SafeObject'=>true,
+                             'Output.FlashCompat'=>true,
+                        ]));
+
+                        if ($v == $modules[$module]['priority'])  unset($post[$module]);
+                    }
+                }
+            }
+
+            if (!$error && ModulePriority::model()->setData($post)) {
+
+                app()->session->setFlash('contactFormSubmitted');
+            } else {
+
+                app()->session->setFlash('contactFormSubmitted');
+            }
+
+            return $this->refresh();
+        }
+
+        return $this->render('enabled', ['modules'=>$modules]);
     }
 }

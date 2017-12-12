@@ -62,7 +62,11 @@ class ConfigManager {
     {
         $this->_base = empty($base)? require_once Yii::getAlias('@app/config/').$this->env.'.php' : $base;
 
-        return $this->getSettings();
+        $config = $this->getSettings();
+
+        unset($config['rules']);
+
+        return $config;
     }
 
 

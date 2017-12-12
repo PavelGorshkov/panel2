@@ -39,6 +39,13 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
         ],
+        'authManager' => [
+            'class' => '\app\modules\user\components\PhpManager',
+            'defaultRoles' => ['guest'],
+        ],
+        'buildAuthManager' => [
+            'class' => '\app\modules\user\components\BuildAuthManager',
+        ],
         'migrator'=>[
             'class'=>'\app\modules\core\components\Migrator',
         ],
@@ -50,6 +57,7 @@ $config = [
             //'class' => 'yii\caching\MemCache',
         ],
         'user' => [
+            'class'=>'\app\modules\user\components\WebUser',
             'identityClass' => '\app\models\User',
             'enableAutoLogin' => true,
         ],

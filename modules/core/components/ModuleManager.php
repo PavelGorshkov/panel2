@@ -251,6 +251,11 @@ class ModuleManager extends Component {
         return $this->_all_modules;
     }
 
+    public function getKeysAllModules() {
+
+        return array_keys($this->getAllModules());
+    }
+
 
     public function getDisabledModules() {
 

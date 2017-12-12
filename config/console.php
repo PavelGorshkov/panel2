@@ -21,6 +21,9 @@ $config = [
             ],
         ],
         'db' => $db,
+        'authManager' => [
+            'class' => '\app\modules\user\components\PhpManager',
+        ],
     ],
     'params' => $params,
     /*
