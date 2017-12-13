@@ -14,6 +14,17 @@ class View extends BaseView
 {
     public $smallTitle = null;
 
+    public function setSmallTitle($title) {
+
+        $this->smallTitle = $title;
+    }
+
+
+    public function setTitle($title) {
+
+        $this->title = $title;
+    }
+
 
     public function getSmallTitle() {
 
@@ -24,5 +35,11 @@ class View extends BaseView
     public function getTitle() {
 
         return $this->title;
+    }
+
+
+    public function setBreadcrumbs(array $breadcrumbs) {
+
+        $this->params['breadcrumbs'] = $breadcrumbs;
     }
 }

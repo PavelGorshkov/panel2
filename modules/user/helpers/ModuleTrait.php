@@ -6,7 +6,7 @@
  * Time: 17:24
  */
 
-namespace app\modules\user;
+namespace app\modules\user\helpers;
 
 
 trait ModuleTrait {

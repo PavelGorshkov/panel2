@@ -36,10 +36,6 @@ trait SingletonTrait {
     }
 
 
-    /**
-     *
-     * @return SingletonTrait
-     */
     public static function model() {
 
         if (self::$_instance === null) {

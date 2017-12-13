@@ -2,6 +2,7 @@
 namespace app\modules\core;
 
 use app\modules\core\components\Module as ParentModule;
+use app\modules\user\components\Roles;
 use yii\helpers\ArrayHelper;
 
 class Module extends ParentModule
@@ -14,7 +15,6 @@ class Module extends ParentModule
     public $coreCacheTime = 3600;
 
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
-
 
 
     public static function Title() {
@@ -46,7 +46,7 @@ class Module extends ParentModule
                 'label' => '<span class="hidden-xs">Система</span>',
                 'icon' => 'fa fa-fw fa-cog',
                 'items' => $items,
-                'visible' => user()->checkAccess(Roles::ADMIN),
+                'visible' => user()->can(Roles::ADMIN),
             ]
         ];
     }

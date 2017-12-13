@@ -21,9 +21,11 @@ class Migration extends \yii\db\Migration {
 
     protected $table;
 
-    protected function gettableName() {
+    protected function gettableName($table = null) {
 
-        return str_replace(['{', '}', '%'], '', $this->table);
+        if ($table === null) $table = $this->table;
+
+        return str_replace(['{', '}', '%'], '', $table);
     }
 
     public function init()

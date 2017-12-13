@@ -17,13 +17,13 @@ namespace app\modules\core\components;
  */
 class WebController extends \yii\web\Controller {
 
-    protected function setTitle($title) {
+    public function setTitle($title) {
 
         $this->view->title = $title;
     }
 
 
-    protected function setSmallTitle($title) {
+    public function setSmallTitle($title) {
 
         $this->view->smallTitle = $title;
     }

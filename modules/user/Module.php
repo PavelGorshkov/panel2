@@ -20,6 +20,9 @@ class Module extends ParentModule
 
     public $registrationSuccess = '/user/account/login';
 
+    /** @var int Cost параметр, используемый алгоритмом хеширования Blowfish. */
+    public $cost = 10;
+
 
     public static function Title() {
 

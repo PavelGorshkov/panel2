@@ -14,11 +14,18 @@ use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
 
+/**
+ * Class ModulePriority
+ * @package app\modules\core\helpers
+ *
+ * @method static ModulePriority model()
+ */
 class ModulePriority {
 
     use GetterSingletonTrait;
 
     private $file = 'module_priority';
+
 
     private function _createPriorityModuleFile() {
 
@@ -43,6 +50,16 @@ class ModulePriority {
         $this->_saveFile($data);
 
         return $data;
+    }
+
+    public function __get($name) {
+
+        if(isset($this->_data[$name]))
+
+            return $this->_data[$name];
+        else
+
+            return null;
     }
 
 

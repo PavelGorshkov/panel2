@@ -8,7 +8,6 @@
 
 namespace app\modules\core\components;
 
-
 use app\modules\core\helpers\ModulePriority;
 use FilesystemIterator;
 use iiifx\cache\dependency\FolderDependency;
@@ -35,7 +34,7 @@ class ModuleManager extends Component {
      */
     private function _initAllModules() {
 
-        $modules = cache()->get('all_modules');
+        //$modules = cache()->get('all_modules');
         $modules = false;
 
         if ($modules === false) {
@@ -108,7 +107,7 @@ class ModuleManager extends Component {
             $chain->dependencies = [
                 new TagDependency(['tags'=>['all_modules']]),
                 new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
-                new FileDependency(['fileName'=>ModulePriority::model()->getFile()])
+                new FileDependency(['fileName'=> ModulePriority::model()->getFile()]),
             ];
 
             app()->cache->set('enabled_modules', $modules, 3600, $chain);
@@ -131,11 +130,14 @@ class ModuleManager extends Component {
         if (count(app()->getModules())) {
 
             $counter = 1;
+
             foreach (app()->getModules() as $key => $value) {
 
                 if (!isset($allModules[$key])) continue;
-                if (!($value instanceof \app\modules\core\components\ModuleParamsInterface)) continue;
 
+                $class = new \ReflectionClass(is_array($value)?$value['class']:$value);
+
+                if (!$class->implementsInterface('\app\modules\core\components\ModuleParamsInterface')) continue;
 
                 $data = ArrayHelper::merge($allModules[$key],
                     [
@@ -254,6 +256,11 @@ class ModuleManager extends Component {
     public function getKeysAllModules() {
 
         return array_keys($this->getAllModules());
+    }
+
+    public function getKeysEnabledModules() {
+
+        return array_keys($this->getEnabledModules());
     }
 
 

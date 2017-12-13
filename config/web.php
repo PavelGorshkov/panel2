@@ -21,16 +21,12 @@ $config = [
     ],
 
     'modules'=>[
-        /*'user' => [
-            'class'=>'app\modules\user\Module',
-        ],*/
-        'user' => [
-            'class' => 'dektrium\user\Module',
-        ],
         'core'=> [
-
             'class' => 'app\modules\core\Module',
-        ]
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
+        ],
     ],
 
     'components' => [
@@ -87,6 +83,8 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                'gii'=>'gii',
+                'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],

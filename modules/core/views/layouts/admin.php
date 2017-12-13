@@ -92,6 +92,7 @@ include __DIR__ . '/_blocks.php';
                 </h1>
                 <?= Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Главная', 'url'=>'/', 'encode'=>false],
                 ]) ?>
             </section>
 
