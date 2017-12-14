@@ -11,6 +11,7 @@ namespace app\modules\developer\controllers;
 use app\modules\core\components\WebController;
 use app\modules\developer\auth\MigrationTask;
 use yii\filters\AccessControl;
+use yii\web\HttpException;
 
 class MigrationController extends WebController {
 
@@ -66,6 +67,28 @@ class MigrationController extends WebController {
                 'model'=>'\app\modules\developer\models\MigrationList',
             ],
         ];
+    }
+
+
+    public function actionRefresh($module) {
+
+        $modules = app()->moduleManager->getKeysEnabledModules();
+
+        if (!in_array($module, $modules)) {
+
+            throw new HttpException(500, sprintf('Модуль "%s" не найден в активных модулях!', $module));
+        }
+
+        ob_start();
+
+        app()->migrator->updateToLatestModule($module);
+        $logs = ob_get_contents();
+        ob_end_clean();
+
+        return $this->render($this->action->id, [
+           'module'=>$module,
+            'logs'=>$logs,
+        ]);
     }
 
 }

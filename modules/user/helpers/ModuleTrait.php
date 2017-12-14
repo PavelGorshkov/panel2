@@ -1,16 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 12.12.2017
- * Time: 17:24
- */
-
 namespace app\modules\user\helpers;
 
+use app\modules\user\Module;
 
+/**
+ * Class ModuleTrait
+ * @package app\modules\user\helpers
+ *
+ * @property-read Module $module
+ */
 trait ModuleTrait {
 
+    /**
+     * @return Module $module
+     */
     public function getModule() {
 
         return app()->getModule('user');

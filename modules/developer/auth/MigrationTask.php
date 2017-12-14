@@ -7,13 +7,13 @@ use yii\rbac\Item;
 
 class MigrationTask extends RBACItem {
 
-    const TASK = 'developer.migration';
+    const TASK = '/developer/migration';
 
-    const OPERATION_CREATE = 'developer.migration.create';
+    const OPERATION_CREATE = '/developer/migration/create';
 
-    const OPERATION_READ = 'developer.migration.read';
+    const OPERATION_READ = '/developer/migration/read';
 
-    const OPERATION_REFRESH = 'developer.migration.read';
+    const OPERATION_REFRESH = '/developer/migration/refresh';
 
 
     public $types = [

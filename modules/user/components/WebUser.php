@@ -19,7 +19,7 @@ class WebUser extends \yii\web\User
 
             foreach ($permissionName as $p) {
 
-                if (parent::can($permissionName, $params, $allowCaching)) return true;
+                if (parent::can($p, $params, $allowCaching)) return true;
             }
 
             return false;
@@ -31,29 +31,31 @@ class WebUser extends \yii\web\User
 
     public function setFlash($key,$value,$defaultValue=null) {
 
-        if ($this->isGuest) return;
+        if ($this->isGuest) return false;
 
-        app()->session->set($key.user()->id, $value);
+        app()->session->set($key, $value);
     }
 
 
     public function hasFlash($key) {
 
-        if ($this->isGuest) return;
+        if ($this->isGuest) return false;
 
-        return app()->session->has($key.user()->id);
+        if (app()->request->isAjax) return false;
+
+        return app()->session->has($key->id);
     }
 
 
     public function getFlash($key, $defaultValue=null, $delete=true) {
 
-        if ($this->isGuest) return;
+        if ($this->isGuest) return false;
 
-        if (app()->request->isAjax) return;
+        if (app()->request->isAjax) return false;
 
-        $message = app()->session->get($key.user()->id, $defaultValue);
+        $message = app()->session->get($key, $defaultValue);
 
-        if ($delete) app()->session->remove($key.user()->id);
+        if ($delete) app()->session->remove($key);
 
         return $message;
     }

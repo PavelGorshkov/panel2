@@ -245,6 +245,21 @@ class ModuleManager extends Component {
         return $data;
     }
 
+    /**
+     * @param string $module
+     * @param []|string $access
+     *
+     * @return bool
+     */
+    public function can($module, $access) {
+
+        $list = $this->getEnabledModules();
+
+        if (!isset($list[$module])) return false;
+
+        return user()->can($access);
+    }
+
 
     public function getAllModules() {
 

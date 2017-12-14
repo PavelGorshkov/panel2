@@ -9,11 +9,11 @@ use yii\rbac\Item;
 class CreateAuthTask extends RBACItem
 {
 
-    const TASK = 'developer.CreateItem';
+    const TASK = '/developer/rbac';
 
-    const OPERATION_CREATE = 'developer.CreateItem.create';
+    const OPERATION_CREATE = '/developer/rbac/create';
 
-    const OPERATION_READ = 'developer.CreateItem.read';
+    const OPERATION_READ = '/developer/rbac/index';
 
     public $types = [
         self::TASK => Item::TYPE_ROLE,

@@ -2,6 +2,7 @@
 
 namespace app\modules\core\models;
 
+use app\modules\core\models\query\SettingsQuery;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -59,19 +60,11 @@ class Settings extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @return SettingsQuery
      */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'module' => 'Модуль',
-            'param_name' => 'Название параметра',
-            'param_value' => 'Значение параметра',
-            'user_id' => 'Пользователь',
-            'created_at' => 'Дата создания',
-            'updated_at' => 'Дата изменения',
-        ];
+    public static function find() {
+
+        return new SettingsQuery(get_called_class());
     }
 
 
@@ -82,8 +75,8 @@ class Settings extends \yii\db\ActiveRecord
         if ($data === false) {
 
             $temp = self::find()
-                ->select('module', 'param_name', 'param_value')
-                ->where('module != :module', [':module' => self::USER_DATA])
+                ->select(['module', 'param_name', 'param_value'])
+                ->modulesData(self::USER_DATA)
                 ->asArray()
                 ->all();
 
@@ -107,8 +100,8 @@ class Settings extends \yii\db\ActiveRecord
         if ($data === false) {
 
             $temp = self::find()
-                ->select('param_name', 'param_value')
-                ->where('module = :module and user_id = :user', [':module' => self::USER_DATA, ':user' => (int)user()->id])
+                ->select(['param_name', 'param_value'])
+                ->userData(self::USER_DATA)
                 ->asArray()
                 ->all();
 
@@ -123,7 +116,7 @@ class Settings extends \yii\db\ActiveRecord
 
     public static function saveUserData($name, $value) {
 
-        $model = self::findOne('module=:module AND param_name=:name AND user_id=:user', [':name'=>$name, ':module'=>self::USER_DATA, ':user'=>user()->id]);
+        $model = self::find()->findUserParam($name, self::USER_DATA)->one();
 
         if ($model === null) {
 
@@ -142,9 +135,9 @@ class Settings extends \yii\db\ActiveRecord
 
     public static function saveModuleData($module, $data=[]) {
 
-        $models = self::findAll('module = :module', [':module'=>$module]);
-
         if (!count($data)) return true;
+
+        $models = self::find()->findAllModuleParam($module)->all();
 
         foreach ($models as $model) {
 

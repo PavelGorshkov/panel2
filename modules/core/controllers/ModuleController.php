@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\core\controllers;
 
+use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\RedactorController;
 use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
@@ -20,12 +21,12 @@ class ModuleController extends RedactorController{
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                //'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [ModuleTask::TASK],
                     ],
                 ],
             ],

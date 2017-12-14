@@ -17,6 +17,7 @@ namespace app\modules\core\components;
  * @property ModuleManager $moduleManager
  * @property \app\modules\user\components\PhpManager $authManager
  * @property \app\modules\user\components\WebUser $user
+ * @property \app\modules\user\components\Usermanager $userManager
  * @property \app\modules\user\components\BuildAuthManager $buildAuthManager
  *
  */

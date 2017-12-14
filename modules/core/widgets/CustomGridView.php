@@ -4,6 +4,7 @@ namespace app\modules\core\widgets;
 use app\modules\core\helpers\UserSettings;
 use yii\bootstrap\ButtonGroup;
 use yii\grid\GridView;
+use yii\web\View;
 
 
 class CustomGridView extends GridView {
@@ -163,13 +164,26 @@ class CustomGridView extends GridView {
         echo ButtonGroup::widget(['buttons' => $buttons,]);
 
         $csrfTokenName = app()->request->csrfParam();
-        $csrfToken = Yii::app()->getRequest()->getCsrfToken();
+        $csrfToken = app()->request->getCsrfToken();
 
-        $csrf = app()->getRequest()->enableCsrfValidation === false
+        $csrf = app()->request->enableCsrfValidation === false
             ? ""
             : ", '$csrfTokenName':'{$csrfToken}'";
 
-
+        $this->view->registerJs( <<<JS
+            (function () {
+    $('body').on('click', '#{$this->getId()} .pageSize', function (event) {
+        event.preventDefault();
+        $('#{$this->getId()}').yiiGridView('update',{
+            url: window.location.href,
+            data: {
+                '{$this->pageSizeVarName}': $(this).attr('rel')$csrf
+            }
+        });
+    });
+})();
+JS
+, View::POS_END);
 
     }
 

@@ -46,7 +46,7 @@ class RedactorController extends WebController {
 
             if (isset($access[$url])) {
 
-                $visible = app()->moduleManager->visibleItemMenu($this->module->id, $access[$url]);
+                $visible = app()->moduleManager->can($this->module->id, $access[$url]);
 
             } else {
 

@@ -215,6 +215,10 @@ class Migrator extends Component{
 
         include_once $file;
 
+        $namespace = '\\app\\modules\\'.$module.'\\install\\migrations\\';
+
+        $class = $namespace.$class;
+
         return new $class;
     }
 

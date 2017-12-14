@@ -54,8 +54,10 @@ $config = [
         ],
         'user' => [
             'class'=>'\app\modules\user\components\WebUser',
-            'identityClass' => '\app\models\User',
+            'identityClass' => '\app\modules\user\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['/user/account/login'],
+
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -88,6 +90,10 @@ $config = [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
+        ],
+
+        'userManager'=> [
+            'class' => 'app\modules\user\components\UserManager',
         ],
 
         'view'=>[

@@ -14,18 +14,21 @@ use yii\rbac\Item;
 
 class ModuleTask extends RBACItem {
 
-    const TASK = 'core.module';
+    const TASK = '/core/module';
 
-    const OPERATION_READ = 'core.module.read';
+    const OPERATION_ENABLED = '/core/module/index';
 
-    const OPERATION_EDIT = 'core.module.edit';
+    const OPERATION_DISABLED = '/core/module/disabled';
 
-    const OPERATION_SETTINGS = 'core.module.settings';
+    const OPERATION_FLUSH = '/core/module/flush';
+
+    const OPERATION_SETTINGS = '/core/module/settings';
 
     public $types = [
         self::TASK => Item::TYPE_ROLE,
-        self::OPERATION_EDIT => Item::TYPE_PERMISSION,
-        self::OPERATION_READ => Item::TYPE_PERMISSION,
+        self::OPERATION_ENABLED => Item::TYPE_PERMISSION,
+        self::OPERATION_DISABLED => Item::TYPE_PERMISSION,
+        self::OPERATION_FLUSH => Item::TYPE_PERMISSION,
         self::OPERATION_SETTINGS => Item::TYPE_PERMISSION,
     ];
 
@@ -35,8 +38,9 @@ class ModuleTask extends RBACItem {
         return [
             self::TASK => 'Управление модулями',
             self::OPERATION_SETTINGS => 'Управление настройками модулей',
-            self::OPERATION_EDIT => 'Редактирование состояния модуля',
-            self::OPERATION_READ => 'Список модулей',
+            self::OPERATION_ENABLED => 'Просмотр списка активных модулей',
+            self::OPERATION_DISABLED => 'Просмотр списка неактивных модулей',
+            self::OPERATION_FLUSH => 'Очистка кеша системы',
         ];
     }
 
@@ -49,9 +53,10 @@ class ModuleTask extends RBACItem {
             ],
             self::TASK => [
                 self::OPERATION_SETTINGS,
-                self::OPERATION_EDIT,
-                self::OPERATION_READ,
-            ]
+                self::OPERATION_ENABLED,
+                self::OPERATION_DISABLED,
+                self::OPERATION_FLUSH,
+            ],
         ];
     }
 }

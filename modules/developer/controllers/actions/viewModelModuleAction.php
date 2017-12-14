@@ -2,6 +2,7 @@
 namespace app\modules\developer\controllers\actions;
 
 use app\modules\core\components\actions\WebAction;
+use Yii;
 use yii\web\HttpException;
 
 class viewModelModuleAction extends WebAction{
