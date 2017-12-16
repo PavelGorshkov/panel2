@@ -25,7 +25,7 @@
 
 
     /**
-     * @return mixed|\yii\web\User
+     * @return mixed|\app\modules\user\components\WebUser
      */
     function user() {
 

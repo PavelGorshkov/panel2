@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\modules\core\helpers\RouterUrlHelper;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,7 +62,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        app()->migrator->updateToLatestModule('core');
+        printr(RouterUrlHelper::to('index'));
 
         return $this->render('index');
     }

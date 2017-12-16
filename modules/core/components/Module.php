@@ -60,6 +60,7 @@ abstract class Module
     public function init()
     {
         parent::init();
+
         $module = $this->id;
 
         if (Yii::$app instanceof \yii\console\Application) {

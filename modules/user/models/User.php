@@ -2,6 +2,8 @@
 
 namespace app\modules\user\models;
 
+use app\modules\user\helpers\EmailConfirmHelper;
+use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use Yii;
 use yii\web\IdentityInterface;
@@ -30,6 +32,14 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const ACCESS_LEVEL_USER = 0;
+
+    const ACCESS_LEVEL_ADMIN = 1;
+
+    const ACCESS_LEVEL_OBSERVER = 2;
+
+    const ACCESS_LEVEL_REDACTOR = 3;
+
     /**
      * @inheritdoc
      */
@@ -101,7 +111,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public static function findIdentity($id) {
 
-        return UserQuery::findOne($id);
+        return static::findOne($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null) {
@@ -122,5 +132,27 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey) {
 
         return $this->getAuthKey() === $authKey;
+    }
+
+
+    /**
+     * Проверка подтверждения статуса
+     *
+     * @return bool
+     */
+    public function getIsConfirmed() {
+
+        return (int) $this->email_confirm === EmailConfirmHelper::EMAIL_CONFIRM_YES;
+    }
+
+
+    /**
+     * Проверка заблокированности пользователя
+     *
+     * @return bool
+     */
+    public function getIsBlocked()
+    {
+        return (int) $this->status === UserStatusHelper::STATUS_BLOCK;
     }
 }

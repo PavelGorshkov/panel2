@@ -14,6 +14,7 @@ namespace app\modules\core\components;
  *
  * @property Migrator $migrator
  * @property WebController $controller
+ * @property MenuManager $menuManager
  * @property ModuleManager $moduleManager
  * @property \app\modules\user\components\PhpManager $authManager
  * @property \app\modules\user\components\WebUser $user

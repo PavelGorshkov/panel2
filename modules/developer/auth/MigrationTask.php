@@ -29,7 +29,7 @@ class MigrationTask extends RBACItem {
     {
         return [
             self::TASK => 'Управление миграциями',
-            self::OPERATION_EDIT => 'Создание миграции',
+            self::OPERATION_CREATE => 'Создание миграции',
             self::OPERATION_READ => 'Просмотр списка миграций',
             self::OPERATION_REFRESH => 'Обновление БД',
         ];

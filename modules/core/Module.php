@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\core;
 
+use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\Module as ParentModule;
 use app\modules\user\components\Roles;
 use yii\helpers\ArrayHelper;
@@ -31,13 +32,28 @@ class Module extends ParentModule
         [
             [
                 'label' => 'Модули',
-                'visible' => true, //user()->checkAccess(TaskModule::TASK)
+                'visible' => user()->can(ModuleTask::TASK)
             ],
             [
                 'icon' => 'fa fa-fw fa-list-alt',
                 'label' => 'Список модулей',
                 'url' => $this->getMenuUrl('module/index'),
-                'visible' => true,//user()->checkAccess(TaskModule::OPERATION_READ)
+            ],
+        ]);
+
+        $items = ArrayHelper::merge($items, [
+            [
+                'label' => '',
+                'options' => [
+                    'role' => 'separator',
+                    'class' => 'divider',
+                    'visible' => user()->can(ModuleTask::TASK),
+                ],
+            ],
+            [
+                'icon' => 'fa fa-fw fa-cog',
+                'label' => 'Настройки системы',
+                'url' => ['/core/module/settings', 'module' => 'core'],
             ],
         ]);
 

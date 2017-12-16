@@ -2,6 +2,14 @@
 namespace app\modules\user\components;
 
 
+use app\modules\user\models\User;
+
+/**
+ * Class WebUser
+ * @package app\modules\user\components
+ *
+ * @property User $identity
+ */
 class WebUser extends \yii\web\User
 {
     const SUCCESS_MESSAGE = 'success';
@@ -98,5 +106,25 @@ class WebUser extends \yii\web\User
     public function setInfoFlash($message) {
 
         $this->setFlash(self::INFO_MESSAGE, $message);
+    }
+
+
+    public function getProfile() {
+
+        return $this->identity->userProfile;
+    }
+
+
+    public function getRole() {
+
+        switch ($this->identity->access_level) {
+
+
+            case User::ACCESS_LEVEL_ADMIN: return Roles::ADMIN;
+            case User::ACCESS_LEVEL_REDACTOR: return Roles::REDACTOR;
+            case User::ACCESS_LEVEL_OBSERVER: return Roles::OBSERVER;
+
+            default: return null;
+        };
     }
 }

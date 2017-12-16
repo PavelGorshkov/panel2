@@ -6,6 +6,7 @@
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
 use app\modules\core\widgets\MenuWidget;
+use app\modules\user\widgets\FlashMessages;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
@@ -98,8 +99,7 @@ include __DIR__ . '/_blocks.php';
 
             <!-- Main content -->
             <section class="content">
-                <?= Alert::widget() ?>
-                <?php // $this->widget('user\widgets\FlashMessages'); ?>
+                <?=FlashMessages::widget()?>
                 <?= $content ?>
             </section>
             <!-- /.content -->

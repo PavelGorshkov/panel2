@@ -3,7 +3,9 @@ namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
 use Yii;
+use yii\rbac\Item;
 use yii\rbac\PhpManager as AuthPhpManager;
+use yii\rbac\Role;
 
 class PhpManager extends AuthPhpManager
 {
@@ -25,19 +27,38 @@ class PhpManager extends AuthPhpManager
 
         parent::init();
 
+        $this->assignments = [];
+
         if (!user()->isGuest) {
 
             if (($role = user()->getRole())!== null) {
 
-                $this->assign($role, user()->id);
+                $this->assign($this->createObjRole($role), user()->id);
             } else {
 
                 foreach (user()->getAccessData() as $access => $temp) {
 
-                    if ($this->getItem($access)!== null) $this->assign($access, user()->id);
+                    if ($this->getItem($access)!== null) $this->assign($this->createObjItem($access), user()->id);
                 }
             }
         }
+    }
+
+
+    protected function createObjRole($role) {
+
+        $class = new Role();
+        $class->name = $role;
+
+        return $class;
+    }
+
+    protected function createObjItem($item) {
+
+        $class = new Item();
+        $class->name = $item;
+
+        return $class;
     }
 
 

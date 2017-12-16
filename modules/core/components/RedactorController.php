@@ -3,7 +3,9 @@
 namespace app\modules\core\components;
 
 
+use app\modules\core\helpers\RouterUrlHelper;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\HttpException;
 
 class RedactorController extends WebController {
@@ -29,35 +31,14 @@ class RedactorController extends WebController {
 
     public function getActionsMenu() {
 
+
         foreach ($this->actionMenu as $url => $label) {
-
-            $url_string = explode('/', $url);
-
-            if (count($url_string) > 1) {
-
-                $access = $this->accessRulesList($url_string[0]);
-                $isActive = ($url_string[0] == $this->id) && ($url_string[1] == $this->action->id);
-            } else {
-
-                $access = $this->accessRuleList();
-                $isActive = $url == $this->action->id;
-            }
-
-
-            if (isset($access[$url])) {
-
-                $visible = app()->moduleManager->can($this->module->id, $access[$url]);
-
-            } else {
-
-                $visible = true;
-            }
 
             $menu[] = [
                 'label'=>$label,
                 'url'=>[$url],
-                'active'=>$url == $isActive,
-                'visible'=>$visible,
+                'active'=>RouterUrlHelper::isActiveRoute($url),
+                'visible'=>app()->moduleManager->can($this->module->id, RouterUrlHelper::to($url)),
             ];
         }
 

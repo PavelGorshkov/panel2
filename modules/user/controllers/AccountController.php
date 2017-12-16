@@ -12,7 +12,6 @@ use app\modules\core\components\WebController;
 use app\modules\user\helpers\EventTrait;
 use app\modules\user\models\LoginForm;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 
 class AccountController extends WebController
 {
@@ -35,12 +34,6 @@ class AccountController extends WebController
                     ['allow' => true, 'actions' => ['login', 'auth', 'logout'], 'roles' => ['@']],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['get'],
-                ],
-            ],
         ];
     }
 
@@ -56,7 +49,10 @@ class AccountController extends WebController
 
         $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
 
-        if ($model->load(app()->request->post()) && model()->login()) {
+        if (
+            $model->load(app()->request->post())
+        &&  $model->login()
+        ) {
 
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
             return $this->goBack();
@@ -66,5 +62,19 @@ class AccountController extends WebController
             'model'=>$model,
             'module'=>$this->module,
         ]);
+    }
+
+
+    public function actionLogout()
+    {
+        $event = $this->getUserEvent(user()->identity);
+
+        $this->trigger(self::EVENT_BEFORE_LOGOUT, $event);
+
+        user()->logout();
+
+        $this->trigger(self::EVENT_AFTER_LOGOUT, $event);
+
+        return $this->goHome();
     }
 }

@@ -302,4 +302,34 @@ class ModuleManager extends Component {
         parent::init();
     }
 
+
+    /**
+     * Возвращает меню из подключенных модулей
+     *
+     * @param array $types
+     * @return array
+     */
+    public function getMenu(array $types) {
+
+        $menu = [];;
+
+        foreach ($types as $type) {
+
+            $method = 'getMenu'. ucfirst($type);
+            $menu[$type] = [];
+
+            foreach ($this->getKeysEnabledModules() as $module) {
+
+                $moduleApp = app()->getModule($module);
+
+                if (method_exists($moduleApp, $method)) {
+
+                    $local_menu = $moduleApp->$method();
+                    if (count($local_menu)) $menu[$type] = ArrayHelper::merge($menu[$type], $local_menu);
+                 }
+            }
+        }
+
+        return $menu;
+    }
 }

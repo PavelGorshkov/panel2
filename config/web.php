@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\core\components\MenuManager;
 use yii\helpers\ArrayHelper;
 
 $params = require __DIR__ . '/params.php';
@@ -48,6 +49,9 @@ $config = [
         'moduleManager'=>[
             'class'=>'\app\modules\core\components\ModuleManager',
         ],
+        'menuManager'=>[
+            'class'=>'\app\modules\core\components\MenuManager',
+        ],
         'cache' => [
             'class' => '\yii\caching\FileCache',
             //'class' => 'yii\caching\MemCache',
@@ -85,6 +89,10 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                '/login' => 'user/account/login',
+                '/logout' => 'user/account/logout',
+                '/registration' => 'user/account/registration',
+                '/recovery' => 'user/account/recovery',
                 'gii'=>'gii',
                 'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',

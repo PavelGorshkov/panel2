@@ -1,18 +1,20 @@
 <?php
 
+use app\modules\core\widgets\AdminMenu;
 use app\modules\core\widgets\MenuWidget;
+use app\modules\user\widgets\InfoNavMenu;
 use yii\widgets\Block;
 
 Block::begin(['id'=>'navbarTopMenu']);
-
-echo MenuWidget::widget(['menu' => 'admin', 'view' => 'top_menu']);
-
 if (!user()->isGuest):?>
+
+<?=AdminMenu::widget(['menu'=>'admin']);?>
+
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
-            <?php //$this->widget('\user\widgets\userInfoMenu');?>
+            <?=InfoNavMenu::widget()?>
         </li>
         <!-- Control Sidebar Toggle Button -->
         <li>

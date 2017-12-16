@@ -35,20 +35,17 @@ class Module extends ParentModule
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Список миграций',
                         'url' => $this->getMenuUrl('migration/index'),
-                        'visible' => user()->can(MigrationTask::OPERATION_READ)
                     ],
                     [
                         'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Добавить миграцию',
                         'url' => $this->getMenuUrl('migration/create'),
-                        'visible' => user()->can(MigrationTask::OPERATION_EDIT)
                     ],
                     [
                         'label' => '',
                         'itemOptions' => [
                             'role' => 'separator',
                             'class' => 'divider',
-                            'visible' => user()->can(MigrationTask::TASK),
                         ],
                     ],
                     /* ----- */
@@ -60,20 +57,18 @@ class Module extends ParentModule
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Список задач',
                         'url' => $this->getMenuUrl('auth/index'),
-                        'visible' => user()->can(CreateAuthTask::OPERATION_READ)
                     ],
                     [
                         'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Добавить задачу',
                         'url' => $this->getMenuUrl('auth/create'),
-                        'visible' => user()->checkAccess(CreateAuthTask::OPERATION_CREATE)
                     ],
                     [
                         'label' => '',
                         'itemOptions' => [
                             'role' => 'separator',
                             'class' => 'divider',
-                            'visible' => user()->checkAccess(CreateAuthTask::TASK),
+                            'visible' => user()->can(CreateAuthTask::TASK),
                         ],
                     ],
                     /* ----- */
@@ -105,7 +100,6 @@ class Module extends ParentModule
                         'icon' => 'fa fa-fw fa-trash',
                         'label' => 'Очистить кеш',
                         'url' => ['/core/module/flush'],
-                        'visible' => user()->can(ModuleTask::OPERATION_EDIT),
                     ],
                 ],
                 'visible' => user()->can(Roles::ADMIN),

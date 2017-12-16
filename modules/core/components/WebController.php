@@ -10,6 +10,7 @@ namespace app\modules\core\components;
 
 
 use yii\base\Model;
+use yii\web\HttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -21,6 +22,7 @@ use yii\widgets\ActiveForm;
  * $property Module $module
  */
 class WebController extends \yii\web\Controller {
+
 
     public function setTitle($title) {
 

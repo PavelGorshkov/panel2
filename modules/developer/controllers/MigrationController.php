@@ -11,6 +11,7 @@ namespace app\modules\developer\controllers;
 use app\modules\core\components\WebController;
 use app\modules\developer\auth\MigrationTask;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\HttpException;
 
 class MigrationController extends WebController {
@@ -18,10 +19,8 @@ class MigrationController extends WebController {
     public function behaviors() {
 
         return [
-            /**
             'access' => [
                 'class' => AccessControl::className(),
-                //'only' => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['index'],
@@ -46,7 +45,6 @@ class MigrationController extends WebController {
                     'logout' => ['post'],
                 ],
             ],
-             */
         ];
     }
 

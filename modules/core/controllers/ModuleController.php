@@ -10,6 +10,7 @@ use yii\helpers\HtmlPurifier;
 
 class ModuleController extends RedactorController{
 
+
     protected $actionMenu = [
         'index'=>'Установленные модули',
         'disabled'=>'Неустановленные модули',

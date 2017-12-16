@@ -15,6 +15,9 @@ class LoginForm extends Model {
 
     public $rememberMe = false;
 
+    /**
+     * @var User
+     */
     protected $user;
 
     public function attributeLabels()
@@ -52,7 +55,7 @@ class LoginForm extends Model {
             [
                 'password', function ($attribute) {
 
-                    if ($this->user === null || !Password::validate($this->password, $this->user->password_hash)) {
+                    if ($this->user === null || !Password::validate($this->password, $this->user->hash)) {
 
                         $this->addError($attribute, 'Неверный логин или пароль');
                     }
@@ -71,5 +74,16 @@ class LoginForm extends Model {
         }
 
         return false;
+    }
+
+
+    public function login() {
+
+        if ($this->validate()) {
+
+            $this->user->updateAttributes(['visited_at'=> time()]);
+
+            return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
+        }
     }
 }
