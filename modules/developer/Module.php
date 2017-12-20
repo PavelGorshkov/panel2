@@ -79,13 +79,19 @@ class Module extends ParentModule
                     [
                         'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Создать модуль',
-                        'url' => $this->getMenuUrl('/gii/module'),
+                        'url' => ['/gii/module'],
                         'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Создать контроллер',
-                        'url' => $this->getMenuUrl('generator/controller'),
+                        'url' => ['/gii/controller'],
+                        'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
+                    ],
+                    [
+                        'icon' => 'fa fa-fw fa-plus',
+                        'label' => 'Создать модель',
+                        'url' => ['/gii/model'],
                         'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
                     ],
                     [

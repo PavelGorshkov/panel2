@@ -66,7 +66,7 @@ class PhpManager extends AuthPhpManager
     }
 
 
-    public static function clearAll() {
+    public static function flush() {
 
         File::rmDir(Yii::getAlias('@app/runtime/rbac/*'));
     }

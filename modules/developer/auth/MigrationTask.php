@@ -17,7 +17,7 @@ class MigrationTask extends RBACItem {
 
     const OPERATION_CREATE = '/developer/migration/create';
 
-    const OPERATION_READ = '/developer/migration/read';
+    const OPERATION_READ = '/developer/migration/index';
 
     const OPERATION_REFRESH = '/developer/migration/refresh';
 

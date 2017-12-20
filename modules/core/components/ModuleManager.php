@@ -289,7 +289,7 @@ class ModuleManager extends Component {
      *
      * @return array
      */
-    public function geListEnabledModules() {
+    public function getListEnabledModules() {
 
         return array_keys($this->getEnabledModules());
     }
@@ -344,7 +344,7 @@ class ModuleManager extends Component {
             $method = 'getMenu'. ucfirst($type);
             $menu[$type] = [];
 
-            foreach ($this->geListEnabledModules() as $module) {
+            foreach ($this->getListEnabledModules() as $module) {
 
                 $moduleApp = app()->getModule($module);
 

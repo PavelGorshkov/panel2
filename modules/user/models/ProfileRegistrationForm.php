@@ -17,9 +17,7 @@ class ProfileRegistrationForm extends Model {
         return [
             [['about', 'phone'], 'required'],
             ['about', 'string', 'max' => 300],
-            ['phone','match', 'pattern' => $this->module->phonePattern,
-                'message' => 'Некорректный формат поля {attribute}'
-            ],
+            ['phone','match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}'],
         ];
     }
 
@@ -29,5 +27,10 @@ class ProfileRegistrationForm extends Model {
             'about' => 'Должность, место работы',
             'phone' => 'Телефон',
         ];
+    }
+
+    public function formName() {
+
+        return 'profile-registration-form';
     }
 }

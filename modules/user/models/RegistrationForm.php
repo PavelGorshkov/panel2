@@ -97,8 +97,7 @@ class RegistrationForm extends Model
     {
         if ($this->hasErrors()) {
 
-            foreach ($attribute as $attr)
-                $this->$attr = null;
+            $this->$attribute = null;
         }
     }
 }

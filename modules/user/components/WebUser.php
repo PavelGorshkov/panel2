@@ -73,7 +73,7 @@ class WebUser extends \yii\web\User
 
         if (app()->request->isAjax) return false;
 
-        return app()->session->has($key->id);
+        return app()->session->has($key);
     }
 
 

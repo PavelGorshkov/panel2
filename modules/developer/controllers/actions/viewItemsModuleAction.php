@@ -5,7 +5,7 @@ use app\modules\core\components\actions\WebAction;
 use Yii;
 use yii\web\HttpException;
 
-class viewModelModuleAction extends WebAction{
+class viewItemsModuleAction extends WebAction{
 
     public $model = null;
 

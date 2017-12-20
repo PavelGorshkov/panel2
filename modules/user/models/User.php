@@ -98,6 +98,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(UserProfile::className(), ['user_id' => 'id']);
     }
+	
+	public function getUserToken() 
+	{
+		return $this->hasOne(UserToken::className(), ['user_id' => 'id']);
+	}
+	
 
     /**
      * @inheritdoc

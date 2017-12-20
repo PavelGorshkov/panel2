@@ -22,7 +22,7 @@ class RedactorController extends WebController {
 
         parent::beforeAction($action);
 
-        if (!count($this->actionMenu)) {
+        if (empty($this->actionMenu) || !is_array($this->actionMenu)) {
 
             throw new HttpException('500', 'In class '.__CLASS__.' not found property actionMenu');
         }
@@ -38,6 +38,8 @@ class RedactorController extends WebController {
 
 
     public function getActionsMenu() {
+
+        $menu = [];
 
         foreach ($this->actionMenu as $url => $label) {
 

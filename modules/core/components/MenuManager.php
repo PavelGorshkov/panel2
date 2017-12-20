@@ -30,6 +30,9 @@ class MenuManager extends Component {
 
     protected $_menu = null;
 
+    /**
+     * @var array|null
+     */
     public $type = [
         self::TYPE_ADMIN=>self::MENU_MODULE,
         self::TYPE_MAIN=>self::MENU_MODULE,
@@ -42,7 +45,7 @@ class MenuManager extends Component {
 
         parent::init();
 
-        if ($this->type !== null && count($this->type)) {
+        if ($this->type !== null) {
 
             foreach ($this->type as $key => $type) {
 

@@ -2,7 +2,9 @@
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\ModuleTrait;
+use app\modules\user\models\ProfileRegistrationForm;
 use app\modules\user\models\query\UserQuery;
+use app\modules\user\models\RegistrationForm;
 use app\modules\user\models\User;
 use yii\base\Component;
 
@@ -33,5 +35,37 @@ class UserManager extends Component {
         return $this->userQuery
             ->findUser('username = :user OR email = :user', [':user' => $usernameOrEmail])
             ->one();
+    }
+
+
+    /**
+     * Регистрация пользователя
+     *
+     * @param RegistrationForm $model
+     * @param ProfileRegistrationForm $profile
+     * @return bool
+     */
+    public function register(RegistrationForm $model, ProfileRegistrationForm $profile) {
+
+        $user = new User();
+        $user->setScenario('register');
+
+        $user->setAttributes($model);
+
+        $transaction  = app()->db->beginTransaction();
+
+        try {
+
+            printr($user, 1);
+
+            $transaction->commit();
+
+            return true;
+
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            \Yii::warning($e->getMessage());
+            throw $e;
+        }
     }
 }

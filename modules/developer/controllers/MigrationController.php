@@ -61,16 +61,20 @@ class MigrationController extends WebController {
 
         return [
             'index'=>[
-                'class'=>'\app\modules\developer\controllers\actions\viewModelModuleAction',
+                'class'=>'\app\modules\developer\controllers\actions\viewItemsModuleAction',
                 'model'=>'\app\modules\developer\models\MigrationList',
             ],
+            'create'=>[
+                'class'=>'\app\modules\developer\controllers\actions\createItemModuleAction',
+                'model'=>'\app\modules\developer\models\MigrationFormModel',
+            ]
         ];
     }
 
 
     public function actionRefresh($module) {
 
-        $modules = app()->moduleManager->geListEnabledModules();
+        $modules = app()->moduleManager->getListEnabledModules();
 
         if (!in_array($module, $modules)) {
 
@@ -88,5 +92,4 @@ class MigrationController extends WebController {
             'logs'=>$logs,
         ]);
     }
-
 }

@@ -8,7 +8,8 @@
 
 namespace app\modules\core\widgets;
 
-abstract class Widget extends \yii\base\Widget {
+abstract class Widget extends \yii\bootstrap\Widget
+{
 
     public $cacheTime = null;
 

@@ -45,13 +45,13 @@ Block::begin(['id'=>'controlSidebar']);
             <?=MenuWidget::widget(['menu' => 'redactor', 'view' => 'right_menu']);?>
         </div><!-- /.tab-pane -->
 
-        <?php/* if (app()->moduleManager->isInstallModule('dictionary1')):?>
+        <?php /* if (app()->moduleManager->isInstallModule('dictionary1')):?>
     <?php if (user()->checkAccess(\dictionary1\auth\TaskDictionary::OPERATION_EDIT)):?>
          <div class="tab-pane" id="control-sidebar-dictionary-tab">
              <?php $this->widget('dictionary1\widgets\menuPanel');?>
          </div><!-- /.tab-pane -->
     <?php endif; ?>
-<?php endif; */?>
+<?php endif; */ ?>
     </div>
 </aside><!-- /.control-sidebar -->
 <!-- Add the sidebar's background. This div must be placed

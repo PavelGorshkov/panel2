@@ -108,10 +108,19 @@ class AccountController extends WebController
 
         $this->trigger(self::EVENT_BEFORE_REGISTRATION, $event);
 
-        $this->performAjaxValidationMultiply([$model, $profile]);
+        $this->performAjaxValidationMultiply([$profile, $model]);
 
         if ($model->load(app()->request->post())
          && $profile->load(app()->request->post())) {
+
+            if (
+                $model->validate()
+             && $profile->validate()
+             && app()->userManager->register($model, $profile)
+            ) {
+
+                $this->trigger(self::EVENT_AFTER_REGISTRATION, $event);
+            }
 
             printr($model);
             printr($profile, 1);

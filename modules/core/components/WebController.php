@@ -3,7 +3,6 @@ namespace app\modules\core\components;
 
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
-use yii\web\HttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -16,14 +15,16 @@ use yii\widgets\ActiveForm;
  * @property View $view
  * $property Module $module
  */
-class WebController extends \yii\web\Controller {
+class WebController extends \yii\web\Controller
+{
 
     /**
      * Установить заголовок 1 уровня
      *
-     * @param ыекштп$title
+     * @param ыекштп $title
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
 
         $this->view->title = $title;
     }
@@ -33,7 +34,8 @@ class WebController extends \yii\web\Controller {
      *
      * @param string $title
      */
-    public function setSmallTitle($title) {
+    public function setSmallTitle($title)
+    {
 
         $this->view->smallTitle = $title;
     }
@@ -45,27 +47,35 @@ class WebController extends \yii\web\Controller {
      * @param Model $model
      * @throws \yii\base\ExitException
      */
-    protected function performAjaxValidation(Model $model)
+    public function performAjaxValidation(Model $model)
     {
         if (app()->request->isAjax && $model->load(app()->request->post())) {
 
             app()->response->format = Response::FORMAT_JSON;
-            app()->response->data   = ActiveForm::validate($model);
+            app()->response->data = ActiveForm::validate($model);
             app()->response->send();
             app()->end();
         }
     }
 
 
-    protected function performAjaxValidationMultiply(array $models)
+    /**
+     * Проверить ajax валидность данных e нескольких моделей формы
+     *
+     * @param []Model $model
+     * @throws \yii\base\ExitException
+     */
+    public function performAjaxValidationMultiply(array $models)
     {
         if (!app()->request->isAjax) return;
 
         $load = false;
+        $post = app()->request->post();
 
-        foreach ($models as $key => $model) {
+        foreach ($models as &$model) {
 
-            $load = $load || $models[$key]->load(app()->request->post());
+            $loadModel = $model->load($post);
+            $load = $load || $loadModel;
         }
 
         if ($load) {
@@ -77,7 +87,7 @@ class WebController extends \yii\web\Controller {
             }
 
             app()->response->format = Response::FORMAT_JSON;
-            app()->response->data   = $data;
+            app()->response->data = $data;
             app()->response->send();
             app()->end();
         }

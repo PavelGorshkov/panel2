@@ -2,11 +2,13 @@
 namespace app\modules\core\controllers;
 
 use app\modules\core\auth\ModuleTask;
+use app\modules\core\components\ConfigManager;
 use app\modules\core\components\RedactorController;
 use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\HtmlPurifier;
+use yii\helpers\Url;
 
 class ModuleController extends RedactorController{
 
@@ -27,7 +29,12 @@ class ModuleController extends RedactorController{
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => [ModuleTask::TASK],
+                        'roles' => [ModuleTask::OPERATION_ENABLED],
+                    ],
+                    [
+                        'actions' => ['flush'],
+                        'allow' => true,
+                        'roles' => [ModuleTask::OPERATION_FLUSH],
                     ],
                 ],
             ],
@@ -84,5 +91,21 @@ class ModuleController extends RedactorController{
         }
 
         return $this->render('enabled', ['modules'=>$modules]);
+    }
+
+
+    public function actionFlush() {
+
+        app()->cache->flush();
+
+        (new ConfigManager(ConfigManager::ENV_WEB))->flushCache();
+
+        app()->authManager->flush();
+
+        user()->setSuccessFlash('Кеш успешно очищен');
+
+        $this->redirect(app()->request->referrer);
+
+        app()->end();
     }
 }

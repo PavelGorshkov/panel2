@@ -40,8 +40,7 @@ echo Html::beginForm('', 'post', ['id'=>'modules-form']);
                 <?=$moduleData['title']?> <span class="label label-info"><?=$module?></span>
             </td>
             <td><?php
-                if (count($moduleData['dependentModules']))
-                    foreach ($moduleData['dependentModules'] as $m) {
+                    foreach ($moduleData['dependent'] as $m) {
 
                         if (isset($enabledModules[$m])) $label = 'label-success';
                         else $label = 'label-danger';
