@@ -1,15 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 15.12.2017
- * Time: 14:21
- */
-
 namespace app\modules\core\helpers;
 
-use yii\helpers\Url;
-
+/**
+ * Класс helper для получения из url
+ * текущий роутинг module/controller/action
+ *
+ * Class RouterUrlHelper
+ * @package app\modules\core\helpers
+ */
 class RouterUrlHelper {
 
     protected static function parseUrl($url){
@@ -22,7 +20,12 @@ class RouterUrlHelper {
         return explode('/', ltrim($url, '/'));
     }
 
-
+    /**
+     * Получение роутинга из URL
+     * @param array|string|mixed $url
+     *
+     * @return null|string
+     */
     public static function to($url) {
 
         $route = self::parseUrl($url);
@@ -66,6 +69,12 @@ class RouterUrlHelper {
     }
 
 
+    /**
+     * Определение активности URL
+     *
+     * @param $url
+     * @return array|bool|null
+     */
     public static function isActiveRoute($url) {
 
         $route = self::parseUrl($url);

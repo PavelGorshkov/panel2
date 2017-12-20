@@ -1,14 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 9:14
- */
-
 namespace app\modules\core\components;
 
-
+/**
+ * Интерфейс модуля для работы меню приложения
+ *
+ * Interface ModuleMenuInterface
+ * @package app\modules\core\components
+ */
 interface ModuleMenuInterface {
 
     public function getMenuAdmin();

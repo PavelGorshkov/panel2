@@ -3,7 +3,12 @@ namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\StatusHelper;
 
-
+/**
+ * Класс helper для работы со списком статусов подтверждения email пользователя
+ *
+ * Class EmailConfirmHelper
+ * @package app\modules\user\helpers
+ */
 class EmailConfirmHelper extends StatusHelper {
 
     const EMAIL_CONFIRM_NO = 0;
@@ -14,6 +19,7 @@ class EmailConfirmHelper extends StatusHelper {
 
     const EMPTY_STATUS = '*неизвестно*';
 
+
     public static function getStatusList()
     {
         return [
@@ -21,6 +27,7 @@ class EmailConfirmHelper extends StatusHelper {
             self::EMAIL_CONFIRM_NO => 'Нет',
         ];
     }
+
 
     public static function getStatusHtmlList()
     {

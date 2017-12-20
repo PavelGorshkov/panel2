@@ -19,7 +19,7 @@ class MigrationList {
 
     protected function getInitMigrations($module = null) {
 
-        $modules = app()->moduleManager->getKeysEnabledModules();
+        $modules = app()->moduleManager->geListEnabledModules();
 
         $migrations = [];
 

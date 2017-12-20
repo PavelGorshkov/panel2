@@ -6,9 +6,14 @@ use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
 
+/**
+ * Задача управление задачами RBAC
+ *
+ * Class CreateAuthTask
+ * @package app\modules\developer\auth
+ */
 class CreateAuthTask extends RBACItem
 {
-
     const TASK = '/developer/rbac';
 
     const OPERATION_CREATE = '/developer/rbac/create';

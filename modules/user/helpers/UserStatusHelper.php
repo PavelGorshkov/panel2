@@ -3,6 +3,12 @@ namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\StatusHelper;
 
+/**
+ * Класс helper для работы со статусами активности пользователя
+ *
+ * Class UserStatusHelper
+ * @package app\modules\user\helpers
+ */
 class UserStatusHelper extends StatusHelper {
 
     const STATUS_BLOCK = 0;

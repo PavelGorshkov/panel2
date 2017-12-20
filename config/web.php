@@ -65,6 +65,7 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+            'errorView'=>'@app/modules/core/views/errorHandler/error.php'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -83,6 +84,10 @@ $config = [
             ],
         ],
         'db' => $db,
+
+        'thumbNailer'=> [
+            'class'=>'\app\modules\core\components\Thumbnailer',
+        ],
 
         'urlManager' => [
             'enablePrettyUrl' => true,

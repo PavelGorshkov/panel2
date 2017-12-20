@@ -7,6 +7,10 @@ use yii\rbac\Item;
 use yii\rbac\PhpManager as AuthPhpManager;
 use yii\rbac\Role;
 
+/**
+ * Class PhpManager
+ * @package app\modules\user\components
+ */
 class PhpManager extends AuthPhpManager
 {
     public $itemFile = '@app/runtime/rbac/items.php';

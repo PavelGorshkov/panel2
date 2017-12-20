@@ -71,6 +71,10 @@ class Migration extends \yii\db\Migration {
     }
 
 
+    /**
+     * Создание колонок дат (создание и обновление) в таблице БД
+     * @param string $table
+     */
     protected function createDateColumns($table = null) {
 
         if ($table === null && $this->table) {
@@ -86,6 +90,10 @@ class Migration extends \yii\db\Migration {
     }
 
 
+    /**
+     * Создание колонок пользователей (кто создал и изменил) в таблице БД
+     * @param null $table
+     */
     protected function createUserColumns($table = null) {
 
         if ($table === null && $this->table) {
@@ -98,24 +106,5 @@ class Migration extends \yii\db\Migration {
 
         $this->addColumn($table, 'created_by', $this->integer()->null());
         $this->addColumn($table, 'updated_by', $this->integer()->null());
-    }
-
-
-    public function dropColumnConstraints($table, $column)
-    {
-        $table = Yii::$app->db->schema->getRawTableName($table);
-        $cmd = Yii::$app->db->createCommand('SELECT name FROM sys.default_constraints
-                                WHERE parent_object_id = object_id(:table)
-                                AND type = \'D\' AND parent_column_id = (
-                                    SELECT column_id
-                                    FROM sys.columns
-                                    WHERE object_id = object_id(:table)
-                                    and name = :column
-                                )', [ ':table' => $table, ':column' => $column ]);
-
-        $constraints = $cmd->queryAll();
-        foreach ($constraints as $c) {
-            $this->execute('ALTER TABLE '.Yii::$app->db->quoteTableName($table).' DROP CONSTRAINT '.Yii::$app->db->quoteColumnName($c['name']));
-        }
     }
 }

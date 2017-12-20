@@ -1,8 +1,15 @@
 <?php
-namespace app\modules\core\helpers;
+namespace app\modules\user\helpers;
 
+use app\modules\core\helpers\GetterSingletonTrait;
 use app\modules\core\models\Settings;
 
+/**
+ * Класс helper для работы с пользовательскими данными
+ *
+ * Class UserSettings
+ * @package app\modules\core\helpers
+ */
 class UserSettings {
 
     use GetterSingletonTrait;
@@ -11,7 +18,6 @@ class UserSettings {
 
         $this->_data = Settings::findAllUserData();
     }
-
 
     public function __set($name, $value) {
 

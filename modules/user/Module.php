@@ -12,10 +12,19 @@ use Yii;
  */
 class Module extends ParentModule
 {
+    /**
+     * @var string
+     */
     public $accountActivationSuccess = '/user/account/login';
 
+    /**
+     * @var string страницм регистрации
+     */
     public $accountActivationFailure = '/user/account/registration';
 
+    /**
+     * @var string Страница авторизации
+     */
     public $loginPage = '/user/account/login';
 
     public $loginSuccess = 'user/profile/index';
@@ -26,7 +35,21 @@ class Module extends ParentModule
 
     public $defaultAvatar = 'default.png';
 
-    public $avatarDirs = '@app/web/uploads/images/avatars';
+    public $avatarDirs = '@app/web/uploads/images/avatars/';
+
+    public $registrationDisabled = 0;
+
+    public $recoveryDisabled = 0;
+
+    public $minPasswordLength = 6;
+
+    public $generateUserName = 0;
+
+    public $showCaptcha = 1;
+
+    public $phonePattern = '/^((\+?7)(-?\d{3})-?)?(\d{3})(-?\d{4})$/';
+
+    public $phoneMask = '+7-999-999-9999';
 
     /** @var bool Пользователь должен ли подтвердить свою учетную запись. */
     public $enableConfirmation = true;

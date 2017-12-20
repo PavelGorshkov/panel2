@@ -4,7 +4,12 @@ namespace app\modules\core\components;
 use Yii;
 use \yii\base\Module as BaseModule;
 
-
+/**
+ * Абстрактный класс модулей
+ *
+ * Class Module
+ * @package app\modules\core\components
+ */
 abstract class Module
     extends BaseModule
     implements ModuleSettingsInterface, ModuleParamsInterface, ModuleMenuInterface
@@ -34,18 +39,6 @@ abstract class Module
      * @var int
      */
     public $newFileMode = 0777;
-
-
-    /**
-     * @return string
-     *
-    public static function getSystemType()
-    {
-        return (self::isSystem()
-            ? '<span class="label label-warning">Cистемный модуль</span>'
-            : '<span class="label label-success">Модуль</span>');
-    }
-    */
 
 
     /**

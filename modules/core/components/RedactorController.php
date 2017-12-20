@@ -1,13 +1,17 @@
 <?php
-
 namespace app\modules\core\components;
-
 
 use app\modules\core\helpers\RouterUrlHelper;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\HttpException;
 
+/**
+ * Контроллер для вывода данных Редактору прилодения
+ *
+ * Class RedactorController
+ * @package app\modules\core\components
+ */
 class RedactorController extends WebController {
 
     protected $actionMenu = null;
@@ -24,13 +28,16 @@ class RedactorController extends WebController {
         }
 
         $this->view->params['actionMenu'] = $this->getActionsMenu();
+        $this->setTitle('Управление модулями');
+
+        if (isset($this->actionMenu[$this->action->id]))
+            $this->setSmallTitle($this->actionMenu[$this->action->id]);
 
         return true;
     }
 
 
     public function getActionsMenu() {
-
 
         foreach ($this->actionMenu as $url => $label) {
 
@@ -44,71 +51,4 @@ class RedactorController extends WebController {
 
         return $menu;
     }
-
-
-    protected function accessRuleList($controller = null) {
-
-        $access = [];
-        $rules = [];
-
-        if ($controller === null) {
-
-            $firstString = '';
-
-            $rules = $this->getRulesController($this);
-
-        } else {
-
-            $firstString = $controller.'/';
-
-            $class = $this->module->controllerNamespace . ucfirst($controller).'Controller';
-
-            if (class_exists($class)) {
-
-                $obj = new $class($controller, $this->module, []);
-
-                $rules = $this->getRulesController($obj);
-
-                unset($obj);
-            }
-        }
-
-        if (count($rules)) {
-            foreach ($rules as $rule) {
-
-                if (isset($rule['allow']) && $rule['allow'] && isset($rule['roles'])) {
-
-                    foreach ($rule['actions'] as $action) {
-
-                        if (isset($this->actionMenu[$firstString.$action])) {
-
-                            if (!isset($access[$firstString.$action]))  $access[$firstString.$action] = [];
-
-                            $access[$firstString.$action] = ArrayHelper::merge($access[$firstString.$action],$rule['roles']);
-                        }
-                    }
-                }
-            }
-
-        }
-
-        return $access;
-    }
-
-
-    protected function getRulesController(RedactorController $controller) {
-
-        if (!method_exists($controller, 'behaviors')) return [];
-
-        $behaviors = $controller->behaviors();
-
-        if (!isset($behaviors['access']['rules'])) return [];
-
-        return $behaviors['access']['rules'];
-    }
-
-
-
-
-
 }

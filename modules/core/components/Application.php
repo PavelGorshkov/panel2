@@ -1,14 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 08.12.2017
- * Time: 11:52
- */
-
 namespace app\modules\core\components;
 
+use app\modules\user\components\BuildAuthManager;
+use app\modules\user\components\PhpManager;
+use app\modules\user\components\UserManager;
+use app\modules\user\components\WebUser;
+
 /**
+ * Класс пустышка app(), для указания IDE вируальных
+ * свойств (подключаемых компонент) приложения app()
+ *
  * Class Application
  * @package app\modules\core\components
  *
@@ -16,10 +17,11 @@ namespace app\modules\core\components;
  * @property WebController $controller
  * @property MenuManager $menuManager
  * @property ModuleManager $moduleManager
- * @property \app\modules\user\components\PhpManager $authManager
- * @property \app\modules\user\components\WebUser $user
- * @property \app\modules\user\components\Usermanager $userManager
- * @property \app\modules\user\components\BuildAuthManager $buildAuthManager
+ * @property PhpManager $authManager
+ * @property WebUser $user
+ * @property UserManager $userManager
+ * @property BuildAuthManager $buildAuthManager
+ * @property Thumbnailer $thumbNailer
  *
  */
 class Application extends \yii\web\Application {}

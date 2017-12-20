@@ -16,7 +16,7 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
                     'active'=>!app()->request->get('module'),
             ]];
 
-            foreach (app()->moduleManager->getKeysEnabledModules() as $module) {
+            foreach (app()->moduleManager->geListEnabledModules() as $module) {
 
                 $menu[] = [
                     'label'=>$module,

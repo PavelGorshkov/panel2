@@ -8,7 +8,6 @@
 
 namespace app\modules\user\components;
 
-
 use yii\rbac\Item;
 
 class Roles extends RBACItem {

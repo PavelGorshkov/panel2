@@ -1,7 +1,12 @@
 <?php
 namespace app\modules\core\helpers;
 
-
+/**
+ * Класс хелпер для работы с файлами приложения
+ *
+ * Class File
+ * @package app\modules\core\helpers
+ */
 class File extends \yii\helpers\FileHelper {
 
     /**
@@ -37,10 +42,11 @@ class File extends \yii\helpers\FileHelper {
 
 
     /**
-     * Копипрование файла в директорию
+     * Копипрование файла в директорию с нужными правами
      *
      * @param string $from
      * @param string $to
+     * @param int $mode
      *
      * @return bool
      */

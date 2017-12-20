@@ -1,14 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 9:04
- */
-
 namespace app\modules\core\components;
 
-
+/**
+ * Интерфейс для работы модуля с параметрами модуля, хранимыми в БД
+ *
+ * Interface ModuleParamsInterface
+ * @package app\modules\core\components
+ */
 interface ModuleParamsInterface {
 
     /**

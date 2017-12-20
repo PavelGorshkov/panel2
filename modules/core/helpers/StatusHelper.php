@@ -1,16 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 15.12.2017
- * Time: 9:21
- */
-
 namespace app\modules\core\helpers;
-
 
 use yii\web\HttpException;
 
+/**
+ * Класс helper для работы с различными статусами модулей
+ *
+ * Class StatusHelper
+ * @package app\modules\core\helpers
+ */
 abstract class StatusHelper {
 
     const EMPTY_STATUS_HTML = '<span class="label label-default">*неизвестно*</span>';

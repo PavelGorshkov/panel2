@@ -70,7 +70,7 @@ class MigrationController extends WebController {
 
     public function actionRefresh($module) {
 
-        $modules = app()->moduleManager->getKeysEnabledModules();
+        $modules = app()->moduleManager->geListEnabledModules();
 
         if (!in_array($module, $modules)) {
 

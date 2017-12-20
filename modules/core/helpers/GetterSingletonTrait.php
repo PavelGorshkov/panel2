@@ -1,14 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 09.12.2017
- * Time: 11:01
- */
-
 namespace app\modules\core\helpers;
 
-
+/**
+ * Синглтон с магическим методом __set и  __isset
+ *
+ * Class GetterSingletonTrait
+ * @package app\modules\core\helpers
+ */
 trait GetterSingletonTrait {
 
     use SingletonTrait;
@@ -40,6 +38,8 @@ trait GetterSingletonTrait {
 
 
     /**
+     * Получение массива данных класса
+     *
      * @return array
      */
     public function getList() {

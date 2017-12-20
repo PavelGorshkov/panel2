@@ -7,9 +7,9 @@ use yii\widgets\Block;
 
 Block::begin(['id'=>'navbarTopMenu']);
 if (!user()->isGuest):?>
-
+    <div class="navbar-custom-menu" style="float: left;">
 <?=AdminMenu::widget(['menu'=>'admin']);?>
-
+</div>
 <div class="navbar-custom-menu">
     <ul class="nav navbar-nav">
         <!-- User Account: style can be found in dropdown.less -->

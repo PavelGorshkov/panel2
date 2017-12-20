@@ -9,13 +9,15 @@ use yii\db\Migration;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
-
+/**
+ * Компонент по управлению миграциями приложения через web
+ *
+ * Class Migrator
+ * @package app\modules\core\components
+ */
 class Migrator extends Component{
 
     public $migrationTable = '{{%migrations}}';
-
-    public $setInstance = false;
-
 
     /**
      * Проверяем на незавершённые миграции:
@@ -114,6 +116,8 @@ class Migrator extends Component{
 
 
     /**
+     * Получение истории миграции для конкретного модуля
+     *
      * @param string $module
      * @param int $limit
      * @return array
@@ -133,6 +137,8 @@ class Migrator extends Component{
 
 
     /**
+     * Получение списка новых миграциий для модуля приложения
+     *
      * @param string $module
      * @return array
      */
@@ -180,6 +186,8 @@ class Migrator extends Component{
 
 
     /**
+     * Получение пути к папке миграций модуля
+     *
      * @param string $module
      *
      * @return string
@@ -275,6 +283,8 @@ class Migrator extends Component{
 
 
     /**
+     * Применение миграции
+     *
      * @param string $module
      * @param $class
      * @return bool
@@ -363,7 +373,7 @@ class Migrator extends Component{
 
 
     /**
-     * Обновление миграций модулей core и user
+     * Обновление миграций системных модулей (core и user)
      */
     public function updateToLatestSystem() {
 

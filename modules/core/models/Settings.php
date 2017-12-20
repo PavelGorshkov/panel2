@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\models;
 
 use app\modules\core\models\query\SettingsQuery;
@@ -30,7 +29,7 @@ class Settings extends \yii\db\ActiveRecord
     }
 
 
-    public function beforeSave() {
+    public function beforeSave($insert) {
 
         if ($this->module === self::USER_DATA) {
 
@@ -39,7 +38,7 @@ class Settings extends \yii\db\ActiveRecord
 
         if (user()->isGuest) return false;
 
-        return parent::beforeSave($this->isNewRecord);
+        return parent::beforeSave($insert);
     }
 
 

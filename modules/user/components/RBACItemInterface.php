@@ -1,7 +1,6 @@
 <?php
 namespace app\modules\user\components;
 
-
 interface RBACItemInterface {
 
     public function titleList();

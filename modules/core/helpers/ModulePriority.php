@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 09.12.2017
- * Time: 13:10
- */
-
 namespace app\modules\core\helpers;
-
 
 use app\modules\core\components\ConfigManager;
 use Yii;
@@ -15,6 +7,8 @@ use yii\base\Exception;
 use yii\web\HttpException;
 
 /**
+ * Класс хранящий приоритеты модулей
+ *
  * Class ModulePriority
  * @package app\modules\core\helpers
  *
@@ -25,7 +19,6 @@ class ModulePriority {
     use GetterSingletonTrait;
 
     private $file = 'module_priority';
-
 
     private function _createPriorityModuleFile() {
 
@@ -51,6 +44,7 @@ class ModulePriority {
 
         return $data;
     }
+
 
     public function __get($name) {
 

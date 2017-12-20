@@ -5,6 +5,12 @@ use app\modules\user\components\RBACItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
+/**
+ * Задача Управление минрациями
+ *
+ * Class MigrationTask
+ * @package app\modules\developer\auth
+ */
 class MigrationTask extends RBACItem {
 
     const TASK = '/developer/migration';

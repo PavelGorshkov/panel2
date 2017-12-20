@@ -62,12 +62,12 @@ $this->setTitle('Аутентификация');
 <br/>
 <?php ActiveForm::end();?>
 <p>
-    <?php  /*if (!$module->registrationDisabled):?>
-        <span class="pull-left"><?=CHtml::link('Регистрация', ['/user/account/registration'])?></span>
+    <?php if (!$module->registrationDisabled):?>
+        <span class="pull-left"><?=Html::a('Регистрация', ['/user/account/registration'])?></span>
     <?php endif; ?>
     <?php if (!$module->recoveryDisabled):?>
-        <span class="pull-right"><?=CHtml::link('Забыли пароль?', ['/user/account/recovery'])?></span>
-    <?php endif; */?>
+        <span class="pull-right"><?=Html::a('Забыли пароль?', ['/user/account/recovery'])?></span>
+    <?php endif;?>
 </p>
 
 

@@ -8,7 +8,12 @@
 
 namespace app\modules\user\helpers;
 
-
+/**
+ * Класс helper для работы c паролями
+ *
+ * Class Password
+ * @package app\modules\user\helpers
+ */
 class Password {
 
     public static function hash($password)

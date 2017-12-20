@@ -4,7 +4,6 @@
 
 use yii\helpers\Html;
 
-
 $this->beginContent('@app/modules/core/views/layouts/login.php');
 ?>
 <body class="hold-transition login-page">

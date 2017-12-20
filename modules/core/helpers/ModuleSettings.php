@@ -1,15 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 09.12.2017
- * Time: 11:10
- */
-
 namespace app\modules\core\helpers;
 
 use app\modules\core\models\Settings;
 
+/**
+ * Класс helper для работы с настройками модулей из БД
+ *
+ * Class ModuleSettings
+ * @package app\modules\core\helpers
+ */
 class ModuleSettings {
 
     use SingletonTrait;

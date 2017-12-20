@@ -8,7 +8,12 @@
 
 namespace app\modules\user\helpers;
 
-
+/**
+ * Класс helper для работы с уровнями доступа пользователя
+ *
+ * Class UserAccessLevel
+ * @package app\modules\user\helpers
+ */
 class UserAccessLevel {
 
     const LEVEL_ADMIN = 1;

@@ -6,9 +6,14 @@ use app\modules\core\components\Module as ParentModule;
 use app\modules\user\components\Roles;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Класс модуля core
+ *
+ * Class Module
+ * @package app\modules\core
+ */
 class Module extends ParentModule
 {
-
     public $uploadPath = 'uploads';
 
     public $imageUploadPath = 'images';

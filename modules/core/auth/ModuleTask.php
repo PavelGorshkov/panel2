@@ -12,6 +12,12 @@ use app\modules\user\components\RBACItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
+/**
+ * Задача управления модулями
+ *
+ * Class ModuleTask
+ * @package app\modules\core\auth
+ */
 class ModuleTask extends RBACItem {
 
     const TASK = '/core/module';

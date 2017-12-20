@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 12.12.2017
- * Time: 11:34
- */
-
 namespace app\modules\user\components;
 
 use Yii;
@@ -14,6 +7,12 @@ use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Rule;
 
+/**
+ * Класс ответственный за создание файлов авторизации приложения
+ *
+ * Class BuildAuthManager
+ * @package app\modules\user\components
+ */
 class BuildAuthManager extends Component {
 
     public $pathModuleAlias = '@app/modules/';
@@ -37,13 +36,16 @@ class BuildAuthManager extends Component {
         $this->ruleFile = Yii::getAlias('@app/runtime/rbac/rules.php');
     }
 
-
+    /**
+     * Создание файла конфигурации RBAC приложения
+     * @throws Exception
+     */
     public function createAuthFiles() {
 
         $settings = $this->generateAuth(new Roles);
         $this->_instances = [];
 
-        foreach (app()->moduleManager->getKeysAllModules() as $module) {
+        foreach (app()->moduleManager->getListAllModules() as $module) {
 
             $files = Yii::getAlias('@app/modules/'.$module.'/auth/*Task.php');
             $nameSpace = '\\app\\modules\\'.$module.'\\auth\\';

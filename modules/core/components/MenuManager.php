@@ -5,6 +5,15 @@ use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Class MenuManager
+ * @package app\modules\core\components
+ *
+ * @property array admin - меню админа
+ * @property array main - Основное меню
+ * @property array redactor - Меню редактора
+ *
+ */
 class MenuManager extends Component {
 
     const MENU_DATABASE = 'database';

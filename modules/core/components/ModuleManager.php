@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 09.12.2017
- * Time: 11:49
- */
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\ModulePriority;
@@ -18,6 +11,12 @@ use yii\caching\FileDependency;
 use yii\caching\TagDependency;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Компонент по управлению модулями системы
+ *
+ * Class ModuleManager
+ * @package app\modules\core\components
+ */
 class ModuleManager extends Component {
 
     private $_all_modules = null;
@@ -217,7 +216,6 @@ class ModuleManager extends Component {
     }
 
 
-
     /**
      * Сортировка модулей по параметру
      *
@@ -245,7 +243,10 @@ class ModuleManager extends Component {
         return $data;
     }
 
+
     /**
+     * Проверка доступа к ресурсу модуля
+     *
      * @param string $module
      * @param []|string $access
      *
@@ -261,6 +262,10 @@ class ModuleManager extends Component {
     }
 
 
+    /**
+     * Получение массива всех модулей приложения, наследованных
+     * от базового модуля \app\modules\core\components\Module
+     */
     public function getAllModules() {
 
         if ($this->_all_modules === null) $this->_initAllModules();
@@ -268,17 +273,33 @@ class ModuleManager extends Component {
         return $this->_all_modules;
     }
 
-    public function getKeysAllModules() {
+    /**
+     * Получение списка всех модулей приложения
+     *
+     * @return array
+     */
+    public function getListAllModules() {
 
         return array_keys($this->getAllModules());
     }
 
-    public function getKeysEnabledModules() {
+
+    /**
+     * Получение списка всех активных модулей приложения
+     *
+     * @return array
+     */
+    public function geListEnabledModules() {
 
         return array_keys($this->getEnabledModules());
     }
 
 
+    /**
+     * Получение массива отключенных модулей приложения
+     *
+     * @return array|null
+     */
     public function getDisabledModules() {
 
         if ($this->_disabled_modules === null) $this->_initDisabledModules();
@@ -287,6 +308,11 @@ class ModuleManager extends Component {
     }
 
 
+    /**
+     * Получение массива подключенных модулей приложения
+     *
+     * @return array|null
+     */
     public function getEnabledModules() {
 
         if ($this->_enabled_modules === null) $this->_initEnabledModules();
@@ -318,7 +344,7 @@ class ModuleManager extends Component {
             $method = 'getMenu'. ucfirst($type);
             $menu[$type] = [];
 
-            foreach ($this->getKeysEnabledModules() as $module) {
+            foreach ($this->geListEnabledModules() as $module) {
 
                 $moduleApp = app()->getModule($module);
 

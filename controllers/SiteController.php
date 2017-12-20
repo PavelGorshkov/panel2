@@ -2,13 +2,12 @@
 
 namespace app\controllers;
 
-use app\modules\core\helpers\RouterUrlHelper;
+use app\modules\user\helpers\UserSettings;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -21,10 +20,13 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions'=>['captcha'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -46,7 +48,7 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => 'app\modules\core\components\actions\ErrorAction',
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -62,54 +64,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        printr(RouterUrlHelper::to('index'));
-
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionTest() {
-
-        $path = require Yii::getAlias('@app/runtime/rbac/rules.php');
-
-        printr(unserialize($path['isAuthor']));
-
-        printr($path, 1);
-    }
-
-
-    /**
+    
+	/**
      * Displays contact page.
      *
      * @return Response|string
@@ -127,13 +86,22 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
+
+	
+	 public function actionSkins($skin = null) {
+
+        if ($skin !== null) {
+
+            UserSettings::model()->skinTemplate = $skin;
+        }
+    }
+
+
+    public function actionSidebar($sidebar) {
+
+        if (in_array($sidebar, ['remove', 'add'])) {
+
+            UserSettings::model()->sideBar = $sidebar=='add'?'sidebar-collapse':"s";
+        }
     }
 }

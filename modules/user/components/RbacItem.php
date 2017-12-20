@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 12.12.2017
- * Time: 13:53
- */
-
 namespace app\modules\user\components;
-
 
 use yii\web\HttpException;
 

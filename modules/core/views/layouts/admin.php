@@ -6,6 +6,7 @@
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
 use app\modules\core\widgets\MenuWidget;
+use app\modules\user\helpers\UserSettings;
 use app\modules\user\widgets\FlashMessages;
 use app\widgets\Alert;
 use yii\helpers\Html;
@@ -49,8 +50,8 @@ include __DIR__ . '/_blocks.php';
     <body class="
     hold-transition
     sidebar-mini
-    skin-green-light
-    <? //=(isset(Setting::model()->skinTemplate)?Setting::model()->skinTemplate:'')?>"
+    <?=(isset(UserSettings::model()->skinTemplate)?UserSettings::model()->skinTemplate:'skin-green-light')?>
+    <?=(isset(UserSettings::model()->sideBar)?UserSettings::model()->sideBar:'')?>"
         >
     <?php $this->beginBody() ?>
     <div class="wrapper">
@@ -65,7 +66,7 @@ include __DIR__ . '/_blocks.php';
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" data-href="/site/sidebar">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
                 <!-- Navbar Top Menu -->

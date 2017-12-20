@@ -1,14 +1,16 @@
 <?php
 namespace app\modules\user\components;
 
-
 use app\modules\user\models\User;
+use app\modules\user\models\UserProfile;
 
 /**
  * Class WebUser
  * @package app\modules\user\components
  *
  * @property User $identity
+ * @property UserProfile $profile
+ * @property User $info
  */
 class WebUser extends \yii\web\User
 {
@@ -20,6 +22,12 @@ class WebUser extends \yii\web\User
 
     const ERROR_MESSAGE = 'error';
 
+    /**
+     * @param string $permissionName
+     * @param array $params
+     * @param bool $allowCaching
+     * @return bool
+     */
     public function can($permissionName, $params = [], $allowCaching = true)
     {
 
@@ -37,14 +45,28 @@ class WebUser extends \yii\web\User
         }
     }
 
-    public function setFlash($key,$value,$defaultValue=null) {
 
-        if ($this->isGuest) return false;
+    /**
+     * Установка FLASH сообщения
+     *
+     * @param string $key
+     * @param string $value
+     * @param string|null $defaultValue
+     */
+    public function setFlash($key,$value) {
+
+        if ($this->isGuest) return;
 
         app()->session->set($key, $value);
     }
 
 
+    /**
+     * Проверка на наличие FLASH сообщения
+     *
+     * @param string $key
+     * @return bool
+     */
     public function hasFlash($key) {
 
         if ($this->isGuest) return false;
@@ -55,11 +77,20 @@ class WebUser extends \yii\web\User
     }
 
 
+    /**
+     * Получение FLASH сообщения
+     *
+     * @param string $key
+     * @param string $defaultValue
+     * @param bool $delete
+     *
+     * @return string|null
+     */
     public function getFlash($key, $defaultValue=null, $delete=true) {
 
-        if ($this->isGuest) return false;
+        if ($this->isGuest) return null;
 
-        if (app()->request->isAjax) return false;
+        if (app()->request->isAjax) return null;
 
         $message = app()->session->get($key, $defaultValue);
 
@@ -109,16 +140,35 @@ class WebUser extends \yii\web\User
     }
 
 
+    /**
+     * Получение профиля авторизованного пользователя
+     *
+     * @return \app\modules\user\models\UserProfile
+     */
     public function getProfile() {
 
         return $this->identity->userProfile;
     }
 
 
+    /**
+     * Получение информации об авторизованном пользователе
+     * @return User
+     */
+    public function getInfo() {
+
+        return $this->identity;
+    }
+
+
+    /**
+     * Получение роли авторизованного пользователя
+     *
+     * @return null|string
+     */
     public function getRole() {
 
         switch ($this->identity->access_level) {
-
 
             case User::ACCESS_LEVEL_ADMIN: return Roles::ADMIN;
             case User::ACCESS_LEVEL_REDACTOR: return Roles::REDACTOR;

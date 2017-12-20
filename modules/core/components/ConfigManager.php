@@ -15,6 +15,12 @@ use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 
+/**
+ * Класс конфигуратор сборки конфига всего приложения
+ *
+ * Class ConfigManager
+ * @package app\modules\core\components
+ */
 class ConfigManager {
 
     const ENV_WEB = 'web';
@@ -55,6 +61,8 @@ class ConfigManager {
 
 
     /**
+     * Объединяет конфиги приложения
+     *
      * @param array $base
      * @return array
      */
@@ -75,12 +83,16 @@ class ConfigManager {
      *
      * @return array|null
      */
-    public function getCacheSettings() {
+    protected function getCacheSettings() {
 
         return $this->isCached()?$this->loadCache():null;
     }
 
 
+    /**
+     * @return bool
+     * @throws HttpException
+     */
     protected function isCached() {
 
         if ($this->isDebug()) return false;
@@ -131,6 +143,8 @@ class ConfigManager {
 
 
     /**
+     * Проверка на актульность конфига модуля
+     *
      * @param \SplFileInfo $moduleConfigFile
      *
      * @return bool
@@ -239,7 +253,7 @@ class ConfigManager {
 
 
     /**
-     * Очистка cache
+     * Очистка cache конфига
      */
     public function flushCache() {
 
@@ -253,7 +267,7 @@ class ConfigManager {
     /**
      * @return mixed
      */
-    public function getSettings()
+    protected function getSettings()
     {
         $settings = $this->getCacheSettings();
 
@@ -276,6 +290,9 @@ class ConfigManager {
     }
 
 
+    /**
+     * @return array
+     */
     protected function prepareSettings()
     {
         $settings = [];
