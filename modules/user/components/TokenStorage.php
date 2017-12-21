@@ -1,0 +1,113 @@
+<?php
+namespace app\modules\user\components;
+
+use app\modules\user\helpers\ModuleTrait;
+use app\modules\user\helpers\UserTokenStatusHelper;
+use app\modules\user\helpers\UserTokenType;
+use app\modules\user\helpers\UserTokenTypeHelper;
+use app\modules\user\models\User;
+use app\modules\user\models\UserToken;
+
+use Yii;
+use yii\base\Component;
+use yii\db\Expression;
+use yii\web\ServerErrorHttpException;
+
+/**
+ * Class TokenStorage
+ * @package app\modules\user\components
+ *
+ *
+ */
+class TokenStorage extends Component {
+
+    use ModuleTrait;
+
+    /**
+     * @var UserToken
+     */
+    protected $userTokenQuery;
+
+    public function init() {
+
+        parent::init();
+
+        $this->userTokenQuery = UserToken::find();
+
+        $this->deleteExpired();
+    }
+
+
+    /**
+     * @param User $user
+     * @param $expire
+     * @param $type
+     * @return bool|UserToken
+     */
+    public function create(User $user, $expire, $type)
+    {
+        $expire = (int) $expire;
+
+        $model = new UserToken();
+        $model->user_id = $user->id;
+        $model->expire = new Expression("DATE_ADD(NOW(), INTERVAL {$expire} SECOND)");
+
+        $model->type = (int) $type;
+        $model->status = UserTokenStatusHelper::STATUS_NEW;
+        $model->ip = ip2long(app()->request->userIP);
+
+        $model->token = app()->security->generateRandomKey();
+
+        if (!$model->save()) {
+
+            throw new ServerErrorHttpException('Не удалось создать токен активации');
+        }
+
+        return $model;
+
+    }
+
+
+    /**
+     * @return int
+     */
+    public function deleteExpired()
+    {
+        $deleted = UserToken::deleteAll('expire < NOW()');
+
+        Yii::info(sprintf('Удалено %d токенов', $deleted));
+
+        return $deleted;
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return UserToken|bool
+     */
+    public function createAccountActivationToken(User $user)
+    {
+        $this->deleteByTypeAndUser(UserTokenTypeHelper::ACTIVATE, $user);
+
+        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, UserTokenTypeHelper::ACTIVATE);
+    }
+
+
+    /**
+     * @param $type
+     * @param User $user
+     *
+     * @return int
+     */
+    public function deleteByTypeAndUser($type, User $user)
+    {
+        return UserToken::deleteAll(
+            'type = :type AND user_id = :user_id',
+            [
+                ':type' => (int) $type,
+                ':user_id' => $user->id,
+            ]
+        );
+    }
+}

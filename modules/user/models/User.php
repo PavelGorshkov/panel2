@@ -2,7 +2,7 @@
 
 namespace app\modules\user\models;
 
-use app\modules\user\helpers\EmailConfirmHelper;
+use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use Yii;
@@ -32,6 +32,8 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const SCENARIO_REGISTER = 'register';
+
     const ACCESS_LEVEL_USER = 0;
 
     const ACCESS_LEVEL_ADMIN = 1;
@@ -48,15 +50,56 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return '{{%user_user}}';
     }
 
+
+    public function scenarios() {
+
+        return [
+            self::SCENARIO_REGISTER =>[
+                'username', 'email',
+            ]
+        ];
+    }
+
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            if ($this->isNewRecord) {
+
+                $this->auth_key = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    public function afterSafe($insert, $changedAttributes) {
+
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($this->isNewRecord) {
+
+            $this->id = app()->db->lastInsertID;
+        }
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+
             [['username', 'email', 'hash', 'auth_key'], 'required'],
-            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from', 'logged_at'], 'integer'],
+
+            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
+
+            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
+
             [['status_change_at', 'visited_at', 'created_at', 'updated_at'], 'safe'],
+
             [['username'], 'string', 'max' => 25],
             [['email'], 'string', 'max' => 150],
             [['hash'], 'string', 'max' => 60],
@@ -148,7 +191,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getIsConfirmed() {
 
-        return (int) $this->email_confirm === EmailConfirmHelper::EMAIL_CONFIRM_YES;
+        return (int) $this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
     }
 
 

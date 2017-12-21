@@ -9,29 +9,29 @@ use yii\web\HttpException;
  * Class StatusHelper
  * @package app\modules\core\helpers
  */
-abstract class StatusHelper {
+abstract class ListHelper {
 
     const EMPTY_STATUS_HTML = '<span class="label label-default">*неизвестно*</span>';
 
     const EMPTY_STATUS = '*неизвестно*';
 
-    public static function getStatus($status, $asHtml = false) {
+    public static function getValue($status, $asHtml = false) {
 
         $list = $asHtml
-            ?self::getStatusHtmlList()
-            :self::getStatusList();
+            ?self::getHtmlList()
+            :self::getList();
 
         if (isset($list[$status])) return $list[$status];
 
         return $asHtml?self::EMPTY_STATUS_HTML:self::EMPTY_STATUS;
     }
 
-    public static function getStatusList() {
+    public static function getList() {
 
         throw new HttpException(500, sprintf('Реализуйте метод "getStatusList" в классе "%s"', get_called_class()));
     }
 
-    public static function getStatusHtmlList() {
+    public static function getHtmlList() {
 
         throw new HttpException(500, sprintf('Реализуйте метод "getStatusHtmlList" в классе "%s"', get_called_class()));
     }

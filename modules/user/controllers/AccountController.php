@@ -2,12 +2,14 @@
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
-use app\modules\user\helpers\EventTrait;
+use app\modules\user\components\TokenStorage;
 use app\modules\user\models\LoginForm;
 use app\modules\user\models\ProfileRegistrationForm;
+use app\modules\user\models\User;
 use app\modules\user\Module;
 use app\modules\user\models\RegistrationForm;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 
 /**
  * Class AccountController
@@ -18,15 +20,6 @@ use yii\filters\AccessControl;
 class AccountController extends WebController
 {
     public $layout = "@app/modules/user/views/layouts/login";
-
-    const EVENT_BEFORE_LOGIN = 'beforeLogin';
-    const EVENT_AFTER_LOGIN = 'afterLogin';
-    const EVENT_BEFORE_LOGOUT = 'beforeLogout';
-    const EVENT_AFTER_LOGOUT = 'afterLogout';
-    const EVENT_BEFORE_REGISTRATION = 'beforeRegistration';
-    const EVENT_AFTER_REGISTRATION = 'afterRegistration';
-
-    use EventTrait;
 
     public function behaviors()
     {
@@ -39,7 +32,8 @@ class AccountController extends WebController
                         'actions' => [
                             'login',
                             'auth',
-                            'registration'
+                            'registration',
+                            'test'
                         ],
                         'roles' => ['?'],
                     ],
@@ -59,18 +53,15 @@ class AccountController extends WebController
         if (!app()->user->isGuest) $this->goHome();
 
         $model = new LoginForm();
-        $event = $this->getFormEvent($model);
 
         $this->performAjaxValidation($model);
 
-        $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
 
         if (
             $model->load(app()->request->post())
         &&  $model->login()
         ) {
 
-            $this->trigger(self::EVENT_AFTER_LOGIN, $event);
             return $this->goBack();
         }
 
@@ -83,13 +74,7 @@ class AccountController extends WebController
 
     public function actionLogout()
     {
-        $event = $this->getUserEvent(user()->identity);
-
-        $this->trigger(self::EVENT_BEFORE_LOGOUT, $event);
-
         user()->logout();
-
-        $this->trigger(self::EVENT_AFTER_LOGOUT, $event);
 
         return $this->goHome();
     }
@@ -104,10 +89,6 @@ class AccountController extends WebController
         $model = new RegistrationForm();
         $profile = new ProfileRegistrationForm();
 
-        $event = $this->getFormEvent($model);
-
-        $this->trigger(self::EVENT_BEFORE_REGISTRATION, $event);
-
         $this->performAjaxValidationMultiply([$profile, $model]);
 
         if ($model->load(app()->request->post())
@@ -119,11 +100,10 @@ class AccountController extends WebController
              && app()->userManager->register($model, $profile)
             ) {
 
-                $this->trigger(self::EVENT_AFTER_REGISTRATION, $event);
-            }
+                user()->setSuccessFlash('Учетная запись создана! Проверьте вашу электронную почту');
 
-            printr($model);
-            printr($profile, 1);
+                $this->redirect(Url::to(['login']));
+            }
         }
 
         return $this->render('registration', [
@@ -131,5 +111,34 @@ class AccountController extends WebController
             'profile' => $profile,
             'module' => $this->module,
         ]);
+    }
+
+
+    public function actionTest() {
+
+        $user = User::findOne(['id'=>1]);
+
+        $tokenStorage = new TokenStorage();
+
+
+        $tokenStorage->init();
+
+        $tokenStorage->createAccountActivationToken($user);
+
+        printr($tokenStorage, 1);
+
+        /*
+        $mailer = app()->mailer;
+        $mailer->viewPath = '@app/modules/user/views/mail';
+
+        $mailer->getView()->theme = app()->view->theme;
+        $mailer->getView()->title = 'Регистрация на сайте "'.app()->name.'"';
+
+        return $mailer->compose(['html'=>'welcome','text'=>'text/welcome'], ['fullName'=>'Горшков П.В.', 'login'=>'user_login', 'email'=>'test@test.loc'])
+            ->setTo('test@test.loc')
+            ->setFrom(app()->params['email'])
+            ->setSubject($mailer->getView()->title)
+            ->send();
+        */
     }
 }

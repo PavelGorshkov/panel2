@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\user\helpers;
 
-use app\modules\core\helpers\StatusHelper;
+use app\modules\core\helpers\ListHelper;
 
 /**
  * Класс helper для работы со списком статусов подтверждения email пользователя
@@ -9,7 +9,7 @@ use app\modules\core\helpers\StatusHelper;
  * Class EmailConfirmHelper
  * @package app\modules\user\helpers
  */
-class EmailConfirmHelper extends StatusHelper {
+class EmailConfirmStatusHelper extends ListHelper {
 
     const EMAIL_CONFIRM_NO = 0;
 
@@ -20,7 +20,7 @@ class EmailConfirmHelper extends StatusHelper {
     const EMPTY_STATUS = '*неизвестно*';
 
 
-    public static function getStatusList()
+    public static function getList()
     {
         return [
             self::EMAIL_CONFIRM_YES => 'Да',
@@ -29,7 +29,7 @@ class EmailConfirmHelper extends StatusHelper {
     }
 
 
-    public static function getStatusHtmlList()
+    public static function getHtmlList()
     {
         return [
             self::EMAIL_CONFIRM_YES => '<span class="label label-success">Подтвержден</span>',

@@ -55,8 +55,6 @@ class WebUser extends \yii\web\User
      */
     public function setFlash($key,$value) {
 
-        if ($this->isGuest) return;
-
         app()->session->set($key, $value);
     }
 
@@ -68,8 +66,6 @@ class WebUser extends \yii\web\User
      * @return bool
      */
     public function hasFlash($key) {
-
-        if ($this->isGuest) return false;
 
         if (app()->request->isAjax) return false;
 
@@ -87,8 +83,6 @@ class WebUser extends \yii\web\User
      * @return string|null
      */
     public function getFlash($key, $defaultValue=null, $delete=true) {
-
-        if ($this->isGuest) return null;
 
         if (app()->request->isAjax) return null;
 

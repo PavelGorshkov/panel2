@@ -1,8 +1,6 @@
 <?php
-
 namespace app\modules\developer;
 
-use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\Module as ParentModule;
 use app\modules\developer\auth\CreateAuthTask;
 use app\modules\developer\auth\MigrationTask;
@@ -112,6 +110,4 @@ class Module extends ParentModule
             ]
         ];
     }
-
-
 }

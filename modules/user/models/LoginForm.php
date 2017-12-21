@@ -81,7 +81,11 @@ class LoginForm extends Model {
 
         if ($this->validate()) {
 
-            $this->user->updateAttributes(['visited_at'=> time()]);
+            $this->user->updateAttributes(
+                [
+                    'visited_at'=> time(),
+                    'user_ip' => app()->request->getUserIP()
+                ]);
 
             return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
         }

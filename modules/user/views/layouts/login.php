@@ -2,6 +2,7 @@
 /* @var $this \app\modules\core\components\View */
 /* @var $content string */
 
+use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
 
 $this->beginContent('@app/modules/core/views/layouts/login.php');
@@ -13,6 +14,7 @@ $this->beginContent('@app/modules/core/views/layouts/login.php');
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
+            <?=FlashMessages::widget()?>
             <?= $content;?>
         </div>
         <!-- /.login-box-body -->

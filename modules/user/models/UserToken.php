@@ -2,7 +2,10 @@
 
 namespace app\modules\user\models;
 
+use app\modules\core\components\behaviors\ModelWebUserBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%user_token}}".
@@ -19,10 +22,26 @@ use Yii;
  * @property integer $created_by
  * @property integer $updated_by
  *
- * @property UserUser $user
+ * @property User $user
  */
 class UserToken extends \yii\db\ActiveRecord
 {
+    public function behaviors() {
+
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
+            [
+                'class' => ModelWebUserBehavior::className(),
+                'value' => user()->id?user()->id:0,
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -40,8 +59,8 @@ class UserToken extends \yii\db\ActiveRecord
             [['user_id', 'expire'], 'required'],
             [['user_id', 'type', 'status', 'ip', 'created_by', 'updated_by'], 'integer'],
             [['expire', 'created_at', 'updated_at'], 'safe'],
-            [['token'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => UserUser::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['token'], 'string', 'max' => 32],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -52,12 +71,12 @@ class UserToken extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'token' => 'Token',
-            'type' => 'Type',
-            'status' => 'Status',
-            'ip' => 'Ip',
-            'expire' => 'Expire',
+            'user_id' => 'Пользователь',
+            'token' => 'Токен',
+            'type' => 'Тип',
+            'status' => 'Статус',
+            'ip' => 'IP адрес',
+            'expire' => 'Истекает',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -70,7 +89,7 @@ class UserToken extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(UserUser::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

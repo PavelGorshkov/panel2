@@ -63,6 +63,7 @@ class m170122_214112_create_user_tables extends Migration {
             'email_confirm'=> 1,
             'hash'=> Password::hash('ifynmtylhfyfn'),
             'access_level'=> UserAccessLevel::LEVEL_ADMIN,
+            'auth_key'=> app()->security->generateRandomKey(),
         ]);
 
         $this->insert($table, [

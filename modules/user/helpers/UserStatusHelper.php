@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\user\helpers;
 
-use app\modules\core\helpers\StatusHelper;
+use app\modules\core\helpers\ListHelper;
 
 /**
  * Класс helper для работы со статусами активности пользователя
@@ -9,7 +9,7 @@ use app\modules\core\helpers\StatusHelper;
  * Class UserStatusHelper
  * @package app\modules\user\helpers
  */
-class UserStatusHelper extends StatusHelper {
+class UserStatusHelper extends ListHelper {
 
     const STATUS_BLOCK = 0;
 
@@ -18,7 +18,7 @@ class UserStatusHelper extends StatusHelper {
     const STATUS_NOT_ACTIVE = 2;
 
 
-    public static function getStatusList()
+    public static function getList()
     {
         return [
             self::STATUS_ACTIVE => 'Активирован',
@@ -28,7 +28,7 @@ class UserStatusHelper extends StatusHelper {
     }
 
 
-    public static function getStatusHtmlList()
+    public static function getHtmlList()
     {
         return [
             self::STATUS_ACTIVE => '<span class="label label-success">Активирован</span>',

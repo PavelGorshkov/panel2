@@ -25,5 +25,4 @@ trait EventTrait {
 
         return Yii::createObject(['class' => UserEvent::className(), 'user'=> $user]);
     }
-
 }

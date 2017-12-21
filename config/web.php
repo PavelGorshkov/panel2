@@ -32,48 +32,27 @@ $config = [
 
     'components' => [
 
-        'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
-        ],
         'authManager' => [
             'class' => '\app\modules\user\components\PhpManager',
             'defaultRoles' => ['guest'],
         ],
+
         'buildAuthManager' => [
             'class' => '\app\modules\user\components\BuildAuthManager',
         ],
-        'migrator'=>[
-            'class'=>'\app\modules\core\components\Migrator',
-        ],
-        'moduleManager'=>[
-            'class'=>'\app\modules\core\components\ModuleManager',
-        ],
-        'menuManager'=>[
-            'class'=>'\app\modules\core\components\MenuManager',
-        ],
+
         'cache' => [
             'class' => '\yii\caching\FileCache',
             //'class' => 'yii\caching\MemCache',
         ],
-        'user' => [
-            'class'=>'\app\modules\user\components\WebUser',
-            'identityClass' => '\app\modules\user\models\User',
-            'enableAutoLogin' => true,
-            'loginUrl' => ['/user/account/login'],
 
-        ],
+        'db' => $db,
+
         'errorHandler' => [
             'errorAction' => 'site/error',
             'errorView'=>'@app/modules/core/views/errorHandler/error.php'
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
-        ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -83,7 +62,31 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
+
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
+
+        'menuManager'=>[
+            'class'=>'\app\modules\core\components\MenuManager',
+        ],
+
+        'migrator'=>[
+            'class'=>'\app\modules\core\components\Migrator',
+        ],
+
+        'moduleManager'=>[
+            'class'=>'\app\modules\core\components\ModuleManager',
+        ],
+
+        'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
+        ],
 
         'thumbNailer'=> [
             'class'=>'\app\modules\core\components\Thumbnailer',
@@ -103,6 +106,13 @@ $config = [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
+        ],
+
+        'user' => [
+            'class'=>'\app\modules\user\components\WebUser',
+            'identityClass' => '\app\modules\user\models\User',
+            'enableAutoLogin' => true,
+            'loginUrl' => ['/user/account/login'],
         ],
 
         'userManager'=> [

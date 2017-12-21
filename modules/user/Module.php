@@ -35,6 +35,8 @@ class Module extends ParentModule
 
     public $defaultAvatar = 'default.png';
 
+    public $emailAccountVerification = 1;
+
     public $avatarDirs = '@app/web/uploads/images/avatars/';
 
     public $registrationDisabled = 0;
@@ -45,7 +47,7 @@ class Module extends ParentModule
 
     public $generateUserName = 0;
 
-    public $showCaptcha = 1;
+    public $showCaptcha = 0;
 
     public $phonePattern = '/^((\+?7)(-?\d{3})-?)?(\d{3})(-?\d{4})$/';
 
@@ -58,6 +60,8 @@ class Module extends ParentModule
     public $enableUnconfirmedLogin = false;
 
     public $sessionLifeTimeDate = 1;
+
+    public $expireTokenActivationLifeHours = 6;
 
     /** @var int Cost параметр, используемый алгоритмом хеширования Blowfish. */
     public $cost = 10;
