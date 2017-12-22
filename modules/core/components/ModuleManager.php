@@ -276,27 +276,6 @@ class ModuleManager extends Component {
         return $this->_all_modules;
     }
 
-    /**
-     * Получение списка всех модулей приложения
-     *
-     * @return array
-     */
-    public function getListAllModules() {
-
-        return array_keys($this->getAllModules());
-    }
-
-
-    /**
-     * Получение списка всех активных модулей приложения
-     *
-     * @return array
-     */
-    public function getListEnabledModules() {
-
-        return array_keys($this->getEnabledModules());
-    }
-
 
     /**
      * Получение массива отключенных модулей приложения
@@ -324,11 +303,25 @@ class ModuleManager extends Component {
     }
 
 
-    public function init() {
+    /**
+     * Получение списка всех модулей приложения
+     *
+     * @return array
+     */
+    public function getListAllModules() {
 
-        cache()->flush();
+        return array_keys($this->getAllModules());
+    }
 
-        parent::init();
+
+    /**
+     * Получение списка всех активных модулей приложения
+     *
+     * @return array
+     */
+    public function getListEnabledModules() {
+
+        return array_keys($this->getEnabledModules());
     }
 
 
@@ -355,10 +348,36 @@ class ModuleManager extends Component {
 
                     $local_menu = $moduleApp->$method();
                     if (count($local_menu)) $menu[$type] = ArrayHelper::merge($menu[$type], $local_menu);
-                 }
+                }
             }
         }
 
         return $menu;
+    }
+
+
+    /**
+     * Существует ли модуль
+     *
+     * @param string $module
+     *
+     * @return bool
+     */
+    public function isExistsModule($module) {
+
+        return in_array($module, $this->getListAllModules());
+    }
+
+
+    /**
+     * Подключен ли модуль
+     *
+     * @param string $module
+     *
+     * @return bool
+     */
+    public function isInstallModule($module) {
+
+        return in_array($module, $this->getListEnabledModules());
     }
 }

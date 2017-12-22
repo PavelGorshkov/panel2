@@ -41,11 +41,18 @@ class RedactorController extends WebController {
 
         foreach ($this->actionMenu as $url => $label) {
 
+            if ($url !== ltrim($url, '@')) {
+
+                $url = ltrim($url, '@');
+                $access = false;
+            } else
+                $access = true;
+
             $menu[] = [
                 'label'=>$label,
                 'url'=>[$url],
                 'active'=>RouterUrlHelper::isActiveRoute($url),
-                'visible'=>app()->moduleManager->can($this->module->id, RouterUrlHelper::to($url)),
+                'visible'=>$access?app()->moduleManager->can($this->module->id, RouterUrlHelper::to($url)):true,
             ];
         }
 

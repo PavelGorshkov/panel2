@@ -17,12 +17,12 @@ class InfoProfileWidget extends Widget {
 
         $profile = user()->profile;
 
-        $avatar = $user->avatar?$user->avatar:$this->module->defaultAvatar;
+        $avatar = $profile->avatar?$user->avatar:$this->module->defaultAvatar;
 
         return $this->render(
             $this->view,
             [
-                'icon'=>app()->thumbnailer->thumbnail($this->module->avatarDirs. $avatar,
+                'icon'=>app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
                     $this->module->avatarDirs,
                     128,
                     128

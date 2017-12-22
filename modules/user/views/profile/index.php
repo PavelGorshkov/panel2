@@ -1,9 +1,30 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>profile/index</h1>
+    /* @var $this \app\modules\core\components\View */
+    /* @var $admin array */
+    /* @var $main array */
+    /* @var $redactor array */
+    /* @var $dictionary array */
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+    use app\modules\core\widgets\ShortCutMenuWidget;
+?>
+    <div class="row">
+        <div class="col-sm-12">
+            <?=ShortCutMenuWidget::widget(['menu'=>$admin, 'title'=>'Меню администратора'])?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?=ShortCutMenuWidget::widget(['menu'=>$main, 'title'=>'Основное меню'])?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?=ShortCutMenuWidget::widget(['menu'=>$redactor, 'title'=>'Меню редактора'])?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?=ShortCutMenuWidget::widget(['menu'=>$dictionary, 'title'=>'Справочники'])?>
+        </div>
+    </div>
+<?php

@@ -8,9 +8,9 @@ use yii\filters\AccessControl;
 class ProfileController extends RedactorController
 {
     protected $actionMenu = [
-        'index'=>'Панель управления',
-        'view'=>'Профиль',
-        'password'=>'Редактирование профиля',
+        '@index'=>'Панель управления',
+        '@view'=>'Профиль',
+        '@password'=>'Редактирование профиля',
     ];
 
     public $layout = '@app/modules/user/views/layouts/profile';
@@ -41,7 +41,12 @@ class ProfileController extends RedactorController
 
     public function actionIndex() {
 
-        return $this->render('index');
+        return $this->render('index', [
+            'admin'=>app()->menuManager->admin,
+            'main'=>app()->menuManager->main,
+            'redactor'=>app()->menuManager->redactor,
+            'dictionary'=>app()->moduleManager->isInstallModule('dictionary') ? app()->dictionary->getMenu():[],
+        ]);
     }
 
 
