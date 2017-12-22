@@ -25,11 +25,11 @@
 
 
     /**
-     * @return mixed|\app\modules\user\components\WebUser
+     * @return \app\modules\user\components\WebUser
      */
     function user() {
 
-        return Yii::$app->user;
+        return app()->user;
     }
 
 

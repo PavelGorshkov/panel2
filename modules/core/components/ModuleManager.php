@@ -138,10 +138,13 @@ class ModuleManager extends Component {
 
                 if (!$class->implementsInterface('\app\modules\core\components\ModuleParamsInterface')) continue;
 
+                /**@var Module $module*/
+                $module = app()->getModule($key);
+
                 $data = ArrayHelper::merge($allModules[$key],
                     [
                         'priority' => $allModules[$key]['is_system']?($counter++):ModulePriority::model()->$key,
-                        'paramsCounter' => count(app()->getModule($key)->getParamLabels()),
+                        'paramsCounter' => count($module->getParamLabels()),
                     ]);
 
                 $modules[$key] = $data;

@@ -195,6 +195,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
+    public function isUFAccessLevel() {
+
+        return $this->access_level >= 100;
+    }
+
+
     /**
      * Проверка заблокированности пользователя
      *

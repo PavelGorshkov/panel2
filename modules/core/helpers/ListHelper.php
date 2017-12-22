@@ -26,11 +26,19 @@ abstract class ListHelper {
         return $asHtml?self::EMPTY_STATUS_HTML:self::EMPTY_STATUS;
     }
 
+    /**
+     * @return array
+     * @throws HttpException
+     */
     public static function getList() {
 
         throw new HttpException(500, sprintf('Реализуйте метод "getStatusList" в классе "%s"', get_called_class()));
     }
 
+    /**
+     * @return array
+     * @throws HttpException
+     */
     public static function getHtmlList() {
 
         throw new HttpException(500, sprintf('Реализуйте метод "getStatusHtmlList" в классе "%s"', get_called_class()));

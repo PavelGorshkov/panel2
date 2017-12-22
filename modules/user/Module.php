@@ -8,31 +8,17 @@ use app\modules\user\components\Roles;
 use Yii;
 
 /**
- * core module definition class
+ * Class Module
+ * @package app\modules\user
+ *
+ * @property-read string $loginPage /user/account/login
+ * @property-read string $registerPage /user/account/registration
+ * @property-read string $profilePage user/profile/index
+ * @property-read string $logoutPage /user/account/logout
+ * @property-read string $recoveryPage /user/account/recovery
  */
 class Module extends ParentModule
 {
-    /**
-     * @var string
-     */
-    public $accountActivationSuccess = '/user/account/login';
-
-    /**
-     * @var string страницм регистрации
-     */
-    public $accountActivationFailure = '/user/account/registration';
-
-    /**
-     * @var string Страница авторизации
-     */
-    public $loginPage = '/user/account/login';
-
-    public $loginSuccess = 'user/profile/index';
-
-    public $logoutPage = '/user/account/logout';
-
-    public $registrationSuccess = '/user/account/login';
-
     public $defaultAvatar = 'default.png';
 
     public $emailAccountVerification = 1;
@@ -59,9 +45,15 @@ class Module extends ParentModule
     /** @var bool Разрешить ли вход в систему без подтверждения. */
     public $enableUnconfirmedLogin = false;
 
+    public $autoRecoveryPassword = 0;
+
     public $sessionLifeTimeDate = 1;
 
     public $expireTokenActivationLifeHours = 6;
+
+    public $expireTokenPasswordLifeHours = 10;
+
+
 
     /** @var int Cost параметр, используемый алгоритмом хеширования Blowfish. */
     public $cost = 10;
@@ -152,4 +144,34 @@ class Module extends ParentModule
         ];
     }
 
+
+
+    public function getLoginPage() {
+
+        return  '/user/account/login';
+    }
+
+
+    public function getRegisterPage() {
+
+        return  '/user/account/registration';
+    }
+
+
+    public function getProfilePage() {
+
+        return  'user/profile/index';
+    }
+
+
+    public function getLogoutPage() {
+
+        return  '/user/account/logout';
+    }
+
+
+    public function getRecoveryPage() {
+
+        return  '/user/account/recovery';
+    }
 }

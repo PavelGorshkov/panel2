@@ -22,6 +22,19 @@ class WebUser extends \yii\web\User
 
     const ERROR_MESSAGE = 'error';
 
+    protected $_access = null;
+
+    /**
+     * @var UserProfile
+     */
+    protected $_profile = null;
+
+    /**
+     * @var User
+     */
+    protected $_info = null;
+
+
     /**
      * @param string $permissionName
      * @param array $params
@@ -141,7 +154,9 @@ class WebUser extends \yii\web\User
      */
     public function getProfile() {
 
-        return $this->identity->userProfile;
+        if ($this->_profile === null) $this->_profile = $this->identity->userProfile;
+
+        return $this->_profile;
     }
 
 
@@ -151,9 +166,10 @@ class WebUser extends \yii\web\User
      */
     public function getInfo() {
 
-        return $this->identity;
-    }
+        if ($this->_info === null) $this->_info = $this->identity;
 
+        return $this->_info;
+    }
 
     /**
      * Получение роли авторизованного пользователя
@@ -169,6 +185,19 @@ class WebUser extends \yii\web\User
             case User::ACCESS_LEVEL_OBSERVER: return Roles::OBSERVER;
 
             default: return null;
-        };
+        }
+    }
+
+
+    public function getAccessData() {
+
+        if ($this->isGuest) return [];
+
+        if ($this->_access === null) {
+
+            $this->_access = app()->userManager->getAccessForUser($this->identity);
+        }
+
+        return $this->_access;
     }
 }

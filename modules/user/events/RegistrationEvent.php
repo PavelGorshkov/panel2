@@ -8,15 +8,12 @@
 
 namespace app\modules\user\events;
 
-use app\modules\user\models\User;
 use app\modules\user\models\UserToken;
-use yii\base\Event;
-use yii\base\Model;
 use app\modules\user\models\RegistrationForm;
 use app\modules\user\models\ProfileRegistrationForm;
 
 
-class RegistrationEvent extends Event {
+class RegistrationEvent extends UserEvent {
 
     /**
      * @var RegistrationForm
@@ -27,11 +24,6 @@ class RegistrationEvent extends Event {
      * @var ProfileRegistrationForm
      */
     private $_profile_registration_form;
-
-    /**
-     * @var User
-     */
-    private $_user;
 
     /**
      * @var UserToken
@@ -73,22 +65,6 @@ class RegistrationEvent extends Event {
         return $this->_profile_registration_form;
     }
 
-
-    /**
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->_user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user)
-    {
-        $this->_user = $user;
-    }
 
     /**
      * @return UserToken

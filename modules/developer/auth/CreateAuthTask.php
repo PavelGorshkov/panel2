@@ -5,7 +5,6 @@ use app\modules\user\components\RBACItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
-
 /**
  * Задача управление задачами RBAC
  *

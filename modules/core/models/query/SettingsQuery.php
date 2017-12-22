@@ -35,7 +35,7 @@ class SettingsQuery extends ActiveQuery
     public function findAllModuleParam($module) {
 
         return
-            $this->addWhere(
+            $this->andWhere(
                 'module = :module',
                 [':module'=>$module]
             );

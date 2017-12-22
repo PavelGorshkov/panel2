@@ -3,6 +3,7 @@ namespace app\modules\core\components;
 
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
+use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -15,13 +16,13 @@ use yii\widgets\ActiveForm;
  * @property View $view
  * $property Module $module
  */
-class WebController extends \yii\web\Controller
+class WebController extends Controller
 {
 
     /**
      * Установить заголовок 1 уровня
      *
-     * @param ыекштп $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -72,6 +73,7 @@ class WebController extends \yii\web\Controller
         $load = false;
         $post = app()->request->post();
 
+        /* @var Model $model */
         foreach ($models as &$model) {
 
             $loadModel = $model->load($post);

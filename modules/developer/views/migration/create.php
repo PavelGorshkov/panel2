@@ -8,6 +8,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Button;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->setBreadcrumbs([
     [
@@ -78,6 +79,11 @@ $form->errorSummary($model);
                 'class' => 'btn btn-info btn-sm',
             ]
         ); ?>
+        <?php
+            $url = ['index'];
+            if ($model->module) $url = ArrayHelper::merge($url, ['module'=>$model->module]);
+        ?>
+        <?=Html::a('Вернуться', Url::to($url), ['class'=>'btn btn-default btn-sm'])?>
     </div>
 </div>
 <?php

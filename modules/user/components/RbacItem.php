@@ -3,19 +3,24 @@ namespace app\modules\user\components;
 
 use yii\web\HttpException;
 
+/**
+ * Class RBACItem
+ * @package app\modules\user\components
+ *
+ */
 abstract class RBACItem implements  RBACItemInterface {
 
     const TASK = '';
 
     public $types = null;
 
-    public function getRuleNames() {}
+    public function getRuleNames() {return null;}
 
     public function getTitle($item) {
 
         $list = $this->titleList();
 
-        return iisset($list[$item])?$list[$item]:'';
+        return isset($list[$item])?$list[$item]:'';
     }
 
     public static function getDescription($role) {

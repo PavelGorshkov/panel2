@@ -3,6 +3,7 @@ namespace app\modules\core\components\actions;
 
 
 use Yii;
+use yii\base\Exception;
 
 class ErrorAction extends \yii\web\ErrorAction {
 
@@ -16,6 +17,7 @@ class ErrorAction extends \yii\web\ErrorAction {
     protected function getExceptionName()
     {
         if ($this->exception instanceof Exception) {
+
             $name = $this->exception->getName();
         } else {
             $name = $this->defaultName;

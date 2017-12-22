@@ -8,7 +8,6 @@ use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\HtmlPurifier;
-use yii\helpers\Url;
 
 class ModuleController extends RedactorController{
 

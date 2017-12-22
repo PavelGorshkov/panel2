@@ -2,14 +2,16 @@
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
-use app\modules\user\components\TokenStorage;
+use app\modules\user\helpers\UserTokenTypeHelper;
 use app\modules\user\models\LoginForm;
 use app\modules\user\models\ProfileRegistrationForm;
-use app\modules\user\models\User;
+use app\modules\user\models\RecoveryForm;
+use app\modules\user\models\RecoveryPasswordForm;
 use app\modules\user\Module;
 use app\modules\user\models\RegistrationForm;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class AccountController
@@ -33,6 +35,9 @@ class AccountController extends WebController
                             'login',
                             'auth',
                             'registration',
+                            'activation',
+                            'recovery',
+                            'recovery-password',
                             'test'
                         ],
                         'roles' => ['?'],
@@ -82,7 +87,7 @@ class AccountController extends WebController
 
     public function actionRegistration() {
 
-        if ($this->module->recoveryDisabled) {
+        if ($this->module->registrationDisabled) {
             throw new NotFoundHttpException();
         }
 
@@ -97,12 +102,13 @@ class AccountController extends WebController
             if (
                 $model->validate()
              && $profile->validate()
-             && app()->userManager->register($model, $profile)
+             && app()->userManager->registerForm($model, $profile)
             ) {
 
                 user()->setSuccessFlash('Учетная запись создана! Проверьте вашу электронную почту');
 
-                $this->redirect(Url::to(['login']));
+                $this->redirect(Url::to([$this->module->loginPage]));
+                app()->end();
             }
         }
 
@@ -114,31 +120,101 @@ class AccountController extends WebController
     }
 
 
+    public function actionActivation($token) {
+
+        if (app()->userManager->verifyEmail($token, UserTokenTypeHelper::ACTIVATE)) {
+
+            app()->user->setSuccessFlash('Вы успешно активировали учетную запись!');
+        } else {
+
+            app()->user->setErrorFlash('Ошибка активации! Возможно указан неверный ключ активации!');
+        }
+
+        $this->redirect(
+            app()->user->isGuest
+                ?Url::to(['/user/profile/index'])
+                :Url::to($this->module->loginPage)
+        );
+    }
+
+
+    public function actionRecovery() {
+
+        if ($this->module->recoveryDisabled) {
+            throw new NotFoundHttpException();
+        }
+
+        $model = new RecoveryForm();
+
+        $this->performAjaxValidation($model);
+
+        if ($model->load(app()->request->post()) && $model->validate()) {
+
+            if (app()->userManager->recoverySendMail($model->getUser())) {
+
+                user()->setSuccessFlash('На указанный email отправлено письмо с инструкцией по восстановлению пароля!');
+            } else
+            {
+
+                user()->setErrorFlash('При восстановлении пароля произошла ошибка!');
+            }
+
+            $this->redirect(Url::to($this->module->loginPage));
+            app()->end();
+        }
+
+        return $this->render($this->action->id, ['model'=>$model]);
+    }
+
+
+    public function actionRecoveryPassword($token) {
+
+        if ($this->module->recoveryDisabled) throw new NotFoundHttpException();
+
+        list($tokenModel, $user) = app()->userManager->getTokenUserList($token, UserTokenTypeHelper::CHANGE_PASSWORD);
+
+        if ($tokenModel === null || $user === null) throw new NotFoundHttpException();
+
+        if ($this->module->autoRecoveryPassword === Module::CHOICE_YES) {
+
+            if (app()->userManager->generatePassword($user, $tokenModel)) {
+
+                user()->setSuccessFlash( 'Новый пароль отправлен Вам на email!');
+                $this->redirect(Url::to($this->module->loginPage));
+
+            } else {
+
+                user()->setErrorFlash('Ошибка при смене пароля!');
+                $this->redirect(Url::to($this->module->recoveryPage));
+            }
+
+            app()->end();
+        }
+
+        $model = new RecoveryPasswordForm();
+
+        $this->performAjaxValidation($model);
+
+        if ($model->load(app()->request->post()) && $model->validate()) {
+
+            if (app()->userManager->changePassword($user, $tokenModel, $model->password)) {
+
+                user()->setSuccessFlash('Ваш пароль успешно изменен!');
+            } else
+            {
+                user()->setErrorFlash('При изменении пароля произошла ошибка!');
+            }
+
+            $this->redirect(Url::to($this->module->loginPage));
+            app()->end();
+        }
+
+        return $this->render($this->action->id, ['model'=>$model, 'module'=>$this->module]);
+    }
+
+
     public function actionTest() {
 
-        $user = User::findOne(['id'=>1]);
 
-        $tokenStorage = new TokenStorage();
-
-
-        $tokenStorage->init();
-
-        $tokenStorage->createAccountActivationToken($user);
-
-        printr($tokenStorage, 1);
-
-        /*
-        $mailer = app()->mailer;
-        $mailer->viewPath = '@app/modules/user/views/mail';
-
-        $mailer->getView()->theme = app()->view->theme;
-        $mailer->getView()->title = 'Регистрация на сайте "'.app()->name.'"';
-
-        return $mailer->compose(['html'=>'welcome','text'=>'text/welcome'], ['fullName'=>'Горшков П.В.', 'login'=>'user_login', 'email'=>'test@test.loc'])
-            ->setTo('test@test.loc')
-            ->setFrom(app()->params['email'])
-            ->setSubject($mailer->getView()->title)
-            ->send();
-        */
     }
 }

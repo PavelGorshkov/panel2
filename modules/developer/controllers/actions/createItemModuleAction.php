@@ -27,7 +27,7 @@ class createItemModuleAction extends WebAction  {
 
         if (!($model instanceof GenerateFileModuleInterface)) {
 
-            throw new ServerErrorHttpException('Модель "'.$model.'" должна реализовать интерфейс "app\modules\developer\models\GenerateFileModuleInterface"');
+            throw new ServerErrorHttpException('Модель "'.$this->model.'" должна реализовать интерфейс "app\modules\developer\models\GenerateFileModuleInterface"');
         }
 
         if ($module) {

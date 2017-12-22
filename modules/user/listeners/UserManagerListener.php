@@ -1,7 +1,11 @@
 <?php
 namespace app\modules\user\listeners;
 
+use app\modules\user\events\GeneratePasswordEvent;
+use app\modules\user\events\RecoveryEmailEvent;
 use app\modules\user\events\RegistrationEvent;
+use app\modules\user\events\UserEvent;
+use app\modules\user\Module;
 use DateTime;
 
 class UserManagerListener {
@@ -28,8 +32,12 @@ class UserManagerListener {
         $registration = $event->getRegistrationForm();
         $token = $event->getToken();
 
+        /* @var Module $module */
+        $module = app()->getModule('user');
+
+
         $expire = new DateTime();
-        $interval = new \DateInterval('PT'.(app()->getModule('user')->expireTokenActivationLifeHours*3600).'S');
+        $interval = new \DateInterval('PT'.($module->expireTokenActivationLifeHours*3600).'S');
         $date = $expire->add($interval)->format('d.m.Y H:i:s');
 
         self::sendMessage(
@@ -47,10 +55,64 @@ class UserManagerListener {
 
     }
 
-    public static function onUserFailureRegistration(RegistrationEvent $event) {
+    public static function onUserFailureRegistration(RegistrationEvent $event) {}
 
 
+    public static function onUserRecoveryEmail(RecoveryEmailEvent $event) {
 
+        $user = $event->getUser();
+        $token = $event->getToken();
+
+        $expire = new DateTime();
+        $interval = new \DateInterval('PT'.(app()->getModule('user')->expireTokenPasswordLifeHours*3600).'S');
+        $date = $expire->add($interval)->format('d.m.Y H:i:s');
+
+        self::sendMessage(
+            $user->email,
+            'Восстановление пароля на сайте "'.app()->name.'"',
+            'recovery',
+            [
+                'email'=>$user->email,
+                'fullName'=>$user->userProfile->full_name,
+                'token'=>$token,
+                'expire'=>$date,
+            ]
+        );
+    }
+
+
+    public static function onUserGeneratePassword(GeneratePasswordEvent $event) {
+
+        $user = $event->getUser();
+
+        $password = $event->getPassword();
+
+        self::sendMessage(
+            $user->email,
+            'Восстановление пароля на сайте "'.app()->name.'"',
+            'sendPassword',
+            [
+                'email'=>$user->email,
+                'fullName'=>$user->userProfile->full_name,
+                'password'=>$password,
+            ]
+        );
+    }
+
+
+    public static function onUserChangePassword(UserEvent $event) {
+
+        $user = $event->getUser();
+
+        self::sendMessage(
+            $user->email,
+            'Восстановление пароля на сайте "'.app()->name.'"',
+            'changePassword',
+            [
+                'email'=>$user->email,
+                'fullName'=>$user->userProfile->full_name,
+            ]
+        );
     }
 
 
@@ -64,7 +126,7 @@ class UserManagerListener {
         $mailer->getView()->title = $subject;
 
         return $mailer->compose(['html'=>$view,'text'=>'text/'.$view], $params)
-            ->setTo($params['email'])
+            ->setTo($to)
             ->setFrom(app()->params['email'])
             ->setSubject($mailer->getView()->title)
             ->send();

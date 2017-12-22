@@ -65,7 +65,7 @@ class MenuManager extends Component {
 
     public function setMenu() {
 
-        $this->_menu = app()->cache->get('cacheMenu');
+        $this->_menu = app()->cache->get('cacheMenu_'.user()->id);
 
         if ($this->_menu === false ) {
 
@@ -73,10 +73,19 @@ class MenuManager extends Component {
         }
     }
 
+    /**
+     * @param $type
+     * @return string
+     */
+    public function getMenuConfigFile($type) {
+
+        return Yii::getAlias('@app/config/menu/'.$type.'.php');
+    }
+
 
     public function clearCache() {
 
-        app()->cache->delete('cacheMenu');
+        app()->cache->flush();
     }
 
 
@@ -92,8 +101,8 @@ class MenuManager extends Component {
 
                     foreach ($types as $key) {
 
-                        $file = Yii::getAlias('@app/config/menu'.$key.'.php');
-                        if (file_exists($file)) $menu[$key] = include($file);
+                        $file = $this->getMenuConfigFile($key);
+                        if (file_exists($file)) $menu[$key] = include $file;
                     }
 
                     break;
@@ -119,7 +128,7 @@ class MenuManager extends Component {
 
         $this->_menu = $menu;
 
-        app()->cache->set('cacheMenu', $menu, 0);
+        app()->cache->set('cacheMenu_'.user()->id, $menu, 0);
     }
 
 
@@ -156,8 +165,9 @@ class MenuManager extends Component {
     }
 
 
-    public function getDBMenu($key) {
+    public function getDBMenu($key = null) {
 
+        if ($key) return [];
         /*
         if (app()->moduleManager->has('menu')) {
 
@@ -166,6 +176,7 @@ class MenuManager extends Component {
 
             return [];
         */
+        return [];
     }
 
 

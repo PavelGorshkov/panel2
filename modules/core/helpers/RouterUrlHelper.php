@@ -104,8 +104,6 @@ class RouterUrlHelper {
 
                 return null;
         }
-
-        return false;
     }
 
 

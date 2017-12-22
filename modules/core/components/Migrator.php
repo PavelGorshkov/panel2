@@ -5,7 +5,6 @@ use Yii;
 use yii\base\Component;
 use yii\base\ErrorException;
 use yii\base\Exception;
-use yii\db\Migration;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
@@ -96,7 +95,7 @@ class Migrator extends Component{
         $migration = new Migration();
 
         $migration->createTable(
-            $this->table,
+            $this->migrationTable,
             [
                 'id'=>$migration->primaryKey(),
                 'module'=>$migration->string()->notNull(),
@@ -108,7 +107,7 @@ class Migrator extends Component{
 
         $migration->createIndex(
             'ix_migrations_module',
-            $this->table,
+            $this->migrationTable,
             "module",
             false
         );
@@ -219,9 +218,8 @@ class Migrator extends Component{
      */
     protected function instantiateMigration($module, $class)
     {
-        $file = self::getPathMigration($module).'/'.$class.'.php';
-
-        include_once $file;
+//        $file = (string) self::getPathMigration($module).DIRECTORY_SEPARATOR.$class.'.php';
+//        require_once $file;
 
         $namespace = '\\app\\modules\\'.$module.'\\install\\migrations\\';
 
@@ -247,7 +245,7 @@ class Migrator extends Component{
         $start = microtime(true);
         $migration = $this->instantiateMigration($module, $class);
 
-        if (!($migration instanceof Migration )) return;
+        if (!($migration instanceof Migration )) return true;
 
         ob_start();
         ob_implicit_flush(false);
@@ -256,7 +254,7 @@ class Migrator extends Component{
 
         Yii::trace($msg = ob_get_clean());
 
-        app()->cache->clear('getMigrationHistory');
+        app()->cache->delete('getMigrationHistory');
 
         if ($result !== false) {
 
@@ -286,30 +284,30 @@ class Migrator extends Component{
      * Применение миграции
      *
      * @param string $module
-     * @param $class
+     * @param string $className
      * @return bool
      * @throws Exception
      */
-    protected function migrateUp($module, $class)
+    protected function migrateUp($module, $className)
     {
         $start = microtime(true);
-        $migration = $this->instantiateMigration($module, $class);
+        $migration = $this->instantiateMigration($module, $className);
 
         if (!($migration instanceof Migration )) return;
 
         ob_start();
         ob_implicit_flush(false);
 
-        echo 'Применяем миграцию '.$class.'<br />';
+        echo 'Применяем миграцию '.$className.'<br />';
 
 
 
         // Вставляем запись о начале миграции
-        /* @var Migration $class */
+        /* @var Migration $className */
         (new Migration())->insert(
             $this->migrationTable,
             [
-                'version' => $class,
+                'version' => $className,
                 'module' => $module,
                 'apply_time' => 0,
             ]
@@ -326,19 +324,19 @@ class Migrator extends Component{
                 $this->migrationTable,
                 ['apply_time' => time()],
                 "version = :ver AND module = :mod",
-                [':ver' => $class, 'mod' => $module]
+                [':ver' => $className, 'mod' => $module]
             );
 
             $time = microtime(true) - $start;
 
-            Yii::trace("Миграция ".$class." применена за ".sprintf("%.3f", $time)." сек.", __METHOD__);
-            echo "Миграция ".$class." применена за ".sprintf("%.3f", $time)." сек...<br />";
+            Yii::trace("Миграция ".$className." применена за ".sprintf("%.3f", $time)." сек.", __METHOD__);
+            echo "Миграция ".$className." применена за ".sprintf("%.3f", $time)." сек...<br />";
 
         } else {
 
             $time = microtime(true) - $start;
 
-            Yii::error('Ошибка применения миграции '.$class.' ('.sprintf("%.3f", $time).' сек.)', __METHOD__);
+            Yii::error('Ошибка применения миграции '.$className.' ('.sprintf("%.3f", $time).' сек.)', __METHOD__);
 
             throw new Exception('Во время установки возникла ошибка: '.$msg);
         }

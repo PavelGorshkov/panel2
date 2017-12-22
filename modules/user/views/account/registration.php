@@ -7,10 +7,8 @@
 use app\modules\core\components\View;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Button;
-use yii\bootstrap\ButtonGroup;
 use yii\captcha\Captcha;
 use yii\helpers\Html;
-use yii\widgets\MaskedInput;
 
 $this->setTitle('Регистрация');
 
@@ -46,7 +44,9 @@ $(function() {
         return result;
     }
 
-    $('#generate_password').click(function () {
+    $('#generate_password').click(function (e) {
+
+        e.preventDefault();
 
         var pass = str_rand($(this).data('minlength'));
 
@@ -54,6 +54,8 @@ $(function() {
         $('#'+'$formName'+'-password').val(pass);
         $('#'+'$formName'+'-r_password').val(pass);
     });
+
+
 })
 }(window.jQuery)
 JS

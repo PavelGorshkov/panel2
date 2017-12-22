@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 14.12.2017
- * Time: 15:43
- */
-
 namespace app\modules\user\widgets;
 
 use app\modules\core\widgets\Widget;

@@ -3,8 +3,8 @@ namespace app\modules\user\components;
 
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\UserTokenStatusHelper;
-use app\modules\user\helpers\UserTokenType;
 use app\modules\user\helpers\UserTokenTypeHelper;
+use app\modules\user\models\query\UserTokenQuery;
 use app\modules\user\models\User;
 use app\modules\user\models\UserToken;
 
@@ -24,7 +24,7 @@ class TokenStorage extends Component {
     use ModuleTrait;
 
     /**
-     * @var UserToken
+     * @var UserTokenQuery
      */
     protected $userTokenQuery;
 
@@ -60,7 +60,7 @@ class TokenStorage extends Component {
 
         if (!$model->save()) {
 
-            throw new ServerErrorHttpException('Не удалось создать токен активации');
+            throw new ServerErrorHttpException('Не удалось создать токен');
         }
 
         return $model;
@@ -95,6 +95,32 @@ class TokenStorage extends Component {
 
 
     /**
+     * @param string $token
+     * @param int $type
+     * @param int $status
+     *
+     * @return UserToken|null
+     */
+    public function getToken($token, $type, $status = UserTokenStatusHelper::STATUS_NEW) {
+
+        return $this->userTokenQuery->where(
+            'token = :token AND type = :type AND status = :status',
+            [
+                ':token'=>$token,
+                ':type'=>(int) $type,
+                ':status'=>(int) $status
+            ]
+        )->one();
+    }
+
+
+    public function delete(UserToken $token) {
+
+        return $token->delete();
+    }
+
+
+    /**
      * @param $type
      * @param User $user
      *
@@ -109,5 +135,13 @@ class TokenStorage extends Component {
                 ':user_id' => $user->id,
             ]
         );
+    }
+
+
+    public function createPasswordToken(User $user) {
+
+        $this->deleteByTypeAndUser(UserTokenTypeHelper::CHANGE_PASSWORD, $user);
+
+        return $this->create($user, $this->module->expireTokenPasswordLifeHours*3600, UserTokenTypeHelper::CHANGE_PASSWORD);
     }
 }

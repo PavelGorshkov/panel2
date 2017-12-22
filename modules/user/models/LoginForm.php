@@ -89,5 +89,7 @@ class LoginForm extends Model {
 
             return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
         }
+
+        return false;
     }
 }

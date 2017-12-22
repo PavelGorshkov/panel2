@@ -68,7 +68,9 @@ class ConfigManager {
      */
     public function merge(array $base = [])
     {
-        $this->_base = empty($base)? require_once Yii::getAlias('@app/config/').$this->env.'.php' : $base;
+        $this->_base = empty($base)
+            ?require_once $this->getConfigEnv()
+            :$base;
 
         $config = $this->getSettings();
 
@@ -86,6 +88,15 @@ class ConfigManager {
     protected function getCacheSettings() {
 
         return $this->isCached()?$this->loadCache():null;
+    }
+
+
+    /**
+     * @return string path
+     */
+    protected function getConfigEnv() {
+
+        return Yii::getAlias('@app/config/').$this->env.'.php';
     }
 
 
@@ -277,7 +288,8 @@ class ConfigManager {
 
             // Создание кеша настроек:
             if (($error = $this->createCache($settings)) !== true) {
-                throw new Exception($error->getMessage());
+
+                throw new Exception('Не возможно создать кеш файла конфигурации');
             }
         }
 

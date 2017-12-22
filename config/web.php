@@ -16,6 +16,8 @@ $config = [
 
     'layout' => '@app/modules/core/views/layouts/admin.php',
 
+    'homeUrl' => 'user/profile/index',
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -100,6 +102,8 @@ $config = [
                 '/login' => 'user/account/login',
                 '/logout' => 'user/account/logout',
                 '/registration' => 'user/account/registration',
+                '/activation' => 'user/account/activation',
+                '/recovery-password' => 'user/account/recovery-password',
                 '/recovery' => 'user/account/recovery',
                 'gii'=>'gii',
                 'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',

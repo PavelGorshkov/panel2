@@ -17,8 +17,14 @@ class BuildAuthManager extends Component {
 
     public $pathModuleAlias = '@app/modules/';
 
+    /**
+     * @var string
+     */
     public $itemFile;
 
+    /**
+     * @var string
+     */
     public $ruleFile;
 
     protected $rules = null;
@@ -105,11 +111,11 @@ class BuildAuthManager extends Component {
             $data[$type] = $t;
         }
 
-        foreach ($tree as $type => $tree) {
+        foreach ($tree as $type => $tr) {
 
             if (!isset($data[$type])) {
 
-                $data[$type]['children'] = $tree;
+                $data[$type]['children'] = $tr;
             }
         }
 

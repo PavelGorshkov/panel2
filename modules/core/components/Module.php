@@ -2,6 +2,7 @@
 namespace app\modules\core\components;
 
 use Yii;
+use \app\modules\core\Module as CoreModule;
 use \yii\base\Module as BaseModule;
 
 /**
@@ -46,7 +47,9 @@ abstract class Module
      */
     public function getVisualEditor()
     {
-        return app()->getModule('core')->getVisualEditor();
+        /* @var CoreModule $module */
+        $module = app()->getModule('core');
+        return $module->getVisualEditor();
     }
 
 

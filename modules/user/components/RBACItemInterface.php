@@ -10,4 +10,10 @@ interface RBACItemInterface {
     public function getTitleTask();
 
     public function getRuleNames();
+
+    /**
+     * @param string $item
+     * @return string
+     */
+    public function getTitle($item);
 }

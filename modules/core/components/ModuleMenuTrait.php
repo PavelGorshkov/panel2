@@ -1,14 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 9:15
- */
-
 namespace app\modules\core\components;
 
-
+/**
+ * Class ModuleMenuTrait
+ * @package app\modules\core\components
+ *
+ * @property string $id
+ */
 trait ModuleMenuTrait {
 
     public function getMenuAdmin()
@@ -29,7 +27,7 @@ trait ModuleMenuTrait {
     }
 
 
-    public function getMenuUrl($url = self::OBSERVER_URL) {
+    public function getMenuUrl($url = Module::OBSERVER_URL) {
 
         return [
             '/'.$this->id.'/'.trim($url, '/')

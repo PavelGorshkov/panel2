@@ -93,7 +93,7 @@ class RegistrationForm extends Model
         ];
     }
 
-    public function emptyOnInvalid($attribute, $params)
+    public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */  $params)
     {
         if ($this->hasErrors()) {
 

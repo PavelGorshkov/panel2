@@ -13,7 +13,7 @@ class UserEvent extends Event
     /**
      * @var User
      */
-    private $_user;
+    protected $_user;
 
     /**
      * @return User
