@@ -50,6 +50,16 @@ class ProfileController extends RedactorController
     }
 
 
+	public function actionView()
+	{
+		return $this->render('view', [
+			'info'=>user()->info,
+			'profile'=>user()->profile,
+
+		]);
+	}
+
+
     public function actionEmail()
     {
         return $this->render('email');
@@ -66,10 +76,4 @@ class ProfileController extends RedactorController
     {
         return $this->render('update');
     }
-
-    public function actionView()
-    {
-        return $this->render('view');
-    }
-
 }

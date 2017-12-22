@@ -212,18 +212,19 @@ class Migrator extends Component{
      * Check each modules for new migrations
      *
      * @param string $module - required module
-     * @param string $class - class of migration
+     * @param string $className - class of migration
      *
      * @return mixed version and apply time
      */
-    protected function instantiateMigration($module, $class)
+    protected function instantiateMigration($module, $className)
     {
-//        $file = (string) self::getPathMigration($module).DIRECTORY_SEPARATOR.$class.'.php';
-//        require_once $file;
+	    $namespace = '\\app\\modules\\'.$module.'\\install\\migrations\\';
 
-        $namespace = '\\app\\modules\\'.$module.'\\install\\migrations\\';
-
-        $class = $namespace.$class;
+        $class = $namespace.$className;
+		/*
+	    $file = (string) self::getPathMigration($module).DIRECTORY_SEPARATOR.$className.'.php';
+	    include $file;
+	    */
 
         return new $class;
     }
@@ -292,6 +293,8 @@ class Migrator extends Component{
     {
         $start = microtime(true);
         $migration = $this->instantiateMigration($module, $className);
+
+	    var_dump($migration, 1);
 
         if (!($migration instanceof Migration )) return;
 

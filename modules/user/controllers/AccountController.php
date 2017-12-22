@@ -57,6 +57,8 @@ class AccountController extends WebController
     {
         if (!app()->user->isGuest) $this->goHome();
 
+	    //app()->migrator->updateToLatestSystem();
+
         $model = new LoginForm();
 
         $this->performAjaxValidation($model);

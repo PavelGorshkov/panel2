@@ -201,7 +201,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
-    /**
+	public function getEmail() {
+
+		return $this->email . '<br />'.EmailConfirmStatusHelper::getValue($this->email_confirm, 1);
+	}
+
+
+	public function getStatus() {
+
+		return UserStatusHelper::getValue($this->status, 1);
+	}
+
+
+	/**
      * Проверка заблокированности пользователя
      *
      * @return bool
