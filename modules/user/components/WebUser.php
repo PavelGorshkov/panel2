@@ -154,6 +154,8 @@ class WebUser extends \yii\web\User
      */
     public function getProfile() {
 
+        if ($this->isGuest) return null;
+
         if ($this->_profile === null) $this->_profile = $this->identity->userProfile;
 
         return $this->_profile;

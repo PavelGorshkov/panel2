@@ -85,7 +85,7 @@ class Migration extends \yii\db\Migration {
             new Exception(sprintf('parameter "table" not defined in class "%s" method "%s"', get_called_class(), 'createDateColumns'));
         }
 
-        $this->addColumn($table, 'created_at', $this->dateTime()->null());
+        $this->addColumn($table, 'created_at', $this->dateTime()->defaultExpression('NOW()'));
         $this->addColumn($table, 'updated_at', $this->timestamp());
     }
 

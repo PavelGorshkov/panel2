@@ -2,10 +2,8 @@
 
 namespace app\modules\user\models;
 
-use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\models\query\UserProfileQuery;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%user_profile}}".
@@ -21,8 +19,6 @@ use yii\helpers\Html;
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
-	use ModuleTrait;
-
     /**
      * @inheritdoc
      */
@@ -78,24 +74,4 @@ class UserProfile extends \yii\db\ActiveRecord
     {
         return new UserProfileQuery(get_called_class());
     }
-
-
-	public function getAvatarImage() {
-
-		return Html::img($this->getAvatarSrc(), ['alt'=>$this->full_name]);
-	}
-
-
-	public function getAvatarSrc($size = 64) {
-
-		$size = (int)$size;
-
-		$avatar = $this->avatar?$this->avatar:$this->module->defaultAvatar;
-
-		return app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
-			$this->module->avatarDirs,
-			$size,
-			$size
-		);
-	}
 }

@@ -2,13 +2,13 @@
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
+use app\modules\user\forms\LoginForm;
+use app\modules\user\forms\ProfileRegistrationForm;
+use app\modules\user\forms\RecoveryForm;
+use app\modules\user\forms\RecoveryPasswordForm;
+use app\modules\user\forms\RegistrationForm;
 use app\modules\user\helpers\UserTokenTypeHelper;
-use app\modules\user\models\LoginForm;
-use app\modules\user\models\ProfileRegistrationForm;
-use app\modules\user\models\RecoveryForm;
-use app\modules\user\models\RecoveryPasswordForm;
 use app\modules\user\Module;
-use app\modules\user\models\RegistrationForm;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
@@ -56,8 +56,6 @@ class AccountController extends WebController
     public function actionLogin()
     {
         if (!app()->user->isGuest) $this->goHome();
-
-	    //app()->migrator->updateToLatestSystem();
 
         $model = new LoginForm();
 

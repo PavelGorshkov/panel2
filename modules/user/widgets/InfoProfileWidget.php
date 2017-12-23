@@ -15,9 +15,11 @@ class InfoProfileWidget extends Widget {
 
         $user = user()->info;
 
+        if ($user === null) return null;
+
         $profile = user()->profile;
 
-        $avatar = $profile->avatar?$user->avatar:$this->module->defaultAvatar;
+        $avatar = $profile->avatar?$profile->avatar:$this->module->defaultAvatar;
 
         return $this->render(
             $this->view,

@@ -1,5 +1,4 @@
 <?php
-namespace app\modules\core\install\migrations;
 
 use app\modules\core\components\Migration;
 

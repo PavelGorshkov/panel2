@@ -8,9 +8,9 @@
 
 namespace app\modules\user\events;
 
+use app\modules\user\forms\ProfileRegistrationForm;
+use app\modules\user\forms\RegistrationForm;
 use app\modules\user\models\UserToken;
-use app\modules\user\models\RegistrationForm;
-use app\modules\user\models\ProfileRegistrationForm;
 
 
 class RegistrationEvent extends UserEvent {

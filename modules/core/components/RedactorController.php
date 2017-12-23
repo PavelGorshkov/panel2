@@ -16,6 +16,8 @@ class RedactorController extends WebController {
 
     public $layout = '@app/modules/core/views/layouts/redactor_menu';
 
+    protected $title = null;
+
     public function beforeAction($action) {
 
         parent::beforeAction($action);
@@ -26,10 +28,14 @@ class RedactorController extends WebController {
         }
 
         $this->view->params['actionMenu'] = $this->getActionsMenu();
-        $this->setTitle('Управление модулями');
+
+        if ($this->title !== null) $this->setTitle($this->title);
 
         if (isset($this->actionMenu[$this->action->id]))
             $this->setSmallTitle($this->actionMenu[$this->action->id]);
+
+        if (isset($this->actionMenu['@'.$this->action->id]))
+            $this->setSmallTitle($this->actionMenu['@'.$this->action->id]);
 
         return true;
     }

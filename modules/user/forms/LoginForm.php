@@ -1,8 +1,9 @@
 <?php
-namespace app\modules\user\models;
+namespace app\modules\user\forms;
 
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
+use app\modules\user\models\User;
 use yii\base\Model;
 
 class LoginForm extends Model {

@@ -17,11 +17,9 @@ abstract class ListHelper {
 
     public static function getValue($status, $asHtml = false) {
 
-	    $class = get_called_class();
-
         $list = $asHtml
-            ?$class::getHtmlList()
-            :$class::getList();
+            ?self::getHtmlList()
+            :self::getList();
 
         if (isset($list[$status])) return $list[$status];
 
@@ -34,7 +32,7 @@ abstract class ListHelper {
      */
     public static function getList() {
 
-        throw new HttpException(500, sprintf('Реализуйте метод "getList" в классе "%s"', get_called_class()));
+        throw new HttpException(500, sprintf('Реализуйте метод "getStatusList" в классе "%s"', get_called_class()));
     }
 
     /**
@@ -43,6 +41,6 @@ abstract class ListHelper {
      */
     public static function getHtmlList() {
 
-        throw new HttpException(500, sprintf('Реализуйте метод "getHtmlList" в классе "%s"', get_called_class()));
+        throw new HttpException(500, sprintf('Реализуйте метод "getStatusHtmlList" в классе "%s"', get_called_class()));
     }
 }
