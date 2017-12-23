@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\user\components;
 
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\User;
 use app\modules\user\models\UserProfile;
 
@@ -184,9 +185,9 @@ class WebUser extends \yii\web\User
 
         switch ($this->identity->access_level) {
 
-            case User::ACCESS_LEVEL_ADMIN: return Roles::ADMIN;
-            case User::ACCESS_LEVEL_REDACTOR: return Roles::REDACTOR;
-            case User::ACCESS_LEVEL_OBSERVER: return Roles::OBSERVER;
+            case UserAccessLevelHelper::LEVEL_ADMIN: return Roles::ADMIN;
+            case UserAccessLevelHelper::LEVEL_REDACTOR: return Roles::REDACTOR;
+            case UserAccessLevelHelper::LEVEL_OBSERVER: return Roles::OBSERVER;
 
             default: return null;
         }

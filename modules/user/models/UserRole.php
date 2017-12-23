@@ -3,6 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\core\components\behaviors\ModelWebUserBehavior;
+use app\modules\user\models\query\UserRoleQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -76,10 +77,10 @@ class UserRole extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\query\UserRoleQuery the active query used by this AR class.
+     * @return UserRoleQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\modules\user\models\query\UserRoleQuery(get_called_class());
+        return new UserRoleQuery(get_called_class());
     }
 }

@@ -19,7 +19,7 @@ use yii\helpers\Url;
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
         <?php BoxSolidWidget::begin([
             'title'=>'Аккаунт',
             'boxBodyClass'=>'no-padding',
@@ -35,10 +35,38 @@ use yii\helpers\Url;
         <th>Email</th>
         <td><?=$info->email?></td>
     </tr>
+    <tr>
+        <th>Группа</th>
+        <td><?=$info->getAccessGroup()?></td>
+    </tr>
 </table>
-
+        <?php BoxSolidWidget::end()?>
+    </div>
+    <div class="col-sm-7">
+        <?php BoxSolidWidget::begin([
+            'title'=>'Основная информация',
+            'boxBodyClass'=>'no-padding',
+        ])?>
+        <table class="table table-condensed table-hover">
+            <tr>
+                <th>ФИО</th>
+                <td><?=$profile->full_name?></td>
+            </tr>
+            <tr>
+                <th>Телефон</th>
+                <td><?=$profile->phone?></td>
+            </tr>
+            <tr>
+                <th>Должность, место работы</th>
+                <td><?=$profile->about?></td>
+            </tr>
+            <tr>
+                <th>Аватар</th>
+                <td><?=Html::img($profile->getAvatarSrc(), ['alt'=>$profile->full_name])?></td>
+            </tr>
+        </table>
         <?php BoxSolidWidget::end()?>
     </div>
 </div>
 <?php
-printr($info);
+

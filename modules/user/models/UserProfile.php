@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models;
 
+use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\models\query\UserProfileQuery;
 use Yii;
 
@@ -19,6 +20,8 @@ use Yii;
  */
 class UserProfile extends \yii\db\ActiveRecord
 {
+    use ModuleTrait;
+
     /**
      * @inheritdoc
      */
@@ -73,5 +76,15 @@ class UserProfile extends \yii\db\ActiveRecord
     public static function find()
     {
         return new UserProfileQuery(get_called_class());
+    }
+
+    public function getAvatarSrc() {
+
+        $avatar = $this->avatar?$this->avatar:$this->module->defaultAvatar;
+
+        return app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
+            $this->module->avatarDirs,
+            64, 64
+        );
     }
 }

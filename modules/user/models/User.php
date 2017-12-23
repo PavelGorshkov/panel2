@@ -3,12 +3,15 @@
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
+use app\modules\user\models\query\UserRoleQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -36,7 +39,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const SCENARIO_REGISTER = 'register';
-
+/*
     const ACCESS_LEVEL_USER = 0;
 
     const ACCESS_LEVEL_ADMIN = 1;
@@ -44,7 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
     const ACCESS_LEVEL_OBSERVER = 2;
 
     const ACCESS_LEVEL_REDACTOR = 3;
-
+*/
     public function behaviors() {
 
         return [
@@ -224,5 +227,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function getIsBlocked()
     {
         return (int) $this->status === UserStatusHelper::STATUS_BLOCK;
+    }
+
+
+    public function getAccessLevelList()
+    {
+        return ArrayHelper::merge(
+            UserAccessLevelHelper::getList(),
+            UserRole::find()->allListRoles()
+        );
+    }
+
+
+    public function getAccessGroup() {
+
+        $data = $this->getAccessLevelList();
+
+        return isset($data[$this->access_level]) ? $data[$this->access_level] : '*не известна*';
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\user\models\query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserRole]].
@@ -31,4 +32,18 @@ class UserRoleQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+
+    public function allListRoles() {
+
+        return ArrayHelper::map(
+            $this
+                ->select('id, title')
+                ->asArray()
+                ->all(),
+            'id',
+            'title'
+        );
+    }
+
 }
