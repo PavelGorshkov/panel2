@@ -5,6 +5,7 @@ use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
 use app\modules\user\models\User;
 use yii\base\Model;
+use yii\db\Expression;
 
 class LoginForm extends Model {
 
@@ -84,8 +85,8 @@ class LoginForm extends Model {
 
             $this->user->updateAttributes(
                 [
-                    'visited_at'=> time(),
-                    'user_ip' => app()->request->getUserIP()
+                    'visited_at'=> new Expression('NOW()'),
+                    'user_ip' => ip2long(app()->request->getUserIP())
                 ]);
 
             return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);

@@ -131,7 +131,7 @@ class AccountController extends WebController
         }
 
         $this->redirect(
-            app()->user->isGuest
+            !app()->user->isGuest
                 ?Url::to(['/user/profile/index'])
                 :Url::to($this->module->loginPage)
         );

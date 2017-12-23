@@ -63,10 +63,12 @@ class BoxWidget extends \yii\bootstrap\Widget {
 
     public $footer = '';
 
+    public $boxBodyClass = '';
+
     public $topTemplate = <<<HTML
     <div {options}>
         <div {headerOptions}><h3 class="box-title">{title}</h3>{box-tools}</div>
-        <div class="box-body">
+        <div class="box-body{box-body-class}">
 HTML;
 
     /**
@@ -103,6 +105,7 @@ HTML;
                     '{headerOptions}' => Html::renderTagAttributes($this->prepareHeaderOptions()),
                     '{title}'         => $this->title,
                     '{box-tools}'     => $this->prepareBoxTools(),
+                    '{box-body-class}'=> $this->boxBodyClass?(' '.$this->boxBodyClass):'',
                 ]
             ).$this->body;
     }

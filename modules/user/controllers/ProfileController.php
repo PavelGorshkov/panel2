@@ -10,7 +10,6 @@ class ProfileController extends RedactorController
     protected $actionMenu = [
         '@index'=>'Панель управления',
         '@view'=>'Профиль',
-        '@password'=>'Редактирование профиля',
     ];
 
     public $layout = '@app/modules/user/views/layouts/profile';
@@ -52,6 +51,16 @@ class ProfileController extends RedactorController
     }
 
 
+    public function actionView()
+    {
+        return $this->render('view', [
+            'info'=>user()->info,
+            'profile'=>user()->profile,
+            'module'=>$this->module,
+        ]);
+    }
+
+
     public function actionEmail()
     {
         return $this->render('email');
@@ -69,9 +78,6 @@ class ProfileController extends RedactorController
         return $this->render('update');
     }
 
-    public function actionView()
-    {
-        return $this->render('view');
-    }
+
 
 }

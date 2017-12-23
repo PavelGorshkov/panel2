@@ -9,8 +9,8 @@ use app\modules\user\models\UserProfile;
  * @package app\modules\user\components
  *
  * @property User $identity
- * @property UserProfile $profile
- * @property User $info
+ * @property-read UserProfile $profile
+ * @property-read User $info
  */
 class WebUser extends \yii\web\User
 {
@@ -167,6 +167,8 @@ class WebUser extends \yii\web\User
      * @return User
      */
     public function getInfo() {
+
+        if ($this->isGuest) return null;
 
         if ($this->_info === null) $this->_info = $this->identity;
 

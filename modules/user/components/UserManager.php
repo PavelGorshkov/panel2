@@ -1,16 +1,16 @@
 <?php
 namespace app\modules\user\components;
 
+use app\modules\user\forms\ProfileRegistrationForm;
+use app\modules\user\forms\RegistrationForm;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserManagerEventHelper;
 use app\modules\user\helpers\UserStatusHelper;
-use app\modules\user\models\ProfileRegistrationForm;
 use app\modules\user\models\query\UserAccessQuery;
 use app\modules\user\models\query\UserQuery;
-use app\modules\user\models\RegistrationForm;
 use app\modules\user\models\User;
 use app\modules\user\models\UserAccess;
 use app\modules\user\models\UserProfile;

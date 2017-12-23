@@ -6,6 +6,9 @@ use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 /**
@@ -30,7 +33,7 @@ use yii\web\IdentityInterface;
  *
  * @property UserProfile $userProfile
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     const SCENARIO_REGISTER = 'register';
 
@@ -41,6 +44,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     const ACCESS_LEVEL_OBSERVER = 2;
 
     const ACCESS_LEVEL_REDACTOR = 3;
+
+    public function behaviors() {
+
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc

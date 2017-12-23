@@ -20,7 +20,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions'=>['captcha'],
+                        'actions'=>['captcha', 'migrate'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -68,6 +68,12 @@ class SiteController extends Controller
 
             UserSettings::model()->skinTemplate = $skin;
         }
+    }
+
+
+    public function actionMigrate() {
+
+        app()->migrator->updateToLatestSystem();
     }
 
 
