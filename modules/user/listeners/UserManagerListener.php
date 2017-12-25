@@ -5,11 +5,14 @@ use app\modules\user\events\UserPasswordEvent;
 use app\modules\user\events\UserTokenEvent;
 use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
-use app\modules\user\Module;
 use DateTime;
 
 class UserManagerListener {
 
+
+    /**
+     * @param RegistrationEvent $event
+     */
     public static function onUserRegistration(RegistrationEvent $event) {
 
         $registration = $event->getRegistrationForm();
@@ -27,18 +30,13 @@ class UserManagerListener {
 
     }
 
+
+    /**
+     * @param RegistrationEvent $event
+     */
     public static function onUserRegistrationNeedActivation(RegistrationEvent $event) {
 
         $registration = $event->getRegistrationForm();
-        $token = $event->getToken();
-
-        /* @var Module $module */
-        $module = app()->getModule('user');
-
-
-        $expire = new DateTime();
-        $interval = new \DateInterval('PT'.($module->expireTokenActivationLifeHours*3600).'S');
-        $date = $expire->add($interval)->format('d.m.Y H:i:s');
 
         self::sendMessage(
             $registration->email,
@@ -48,24 +46,20 @@ class UserManagerListener {
                 'email'=>$registration->email,
                 'fullName'=>$registration->full_name,
                 'login'=>$registration->username,
-                'token'=>$token,
-                'expire'=>$date,
+                'token'=>$event->getToken(),
+                'expire'=>self::setExpireDateTime(app()->getModule('user')->expireTokenActivationLifeHours*3600),
             ]
         );
 
     }
 
-    public static function onUserFailureRegistration(RegistrationEvent $event) {}
 
-
+    /**
+     * @param UserTokenEvent $event
+     */
     public static function onUserRecoveryPassword(UserTokenEvent $event) {
 
         $user = $event->getUser();
-        $token = $event->getToken();
-
-        $expire = new DateTime();
-        $interval = new \DateInterval('PT'.(app()->getModule('user')->expireTokenPasswordLifeHours*3600).'S');
-        $date = $expire->add($interval)->format('d.m.Y H:i:s');
 
         self::sendMessage(
             $user->email,
@@ -74,18 +68,19 @@ class UserManagerListener {
             [
                 'email'=>$user->email,
                 'fullName'=>$user->userProfile->full_name,
-                'token'=>$token,
-                'expire'=>$date,
+                'token'=>$event->getToken(),
+                'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenPasswordLifeHours*3600)),
             ]
         );
     }
 
 
+    /**
+     * @param UserPasswordEvent $event
+     */
     public static function onUserGeneratePassword(UserPasswordEvent $event) {
 
         $user = $event->getUser();
-
-        $password = $event->getPassword();
 
         self::sendMessage(
             $user->email,
@@ -94,12 +89,15 @@ class UserManagerListener {
             [
                 'email'=>$user->email,
                 'fullName'=>$user->userProfile->full_name,
-                'password'=>$password,
+                'password'=>$event->getPassword(),
             ]
         );
     }
 
 
+    /**
+     * @param UserEvent $event
+     */
     public static function onUserChangePassword(UserEvent $event) {
 
         $user = $event->getUser();
@@ -116,13 +114,33 @@ class UserManagerListener {
     }
 
 
-    public static function ononUserChangeEmail(UserTokenEvent $event) {
+    /**
+     * @param UserTokenEvent $event
+     */
+    public static function onUserChangeEmail(UserTokenEvent $event) {
 
         $user = $event->getUser();
-        $token = $event->getToken();
+
+        self::sendMessage(
+            $user->email,
+            'Активация электронной почты',
+            'changeEmail',
+            [
+                'fullName'=>$user->userProfile->full_name,
+                'token'=>$event->getToken()
+            ]
+        );
     }
 
 
+    /**
+     * @param string $to
+     * @param string $subject
+     * @param string $view
+     * @param array $params
+     *
+     * @return bool
+     */
     protected static function sendMessage($to, $subject, $view = null, $params = [])
     {
         /** @var \yii\mail\BaseMailer $mailer */
@@ -140,4 +158,16 @@ class UserManagerListener {
     }
 
 
+    /**
+     * @param integer $expire
+     *
+     * @return string
+     */
+    protected static function setExpireDateTime($expire) {
+
+        $datetime = new DateTime();
+        $interval = new \DateInterval('PT'.$expire.'S');
+
+        return $datetime->add($interval)->format('d.m.Y H:i:s');
+    }
 }

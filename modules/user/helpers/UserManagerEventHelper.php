@@ -1,7 +1,6 @@
 <?php
 namespace app\modules\user\helpers;
 
-
 use app\modules\user\components\UserManager;
 use app\modules\user\events\UserPasswordEvent;
 use app\modules\user\events\UserTokenEvent;
@@ -31,11 +30,6 @@ trait UserManagerEventHelper {
         $this->on(
             UserManager::EVENT_SUCCESS_REGISTRATION_NEED_ACTIVATION,
             ['app\modules\user\listeners\UserManagerListener', 'onUserRegistrationNeedActivation']
-        );
-
-        $this->on(
-            UserManager::EVENT_FAILURE_REGISTRATION,
-            ['app\modules\user\listeners\UserManagerListener', 'onUserFailureRegistration']
         );
 
         $this->on(
@@ -112,9 +106,8 @@ trait UserManagerEventHelper {
 
     /**
      * @param User $user
-     * @param string $password
      *
-     * @return UserPasswordEvent
+     * @return UserEvent|object
      * @throws \yii\base\InvalidConfigException
      */
     protected function getUserEvent(User $user) {
