@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
  */
 class Migrator extends Component{
 
-    public $migrationTable = '{{%migrations}}';
+    public $migrationTable = '{{%migration}}';
 
     /**
      * Проверяем на незавершённые миграции:

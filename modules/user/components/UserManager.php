@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\user\components;
 
+use app\modules\user\forms\ProfileForm;
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
@@ -37,11 +38,13 @@ class UserManager extends Component {
 
     const EVENT_FAILURE_REGISTRATION = 'user.failure.registration';
 
-    const EVENT_RECOVERY_EMAIL = 'user.recovery.email';
+    const EVENT_RECOVERY_PASSWORD = 'user.recovery.password';
 
     const EVENT_GENERATE_PASSWORD = 'user.generate.password';
 
     const EVENT_CHANGE_PASSWORD = 'user.change.password';
+
+    const EVENT_CHANGE_EMAIL = 'user.change.email';
 
     use ModuleTrait;
     use UserManagerEventHelper;
@@ -118,7 +121,7 @@ class UserManager extends Component {
      */
     public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile) {
 
-        $event = $this->getRegistrationFormEvent($model, $profile);
+        $event = $this->getRegistrationEvent($model, $profile);
 
         /* заполнение пользователя */
         $user = new User();
@@ -126,15 +129,7 @@ class UserManager extends Component {
 
         $user->setAttributes($model->getAttributes());
 
-        if (!$this->module->emailAccountVerification) {
-
-            $user->status = UserStatusHelper::STATUS_ACTIVE;
-            $user->email_confirm = EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
-        } else {
-
-            $user->status = UserStatusHelper::STATUS_NOT_ACTIVE;
-            $user->email_confirm = EmailConfirmStatusHelper::EMAIL_CONFIRM_NO;
-        }
+        $user = $this->setUserStatusTypeAndEmailConfirm($user);
 
         $user->hash = Password::hash($model->password);
 
@@ -152,6 +147,7 @@ class UserManager extends Component {
         }
 
         $event->setUser($user);
+
         $userProfile = new UserProfile();
 
         $userProfile->setAttributes($model->getAttributes());
@@ -182,6 +178,27 @@ class UserManager extends Component {
         $transaction->commit();
 
         return true;
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return User
+     */
+    protected function setUserStatusTypeAndEmailConfirm(User $user) {
+
+        if (!$this->module->emailAccountVerification) {
+
+            $user->status = UserStatusHelper::STATUS_ACTIVE;
+            $user->email_confirm = EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
+        } else {
+
+            $user->status = UserStatusHelper::STATUS_NOT_ACTIVE;
+            $user->email_confirm = EmailConfirmStatusHelper::EMAIL_CONFIRM_NO;
+        }
+
+        return $user;
     }
 
 
@@ -281,7 +298,7 @@ class UserManager extends Component {
             return false;
         }
 
-        $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getGeneratePasswordEvent($user, $password));
+        $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getUserPasswordEvent($user, $password));
 
         if (!$this->tokenStorage->delete($token)) {
 
@@ -316,7 +333,7 @@ class UserManager extends Component {
             return false;
         }
 
-        $this->trigger(self::EVENT_RECOVERY_EMAIL, $this->getRecoveryEmailEvent($user, $token));
+        $this->trigger(self::EVENT_RECOVERY_PASSWORD, $this->getUserTokenEvent($user, $token));
 
         $transaction->commit();
 
@@ -351,10 +368,68 @@ class UserManager extends Component {
             return false;
         }
 
-        $this->trigger(self::EVENT_CHANGE_PASSWORD, $this->getChangePasswordEvent($user));
+        $this->trigger(self::EVENT_CHANGE_PASSWORD, $this->getUserEvent($user));
 
         $transaction->commit();
 
         return true;
+    }
+
+
+    /**
+     * @param User $user
+     * @param string $email
+     *
+     * @return bool
+     */
+    public function changeEmail(User $user, $email) {
+
+        if ($email==$user->email && $user->isConfirmedEmail()) {
+
+            return true;
+        }
+
+        $transaction = app()->db->beginTransaction();
+
+        $user = $this->setUserStatusTypeAndEmailConfirm($user);
+        $user->email = $email;
+
+        if (!$user->save()) {
+
+            $transaction->rollBack();
+
+            return false;
+        }
+
+        $token = $this->tokenStorage->createEmailActivationToken($user);
+
+        if ($token === false) {
+
+            $transaction->rollBack();
+
+            return false;
+        }
+
+        $this->trigger(self::EVENT_CHANGE_EMAIL, $this->getUserTokenEvent($user, $token));
+
+        $transaction->commit();
+
+        return true;
+    }
+
+
+    /**
+     * @param ProfileForm $model
+     *
+     * @return bool
+     */
+    public function saveProfile(ProfileForm $model) {
+
+        $data = $model->getAttributes();
+        $data['avatar'] = $data['avatar_file'];
+        unset($data['avatar_file']);
+        unset($data['email']);
+
+        return user()->identity->userProfile->updateAttributes($data);
     }
 }

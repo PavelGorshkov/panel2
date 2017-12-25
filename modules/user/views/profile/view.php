@@ -4,18 +4,21 @@
 /* @var $info User */
 /* @var $profile UserProfile */
 
-
 use app\modules\core\widgets\BoxSolidWidget;
 use app\modules\user\models\User;
 use app\modules\user\models\UserProfile;
 use app\modules\user\Module;
+use app\modules\user\widgets\AvatarWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
 <div class="row">
     <div class="col-sm-12">
-        <?=Html::a('<i class="fa fa-pencil"></i> Изменить', Url::to(), ['class'=>'btn btn-sm btn-warning'])?>
+        <?=Html::a('<i class="fa fa-pencil"></i> Изменить', Url::to(['update']), ['class'=>'btn btn-sm btn-warning'])?>
+    <?php if ($module->isNotFromLDAP()):?>
+        <?=Html::a('<i class="fa fa-lock"></i> Сменить пароль', Url::to(['change-password']), ['class'=>'btn btn-sm btn-info'])?>
+    <?php endif;?>
     </div>
 </div>
 <div class="row">
@@ -62,7 +65,7 @@ use yii\helpers\Url;
             </tr>
             <tr>
                 <th>Аватар</th>
-                <td><?=Html::img($profile->getAvatarSrc(), ['alt'=>$profile->full_name])?></td>
+                <td><?=AvatarWidget::widget()?></td>
             </tr>
         </table>
         <?php BoxSolidWidget::end()?>

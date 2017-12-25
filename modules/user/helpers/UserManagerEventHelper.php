@@ -3,8 +3,8 @@ namespace app\modules\user\helpers;
 
 
 use app\modules\user\components\UserManager;
-use app\modules\user\events\GeneratePasswordEvent;
-use app\modules\user\events\RecoveryEmailEvent;
+use app\modules\user\events\UserPasswordEvent;
+use app\modules\user\events\UserTokenEvent;
 use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use app\modules\user\forms\ProfileRegistrationForm;
@@ -39,8 +39,8 @@ trait UserManagerEventHelper {
         );
 
         $this->on(
-            UserManager::EVENT_RECOVERY_EMAIL,
-            ['app\modules\user\listeners\UserManagerListener', 'onUserRecoveryEmail']
+            UserManager::EVENT_RECOVERY_PASSWORD,
+            ['app\modules\user\listeners\UserManagerListener', 'onUserRecoveryPassword']
         );
 
         $this->on(
@@ -52,6 +52,11 @@ trait UserManagerEventHelper {
             UserManager::EVENT_CHANGE_PASSWORD,
             ['app\modules\user\listeners\UserManagerListener', 'onUserChangePassword']
         );
+
+        $this->on(
+            UserManager::EVENT_CHANGE_EMAIL,
+            ['app\modules\user\listeners\UserManagerListener', 'onUserChangeEmail']
+        );
     }
 
     /**
@@ -60,7 +65,7 @@ trait UserManagerEventHelper {
      * @return RegistrationEvent
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRegistrationFormEvent(RegistrationForm $registrationForm, ProfileRegistrationForm $profileRegistrationForm) {
+    protected function getRegistrationEvent(RegistrationForm $registrationForm, ProfileRegistrationForm $profileRegistrationForm) {
 
         return Yii::createObject([
             'class' => RegistrationEvent::className(),
@@ -74,14 +79,14 @@ trait UserManagerEventHelper {
      * @param User $user
      * @param UserToken $token
      *
-     * @return RecoveryEmailEvent
+     * @return UserTokenEvent
      *
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRecoveryEmailEvent(User $user, UserToken $token) {
+    protected function getUserTokenEvent(User $user, UserToken $token) {
 
         return Yii::createObject([
-            'class' => RecoveryEmailEvent::className(),
+            'class' => UserTokenEvent::className(),
             'user' => $user,
             'token' => $token,
         ]);
@@ -92,13 +97,13 @@ trait UserManagerEventHelper {
      * @param User $user
      * @param string $password
      *
-     * @return GeneratePasswordEvent
+     * @return UserPasswordEvent
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getGeneratePasswordEvent(User $user, $password) {
+    protected function getUserPasswordEvent(User $user, $password) {
 
         return Yii::createObject([
-            'class' => GeneratePasswordEvent::className(),
+            'class' => UserPasswordEvent::className(),
             'user' => $user,
             'password' => $password,
         ]);
@@ -109,15 +114,14 @@ trait UserManagerEventHelper {
      * @param User $user
      * @param string $password
      *
-     * @return GeneratePasswordEvent
+     * @return UserPasswordEvent
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getChangePasswordEvent(User $user) {
+    protected function getUserEvent(User $user) {
 
         return Yii::createObject([
             'class' => UserEvent::className(),
             'user' => $user,
         ]);
     }
-
 }

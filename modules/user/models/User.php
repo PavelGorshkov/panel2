@@ -207,7 +207,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return bool
      */
-    public function getIsConfirmed() {
+    public function isConfirmedEmail() {
 
         return (int) $this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
     }

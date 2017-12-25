@@ -43,7 +43,7 @@ class LoginForm extends Model {
                     $confirmationRequired = $this->module->enableConfirmation
                         && !$this->module->enableUnconfirmedLogin;
 
-                    if ($confirmationRequired && !$this->user->getIsConfirmed()) {
+                    if ($confirmationRequired && !$this->user->isConfirmedEmail()) {
 
                         $this->addError($attribute, 'Вам необходимо подтвердить E-mail адрес');
                     }

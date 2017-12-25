@@ -94,6 +94,14 @@ class TokenStorage extends Component {
     }
 
 
+    public function createEmailActivationToken(User $user) {
+
+        $this->deleteByTypeAndUser(UserTokenTypeHelper::EMAIL_VERIFY, $user);
+
+        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, UserTokenTypeHelper::EMAIL_VERIFY);
+    }
+
+
     /**
      * @param string $token
      * @param int $type

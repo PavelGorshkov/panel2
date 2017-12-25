@@ -1,8 +1,8 @@
 <?php
 namespace app\modules\user\listeners;
 
-use app\modules\user\events\GeneratePasswordEvent;
-use app\modules\user\events\RecoveryEmailEvent;
+use app\modules\user\events\UserPasswordEvent;
+use app\modules\user\events\UserTokenEvent;
 use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use app\modules\user\Module;
@@ -58,7 +58,7 @@ class UserManagerListener {
     public static function onUserFailureRegistration(RegistrationEvent $event) {}
 
 
-    public static function onUserRecoveryEmail(RecoveryEmailEvent $event) {
+    public static function onUserRecoveryPassword(UserTokenEvent $event) {
 
         $user = $event->getUser();
         $token = $event->getToken();
@@ -81,7 +81,7 @@ class UserManagerListener {
     }
 
 
-    public static function onUserGeneratePassword(GeneratePasswordEvent $event) {
+    public static function onUserGeneratePassword(UserPasswordEvent $event) {
 
         $user = $event->getUser();
 
@@ -90,7 +90,7 @@ class UserManagerListener {
         self::sendMessage(
             $user->email,
             'Восстановление пароля на сайте "'.app()->name.'"',
-            'sendPassword',
+            'generatePassword',
             [
                 'email'=>$user->email,
                 'fullName'=>$user->userProfile->full_name,
@@ -116,6 +116,13 @@ class UserManagerListener {
     }
 
 
+    public static function ononUserChangeEmail(UserTokenEvent $event) {
+
+        $user = $event->getUser();
+        $token = $event->getToken();
+    }
+
+
     protected static function sendMessage($to, $subject, $view = null, $params = [])
     {
         /** @var \yii\mail\BaseMailer $mailer */
@@ -131,4 +138,6 @@ class UserManagerListener {
             ->setSubject($mailer->getView()->title)
             ->send();
     }
+
+
 }

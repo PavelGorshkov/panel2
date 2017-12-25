@@ -54,7 +54,8 @@ class UserProfile extends \yii\db\ActiveRecord
         return [
             'user_id' => 'Id пользователя',
             'full_name' => 'ФИО',
-            'avatar' => 'Автар',
+            'avatar' => 'Аватар',
+            'email' => 'Email',
             'about' => 'Информация',
             'post' => 'Должность',
             'phone' => 'Телефон',
@@ -78,13 +79,13 @@ class UserProfile extends \yii\db\ActiveRecord
         return new UserProfileQuery(get_called_class());
     }
 
-    public function getAvatarSrc() {
+    public function getAvatarSrc($size = 64) {
 
         $avatar = $this->avatar?$this->avatar:$this->module->defaultAvatar;
 
         return app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
             $this->module->avatarDirs,
-            64, 64
+            $size, $size
         );
     }
 }

@@ -35,6 +35,10 @@ class Module extends ParentModule
 
     public $showCaptcha = 0;
 
+    public $avatarExtensions = 'jpg, png, gif, jpeg';
+
+    public $avatarMaxSize = 5242880;
+
     public $phonePattern = '/^((\+?7)(-?\d{3})-?)?(\d{3})(-?\d{4})$/';
 
     public $phoneMask = '+7-999-999-9999';
@@ -53,6 +57,7 @@ class Module extends ParentModule
 
     public $expireTokenPasswordLifeHours = 10;
 
+    public $fromAuthorization = 0;
 
 
     /** @var int Cost параметр, используемый алгоритмом хеширования Blowfish. */
@@ -72,6 +77,12 @@ class Module extends ParentModule
     public static function Title() {
 
         return 'Модуль пользователей';
+    }
+
+
+    public function isNotFromLDAP() {
+
+        return $this->fromAuthorization !== 1;
     }
 
 

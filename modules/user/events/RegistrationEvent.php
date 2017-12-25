@@ -10,10 +10,9 @@ namespace app\modules\user\events;
 
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
-use app\modules\user\models\UserToken;
 
 
-class RegistrationEvent extends UserEvent {
+class RegistrationEvent extends UserTokenEvent {
 
     /**
      * @var RegistrationForm
@@ -24,11 +23,6 @@ class RegistrationEvent extends UserEvent {
      * @var ProfileRegistrationForm
      */
     private $_profile_registration_form;
-
-    /**
-     * @var UserToken
-     */
-    private $_token;
 
 
     /**
@@ -64,22 +58,4 @@ class RegistrationEvent extends UserEvent {
     {
         return $this->_profile_registration_form;
     }
-
-
-    /**
-     * @return UserToken
-     */
-    public function getToken()
-    {
-        return $this->_token;
-    }
-
-    /**
-     * @param UserToken $token
-     */
-    public function setToken(UserToken $token)
-    {
-        $this->_token = $token;
-    }
-
 }

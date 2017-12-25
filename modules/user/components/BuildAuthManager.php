@@ -202,6 +202,4 @@ class BuildAuthManager extends Component {
             }
         }
     }
-
-
 }

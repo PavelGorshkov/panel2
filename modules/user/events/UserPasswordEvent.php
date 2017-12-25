@@ -2,12 +2,12 @@
 namespace app\modules\user\events;
 
 
-class GeneratePasswordEvent extends UserEvent {
+class UserPasswordEvent extends UserEvent {
 
     /**
      * @var string
      */
-    private $_password;
+    protected $_password;
 
 
     /**

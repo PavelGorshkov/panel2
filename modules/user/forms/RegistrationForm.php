@@ -36,7 +36,7 @@ class RegistrationForm extends Model
 
     public function formName() {
 
-        return 'registrationform';
+        return 'registration-form';
     }
 
 

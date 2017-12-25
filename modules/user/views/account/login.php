@@ -21,7 +21,7 @@ $this->setTitle('Аутентификация');
             'class'=>'form-signin form'
         ]
     ]);
-    $form->errorSummary($model);
+    echo $form->errorSummary($model);
 ?>
 <div class='row'>
     <div class="col-xs-12">
