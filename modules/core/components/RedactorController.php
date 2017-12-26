@@ -18,6 +18,13 @@ class RedactorController extends WebController {
 
     protected $title = null;
 
+    /**
+     * @param $action
+     * @return bool
+     * @throws HttpException
+     *
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function beforeAction($action) {
 
         parent::beforeAction($action);

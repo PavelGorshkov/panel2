@@ -14,6 +14,7 @@ use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Класс конфигуратор сборки конфига всего приложения
@@ -65,6 +66,7 @@ class ConfigManager {
      *
      * @param array $base
      * @return array
+     * @throws Exception
      */
     public function merge(array $base = [])
     {
@@ -84,6 +86,8 @@ class ConfigManager {
      * Возвращает закешированный конфиг
      *
      * @return array|null
+     * @throws Exception
+     * @throws HttpException
      */
     protected function getCacheSettings() {
 
@@ -224,8 +228,6 @@ class ConfigManager {
      * @param array $data
      * @return bool
      *
-     * @param array $data
-     * @return bool
      * @throws HttpException
      */
     public function createCache(array $data) {
@@ -234,7 +236,7 @@ class ConfigManager {
         if ($this->isDebug()) return true;
 
         if (!@file_put_contents($this->getCacheFile(), $this->getFileTemplateJSON($data), LOCK_EX)) {
-            throw new HttpException('500', 'Ошибка записи кеша в файл '.$this->getCacheFile().' в классе "'.__CLASS__.'"');
+            throw new ServerErrorHttpException('Ошибка записи кеша в файл '.$this->getCacheFile().' в классе "'.__CLASS__.'"');
         }
 
         return true;
@@ -245,7 +247,6 @@ class ConfigManager {
      * Загрузка из кэша
      *
      * @return array|null
-     * @throws Exception
      */
     protected function loadCache()
     {
@@ -277,6 +278,7 @@ class ConfigManager {
 
     /**
      * @return mixed
+     * @throws Exception
      */
     protected function getSettings()
     {

@@ -8,11 +8,11 @@
 
 namespace app\modules\developer\controllers;
 
+use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\WebController;
-use app\modules\developer\auth\MigrationTask;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 
 class MigrationController extends WebController {
 
@@ -21,23 +21,7 @@ class MigrationController extends WebController {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => [MigrationTask::OPERATION_READ],
-                    ],
-                    [
-                        'actions' => ['create'],
-                        'allow' => true,
-                        'roles' => [MigrationTask::OPERATION_CREATE],
-                    ],
-                    [
-                        'actions' => ['refresh'],
-                        'allow' => true,
-                        'roles' => [MigrationTask::OPERATION_REFRESH],
-                    ],
-                ],
+                'rules' => ModuleTask::createRulesController()
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -49,6 +33,11 @@ class MigrationController extends WebController {
     }
 
 
+    /**
+     * @param $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function beforeAction($action) {
 
         $this->setTitle('Миграции');
@@ -72,13 +61,19 @@ class MigrationController extends WebController {
     }
 
 
+    /**
+     * @param $module
+     * @return string
+     * @throws ServerErrorHttpException
+     * @throws \yii\base\Exception
+     */
     public function actionRefresh($module) {
 
         $modules = app()->moduleManager->getListEnabledModules();
 
         if (!in_array($module, $modules)) {
 
-            throw new HttpException(500, sprintf('Модуль "%s" не найден в активных модулях!', $module));
+            throw new ServerErrorHttpException(sprintf('Модуль "%s" не найден в активных модулях!', $module));
         }
 
         ob_start();

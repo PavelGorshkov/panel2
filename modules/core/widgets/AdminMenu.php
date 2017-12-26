@@ -16,6 +16,10 @@ class AdminMenu extends \yii\bootstrap\Widget {
 
     public $menu;
 
+    /**
+     * @return string|void
+     * @throws \Exception
+     */
     public function run() {
 
         $menu = $this->menu;
@@ -50,7 +54,8 @@ class AdminMenu extends \yii\bootstrap\Widget {
             if (isset($item['items'])) {
 
                 $transformItem['options'] = ['class'=>'dropdown'];
-                $transformItem['template'] = '<a class="dropdown-toggle" data-toggle="dropdown" href="{url}">{label}<span class="caret"></span></a>';
+                $transformItem['template'] = /** @lang text */
+                    '<a class="dropdown-toggle" data-toggle="dropdown" href="{url}">{label}<span class="caret"></span></a>';
                 $transformItem['submenuTemplate'] = "<ul class='dropdown-menu'>{items}</ul>";
 
                 $transformItem['items'] = $this->transformSubMenu($item['items']);
@@ -104,7 +109,8 @@ class AdminMenu extends \yii\bootstrap\Widget {
                 } else {
 
                     $subMenuItem['options'] = ['class'=>'dropdowns'];
-                    $subMenuItem['template'] = '<a class="dropdown-toggle" data-toggle="dropdown" href="{url}">{label}<span class="caret"></span></a>';
+                    $subMenuItem['template'] = /** @lang text */
+                        '<a class="dropdown-toggle" data-toggle="dropdown" href="{url}">{label}<span class="caret"></span></a>';
                     $subMenuItem['submenuTemplate'] = '"\n<ul class="dropdown-menu">\n{items}\n</ul>\n"';
 
                     $subMenuItem['items'] = $this->transformSubMenu($item['items']);

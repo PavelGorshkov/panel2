@@ -1,8 +1,6 @@
 <?php
 namespace app\modules\core\components\actions;
 
-
-use Yii;
 use yii\base\Exception;
 
 class ErrorAction extends \yii\web\ErrorAction {

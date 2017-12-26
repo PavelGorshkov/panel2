@@ -11,12 +11,18 @@ namespace app\modules\user\widgets;
 use app\modules\user\helpers\ModuleTrait;
 use yii\base\Widget;
 
+
 class InfoNavMenu extends Widget {
 
     use ModuleTrait;
 
     public $view = 'info_nav_menu';
 
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\HttpException
+     */
     public function run() {
 
         $user = user()->profile;

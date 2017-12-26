@@ -12,7 +12,7 @@ class ManagerController extends WebController {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'rules' => self::createRulesFromTask(ManagerTask::className())
+                'rules' => ManagerTask::createRulesController()
             ],
         ];
     }

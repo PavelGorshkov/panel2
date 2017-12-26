@@ -24,7 +24,7 @@ class ModuleController extends RedactorController{
             'access' => [
                 'class' => AccessControl::className(),
                 //'only' => ['logout'],
-                'rules' => self::createRulesFromTask(ModuleTask::className()),
+                'rules' => ModuleTask::createRulesController(),
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -82,6 +82,9 @@ class ModuleController extends RedactorController{
     }
 
 
+    /**
+     * @throws \yii\base\ExitException
+     */
     public function actionFlush() {
 
         app()->cache->flush();

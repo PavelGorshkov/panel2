@@ -4,16 +4,15 @@ namespace app\modules\core\components;
 use Imagine\Gd\Imagine as GdImagine;
 use Imagine\Gmagick\Imagine as GmagickImagine;
 use Imagine\Image\Box;
-use Imagine\Image\Color;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Point;
 use Imagine\Imagick\Imagine as ImagickImagine;
+use yii\base\BaseObject;
 use yii\base\Exception;
-use yii\base\Object;
 
 
-class Imagine extends Object{
+class Imagine extends BaseObject{
 
     /**
      * GD2 driver definition for Imagine implementation using the GD library.
@@ -114,7 +113,7 @@ class Imagine extends Object{
      * @param integer $height the crop height
      * @param array $start the starting point. This must be an array with two elements representing `x` and `y` coordinates.
      *
-     * @return ImageInterface
+     * @return \Imagine\Image\ManipulatorInterface
      * @throws Exception
      */
     public static function crop($filename, $width, $height, array $start = [0, 0])
@@ -138,6 +137,7 @@ class Imagine extends Object{
      * @param int $height
      *
      * @return ImageInterface
+     * @throws Exception
      */
     public static function resize($filename, $width, $height)
     {
@@ -155,7 +155,7 @@ class Imagine extends Object{
                 $width = $height * $ratio;
             }
 
-            $image->resize(new \Imagine\Image\Box($width, $height));
+            $image->resize(new Box($width, $height));
         }
 
         return $image;
@@ -169,33 +169,4 @@ class Imagine extends Object{
     {
         self::$_imagine = $imagine;
     }
-
-
-    /**
-     * Adds a frame around of the image. Please note that the image size will increase by `$margin` x 2.
-     * @param  string $filename the full path to the image file
-     * @param  integer $margin the frame size to add around the image
-     * @param  string $color the frame color
-     * @param  integer $alpha the alpha value of the frame.
-     * @return ImageInterface
-     */
-    public static function frame($filename, $margin = 20, $color = '666', $alpha = 100)
-    {
-        $img = static::getImagine()->open($filename);
-
-        $size = $img->getSize();
-
-        $pasteTo = new Point($margin, $margin);
-
-        $box = new Box($size->getWidth() + ceil($margin * 2), $size->getHeight() + ceil($margin * 2));
-
-        $image = static::getImagine()->create($box, new Color($color, $alpha));
-
-        $image->paste($img, $pasteTo);
-
-        return $image;
-    }
-
-
-
 }

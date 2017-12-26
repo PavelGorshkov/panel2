@@ -11,6 +11,11 @@ class InfoProfileWidget extends Widget {
 
     public  $view = 'profile';
 
+    /**
+     * @return null|string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\HttpException
+     */
     public function run() {
 
         $user = user()->info;

@@ -11,7 +11,8 @@ class SideBarWidget extends Menu {
     /**
      * @inheritdoc
      */
-    public $linkTemplate = '<a href="{url}">{icon} {label}</a>';
+    public $linkTemplate = /** @lang text */
+        '<a href="{url}">{icon} {label}</a>';
 
     /**
      * @inheritdoc
@@ -19,7 +20,8 @@ class SideBarWidget extends Menu {
      */
     public $labelTemplate = '<span>{label}</span>';
 
-    public $submenuTemplate = "\n<ul class='treeview-menu' {show}>\n{items}\n</ul>\n";
+    public $submenuTemplate = /** @lang text */
+        "\n<ul class='treeview-menu' {show}>\n{items}\n</ul>\n";
 
     public $activateParents = true;
 
@@ -74,8 +76,10 @@ class SideBarWidget extends Menu {
     protected function renderItem($item)
     {
         if (isset($item['items'])) {
-            $labelTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
-            $linkTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
+            $labelTemplate = /** @lang text */
+                '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
+            $linkTemplate = /** @lang text */
+                '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
         } else {
             $labelTemplate = $this->labelTemplate;
             $linkTemplate = $this->linkTemplate;

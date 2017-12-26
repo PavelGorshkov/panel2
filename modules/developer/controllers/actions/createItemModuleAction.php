@@ -20,6 +20,12 @@ class createItemModuleAction extends WebAction  {
     }
 
 
+    /**
+     * @param string $module
+     * @return string|\yii\web\Response
+     * @throws ServerErrorHttpException
+     * @throws \yii\base\ExitException
+     */
     public function run($module = '') {
 
         /* @var Model|GenerateFileModuleInterface $model */

@@ -1,13 +1,14 @@
 <?php
-
 namespace app\modules\user\models\query;
+
+use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserProfile]].
  *
  * @see \app\modules\user\models\UserProfile
  */
-class UserProfileQuery extends \yii\db\ActiveQuery
+class UserProfileQuery extends ActiveQuery
 {
     /*public function active()
     {

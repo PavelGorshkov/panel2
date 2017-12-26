@@ -1,13 +1,15 @@
 <?php
 namespace app\modules\core\components\actions;
 
+use yii\base\Action;
+
 /**
  * Class WebAction
  * @package app\modules\core\components\actions
  *
  * @property \app\modules\core\components\WebController $controller
  */
-class WebAction extends \yii\base\Action {
+class WebAction extends Action {
 
     public $view = null;
 

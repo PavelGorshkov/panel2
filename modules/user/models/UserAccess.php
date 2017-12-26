@@ -1,8 +1,8 @@
 <?php
-
 namespace app\modules\user\models;
 
-use Yii;
+use app\modules\user\models\query\UserAccessQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%user_access}}".
@@ -11,7 +11,7 @@ use Yii;
  * @property integer $type
  * @property integer $id
  */
-class UserAccess extends \yii\db\ActiveRecord
+class UserAccess extends ActiveRecord
 {
     const TYPE_USER = 0;
 
@@ -52,10 +52,10 @@ class UserAccess extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\query\UserAccessQuery the active query used by this AR class.
+     * @return UserAccessQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\modules\user\models\query\UserAccessQuery(get_called_class());
+        return new UserAccessQuery(get_called_class());
     }
 }

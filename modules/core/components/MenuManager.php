@@ -3,6 +3,7 @@ namespace app\modules\core\components;
 
 use Yii;
 use yii\base\Component;
+use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -132,6 +133,11 @@ class MenuManager extends Component {
     }
 
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     * @throws UnknownPropertyException
+     */
     public function __get($name) {
 
         if ($this->_menu === null) $this->setMenu();

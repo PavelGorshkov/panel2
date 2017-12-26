@@ -24,6 +24,10 @@ class RegistrationForm extends Model
     public $verifyCode;
 
 
+    /**
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
     public function isCaptchaEnabled()
     {
         if (!$this->module->showCaptcha || !Captcha::checkRequirements()) {
@@ -40,6 +44,10 @@ class RegistrationForm extends Model
     }
 
 
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
     public function rules()
     {
 

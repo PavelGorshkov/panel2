@@ -7,7 +7,7 @@ use app\modules\user\helpers\UserTokenTypeHelper;
 use app\modules\user\models\query\UserTokenQuery;
 use app\modules\user\models\User;
 use app\modules\user\models\UserToken;
-
+use \Throwable;
 use Yii;
 use yii\base\Component;
 use yii\db\Expression;
@@ -43,6 +43,7 @@ class TokenStorage extends Component {
      * @param $expire
      * @param $type
      * @return bool|UserToken
+     * @throws \yii\base\Exception
      */
     public function create(User $user, $expire, $type)
     {
@@ -85,6 +86,7 @@ class TokenStorage extends Component {
      * @param User $user
      *
      * @return UserToken|bool
+     * @throws \yii\base\Exception
      */
     public function createAccountActivationToken(User $user)
     {
@@ -94,6 +96,11 @@ class TokenStorage extends Component {
     }
 
 
+    /**
+     * @param User $user
+     * @return UserToken|bool
+     * @throws \yii\base\Exception
+     */
     public function createEmailActivationToken(User $user) {
 
         $this->deleteByTypeAndUser(UserTokenTypeHelper::EMAIL_VERIFY, $user);
@@ -122,6 +129,14 @@ class TokenStorage extends Component {
     }
 
 
+    /**
+     * @param UserToken $token
+     * @return false|int
+     *
+     * @throws \Exception
+     * @throws Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function delete(UserToken $token) {
 
         return $token->delete();
@@ -146,6 +161,11 @@ class TokenStorage extends Component {
     }
 
 
+    /**
+     * @param User $user
+     * @return UserToken|bool
+     * @throws \yii\base\Exception
+     */
     public function createPasswordToken(User $user) {
 
         $this->deleteByTypeAndUser(UserTokenTypeHelper::CHANGE_PASSWORD, $user);

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\user\models\query;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -8,7 +9,7 @@ use yii\helpers\ArrayHelper;
  *
  * @see \app\modules\user\models\UserRole
  */
-class UserRoleQuery extends \yii\db\ActiveQuery
+class UserRoleQuery extends ActiveQuery
 {
     /*public function active()
     {

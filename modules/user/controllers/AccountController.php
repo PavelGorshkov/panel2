@@ -53,6 +53,10 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @return string|\yii\web\Response
+     * @throws \yii\base\ExitException
+     */
     public function actionLogin()
     {
         if (!app()->user->isGuest) $this->goHome();
@@ -85,6 +89,14 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\ExitException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     */
     public function actionRegistration() {
 
         if ($this->module->registrationDisabled) {
@@ -120,6 +132,13 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @param $token
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionActivation($token) {
 
         if (app()->userManager->verifyEmail($token, UserTokenTypeHelper::ACTIVATE)) {
@@ -138,6 +157,14 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\ExitException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     */
     public function actionRecovery() {
 
         if ($this->module->recoveryDisabled) {
@@ -167,6 +194,17 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @param $token
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\base\ExitException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionRecoveryPassword($token) {
 
         if ($this->module->recoveryDisabled) throw new NotFoundHttpException();

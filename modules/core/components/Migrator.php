@@ -3,7 +3,6 @@ namespace app\modules\core\components;
 
 use Yii;
 use yii\base\Component;
-use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -25,7 +24,9 @@ class Migrator extends Component{
      * @param bool $class - migration class
      *
      * @return bool is updated to migration
-     **/
+     *
+     * @throws Exception
+     */
     public function checkForBadMigration($module, $class = false)
     {
         echo 'Проверяем на наличие незавершённых миграций.<br />';
@@ -47,30 +48,22 @@ class Migrator extends Component{
 
                 if ($migration['apply_time'] == 0) {
 
-                    try {
+                    echo 'Откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
+                    Yii::trace('Откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
 
-                        echo 'Откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
-                        Yii::trace('Откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
+                    if ($this->migrateDown($module, $migration['version']) !== false) {
 
-                        if ($this->migrateDown($module, $migration['version']) !== false) {
+                        (new Migration())->delete(
+                            $this->migrationTable,
+                            'version = :version AND module=:module',
+                            [':version'=>$migration['version'], ':module'=>$module]);
 
-                            (new Migration())->delete(
-                                $this->migrationTable,
-                                'version = :version AND module=:module',
-                                [':version'=>$migration['version'], ':module'=>$module]);
+                    } else {
 
-                        } else {
+                        Yii::warning('Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
+                        echo 'Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
 
-                            Yii::warning('Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
-                            echo 'Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
-
-                            return false;
-                        }
-
-                    } catch (ErrorException $e) {
-
-                        Yii::error('Произошла ошибка: '.$e, __METHOD__);
-                        echo 'Произошла ошибка: '.$e;
+                        return false;
                     }
                 }
             }
@@ -235,7 +228,7 @@ class Migrator extends Component{
      * @param string $module
      * @param string $class
      *
-     * @return bool|void
+     * @return bool
      * @throws Exception
      */
     public function migrateDown($module, $class)
@@ -285,7 +278,8 @@ class Migrator extends Component{
      *
      * @param string $module
      * @param string $className
-     * @return bool
+     *
+     * @return void
      * @throws Exception
      */
     protected function migrateUp($module, $className)
@@ -299,8 +293,6 @@ class Migrator extends Component{
         ob_implicit_flush(false);
 
         echo 'Применяем миграцию '.$className.'<br />';
-
-
 
         // Вставляем запись о начале миграции
         /* @var Migration $className */
@@ -323,8 +315,10 @@ class Migrator extends Component{
             (new Migration())->update(
                 $this->migrationTable,
                 ['apply_time' => time()],
-                "version = :ver AND module = :mod",
-                [':ver' => $className, 'mod' => $module]
+                "version = :ver AND module = :mod", [
+                    ':ver' => $className,
+                    ':mod' => ''
+                ]
             );
 
             $time = microtime(true) - $start;
@@ -372,6 +366,7 @@ class Migrator extends Component{
 
     /**
      * Обновление миграций системных модулей (core и user)
+     * @throws Exception
      */
     public function updateToLatestSystem() {
 

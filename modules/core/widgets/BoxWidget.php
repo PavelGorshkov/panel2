@@ -8,6 +8,7 @@
 
 namespace app\modules\core\widgets;
 
+use yii\bootstrap\ButtonGroup;
 use yii\helpers\Html;
 
 class BoxWidget extends \yii\bootstrap\Widget {
@@ -65,7 +66,8 @@ class BoxWidget extends \yii\bootstrap\Widget {
 
     public $boxBodyClass = '';
 
-    public $topTemplate = <<<HTML
+    public $topTemplate = /** @lang text */
+        <<<HTML
     <div {options}>
         <div {headerOptions}><h3 class="box-title">{title}</h3>{box-tools}</div>
         <div class="box-body{box-body-class}">
@@ -81,6 +83,9 @@ HTML;
 HTML;
 
 
+    /**
+     * @throws \Exception
+     */
     public function init()
     {
         Html::addCssClass($this->options, 'box');
@@ -147,6 +152,10 @@ HTML;
     }
 
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     protected function prepareBoxTools()
     {
         $boxTools = '';

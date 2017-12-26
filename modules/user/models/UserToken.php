@@ -3,8 +3,9 @@
 namespace app\modules\user\models;
 
 use app\modules\core\components\behaviors\ModelWebUserBehavior;
-use Yii;
+use app\modules\user\models\query\UserTokenQuery;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
@@ -24,7 +25,7 @@ use yii\db\Expression;
  *
  * @property User $user
  */
-class UserToken extends \yii\db\ActiveRecord
+class UserToken extends ActiveRecord
 {
     public function behaviors() {
 
@@ -94,10 +95,10 @@ class UserToken extends \yii\db\ActiveRecord
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\query\UserTokenQuery the active query used by this AR class.
+     * @return UserTokenQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\modules\user\models\query\UserTokenQuery(get_called_class());
+        return new UserTokenQuery(get_called_class());
     }
 }

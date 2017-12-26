@@ -21,7 +21,7 @@ interface ModuleSettingsInterface {
     /**
      * Выводит список модулей, от которых он будет зависеть
      *
-     * @return []
+     * @return array
      */
     public static function dependsOnModules();
 

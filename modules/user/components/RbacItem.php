@@ -1,15 +1,17 @@
 <?php
 namespace app\modules\user\components;
 
-use yii\base\Object;
-use yii\web\HttpException;
+use app\modules\core\helpers\RouterUrlHelper;
+use yii\base\BaseObject;
+use yii\rbac\Item;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Class RBACItem
  * @package app\modules\user\components
  *
  */
-abstract class RBACItem extends Object implements  RBACItemInterface {
+abstract class RBACItem extends BaseObject implements  RBACItemInterface {
 
     const TASK = '';
 
@@ -35,10 +37,42 @@ abstract class RBACItem extends Object implements  RBACItemInterface {
         return $class->getTitle($role);
     }
 
+    /**
+     * @return string
+     * @throws ServerErrorHttpException
+     */
     public function getTitleTask()
     {
         if (self::TASK) return self::TASK;
 
-        else throw new HttpException(500, 'Create method "public function getTitleTask()" in class "'.get_called_class().'"');
+        else throw new ServerErrorHttpException('Create method "public function getTitleTask()" in class "'.get_called_class().'"');
+    }
+
+
+    /**
+     * @return array
+     */
+    public static function createRulesController() {
+
+        /* @var RBACItem $class */
+        $class = get_called_class();
+        $rules = [];
+
+        foreach ($class->types as $type=>$item) {
+
+            if ($item !== Item::TYPE_PERMISSION) continue;
+
+            $action = RouterUrlHelper::getAction($type);
+
+            if ($action === null) continue;
+
+            $rules[] = [
+                'allow' => true,
+                'actions' => [$action],
+                'roles' => [$type],
+            ];
+        }
+
+        return $rules;
     }
 }

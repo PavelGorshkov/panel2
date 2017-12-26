@@ -1,13 +1,14 @@
 <?php
-
 namespace app\modules\user\models\query;
+
+use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserToken]].
  *
  * @see \app\modules\user\models\UserToken
  */
-class UserTokenQuery extends \yii\db\ActiveQuery
+class UserTokenQuery extends ActiveQuery
 {
     /*public function active()
     {

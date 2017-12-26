@@ -1,13 +1,15 @@
 <?php
 namespace app\modules\core\helpers;
 
+use yii\helpers\FileHelper;
+
 /**
  * Класс хелпер для работы с файлами приложения
  *
  * Class File
  * @package app\modules\core\helpers
  */
-class File extends \yii\helpers\FileHelper {
+class File extends FileHelper {
 
     /**
      * Проверка пути к директории. Если дириктории нет, создает директорию

@@ -54,6 +54,9 @@ class ProfileController extends RedactorController
     }
 
 
+    /**
+     * @return string
+     */
     public function actionIndex() {
 
         return $this->render('index', [
@@ -75,6 +78,13 @@ class ProfileController extends RedactorController
     }
 
 
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\base\ExitException
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     */
     public function actionEmail()
     {
         $this->layout = '@app/modules/user/views/layouts/profile_box';
@@ -106,7 +116,10 @@ class ProfileController extends RedactorController
     }
 
 
-
+    /**
+     * @return string
+     * @throws \yii\base\ExitException
+     */
     public function actionChangePassword()
     {
         $this->layout = '@app/modules/user/views/layouts/profile_box';
@@ -136,6 +149,10 @@ class ProfileController extends RedactorController
     }
 
 
+    /**
+     * @return string
+     * @throws \yii\base\ExitException
+     */
     public function actionUpdate()
     {
         $this->layout = '@app/modules/user/views/layouts/profile_box';
@@ -170,6 +187,11 @@ class ProfileController extends RedactorController
     /**
      * @param string $token
      * @throws NotFoundHttpException
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\base\ExitException
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
     public function actionConfirm($token) {
 

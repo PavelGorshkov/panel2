@@ -6,8 +6,6 @@ use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
-use app\modules\user\models\query\UserRoleQuery;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -80,6 +78,11 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
+    /**
+     * @param bool $insert
+     * @return bool
+     * @throws \yii\base\Exception
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {

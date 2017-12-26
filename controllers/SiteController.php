@@ -1,9 +1,7 @@
 <?php
-
 namespace app\controllers;
 
 use app\modules\user\helpers\UserSettings;
-use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -50,9 +48,8 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
      *
-     * @return string
+     * @throws \yii\base\ExitException
      */
     public function actionIndex()
     {
@@ -61,7 +58,10 @@ class SiteController extends Controller
         app()->end();
     }
 
-    
+
+    /**
+     * @param string|null $skin
+     */
 	 public function actionSkins($skin = null) {
 
         if ($skin !== null) {

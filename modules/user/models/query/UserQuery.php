@@ -1,18 +1,24 @@
 <?php
-
 namespace app\modules\user\models\query;
+
 use app\modules\user\helpers\UserStatusHelper;
+use app\modules\user\models\User;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
+ * Class UserQuery
+ * @package app\modules\user\models\query
+ *
  * This is the ActiveQuery class for [[User]].
- *
- * @see User
- * @method [User] all(\yii\db\Connection $db = null)
- * @method User|ActiveRecord|[]|null one(\yii\db\Connection $db = null)
- *
+ * @see \app\modules\user\models\User
  */
-class UserQuery extends \yii\db\ActiveQuery
+class UserQuery extends ActiveQuery
 {
+    /**
+     * @param null $db
+     * @return array|User[]|ActiveRecord[]
+     */
     public function all($db = null)
     {
         return parent::all($db);
@@ -20,7 +26,7 @@ class UserQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\User|array|null
+     * @return User|ActiveRecord|array|null
      */
     public function one($db = null)
     {
@@ -28,17 +34,29 @@ class UserQuery extends \yii\db\ActiveQuery
     }
 
 
+    /**
+     * @param $condition
+     * @param array $params
+     * @return $this
+     */
     public function findUser($condition, $params = []) {
 
         return $this->where($condition, $params);
     }
 
+    /**
+     * @return $this
+     */
     public function active() {
 
         return $this->andWhere(['status'=>UserStatusHelper::STATUS_ACTIVE]);
     }
 
 
+    /**
+     * @param $email
+     * @return User|array|null|ActiveRecord
+     */
     public function email($email) {
 
         return $this->where('email = :email', [':email'=>$email])->active()->one();

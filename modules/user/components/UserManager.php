@@ -21,7 +21,6 @@ use yii\base\Component;
 use yii\db\Expression;
 use yii\db\Transaction;
 use yii\helpers\ArrayHelper;
-use yii\web\ServerErrorHttpException;
 
 /**
  * Компонент для управления пользовательскими данными
@@ -120,9 +119,9 @@ class UserManager extends Component {
      * @param RegistrationForm $model
      * @param ProfileRegistrationForm $profile
      * @return bool
-     * @throws ServerErrorHttpException
      * @throws \yii\db\Exception
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile) {
 
@@ -275,7 +274,10 @@ class UserManager extends Component {
      * @param integer $tokenType
      *
      * @return bool
+     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
     public function verifyEmail($token, $tokenType) {
 
@@ -335,7 +337,11 @@ class UserManager extends Component {
      * @param User $user
      * @param UserToken $token
      * @return bool
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
     public function generatePassword(User $user, UserToken $token) {
 
@@ -343,7 +349,7 @@ class UserManager extends Component {
 
         $transaction = app()->db->beginTransaction();
 
-        if (!$this->updateUserSuccessStatus($user, $password)) return $this->failureTransaction($transaction);
+        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
 
         $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getUserPasswordEvent($user, $password));
 
@@ -361,6 +367,7 @@ class UserManager extends Component {
      * @return bool
      * @throws \yii\db\Exception
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function recoverySendMail(User $user) {
 
@@ -385,8 +392,11 @@ class UserManager extends Component {
      *
      * @return bool
      *
-     * @throws \yii\db\Exception
+     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
     public function changePassword(User $user, UserToken $token, $password) {
 
@@ -422,6 +432,7 @@ class UserManager extends Component {
      * @return bool
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
+     * @throws \yii\base\Exception
      */
     public function changeEmail(User $user, $email) {
 

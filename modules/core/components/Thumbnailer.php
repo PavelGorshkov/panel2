@@ -4,7 +4,6 @@ namespace app\modules\core\components;
 use app\modules\core\helpers\File;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
-use Yii;
 use yii\base\Component;
 use yii\web\HttpException;
 
@@ -37,12 +36,13 @@ class Thumbnailer extends Component{
      *
      * @return string
      * @throws HttpException
+     * @throws \yii\base\Exception
      */
     public function thumbnail(
         $file,
         $uploadDir,
-        $width = 0,
-        $height = 0,
+        $width = 0.0,
+        $height = 0.0,
         $crop = true
     ) {
         if (!$width && !$height) {

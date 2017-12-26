@@ -78,7 +78,7 @@ class BuildAuthManager extends Component {
 
 
     /**
-     * @param \app\modules\user\components\RbacItem $instance
+     * @param RBACItemInterface $instance
      *
      * @return array
      */
@@ -176,6 +176,9 @@ class BuildAuthManager extends Component {
     }
 
 
+    /**
+     * @throws Exception
+     */
     protected function saveRules() {
 
         $rules = '<?php return ' . var_export($this->getRules(), true) . ';';
@@ -190,6 +193,10 @@ class BuildAuthManager extends Component {
     }
 
 
+    /**
+     * @param $items
+     * @throws Exception
+     */
     protected function saveItems($items) {
 
         $content = '<?php return ' . var_export($items, true) . ';';

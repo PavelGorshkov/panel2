@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 14.12.2017
- * Time: 15:30
- */
-
 namespace app\modules\user\events;
 
 use app\modules\user\forms\ProfileRegistrationForm;

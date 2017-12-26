@@ -106,8 +106,8 @@ class Module extends ParentModule
                         'url' => ['/core/module/flush'],
                     ],
                 ],
-                'visible' => user()->can([Roles::ADMIN]),
-            ]
+                'visible' => app()->user->can([Roles::ADMIN]),
+            ],
         ];
     }
 }

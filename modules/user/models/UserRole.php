@@ -4,7 +4,6 @@ namespace app\modules\user\models;
 
 use app\modules\core\components\behaviors\ModelWebUserBehavior;
 use app\modules\user\models\query\UserRoleQuery;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;

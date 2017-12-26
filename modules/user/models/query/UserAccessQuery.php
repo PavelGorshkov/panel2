@@ -1,14 +1,15 @@
 <?php
-
 namespace app\modules\user\models\query;
+
 use app\modules\user\models\UserAccess;
+use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserAccess]].
  *
  * @see \app\modules\user\models\UserAccess
  */
-class UserAccessQuery extends \yii\db\ActiveQuery
+class UserAccessQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -33,6 +34,12 @@ class UserAccessQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
+
+    /**
+     * @param $id
+     * @param $type
+     * @return array|null
+     */
     public function getData($id, $type) {
 
         $data = $this

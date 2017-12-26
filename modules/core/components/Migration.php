@@ -55,6 +55,7 @@ class Migration extends \yii\db\Migration {
     /**
      * get options for schema
      *
+     * @param string $type
      * @return string options
      */
     public function getOptions($type = 'MyISAM')

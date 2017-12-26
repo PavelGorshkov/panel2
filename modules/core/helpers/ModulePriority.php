@@ -3,8 +3,8 @@ namespace app\modules\core\helpers;
 
 use app\modules\core\components\ConfigManager;
 use Yii;
-use yii\base\Exception;
 use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Класс хранящий приоритеты модулей
@@ -20,6 +20,11 @@ class ModulePriority {
 
     private $file = 'module_priority';
 
+
+    /**
+     * @return array
+     * @throws ServerErrorHttpException
+     */
     private function _createPriorityModuleFile() {
 
         $configPath = Yii::getAlias('@app/config/modules');
@@ -90,15 +95,9 @@ class ModulePriority {
 
         if (!$this->_issetFile()) return null;
 
-        try {
-            $data = @json_decode(file_get_contents($this->getFile()), 1);
+        $data = @json_decode(file_get_contents($this->getFile()), 1);
 
-            if (is_array($data) === false) {$data = null;}
-
-        } catch (Exception $e) {
-
-            $data = null;
-        }
+        if (is_array($data) === false) {$data = null;}
 
         return $data;
     }
@@ -109,12 +108,13 @@ class ModulePriority {
      *
      * @param array $data
      * @return bool
-     * @throws HttpException
+     * @throws ServerErrorHttpException
      */
     private function _saveFile(array $data) {
 
         if (!file_put_contents($this->getFile(), $this->_getFileTemplateJSON($data))) {
-            throw new HttpException('500', 'Ошибка записи кеша в файл '.$this->getFile().' в классе "'.__CLASS__.'"');
+
+            throw new ServerErrorHttpException('Ошибка записи кеша в файл '.$this->getFile().' в классе "'.__CLASS__.'"');
         }
 
         (new ConfigManager())->flushCache();
@@ -180,6 +180,9 @@ class ModulePriority {
     }
 
 
+    /**
+     * @throws ServerErrorHttpException
+     */
     public function initData() {
 
         if (($data = $this->_loadFile()) === null) {
@@ -197,6 +200,7 @@ class ModulePriority {
      * @param array $data
      *
      * @return bool
+     * @throws HttpException
      */
     public function setData(array $data) {
 
@@ -219,6 +223,7 @@ class ModulePriority {
      * Удаление модулей из файла приоритетов
      *
      * @param $data
+     * @throws HttpException
      */
     public function unsetData($data) {
 

@@ -15,6 +15,10 @@ class FlashMessages extends Widget{
 
     public $closeButton = [];
 
+    /**
+     * @return string|void
+     * @throws \Exception
+     */
     public function run() {
 
         $webUser = app()->user;

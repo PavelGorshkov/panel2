@@ -2,7 +2,7 @@
 namespace app\modules\core\models;
 
 use app\modules\core\models\query\SettingsQuery;
-use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property string $created_at
  * @property string $updated_at
  */
-class Settings extends \yii\db\ActiveRecord
+class Settings extends ActiveRecord
 {
     const USER_DATA = 'user_data';
 

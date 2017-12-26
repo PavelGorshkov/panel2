@@ -4,10 +4,10 @@ namespace app\modules\developer\models;
 use app\modules\core\components\Migrator;
 use app\modules\core\helpers\File;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 
-class MigrationConstructor extends Object {
+class MigrationConstructor extends BaseObject {
 
     const ACCESS_FOLDER = 0777;
 
@@ -23,10 +23,15 @@ class MigrationConstructor extends Object {
 
         $this->_attributes = $attributes;
 
-
+        parent::__construct();
     }
 
 
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws \yii\base\UnknownPropertyException
+     */
     public function __get($name) {
 
         return isset($this->_attributes[$name])
@@ -36,6 +41,11 @@ class MigrationConstructor extends Object {
     }
 
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @throws \yii\base\UnknownPropertyException
+     */
     public function __set($name, $value) {
 
         if (isset($this->_attributes[$name])) $this->_attributes[$name] = $value;

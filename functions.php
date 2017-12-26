@@ -1,6 +1,10 @@
-<?php 
+<?php
 
-    function printr($data, $isDie = false) {
+use app\modules\core\components\Application as CoreApplication;
+use yii\console\Application as ConsoleApplication;
+use yii\web\Application as WebApplication;
+
+function printr($data, $isDie = false) {
 
         //if (!((defined('YII_ENV') && YII_ENV === 'dev') && (defined('YII_DEBUG') && YII_DEBUG))) return;
 
@@ -16,7 +20,7 @@
     }
 
     /**
-    * @return \app\modules\core\components\Application
+    * @return CoreApplication|ConsoleApplication|WebApplication the application instance
     */
     function app() {
 

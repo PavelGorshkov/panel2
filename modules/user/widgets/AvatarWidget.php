@@ -59,6 +59,11 @@ class AvatarWidget extends Widget {
     public $size = 100;
 
 
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\HttpException
+     */
     public function run() {
 
         if ($this->user === null) $this->user = user()->profile;

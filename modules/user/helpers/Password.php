@@ -16,6 +16,11 @@ namespace app\modules\user\helpers;
  */
 class Password {
 
+    /**
+     * @param $password
+     * @return string
+     * @throws \yii\base\Exception
+     */
     public static function hash($password)
     {
         return app()->security->generatePasswordHash($password, app()->getModule('user')->cost);

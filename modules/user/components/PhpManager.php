@@ -20,6 +20,9 @@ class PhpManager extends AuthPhpManager
     public $ruleFile = '@app/runtime/rbac/rules.php';
 
 
+    /**
+     * @throws \yii\base\Exception
+     */
     public function init()
     {
         File::checkPath(Yii::getAlias('@app/runtime/rbac/'));

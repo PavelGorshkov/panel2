@@ -37,7 +37,7 @@ class WebUser extends \yii\web\User
 
 
     /**
-     * @param string $permissionName
+     * @param array|string $permissionName
      * @param array $params
      * @param bool $allowCaching
      * @return bool
@@ -65,7 +65,6 @@ class WebUser extends \yii\web\User
      *
      * @param string $key
      * @param string $value
-     * @param string|null $defaultValue
      */
     public function setFlash($key,$value) {
 

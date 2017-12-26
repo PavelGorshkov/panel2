@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\core\widgets;
 
-use app\modules\core\helpers\UserSettings;
+use app\modules\user\helpers\UserSettings;
 use yii\bootstrap\ButtonGroup;
 use yii\grid\GridView;
 use yii\web\View;
@@ -71,6 +71,9 @@ class CustomGridView extends GridView {
     }
 
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function init() {
 
         $this->headlinePosition = empty($this->headlinePosition) ? self::HP_RIGHT : $this->headlinePosition;
@@ -119,7 +122,7 @@ class CustomGridView extends GridView {
             $this->_pageSizesEnabled = true;
 
             // Web-user specifies desired page size.
-            if (($pageSizeFromRequest = app()->request()->get($this->pageSizeVarName)) !== null) {
+            if (($pageSizeFromRequest = app()->request->get($this->pageSizeVarName)) !== null) {
 
                 $pageSizeFromRequest = (int)$pageSizeFromRequest;
                 // Check whether given page size is valid or use default value
@@ -136,6 +139,9 @@ class CustomGridView extends GridView {
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function renderHeadline() {
 
         if (!$this->_pageSizesEnabled || $this->dataProvider->getTotalCount() < 5) {
@@ -163,14 +169,15 @@ class CustomGridView extends GridView {
 
         echo ButtonGroup::widget(['buttons' => $buttons,]);
 
-        $csrfTokenName = app()->request->csrfParam();
+        $csrfTokenName = app()->request->csrfParam;
         $csrfToken = app()->request->getCsrfToken();
 
         $csrf = app()->request->enableCsrfValidation === false
             ? ""
             : ", '$csrfTokenName':'{$csrfToken}'";
 
-        $this->view->registerJs( <<<JS
+        $this->view->registerJs( /** @lang text */
+            <<<JS
             (function () {
     $('body').on('click', '#{$this->getId()} .pageSize', function (event) {
         event.preventDefault();
@@ -188,15 +195,23 @@ JS
     }
 
 
+    /**
+     * @param $name
+     *
+     * @return void
+     * @throws \Exception
+     */
     public function renderSection($name) {
 
         switch ($name) {
 
             case '{{headline}}':
-                return $this->renderHeadline();
+                echo $this->renderHeadline();
+                break;
 
             default:
-                return parent::renderSection($name);
+                echo parent::renderSection($name);
+                break;
         }
     }
 }
