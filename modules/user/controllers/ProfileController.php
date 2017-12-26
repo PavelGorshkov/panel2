@@ -3,12 +3,20 @@ namespace app\modules\user\controllers;
 
 use app\modules\core\components\RedactorController;
 use app\modules\user\forms\EmailProfileForm;
+use app\modules\user\forms\PasswordProfileForm;
 use app\modules\user\forms\ProfileForm;
-use yii\debug\models\search\Profile;
+use app\modules\user\helpers\UserTokenTypeHelper;
+use app\modules\user\Module;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
-
+/**
+ * Class ProfileController
+ * @package app\modules\user\controllers
+ *
+ * @property Module $module
+ */
 class ProfileController extends RedactorController
 {
     protected $actionMenu = [
@@ -35,6 +43,8 @@ class ProfileController extends RedactorController
                             'update',
                             'change-password',
                             'email',
+                            'confirm',
+                            'change-password'
                         ],
                         'roles' => ['@'],
                     ],
@@ -79,18 +89,50 @@ class ProfileController extends RedactorController
 
             if (app()->userManager->changeEmail(user()->info, $model->email)) {
 
+                if ($this->module->emailAccountVerification) {
 
+                    user()->setWarningFlash('Вам необходимо продтвердить новый e-mail, проверьте почту!');
+                } else {
+
+                    user()->setSuccessFlash('Ваш email был изменен');
+                }
+
+                $this->redirect(Url::to(['update']));
+                app()->end();
             }
         }
 
-        return $this->render('email');
+        return $this->render('email', ['model'=>$model]);
     }
 
 
 
     public function actionChangePassword()
     {
-        return $this->render('password');
+        $this->layout = '@app/modules/user/views/layouts/profile_box';
+
+        $this->setSmallTitle('Изменение пароля');
+
+        $model = new PasswordProfileForm();
+
+        $this->performAjaxValidation($model);
+
+        if ($model->load(app()->request->post()) && $model->validate()) {
+
+            if (app()->userManager->changePasswordProfile($model->password)) {
+
+                user()->setSuccessFlash('Ваш пароль успешно изменен!');
+
+            } else {
+
+                user()->setErrorFlash('Не удалось изменить пароль');
+            }
+
+            $this->redirect(Url::to(['view']));
+            app()->end();
+        }
+
+        return $this->render('password', ['model'=>$model]);
     }
 
 
@@ -125,5 +167,27 @@ class ProfileController extends RedactorController
     }
 
 
+    /**
+     * @param string $token
+     * @throws NotFoundHttpException
+     */
+    public function actionConfirm($token) {
+
+        if (!$this->module->emailAccountVerification) {
+
+            throw new NotFoundHttpException();
+        }
+
+        if (app()->userManager->verifyEmail($token, UserTokenTypeHelper::EMAIL_VERIFY)) {
+
+            user()->setSuccessFlash('Ваш email подтвержден!');
+        } else {
+
+            user()->setErrorFlash('Не удалось подтвердить email');
+        }
+
+        $this->redirect(Url::to(['view']));
+        app()->end();
+    }
 
 }

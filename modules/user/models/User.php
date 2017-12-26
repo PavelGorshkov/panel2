@@ -71,11 +71,12 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function scenarios() {
 
-        return [
-            self::SCENARIO_REGISTER =>[
-                'username', 'email',
-            ]
-        ];
+        return ArrayHelper::merge(parent::scenarios(),
+            [
+                self::SCENARIO_REGISTER =>[
+                    'username', 'email',
+                ]
+            ]);
     }
 
 

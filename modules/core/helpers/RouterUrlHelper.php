@@ -107,4 +107,10 @@ class RouterUrlHelper {
     }
 
 
+    public static function getAction($url) {
+
+        $url = self::parseUrl($url);
+
+        return !empty($url)?$url[count($url)-1]:null;
+    }
 }

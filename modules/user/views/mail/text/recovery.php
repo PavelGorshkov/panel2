@@ -1,6 +1,10 @@
 <?php
+use app\modules\user\models\UserToken;
 use yii\helpers\Url;
 
+/** @var string $fullName */
+/** @var UserToken $token */
+/** @var string $expire */
 ?>
 Здравствуйте, <?=$fullName?>
 

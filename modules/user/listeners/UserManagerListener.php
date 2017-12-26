@@ -127,7 +127,8 @@ class UserManagerListener {
             'changeEmail',
             [
                 'fullName'=>$user->userProfile->full_name,
-                'token'=>$event->getToken()
+                'token'=>$event->getToken(),
+                'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenActivationLifeHours*3600)),
             ]
         );
     }

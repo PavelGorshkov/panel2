@@ -1,8 +1,11 @@
 <?php
 namespace app\modules\core\components;
 
+use app\modules\core\helpers\RouterUrlHelper;
+use app\modules\user\components\RBACItem;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
+use yii\rbac\Item;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -93,5 +96,35 @@ class WebController extends Controller
             app()->response->send();
             app()->end();
         }
+    }
+
+
+    /**
+     * @param string $classTaskName
+     *
+     * @return array
+     */
+    protected static function createRulesFromTask($classTaskName) {
+
+        /* @var RBACItem $class */
+        $class = new $classTaskName;
+        $rules = [];
+
+        foreach ($class->types as $type=>$item) {
+
+            if ($item !== Item::TYPE_PERMISSION) continue;
+
+            $action = RouterUrlHelper::getAction($type);
+
+            if ($action === null) continue;
+
+            $rules[] = [
+                'allow' => true,
+                'actions' => [$action],
+                'roles' => [$type],
+            ];
+        }
+
+        return $rules;
     }
 }

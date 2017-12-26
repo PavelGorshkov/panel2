@@ -49,11 +49,6 @@ class UserManager extends Component {
     use UserManagerEventHelper;
 
     /**
-     * @var UserQuery
-     */
-    protected $userQuery;
-
-    /**
      * @var TokenStorage
      */
     protected $tokenStorage;
@@ -62,6 +57,12 @@ class UserManager extends Component {
      * @var UserAccessQuery
      */
     protected $userAccessQuery;
+
+
+    /**
+     * @var UserQuery
+     */
+    protected $userQuery;
 
 
     /**
@@ -91,7 +92,7 @@ class UserManager extends Component {
 
     /**
      * @param $usernameOrEmail
-     * @return array|null|\yii\db\ActiveRecord
+     * @return User|null|\yii\db\ActiveRecord
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
     {
@@ -101,6 +102,10 @@ class UserManager extends Component {
     }
 
 
+    /**
+     * @param $id
+     * @return User|array|null
+     */
     public function findUserById($id) {
 
         return $this->userQuery
@@ -147,9 +152,7 @@ class UserManager extends Component {
             $this->trigger(self::EVENT_SUCCESS_REGISTRATION_NEED_ACTIVATION, $event);
         }
 
-        $transaction->commit();
-
-        return true;
+        return $this->successTransaction($transaction);
     }
 
 
@@ -185,6 +188,20 @@ class UserManager extends Component {
         $transaction->rollBack();
 
         return false;
+    }
+
+
+    /**
+     * @param Transaction $transaction
+     * @return bool
+     *
+     * @throws \yii\db\Exception
+     */
+    protected function successTransaction(Transaction $transaction) {
+
+        $transaction->commit();
+
+        return true;
     }
 
 
@@ -231,10 +248,32 @@ class UserManager extends Component {
 
 
     /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function updateUserSuccessStatus(User $user) {
+
+        return (bool) $user->updateAttributes([
+            'status'=>UserStatusHelper::STATUS_ACTIVE,
+            'status_change_at'=>new Expression('NOW()'),
+            'email_confirm'=>EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
+        ]);
+    }
+
+
+    protected function updateUserHashPassword(User $user, $password) {
+
+        return (bool) $user->updateAttributes(['hash'=>Password::hash($password)]);
+    }
+
+
+    /**
      * Проверка Email
      *
      * @param string $token
      * @param integer $tokenType
+     *
      * @return bool
      * @throws \yii\db\Exception
      */
@@ -248,18 +287,11 @@ class UserManager extends Component {
 
         $transaction = app()->db->beginTransaction();
 
-        if (!$user->updateAttributes(
-            [
-                'status'=>UserStatusHelper::STATUS_ACTIVE,
-                'status_change_at'=>new Expression('NOW()'),
-                'email_confirm'=>EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
-            ]
-        )) return $this->failureTransaction($transaction);
+        if (!$this->updateUserSuccessStatus($user)) return $this->failureTransaction($transaction);
 
         if (!$this->tokenStorage->delete($tokenModel)) return $this->failureTransaction($transaction);
 
-        $transaction->commit();
-        return true;
+        return $this->successTransaction($transaction);
     }
 
 
@@ -311,15 +343,13 @@ class UserManager extends Component {
 
         $transaction = app()->db->beginTransaction();
 
-        if (!$user->updateAttributes(['hash'=>Password::hash($password)])) return $this->failureTransaction($transaction);
+        if (!$this->updateUserSuccessStatus($user, $password)) return $this->failureTransaction($transaction);
 
         $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getUserPasswordEvent($user, $password));
 
         if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
 
-        $transaction->commit();
-
-        return true;
+        return $this->successTransaction($transaction);
     }
 
 
@@ -344,9 +374,7 @@ class UserManager extends Component {
 
         $this->trigger(self::EVENT_RECOVERY_PASSWORD, $this->getUserTokenEvent($user, $token));
 
-        $transaction->commit();
-
-        return true;
+        return $this->successTransaction($transaction);
     }
 
 
@@ -364,7 +392,7 @@ class UserManager extends Component {
 
         $transaction = app()->db->beginTransaction();
 
-        if (!$user->updateAttributes(['hash'=>Password::hash($password)])) return $this->failureTransaction($transaction);
+        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
 
         if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
 
@@ -373,6 +401,17 @@ class UserManager extends Component {
         $transaction->commit();
 
         return true;
+    }
+
+
+    /**
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function changePasswordProfile($password) {
+
+        return $this->updateUserHashPassword(app()->user->info, $password);
     }
 
 
@@ -395,20 +434,15 @@ class UserManager extends Component {
 
         if (!$user->save()) return $this->failureTransaction($transaction);
 
+        if (!$this->module->emailAccountVerification) return $this->successTransaction($transaction);
+
         $token = $this->tokenStorage->createEmailActivationToken($user);
 
-        if ($token === false) {
-
-            $transaction->rollBack();
-
-            return false;
-        }
+        if ($token === false) return $this->failureTransaction($transaction);
 
         $this->trigger(self::EVENT_CHANGE_EMAIL, $this->getUserTokenEvent($user, $token));
 
-        $transaction->commit();
-
-        return true;
+        return $this->successTransaction($transaction);
     }
 
 
@@ -420,7 +454,9 @@ class UserManager extends Component {
     public function saveProfile(ProfileForm $model) {
 
         $data = $model->getAttributes();
+
         $data['avatar'] = $data['avatar_file'];
+
         unset($data['avatar_file']);
         unset($data['email']);
 

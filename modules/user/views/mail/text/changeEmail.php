@@ -1,13 +1,16 @@
 <?php
-use yii\helpers\Html;
+use app\modules\user\models\UserToken;
 use yii\helpers\Url;
 
+/** @var string $fullName */
+/** @var UserToken $token */
+/** @var string $expire */
 ?>
 Здравствуйте, <?=$fullName?>
 
 На сайте "<?=app()->name?>" Вы успешно изменили e-mail.
 
-Для подтверждения электронной почты перейдите, пожалуйста по ссылке: <?=Url::to(['/user/account/confirm', 'token'=>$token->token], 1)?>
+Для подтверждения электронной почты перейдите, пожалуйста по ссылке: <?=Url::to(['/user/profile/confirm', 'token'=>$token->token], 1)?>
 
 Срок действия ссылки до <?=$expire?>
 

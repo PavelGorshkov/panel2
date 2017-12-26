@@ -1,6 +1,9 @@
 <?php
 use yii\helpers\Url;
 
+/** @var string $fullName */
+/** @var string $email */
+/** @var string $password */
 ?>
 Здравствуйте, <?=$fullName?>
 

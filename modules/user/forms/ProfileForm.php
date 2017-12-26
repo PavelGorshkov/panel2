@@ -65,7 +65,7 @@ class ProfileForm extends FormModel {
 
         if (($this->avatar_file = UploadedFile::getInstance($this, 'avatar_file')) !== null) {
 
-            if ($this->validate()) {
+            if ($this->validate('avatar_file')) {
 
                 if (
                     $this->avatar_file

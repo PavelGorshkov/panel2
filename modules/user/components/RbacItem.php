@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\user\components;
 
+use yii\base\Object;
 use yii\web\HttpException;
 
 /**
@@ -8,7 +9,7 @@ use yii\web\HttpException;
  * @package app\modules\user\components
  *
  */
-abstract class RBACItem implements  RBACItemInterface {
+abstract class RBACItem extends Object implements  RBACItemInterface {
 
     const TASK = '';
 

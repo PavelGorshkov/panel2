@@ -24,18 +24,7 @@ class ModuleController extends RedactorController{
             'access' => [
                 'class' => AccessControl::className(),
                 //'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => [ModuleTask::OPERATION_ENABLED],
-                    ],
-                    [
-                        'actions' => ['flush'],
-                        'allow' => true,
-                        'roles' => [ModuleTask::OPERATION_FLUSH],
-                    ],
-                ],
+                'rules' => self::createRulesFromTask(ModuleTask::className()),
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
