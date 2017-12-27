@@ -32,6 +32,11 @@ HTML;
 HTML;
 
 
+    public $itemLabelSingle = 'запись';
+
+    public $itemLabelPlural = 'записей';
+
+
     protected function renderPanel()
     {
         if (!$this->bootstrap || !is_array($this->panel) || empty($this->panel)) {

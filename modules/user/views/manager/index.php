@@ -14,7 +14,6 @@ use kartik\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Pjax;
 
 
 $this->setBreadcrumbs([
@@ -47,8 +46,19 @@ try {
         'filterRowOptions' => ['class' => 'kartik-sheet-style'],
         'toolbar' =>  [
             ['content' =>
-                Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type' => 'button', 'title' => Yii::t('kvgrid', 'Add Book'), 'class' => 'btn btn-success', 'onclick' => 'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-                Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax' => 0, 'class' => 'btn btn-default', 'title' => Yii::t('kvgrid', 'Reset Grid')])
+                Html::a(
+                    '<i class="glyphicon glyphicon-plus"></i>',
+                    ['create'],
+                    [
+                        'title' => 'Добавить пользователя',
+                        'class' => 'btn btn-success',
+                    ]
+                )
+                . ' '.
+                Html::a(
+                    '<i class="glyphicon glyphicon-repeat"></i>',
+                    ['index'],
+                    ['data-pjax' => 0, 'class' => 'btn btn-default', 'title' => 'Сбросить фильтры'])
             ],
             '{export}',
             '{toggleData}',
@@ -68,8 +78,7 @@ try {
         ],
         'persistResize' => false,
         'toggleDataOptions' => ['minCount' => 10],
-        'itemLabelSingle' => 'book',
-        'itemLabelPlural' => 'books',
+
 
         'columns' => [
             [
