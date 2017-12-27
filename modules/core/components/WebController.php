@@ -94,12 +94,4 @@ class WebController extends Controller
             app()->end();
         }
     }
-
-
-    /**
-     * @param string $classTaskName
-     *
-     * @return array
-     */
-
 }

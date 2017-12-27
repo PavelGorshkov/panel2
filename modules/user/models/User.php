@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\web\IdentityInterface;
 
 /**
@@ -37,15 +38,9 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const SCENARIO_REGISTER = 'register';
-/*
-    const ACCESS_LEVEL_USER = 0;
 
-    const ACCESS_LEVEL_ADMIN = 1;
+    protected static $_accessList = null;
 
-    const ACCESS_LEVEL_OBSERVER = 2;
-
-    const ACCESS_LEVEL_REDACTOR = 3;
-*/
     public function behaviors() {
 
         return [
@@ -138,17 +133,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'username' => 'Логин',
             'email' => 'Email',
-            'email_confirm' => 'Email Confirm',
+            'email_confirm' => 'Подтверждение email',
             'hash' => 'Hash',
             'auth_key' => 'Auth Key',
-            'user_ip' => 'User Ip',
-            'status' => 'Status',
-            'status_change_at' => 'Status Change At',
-            'visited_at' => 'Visited At',
-            'registered_from' => 'Registered From',
-            'access_level' => 'Access Level',
+            'user_ip' => 'IP пользователя',
+            'status' => 'Статус',
+            'status_change_at' => 'Время изменения статуса',
+            'visited_at' => 'Последний визит',
+            'registered_from' => 'Тип регистрации',
+            'access_level' => 'Группа',
             'logged_in_from' => 'Logged In From',
             'logged_at' => 'Logged At',
             'created_at' => 'Created At',
@@ -234,19 +229,40 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
-    public function getAccessLevelList()
+    public static function getAccessLevelList()
     {
-        return ArrayHelper::merge(
-            UserAccessLevelHelper::getList(),
-            UserRole::find()->allListRoles()
-        );
+        if (self::$_accessList === null) {
+
+            self::$_accessList = ArrayHelper::merge(
+                UserAccessLevelHelper::getList(),
+                UserRole::find()->allListRoles()
+            );
+        }
+
+        return self::$_accessList;
     }
 
 
     public function getAccessGroup() {
 
-        $data = $this->getAccessLevelList();
+        $data = self::getAccessLevelList();
 
         return isset($data[$this->access_level]) ? $data[$this->access_level] : '*не известна*';
+    }
+
+
+    public function getContact() {
+
+        $text = [
+            $this->userProfile->full_name,
+            Html::a($this->email, "mailto:".$this->email),
+        ];
+
+        if ($this->userProfile->phone)  {
+
+            $text[] = $this->userProfile->phone;
+        }
+
+        return implode('<br>', $text);
     }
 }

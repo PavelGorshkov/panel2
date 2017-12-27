@@ -1,217 +1,86 @@
 <?php
 namespace app\modules\core\widgets;
 
-use app\modules\user\helpers\UserSettings;
-use yii\bootstrap\ButtonGroup;
-use yii\grid\GridView;
-use yii\web\View;
-
+use kartik\grid\GridView;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 class CustomGridView extends GridView {
 
-    /**
-     *  constant of headline positions:
-     * @uses renderHeadline
-     * @var string
-     **/
-    const HP_LEFT = 'left';
-    /**
-     *
-     */
-    const HP_RIGHT = 'right';
+    public $panelPrefix = 'box box-';
 
-    public $pageSizes = [5, 10, 15, 20, 50, 100];
+    public $panelTemplate = <<<HTML
+    <div class="{prefix}{type}">
+        {panelHeading}
+        <div class="box-body">
+            {panelBefore}
+            {items}
+            {panelAfter}
+        </div>
+        {panelFooter}
+    </div>
+HTML;
 
-    public $pageSizeVarName = 'pageSize';
-
-    protected $_pageSizesEnabled = false;
-
-    public $headlinePosition = self::HP_RIGHT;
-
-    public $layout = "{summary}\n{items}\n{pager}<div class='pull-right'>{headline}</div>";
-
-
-    /**
-     * @var string
-     */
-    public $pagerCssClass = 'pager-container';
-
-    /**
-     * @var bool
-     */
-    public $actionsButtons = null;
-
-    /**
-     * @var bool
-     */
-    public $enableHistory = true;
+    public $panelHeadingTemplate = <<< HTML
+    <div class="pull-right">
+        {summary}
+    </div>
+    <h3 class="box-title">
+        {heading}
+    </h3>
+    <div class="clearfix"></div>
+HTML;
 
 
-    public function renderBulkActions()
+    protected function renderPanel()
     {
-        echo '<tr><td colspan="'.count($this->columns).'" class="grid-toolbar">';
-
-        if (!empty($this->actionsButtons)) {
-
-            if (is_array($this->actionsButtons)) {
-
-                foreach ($this->actionsButtons as $button) {
-                    echo $button;
-                }
-
-            } else {
-
-                if (is_string($this->actionsButtons)) {
-
-                    echo $this->actionsButtons;
-                }
-            }
-        }
-        echo '</td></tr>';
-    }
-
-
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function init() {
-
-        $this->headlinePosition = empty($this->headlinePosition) ? self::HP_RIGHT : $this->headlinePosition;
-
-        $this->initPageSizes();
-
-        parent::init();
-    }
-
-
-    protected function _getPageSize($currentPageSize = 0) {
-
-        $pageSize = UserSettings::model()->pageSize;
-
-        if ($pageSize === null) {
-
-            UserSettings::model()->pageSize = $currentPageSize;
-            $pageSize = $currentPageSize;
-        }
-
-        return $pageSize;
-    }
-
-
-    protected function _updatePageSize($pageSize)
-    {
-        if ($pageSize !== UserSettings::model()->pageSize) {
-
-            UserSettings::model()->pageSize = $pageSize;
-        }
-    }
-
-
-    protected function initPageSizes()
-    {
-        $pagination = $this->dataProvider->getPagination();
-
-        $pageSize = $this->_getPageSize(isset($pagination->pageSize)?$pagination->pageSize:0);
-
-        if (
-            strpos($this->layout, '{headline}') === false
-            || $pagination === false
-        ) {
-            $this->_pageSizesEnabled = false;
-        } else {
-            $this->_pageSizesEnabled = true;
-
-            // Web-user specifies desired page size.
-            if (($pageSizeFromRequest = app()->request->get($this->pageSizeVarName)) !== null) {
-
-                $pageSizeFromRequest = (int)$pageSizeFromRequest;
-                // Check whether given page size is valid or use default value
-                if (in_array($pageSizeFromRequest, $this->pageSizes)) {
-                    $pagination->pageSize = $pageSizeFromRequest;
-                    $this->_updatePageSize($pageSizeFromRequest);
-                }
-            } // Check for value at session or use default value
-            else {
-
-                $pagination->pageSize = $pageSize;
-            }
-        }
-    }
-
-
-    /**
-     * @throws \Exception
-     */
-    public function renderHeadline() {
-
-        if (!$this->_pageSizesEnabled || $this->dataProvider->getTotalCount() < 5) {
+        if (!$this->bootstrap || !is_array($this->panel) || empty($this->panel)) {
             return;
         }
+        $type = ArrayHelper::getValue($this->panel, 'type', 'default');
+        $heading = ArrayHelper::getValue($this->panel, 'heading', '');
+        $footer = ArrayHelper::getValue($this->panel, 'footer', '');
+        $before = ArrayHelper::getValue($this->panel, 'before', '');
+        $after = ArrayHelper::getValue($this->panel, 'after', '');
+        $headingOptions = ArrayHelper::getValue($this->panel, 'headingOptions', []);
+        $footerOptions = ArrayHelper::getValue($this->panel, 'footerOptions', []);
+        $beforeOptions = ArrayHelper::getValue($this->panel, 'beforeOptions', []);
+        $afterOptions = ArrayHelper::getValue($this->panel, 'afterOptions', []);
+        $panelHeading = '';
+        $panelBefore = '';
+        $panelAfter = '';
+        $panelFooter = '';
 
-        $buttons = [];
-
-        $currentPageSize = $this->dataProvider->getPagination()->pageSize;
-
-        foreach ($this->pageSizes as $pageSize) {
-
-            $buttons[] = [
-                'label' => $pageSize,
-                'active' => $pageSize == $currentPageSize,
-                'htmlOptions' => [
-                    'class' => 'pageSize btn btn-sm',
-                    'rel' => $pageSize,
-                ],
-                'url' => '#',
-            ];
+        if ($heading !== false) {
+            static::initCss($headingOptions, 'box-header with-border');
+            $content = strtr($this->panelHeadingTemplate, ['{heading}' => $heading]);
+            $panelHeading = Html::tag('div', $content, $headingOptions);
         }
-
-        echo 'Выводить по';
-
-        echo ButtonGroup::widget(['buttons' => $buttons,]);
-
-        $csrfTokenName = app()->request->csrfParam;
-        $csrfToken = app()->request->getCsrfToken();
-
-        $csrf = app()->request->enableCsrfValidation === false
-            ? ""
-            : ", '$csrfTokenName':'{$csrfToken}'";
-
-        $this->view->registerJs( /** @lang text */
-            <<<JS
-            (function () {
-    $('body').on('click', '#{$this->getId()} .pageSize', function (event) {
-        event.preventDefault();
-        $('#{$this->getId()}').yiiGridView('update',{
-            url: window.location.href,
-            data: {
-                '{$this->pageSizeVarName}': $(this).attr('rel')$csrf
-            }
-        });
-    });
-})();
-JS
-, View::POS_END);
-
-    }
-
-
-    /**
-     * @param $name
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function renderSection($name) {
-
-        switch ($name) {
-
-            case '{{headline}}':
-                echo $this->renderHeadline();
-                break;
-
-            default:
-                echo parent::renderSection($name);
-                break;
+        if ($footer !== false) {
+            static::initCss($footerOptions, 'box-footer');
+            $content = strtr($this->panelFooterTemplate, ['{footer}' => $footer]);
+            $panelFooter = Html::tag('div', $content, $footerOptions);
         }
+        if ($before !== false) {
+            static::initCss($beforeOptions, 'kv-panel-before');
+            $content = strtr($this->panelBeforeTemplate, ['{before}' => $before]);
+            $panelBefore = Html::tag('div', $content, $beforeOptions);
+        }
+        if ($after !== false) {
+            static::initCss($afterOptions, 'kv-panel-after');
+            $content = strtr($this->panelAfterTemplate, ['{after}' => $after]);
+            $panelAfter = Html::tag('div', $content, $afterOptions);
+        }
+        $this->layout = strtr(
+            $this->panelTemplate,
+            [
+                '{panelHeading}' => $panelHeading,
+                '{prefix}' => $this->panelPrefix,
+                '{type}' => $type,
+                '{panelFooter}' => $panelFooter,
+                '{panelBefore}' => $panelBefore,
+                '{panelAfter}' => $panelAfter,
+            ]
+        );
     }
 }

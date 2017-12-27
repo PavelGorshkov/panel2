@@ -21,6 +21,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@kvgrid'   => '@vendor/kartik-v/yii2-grid',
     ],
 
     'modules'=>[
@@ -29,6 +30,14 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
+        ],
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module',
+            'i18n' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@kvgrid/messages',
+                'forceTranslation' => true
+            ],
         ],
     ],
 
@@ -53,6 +62,20 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
             'errorView'=>'@app/modules/core/views/errorHandler/error.php'
+        ],
+
+        'i18n'=>[
+            'translations' => [
+                'kvgrid' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@kvgrid/messages',
+                    //'sourceLanguage' => 'en-US',
+                    /*'fileMap' => [
+                        'app'       => 'app.php',
+                        'app/error' => 'error.php',
+                    ],*/
+                ],
+            ],
         ],
 
         'log' => [

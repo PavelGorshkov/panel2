@@ -52,7 +52,7 @@ class BoxWidget extends \yii\bootstrap\Widget {
 
     public $isSolid = false;
 
-    public $withBorder = false;
+    public $withBorder = true;
 
     public $tooltip = '';
 

@@ -15,9 +15,12 @@ abstract class ListHelper implements ListHelperInterface {
 
     public static function getValue($status, $asHtml = false) {
 
+        /* @var ListHelper $class*/
+        $class = get_called_class();
+
         $list = $asHtml
-            ?self::getHtmlList()
-            :self::getList();
+            ?$class::getHtmlList()
+            :$class::getList();
 
         if (isset($list[$status])) return $list[$status];
 

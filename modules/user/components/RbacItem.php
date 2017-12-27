@@ -54,8 +54,9 @@ abstract class RBACItem extends BaseObject implements  RBACItemInterface {
      */
     public static function createRulesController() {
 
+        $className = get_called_class();
         /* @var RBACItem $class */
-        $class = get_called_class();
+        $class = new $className;
         $rules = [];
 
         foreach ($class->types as $type=>$item) {
