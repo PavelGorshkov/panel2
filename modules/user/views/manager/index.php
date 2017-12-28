@@ -82,6 +82,13 @@ try {
 
         'columns' => [
             [
+                'class' => 'kartik\grid\SerialColumn',
+                'contentOptions' => ['class' => 'kartik-sheet-style'],
+                'width' => '30px',
+                'header' => '',
+                'headerOptions' => ['class' => 'kartik-sheet-style']
+            ],
+            [
                 'attribute' => 'username',
                 'format' => 'raw',
                 'value' => function($model) {
@@ -102,8 +109,24 @@ try {
                 }
             ],
             [
+                'class' => 'kartik\grid\EditableColumn',
                 'attribute'=>'access_level',
+                'hAlign'=>'center',
+                'vAlign'=>'middle',
                 'format'=>'raw',
+                'editableOptions'=>function($model, $key, $index) {
+                    return [
+                        'size'=>\kartik\popover\PopoverX::SIZE_MEDIUM,
+                        'inputType'=>\kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+                        'data'=>\app\modules\user\helpers\UserAccessLevelHelper::getList(),
+                        'submitButton'=>[
+                            'icon'=>'<i class="fa fa-fw fa-check"></i>',
+                            'label'=>'Применить',
+                            'class' => 'btn btn-sm btn-primary',
+                        ],
+                        ['formOptions' => ['action' => Url::to('editable')]]
+                    ];
+                },
                 'value'=>function ($model) {
 
                     /** @var $model User */

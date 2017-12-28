@@ -3,12 +3,17 @@ namespace app\modules\user\install\migrations;
 
 use app\modules\core\components\Migration;
 use app\modules\user\helpers\Password;
-use app\modules\user\helpers\UserAccessLevel;
+use app\modules\user\helpers\UserAccessLevelHelper;
+use app\modules\user\helpers\UserStatusHelper;
 
 class m170122_214112_create_user_tables extends Migration {
 
     protected $table = '{{%user_user}}';
 
+    /**
+     * @return bool|void
+     * @throws \yii\base\Exception
+     */
     public function safeUp() {
 
         $this->createTable(
@@ -62,8 +67,9 @@ class m170122_214112_create_user_tables extends Migration {
             'email'=> 'webmaster@marsu.ru',
             'email_confirm'=> 1,
             'hash'=> Password::hash('ifynmtylhfyfn'),
-            'access_level'=> UserAccessLevel::LEVEL_ADMIN,
+            'access_level'=> UserAccessLevelHelper::LEVEL_ADMIN,
             'auth_key'=> app()->security->generateRandomKey(),
+            'status'=>UserStatusHelper::STATUS_ACTIVE,
         ]);
 
         $this->insert($table, [

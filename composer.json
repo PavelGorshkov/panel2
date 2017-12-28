@@ -33,7 +33,8 @@
         "bower-asset/slimScroll": "^1.3",
         "iiifx-production/yii2-folder-dependency": "^0.1.0",
         "kartik-v/yii2-grid": "^3.1",
-        "kartik-v/yii2-mpdf": "dev-master"
+        "kartik-v/yii2-widgets": "^3.4",
+        "kartik-v/yii2-editable": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

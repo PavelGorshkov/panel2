@@ -29,9 +29,25 @@ class ManagerController extends WebController {
                                     'allow' => true,
                                     'actions' => ['test'],
                                     'roles' => [Roles::ADMIN],
-                                ]
+                                ],
+                                [
+                                    'allow' => true,
+                                    'actions' => ['editable'],
+                                    'roles' => [Roles::ADMIN],
+                                ],
                             ])
             ],
+        ];
+    }
+
+
+    public function actions() {
+
+        return [
+            'editable'=>[
+                'class' => EditableColumnAction::className(),
+                'modelClass' => '',
+            ]
         ];
     }
 
@@ -64,6 +80,9 @@ class ManagerController extends WebController {
     }
 
 
+    /**
+     * @throws \yii\base\Exception
+     */
     public function actionTest() {
 
         $base = [
@@ -125,7 +144,7 @@ class ManagerController extends WebController {
                 'email'=> '@marsu.ru',
                 'email_confirm'=> 1,
                 'status'=>UserStatusHelper::STATUS_ACTIVE,
-                'hash'=> Password::hash('123456'),
+                'hash'=> Password::hash('usertest'),
                 'access_level'=> UserAccessLevelHelper::LEVEL_USER,
                 'auth_key'=> app()->security->generateRandomKey(),
             ),

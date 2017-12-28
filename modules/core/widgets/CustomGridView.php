@@ -31,6 +31,16 @@ HTML;
     <div class="clearfix"></div>
 HTML;
 
+    public $panelFooterTemplate = <<< HTML
+    <div class="pull-right">
+        {pageSizer}
+    </div>
+    <div class="kv-panel-pager">
+        {pager}
+    </div>
+    {footer}
+    <div class="clearfix"></div>
+HTML;
 
     public $itemLabelSingle = 'запись';
 

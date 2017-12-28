@@ -1,7 +1,11 @@
 <?php
 
-use app\modules\core\components\MenuManager;
+use app\modules\core\Module as coreModule;
+use app\modules\user\components\PhpManager;
+use app\modules\user\Module as userModule;
 use yii\helpers\ArrayHelper;
+use yii\i18n\PhpMessageSource;
+use yii\swiftmailer\Mailer;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -26,10 +30,10 @@ $config = [
 
     'modules'=>[
         'core'=> [
-            'class' => 'app\modules\core\Module',
+            'class' => coreModule::className(), // 'app\modules\core\Module',
         ],
         'user' => [
-            'class' => 'app\modules\user\Module',
+            'class' => userModule::className(),
         ],
         'gridview' =>  [
             'class' => '\kartik\grid\Module',
@@ -44,7 +48,7 @@ $config = [
     'components' => [
 
         'authManager' => [
-            'class' => '\app\modules\user\components\PhpManager',
+            'class' => PhpManager::className(),
             'defaultRoles' => ['guest'],
         ],
 
@@ -67,7 +71,7 @@ $config = [
         'i18n'=>[
             'translations' => [
                 'kvgrid' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => PhpMessageSource::className(),
                     'basePath' => '@kvgrid/messages',
                     //'sourceLanguage' => 'en-US',
                     /*'fileMap' => [
@@ -89,7 +93,7 @@ $config = [
         ],
 
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => Mailer::className(),
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
