@@ -31,9 +31,9 @@ class UserStatusHelper extends ListHelper {
     public static function getHtmlList()
     {
         return [
-            self::STATUS_ACTIVE => '<span class="label label-success">Активирован</span>',
-            self::STATUS_NOT_ACTIVE => '<span class="label label-warning">Не активированный</span>',
-            self::STATUS_BLOCK => '<span class="label label-success">Заблокированный</span>',
+            self::STATUS_ACTIVE => '<i class="fa fa-fw text-success fa-user" title="Активированный"></i>',
+            self::STATUS_NOT_ACTIVE => '<i class="fa fa-fw fa-user text-warning" title="Не активированный"></i>',
+            self::STATUS_BLOCK => '<i class="fa fa-fw fa-ban text-danger" title="Заблокированный"></i>',
         ];
     }
 }

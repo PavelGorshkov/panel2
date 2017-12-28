@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
@@ -10,44 +11,60 @@ use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
 use app\modules\user\models\User;
+use app\modules\user\models\UserEditable;
 use app\modules\user\models\UserProfile;
+use kartik\grid\EditableColumnAction;
 use yii\db\Migration;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
-class ManagerController extends WebController {
+class ManagerController extends WebController
+{
 
-    public function behaviors() {
-
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => ArrayHelper::merge(
-                            ManagerTask::createRulesController(),
-                            [
-                                [
-                                    'allow' => true,
-                                    'actions' => ['test'],
-                                    'roles' => [Roles::ADMIN],
-                                ],
-                                [
-                                    'allow' => true,
-                                    'actions' => ['editable'],
-                                    'roles' => [Roles::ADMIN],
-                                ],
-                            ])
+                    ManagerTask::createRulesController(),
+                    [
+                        [
+                            'allow' => true,
+                            'actions' => ['test'],
+                            'roles' => [Roles::ADMIN],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['access-level', 'status'],
+                            'roles' => [ManagerTask::OPERATION_UPDATE],
+                        ],
+                    ])
             ],
         ];
     }
 
 
-    public function actions() {
+    public function actions()
+    {
 
         return [
-            'editable'=>[
+            'access-level' => [
                 'class' => EditableColumnAction::className(),
-                'modelClass' => '',
-            ]
+                'modelClass' => User::className(),
+                'outputValue' => function ($model) {
+
+                   return $model->getAccessGroup();
+                },
+            ],
+            'status' => [
+                'class' => EditableColumnAction::className(),
+                'modelClass' => User::className(),
+                'outputValue' => function ($model, $attribute) {
+
+                    return UserStatusHelper::getValue($model->$attribute, true);
+                },
+            ],
         ];
     }
 
@@ -65,8 +82,8 @@ class ManagerController extends WebController {
     }
 
 
-    public function actionIndex() {
-
+    public function actionIndex()
+    {
         $searchModel = new SearchUser();
 
         $dataProvider = $searchModel->search(app()->request->get());
@@ -74,8 +91,8 @@ class ManagerController extends WebController {
         $this->setSmallTitle('Список');
 
         return $this->render($this->action->id, [
-            'dataProvider'=> $dataProvider,
-            'searchModel'=>$searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -83,10 +100,11 @@ class ManagerController extends WebController {
     /**
      * @throws \yii\base\Exception
      */
-    public function actionTest() {
+    public function actionTest()
+    {
 
         $base = [
-            10=>'Савин Авдей Филатович',
+            10 => 'Савин Авдей Филатович',
             'Щукина Нина Филатовна',
             'Федотова Кира Данииловна',
             'Максимов Евгений Якунович',
@@ -138,29 +156,29 @@ class ManagerController extends WebController {
         ];
 
         $template = [
-            'user'=> array(
-                'id'=>10,
-                'username'=> '',
-                'email'=> '@marsu.ru',
-                'email_confirm'=> 1,
-                'status'=>UserStatusHelper::STATUS_ACTIVE,
-                'hash'=> Password::hash('usertest'),
-                'access_level'=> UserAccessLevelHelper::LEVEL_USER,
-                'auth_key'=> app()->security->generateRandomKey(),
+            'user' => array(
+                'id' => 10,
+                'username' => '',
+                'email' => '@marsu.ru',
+                'email_confirm' => 1,
+                'status' => UserStatusHelper::STATUS_ACTIVE,
+                'hash' => Password::hash('usertest'),
+                'access_level' => UserAccessLevelHelper::LEVEL_USER,
+                'auth_key' => app()->security->generateRandomKey(),
             ),
-            'profile'=>[
-                'user_id'=>10,
-                'full_name'=>'Администратор',
+            'profile' => [
+                'user_id' => 10,
+                'full_name' => 'Администратор',
             ]
         ];
 
         $list = [];
 
-        foreach ($base as $id=>$full_name) {
+        foreach ($base as $id => $full_name) {
 
             $template['user']['id'] = $id;
             $template['user']['username'] = TranslitHelper::translit($full_name);
-            $template['user']['email'] = TranslitHelper::translit($this->transform_fullname($full_name)).'@marsu.ru';
+            $template['user']['email'] = TranslitHelper::translit($this->transform_fullname($full_name)) . '@marsu.ru';
             $template['profile']['user_id'] = $id;
             $template['profile']['full_name'] = $full_name;
 
@@ -178,10 +196,11 @@ class ManagerController extends WebController {
     }
 
 
-    protected function transform_fullname($string) {
+    protected function transform_fullname($string)
+    {
 
         list($f, $i, $o) = explode(' ', $string);
 
-        return $f.mb_substr($i, 0,1).mb_substr($o, 0,1);
+        return $f . mb_substr($i, 0, 1) . mb_substr($o, 0, 1);
     }
 }

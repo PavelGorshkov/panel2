@@ -7,10 +7,13 @@ use app\modules\core\components\View;
 use app\modules\core\helpers\RouterUrlHelper;
 use app\modules\core\widgets\BoxWidget;
 use app\modules\core\widgets\CustomGridView;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
 use app\modules\user\models\User;
+use kartik\editable\Editable;
 use kartik\grid\GridView;
+use kartik\popover\PopoverX;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -116,15 +119,16 @@ try {
                 'format'=>'raw',
                 'editableOptions'=>function($model, $key, $index) {
                     return [
-                        'size'=>\kartik\popover\PopoverX::SIZE_MEDIUM,
-                        'inputType'=>\kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-                        'data'=>\app\modules\user\helpers\UserAccessLevelHelper::getList(),
+                        'size'=> PopoverX::SIZE_MEDIUM,
+                        'inputType'=> Editable::INPUT_DROPDOWN_LIST,
+                        'placement'=>PopoverX::ALIGN_TOP,
+                        'data'=> User::getAccessLevelList(),
                         'submitButton'=>[
                             'icon'=>'<i class="fa fa-fw fa-check"></i>',
                             'label'=>'Применить',
                             'class' => 'btn btn-sm btn-primary',
                         ],
-                        ['formOptions' => ['action' => Url::to('editable')]]
+                        'formOptions' => ['action' => Url::to('access-level')]
                     ];
                 },
                 'value'=>function ($model) {
@@ -135,8 +139,25 @@ try {
                 'filter'=> User::getAccessLevelList(),
             ],
             [
+                'class' => 'kartik\grid\EditableColumn',
                 'attribute'=>'status',
+                'hAlign'=>'center',
+                'vAlign'=>'middle',
                 'format'=>'raw',
+                'editableOptions'=>function($model, $key, $index) {
+                    return [
+                        'size'=> PopoverX::SIZE_MEDIUM,
+                        'inputType'=> Editable::INPUT_DROPDOWN_LIST,
+                        'data'=> UserStatusHelper::getList(),
+                        'placement'=>PopoverX::ALIGN_TOP,
+                        'submitButton'=>[
+                            'icon'=>'<i class="fa fa-fw fa-check"></i>',
+                            'label'=>'Применить',
+                            'class' => 'btn btn-sm btn-primary',
+                        ],
+                        'formOptions' => ['action' => Url::to('status')]
+                    ];
+                },
                 'value'=>function ($model) {
 
                     /** @var $model User */

@@ -118,6 +118,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['status_change_at', 'visited_at', 'created_at', 'updated_at'], 'safe'],
 
             [['username'], 'string', 'max' => 25],
+            ['access_level', 'in', 'range' => array_keys(self::getAccessLevelList())],
             [['email'], 'string', 'max' => 150],
             [['hash'], 'string', 'max' => 60],
             [['auth_key'], 'string', 'max' => 32],
