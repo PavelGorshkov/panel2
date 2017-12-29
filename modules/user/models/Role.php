@@ -3,7 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\core\components\behaviors\ModelWebUserBehavior;
-use app\modules\user\models\query\UserRoleQuery;
+use app\modules\user\models\query\RoleQuery;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -19,7 +19,7 @@ use yii\db\Expression;
  * @property integer $created_by
  * @property integer $updated_by
  */
-class UserRole extends ActiveRecord
+class Role extends ActiveRecord
 {
     public function behaviors() {
 
@@ -76,10 +76,10 @@ class UserRole extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @return UserRoleQuery the active query used by this AR class.
+     * @return RoleQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new UserRoleQuery(get_called_class());
+        return new RoleQuery(get_called_class());
     }
 }

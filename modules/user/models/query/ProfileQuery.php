@@ -4,11 +4,11 @@ namespace app\modules\user\models\query;
 use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[\app\modules\user\models\UserToken]].
+ * This is the ActiveQuery class for [[\app\modules\user\models\UserProfile]].
  *
- * @see \app\modules\user\models\UserToken
+ * @see \app\modules\user\models\Profile
  */
-class UserTokenQuery extends ActiveQuery
+class ProfileQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -17,7 +17,7 @@ class UserTokenQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserToken[]|array
+     * @return \app\modules\user\models\Profile[]|array
      */
     public function all($db = null)
     {
@@ -26,7 +26,7 @@ class UserTokenQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserToken|array|null
+     * @return \app\modules\user\models\Profile|array|null
      */
     public function one($db = null)
     {

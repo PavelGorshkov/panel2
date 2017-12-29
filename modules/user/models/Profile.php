@@ -3,7 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\ModuleTrait;
-use app\modules\user\models\query\UserProfileQuery;
+use app\modules\user\models\query\ProfileQuery;
 use yii\db\ActiveRecord;
 
 
@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  *
  * @property User $user
  */
-class UserProfile extends ActiveRecord
+class Profile extends ActiveRecord
 {
     use ModuleTrait;
 
@@ -73,11 +73,11 @@ class UserProfile extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @return UserProfileQuery the active query used by this AR class.
+     * @return ProfileQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new UserProfileQuery(get_called_class());
+        return new ProfileQuery(get_called_class());
     }
 
 

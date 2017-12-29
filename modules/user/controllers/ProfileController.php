@@ -5,7 +5,7 @@ use app\modules\core\components\RedactorController;
 use app\modules\user\forms\EmailProfileForm;
 use app\modules\user\forms\PasswordProfileForm;
 use app\modules\user\forms\ProfileForm;
-use app\modules\user\helpers\UserTokenTypeHelper;
+use app\modules\user\helpers\TokenTypeHelper;
 use app\modules\user\Module;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
@@ -200,7 +200,7 @@ class ProfileController extends RedactorController
             throw new NotFoundHttpException();
         }
 
-        if (app()->userManager->verifyEmail($token, UserTokenTypeHelper::EMAIL_VERIFY)) {
+        if (app()->userManager->verifyEmail($token, TokenTypeHelper::EMAIL_VERIFY)) {
 
             user()->setSuccessFlash('Ваш email подтвержден!');
         } else {

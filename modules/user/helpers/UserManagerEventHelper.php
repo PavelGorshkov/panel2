@@ -2,14 +2,14 @@
 namespace app\modules\user\helpers;
 
 use app\modules\user\components\UserManager;
-use app\modules\user\events\UserPasswordEvent;
-use app\modules\user\events\UserTokenEvent;
+use app\modules\user\events\PasswordEvent;
+use app\modules\user\events\TokenEvent;
 use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
 use app\modules\user\models\User;
-use app\modules\user\models\UserToken;
+use app\modules\user\models\Token;
 use Yii;
 
 /**
@@ -71,16 +71,16 @@ trait UserManagerEventHelper {
 
     /**
      * @param User $user
-     * @param UserToken $token
+     * @param Token $token
      *
-     * @return UserTokenEvent
+     * @return TokenEvent
      *
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserTokenEvent(User $user, UserToken $token) {
+    protected function getUserTokenEvent(User $user, Token $token) {
 
         return Yii::createObject([
-            'class' => UserTokenEvent::className(),
+            'class' => TokenEvent::className(),
             'user' => $user,
             'token' => $token,
         ]);
@@ -91,13 +91,13 @@ trait UserManagerEventHelper {
      * @param User $user
      * @param string $password
      *
-     * @return UserPasswordEvent
+     * @return PasswordEvent
      * @throws \yii\base\InvalidConfigException
      */
     protected function getUserPasswordEvent(User $user, $password) {
 
         return Yii::createObject([
-            'class' => UserPasswordEvent::className(),
+            'class' => PasswordEvent::className(),
             'user' => $user,
             'password' => $password,
         ]);

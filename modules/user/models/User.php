@@ -11,7 +11,6 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "{{%user_user}}".
@@ -33,12 +32,10 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property UserProfile $userProfile
+ * @property Profile $userProfile
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord
 {
-    const SCENARIO_REGISTER = 'register';
-
     protected static $_accessList = null;
 
     public function behaviors() {
@@ -60,18 +57,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return '{{%user_user}}';
     }
-
-
-    public function scenarios() {
-
-        return ArrayHelper::merge(parent::scenarios(),
-            [
-                self::SCENARIO_REGISTER =>[
-                    'username', 'email',
-                ]
-            ]);
-    }
-
 
     /**
      * @param bool $insert
@@ -109,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
 
-            [['username', 'email', 'hash', 'auth_key'], 'required'],
+            [['username', 'email', 'hash'], 'required'],
 
             [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
 
@@ -155,14 +140,14 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserProfile()
+    public function getProfile()
     {
-        return $this->hasOne(UserProfile::className(), ['user_id' => 'id']);
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 	
-	public function getUserToken() 
+	public function getToken()
 	{
-		return $this->hasOne(UserToken::className(), ['user_id' => 'id']);
+		return $this->hasOne(Token::className(), ['user_id' => 'id']);
 	}
 	
 
@@ -173,32 +158,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function find()
     {
         return new UserQuery(get_called_class());
-    }
-
-
-    public static function findIdentity($id) {
-
-        return static::findOne($id);
-    }
-
-    public static function findIdentityByAccessToken($token, $type = null) {
-
-
-    }
-
-    public function getId() {
-
-        return $this->getAttribute('id');
-    }
-
-    public function getAuthKey() {
-
-        return $this->getAttribute('auth_key');
-    }
-
-    public function validateAuthKey($authKey) {
-
-        return $this->getAuthKey() === $authKey;
     }
 
 
@@ -236,7 +195,7 @@ class User extends ActiveRecord implements IdentityInterface
 
             self::$_accessList = ArrayHelper::merge(
                 UserAccessLevelHelper::getList(),
-                UserRole::find()->allListRoles()
+                Role::find()->allListRoles()
             );
         }
 

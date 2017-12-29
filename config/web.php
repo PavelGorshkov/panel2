@@ -137,7 +137,7 @@ $config = [
 
         'user' => [
             'class'=>'\app\modules\user\components\WebUser',
-            'identityClass' => '\app\modules\user\models\User',
+            'identityClass' => '\app\modules\user\models\IdentityUser',
             'enableAutoLogin' => true,
             'loginUrl' => ['/user/account/login'],
         ],

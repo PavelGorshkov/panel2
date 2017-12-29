@@ -1,15 +1,15 @@
 <?php
 namespace app\modules\user\models\query;
 
-use app\modules\user\models\UserAccess;
+use app\modules\user\models\Access;
 use yii\db\ActiveQuery;
 
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserAccess]].
  *
- * @see \app\modules\user\models\UserAccess
+ * @see \app\modules\user\models\Access
  */
-class UserAccessQuery extends ActiveQuery
+class AccessQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -18,7 +18,7 @@ class UserAccessQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserAccess[]|array
+     * @return \app\modules\user\models\Access[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +27,7 @@ class UserAccessQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserAccess|array|null
+     * @return \app\modules\user\models\Access|array|null
      */
     public function one($db = null)
     {
@@ -54,11 +54,11 @@ class UserAccessQuery extends ActiveQuery
 
     public function getDataForUser($id) {
 
-        return $this->getData($id, UserAccess::TYPE_USER);
+        return $this->getData($id, Access::TYPE_USER);
     }
 
     public function getDataForRole($id) {
 
-        return $this->getData($id, UserAccess::TYPE_ROLE);
+        return $this->getData($id, Access::TYPE_ROLE);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace app\modules\user\listeners;
 
-use app\modules\user\events\UserPasswordEvent;
-use app\modules\user\events\UserTokenEvent;
+use app\modules\user\events\PasswordEvent;
+use app\modules\user\events\TokenEvent;
 use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use DateTime;
@@ -55,9 +55,9 @@ class UserManagerListener {
 
 
     /**
-     * @param UserTokenEvent $event
+     * @param TokenEvent $event
      */
-    public static function onUserRecoveryPassword(UserTokenEvent $event) {
+    public static function onUserRecoveryPassword(TokenEvent $event) {
 
         $user = $event->getUser();
 
@@ -76,9 +76,9 @@ class UserManagerListener {
 
 
     /**
-     * @param UserPasswordEvent $event
+     * @param PasswordEvent $event
      */
-    public static function onUserGeneratePassword(UserPasswordEvent $event) {
+    public static function onUserGeneratePassword(PasswordEvent $event) {
 
         $user = $event->getUser();
 
@@ -115,9 +115,9 @@ class UserManagerListener {
 
 
     /**
-     * @param UserTokenEvent $event
+     * @param TokenEvent $event
      */
-    public static function onUserChangeEmail(UserTokenEvent $event) {
+    public static function onUserChangeEmail(TokenEvent $event) {
 
         $user = $event->getUser();
 

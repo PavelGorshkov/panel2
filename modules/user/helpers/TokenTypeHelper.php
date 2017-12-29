@@ -11,7 +11,7 @@ namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
 
-class UserTokenTypeHelper extends ListHelper {
+class TokenTypeHelper extends ListHelper {
 
     const ACTIVATE = 1;
 

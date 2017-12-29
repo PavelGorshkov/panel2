@@ -3,14 +3,14 @@ namespace app\modules\user\components;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\User;
-use app\modules\user\models\UserProfile;
+use app\modules\user\models\Profile;
 
 /**
  * Class WebUser
  * @package app\modules\user\components
  *
  * @property User $identity
- * @property-read UserProfile $profile
+ * @property-read Profile $profile
  * @property-read User $info
  */
 class WebUser extends \yii\web\User
@@ -26,7 +26,7 @@ class WebUser extends \yii\web\User
     protected $_access = null;
 
     /**
-     * @var UserProfile
+     * @var Profile
      */
     protected $_profile = null;
 
@@ -150,7 +150,7 @@ class WebUser extends \yii\web\User
     /**
      * Получение профиля авторизованного пользователя
      *
-     * @return \app\modules\user\models\UserProfile
+     * @return \app\modules\user\models\Profile
      */
     public function getProfile() {
 

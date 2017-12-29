@@ -2,11 +2,11 @@
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\ModuleTrait;
-use app\modules\user\helpers\UserTokenStatusHelper;
-use app\modules\user\helpers\UserTokenTypeHelper;
-use app\modules\user\models\query\UserTokenQuery;
+use app\modules\user\helpers\TokenStatusHelper;
+use app\modules\user\helpers\TokenTypeHelper;
+use app\modules\user\models\query\TokenQuery;
 use app\modules\user\models\User;
-use app\modules\user\models\UserToken;
+use app\modules\user\models\Token;
 use \Throwable;
 use Yii;
 use yii\base\Component;
@@ -24,7 +24,7 @@ class TokenStorage extends Component {
     use ModuleTrait;
 
     /**
-     * @var UserTokenQuery
+     * @var TokenQuery
      */
     protected $userTokenQuery;
 
@@ -32,7 +32,7 @@ class TokenStorage extends Component {
 
         parent::init();
 
-        $this->userTokenQuery = UserToken::find();
+        $this->userTokenQuery = Token::find();
 
         $this->deleteExpired();
     }
@@ -42,19 +42,19 @@ class TokenStorage extends Component {
      * @param User $user
      * @param $expire
      * @param $type
-     * @return bool|UserToken
+     * @return bool|Token
      * @throws \yii\base\Exception
      */
     public function create(User $user, $expire, $type)
     {
         $expire = (int) $expire;
 
-        $model = new UserToken();
+        $model = new Token();
         $model->user_id = $user->id;
         $model->expire = new Expression("DATE_ADD(NOW(), INTERVAL {$expire} SECOND)");
 
         $model->type = (int) $type;
-        $model->status = UserTokenStatusHelper::STATUS_NEW;
+        $model->status = TokenStatusHelper::STATUS_NEW;
         $model->ip = ip2long(app()->request->userIP);
 
         $model->token = app()->security->generateRandomKey();
@@ -74,7 +74,7 @@ class TokenStorage extends Component {
      */
     public function deleteExpired()
     {
-        $deleted = UserToken::deleteAll('expire < NOW()');
+        $deleted = Token::deleteAll('expire < NOW()');
 
         Yii::info(sprintf('Удалено %d токенов', $deleted));
 
@@ -85,27 +85,27 @@ class TokenStorage extends Component {
     /**
      * @param User $user
      *
-     * @return UserToken|bool
+     * @return Token|bool
      * @throws \yii\base\Exception
      */
     public function createAccountActivationToken(User $user)
     {
-        $this->deleteByTypeAndUser(UserTokenTypeHelper::ACTIVATE, $user);
+        $this->deleteByTypeAndUser(TokenTypeHelper::ACTIVATE, $user);
 
-        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, UserTokenTypeHelper::ACTIVATE);
+        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, TokenTypeHelper::ACTIVATE);
     }
 
 
     /**
      * @param User $user
-     * @return UserToken|bool
+     * @return Token|bool
      * @throws \yii\base\Exception
      */
     public function createEmailActivationToken(User $user) {
 
-        $this->deleteByTypeAndUser(UserTokenTypeHelper::EMAIL_VERIFY, $user);
+        $this->deleteByTypeAndUser(TokenTypeHelper::EMAIL_VERIFY, $user);
 
-        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, UserTokenTypeHelper::EMAIL_VERIFY);
+        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, TokenTypeHelper::EMAIL_VERIFY);
     }
 
 
@@ -114,9 +114,9 @@ class TokenStorage extends Component {
      * @param int $type
      * @param int $status
      *
-     * @return UserToken|null
+     * @return Token|null
      */
-    public function getToken($token, $type, $status = UserTokenStatusHelper::STATUS_NEW) {
+    public function getToken($token, $type, $status = TokenStatusHelper::STATUS_NEW) {
 
         return $this->userTokenQuery->where(
             'token = :token AND type = :type AND status = :status',
@@ -130,14 +130,14 @@ class TokenStorage extends Component {
 
 
     /**
-     * @param UserToken $token
+     * @param Token $token
      * @return false|int
      *
      * @throws \Exception
      * @throws Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function delete(UserToken $token) {
+    public function delete(Token $token) {
 
         return $token->delete();
     }
@@ -151,7 +151,7 @@ class TokenStorage extends Component {
      */
     public function deleteByTypeAndUser($type, User $user)
     {
-        return UserToken::deleteAll(
+        return Token::deleteAll(
             'type = :type AND user_id = :user_id',
             [
                 ':type' => (int) $type,
@@ -163,13 +163,13 @@ class TokenStorage extends Component {
 
     /**
      * @param User $user
-     * @return UserToken|bool
+     * @return Token|bool
      * @throws \yii\base\Exception
      */
     public function createPasswordToken(User $user) {
 
-        $this->deleteByTypeAndUser(UserTokenTypeHelper::CHANGE_PASSWORD, $user);
+        $this->deleteByTypeAndUser(TokenTypeHelper::CHANGE_PASSWORD, $user);
 
-        return $this->create($user, $this->module->expireTokenPasswordLifeHours*3600, UserTokenTypeHelper::CHANGE_PASSWORD);
+        return $this->create($user, $this->module->expireTokenPasswordLifeHours*3600, TokenTypeHelper::CHANGE_PASSWORD);
     }
 }

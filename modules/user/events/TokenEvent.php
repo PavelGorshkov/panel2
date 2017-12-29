@@ -1,18 +1,18 @@
 <?php
 namespace app\modules\user\events;
 
-use app\modules\user\models\UserToken;
+use app\modules\user\models\Token;
 
-class UserTokenEvent extends UserEvent {
+class TokenEvent extends UserEvent {
 
     /**
-     * @var UserToken
+     * @var Token
      */
     protected $_token;
 
 
     /**
-     * @return UserToken
+     * @return Token
      */
     public function getToken()
     {
@@ -20,9 +20,9 @@ class UserTokenEvent extends UserEvent {
     }
 
     /**
-     * @param UserToken $token
+     * @param Token $token
      */
-    public function setToken(UserToken $token)
+    public function setToken(Token $token)
     {
         $this->_token = $token;
     }

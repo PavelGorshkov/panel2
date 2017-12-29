@@ -5,7 +5,7 @@ use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
 
 
-class RegistrationEvent extends UserTokenEvent {
+class RegistrationEvent extends TokenEvent {
 
     /**
      * @var RegistrationForm

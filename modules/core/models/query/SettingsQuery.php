@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\core\models\query;
 
-use app\modules\user\models\UserAccess;
+use app\modules\user\models\Access;
 use yii\db\ActiveQuery;
 
 /**
@@ -13,7 +13,7 @@ class SettingsQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return UserAccess[]|array
+     * @return Access[]|array
      */
     public function all($db = null)
     {
@@ -22,7 +22,7 @@ class SettingsQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return UserAccess|array|null
+     * @return Access|array|null
      */
     public function one($db = null)
     {

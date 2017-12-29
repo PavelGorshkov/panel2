@@ -7,7 +7,7 @@ use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RecoveryForm;
 use app\modules\user\forms\RecoveryPasswordForm;
 use app\modules\user\forms\RegistrationForm;
-use app\modules\user\helpers\UserTokenTypeHelper;
+use app\modules\user\helpers\TokenTypeHelper;
 use app\modules\user\Module;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
@@ -141,7 +141,7 @@ class AccountController extends WebController
      */
     public function actionActivation($token) {
 
-        if (app()->userManager->verifyEmail($token, UserTokenTypeHelper::ACTIVATE)) {
+        if (app()->userManager->verifyEmail($token, TokenTypeHelper::ACTIVATE)) {
 
             app()->user->setSuccessFlash('Вы успешно активировали учетную запись!');
         } else {
@@ -209,7 +209,7 @@ class AccountController extends WebController
 
         if ($this->module->recoveryDisabled) throw new NotFoundHttpException();
 
-        list($tokenModel, $user) = app()->userManager->getTokenUserList($token, UserTokenTypeHelper::CHANGE_PASSWORD);
+        list($tokenModel, $user) = app()->userManager->getTokenUserList($token, TokenTypeHelper::CHANGE_PASSWORD);
 
         if ($tokenModel === null || $user === null) throw new NotFoundHttpException();
 

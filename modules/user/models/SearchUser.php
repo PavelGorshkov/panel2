@@ -46,7 +46,7 @@ class SearchUser extends Model implements SearchModelInterface
 
         /* @var $query UserQuery */
         $query = User::find()->joinWith(
-            ['userProfile' => function(ActiveQuery $query) { $query->from(['profile'=>UserProfile::tableName()]); }]
+            ['userProfile' => function(ActiveQuery $query) { $query->from(['profile'=>Profile::tableName()]); }]
         );
 
         $dataProvider = new ActiveDataProvider([

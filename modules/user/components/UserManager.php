@@ -10,12 +10,13 @@ use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserManagerEventHelper;
 use app\modules\user\helpers\UserStatusHelper;
-use app\modules\user\models\query\UserAccessQuery;
+use app\modules\user\models\query\AccessQuery;
 use app\modules\user\models\query\UserQuery;
+use app\modules\user\models\RegisterUser;
 use app\modules\user\models\User;
-use app\modules\user\models\UserAccess;
-use app\modules\user\models\UserProfile;
-use app\modules\user\models\UserToken;
+use app\modules\user\models\Access;
+use app\modules\user\models\Profile;
+use app\modules\user\models\Token;
 use Yii;
 use yii\base\Component;
 use yii\db\Expression;
@@ -53,9 +54,9 @@ class UserManager extends Component {
     protected $tokenStorage;
 
     /**
-     * @var UserAccessQuery
+     * @var AccessQuery
      */
-    protected $userAccessQuery;
+    protected $accessQuery;
 
 
     /**
@@ -73,7 +74,7 @@ class UserManager extends Component {
 
         $this->userQuery = User::find();
 
-        $this->userAccessQuery = UserAccess::find();
+        $this->accessQuery = Access::find();
 
         $this->setTokenStorage(Yii::createObject(['class' => TokenStorage::className()]));
 
@@ -136,7 +137,7 @@ class UserManager extends Component {
 
         $event->setUser($user);
 
-        $userProfile = $this->createUserProfileForRegistration($model, $profile, $user);
+        $userProfile = $this->createProfileForRegistration($model, $profile, $user);
 
         if (!$userProfile->save()) $this->failureTransaction($transaction);
 
@@ -207,12 +208,13 @@ class UserManager extends Component {
     /**
      * @param RegistrationForm $model
      *
-     * @return User
+     * @return RegisterUser|User
+     * @throws \yii\base\Exception
      */
     protected function createUserForRegistration(RegistrationForm $model) {
 
-        $user = new User();
-        $user->setScenario(User::SCENARIO_REGISTER);
+        $user = new RegisterUser();
+        $user->setScenario(RegisterUser::SCENARIO_REGISTER);
 
         $user->setAttributes($model->getAttributes());
 
@@ -230,13 +232,12 @@ class UserManager extends Component {
      * @param RegistrationForm $model
      * @param ProfileRegistrationForm $modelProfile
      * @param User $user
-     * 
      *
-     * @return UserProfile
+     * @return Profile
      */
-    protected function createUserProfileForRegistration(RegistrationForm $model, ProfileRegistrationForm $modelProfile, User $user) {
+    protected function createProfileForRegistration(RegistrationForm $model, ProfileRegistrationForm $modelProfile, User $user) {
 
-        $profile = new UserProfile();
+        $profile = new Profile();
 
         $profile->setAttributes($model->getAttributes());
         $profile->setAttributes($modelProfile->getAttributes());
@@ -261,6 +262,12 @@ class UserManager extends Component {
     }
 
 
+    /**
+     * @param User $user
+     * @param $password
+     * @return bool
+     * @throws \yii\base\Exception
+     */
     protected function updateUserHashPassword(User $user, $password) {
 
         return (bool) $user->updateAttributes(['hash'=>Password::hash($password)]);
@@ -282,7 +289,7 @@ class UserManager extends Component {
     public function verifyEmail($token, $tokenType) {
 
         /* @var User $user */
-        /* @var UserToken $tokenModel */
+        /* @var Token $tokenModel */
         list($tokenModel, $user) = $this->getTokenUserList($token, $tokenType);
 
         if ($user === null || $tokenModel === null)  return false;
@@ -322,11 +329,11 @@ class UserManager extends Component {
 
         if ($user === null) return [];
 
-        $data = $this->userAccessQuery->getDataForUser($user->id);
+        $data = $this->accessQuery->getDataForUser($user->id);
 
         if ($user->isUFAccessLevel()) {
 
-            $data = ArrayHelper::merge($data, $this->userAccessQuery->getDataForRole($user->access_level));
+            $data = ArrayHelper::merge($data, $this->accessQuery->getDataForRole($user->access_level));
         }
 
         return $data;
@@ -335,7 +342,7 @@ class UserManager extends Component {
 
     /**
      * @param User $user
-     * @param UserToken $token
+     * @param Token $token
      * @return bool
      * @throws \Exception
      * @throws \Throwable
@@ -343,7 +350,7 @@ class UserManager extends Component {
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function generatePassword(User $user, UserToken $token) {
+    public function generatePassword(User $user, Token $token) {
 
         $password = Password::generate(8);
 
@@ -387,7 +394,7 @@ class UserManager extends Component {
 
     /**
      * @param User $user
-     * @param UserToken $token
+     * @param Token $token
      * @param string $password
      *
      * @return bool
@@ -398,7 +405,7 @@ class UserManager extends Component {
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function changePassword(User $user, UserToken $token, $password) {
+    public function changePassword(User $user, Token $token, $password) {
 
         $transaction = app()->db->beginTransaction();
 
@@ -418,6 +425,7 @@ class UserManager extends Component {
      * @param string $password
      *
      * @return bool
+     * @throws \yii\base\Exception
      */
     public function changePasswordProfile($password) {
 

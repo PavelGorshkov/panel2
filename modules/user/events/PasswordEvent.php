@@ -2,7 +2,7 @@
 namespace app\modules\user\events;
 
 
-class UserPasswordEvent extends UserEvent {
+class PasswordEvent extends UserEvent {
 
     /**
      * @var string

@@ -7,9 +7,9 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\UserRole]].
  *
- * @see \app\modules\user\models\UserRole
+ * @see \app\modules\user\models\Role
  */
-class UserRoleQuery extends ActiveQuery
+class RoleQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -18,7 +18,7 @@ class UserRoleQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserRole[]|array
+     * @return \app\modules\user\models\Role[]|array
      */
     public function all($db = null)
     {
@@ -27,7 +27,7 @@ class UserRoleQuery extends ActiveQuery
 
     /**
      * @inheritdoc
-     * @return \app\modules\user\models\UserRole|array|null
+     * @return \app\modules\user\models\Role|array|null
      */
     public function one($db = null)
     {

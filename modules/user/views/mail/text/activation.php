@@ -1,9 +1,9 @@
 <?php
-use app\modules\user\models\UserToken;
+use app\modules\user\models\Token;
 use yii\helpers\Url;
 
 /** @var string $fullName */
-/** @var UserToken $token */
+/** @var Token $token */
 /** @var string $expire */
 
 ?>

@@ -11,7 +11,7 @@ namespace app\modules\user\helpers;
 use app\modules\core\helpers\ListHelper;
 
 
-class UserTokenStatusHelper extends ListHelper{
+class TokenStatusHelper extends ListHelper{
 
     const STATUS_NEW = 0;
 

@@ -3,7 +3,7 @@ namespace app\modules\user\widgets;
 
 use app\modules\core\widgets\Widget;
 use app\modules\user\assets\AvatarWidgetAssets;
-use app\modules\user\models\UserProfile;
+use app\modules\user\models\Profile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -48,7 +48,7 @@ class AvatarWidget extends Widget {
 
     /**
      * Модель пользователя
-     * @var UserProfile
+     * @var Profile
      */
     public $user;
 
