@@ -65,4 +65,21 @@ class View extends BaseView
 
         $this->params['breadcrumbs'] = $breadcrumbs;
     }
+
+    public function getBreadcrumbs() {
+
+        return empty($this->params['breadcrumbs'])
+            ?[
+                [
+                    'label' => $this->getTitle(),
+                    'url'=>['index'],
+                    'encode' => false,
+                ],
+                [
+                    'label' => $this->getSmallTitle(),
+                    'encode' => false,
+                ]
+            ]
+            :$this->params['breadcrumbs'];
+    }
 }

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 05.12.2017
- * Time: 16:32
- */
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\File;

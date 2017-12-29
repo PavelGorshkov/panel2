@@ -2,6 +2,7 @@
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\RouterUrlHelper;
+use app\modules\user\interfaces\RBACItemInterface;
 use yii\base\BaseObject;
 use yii\rbac\Item;
 use yii\web\ServerErrorHttpException;
@@ -76,4 +77,14 @@ abstract class RBACItem extends BaseObject implements  RBACItemInterface {
 
         return $rules;
     }
+
+
+    /**
+     * @return array|null
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
 }
+

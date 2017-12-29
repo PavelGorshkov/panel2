@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\core\components;
+namespace app\modules\core\interfaces;
 
 /**
  * Интерфейс для работы модуля с параметрами модуля, хранимыми в БД

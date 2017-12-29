@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\user\components;
 
+use app\modules\user\interfaces\RBACItemInterface;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
@@ -23,7 +24,7 @@ class BuildAuthManager extends Component {
     public $itemFile;
 
     /**
-     * @var string
+     * @var string path
      */
     public $ruleFile;
 
@@ -90,7 +91,7 @@ class BuildAuthManager extends Component {
         $descriptionList = $instance->titleList();
         $ruleList = $instance->getRuleNames();
 
-        foreach ($instance->types as $type => $type_role) {
+        foreach ($instance->getTypes() as $type => $type_role) {
 
             $t = [
                 'type'=>$type_role,
@@ -158,13 +159,24 @@ class BuildAuthManager extends Component {
 
         if ($this->rules === null) {
 
-            if (!file_exists($this->ruleFile)) $this->rules = [];
-
-            else $this->rules = require_once $this->ruleFile;
+            $this->rules = $this->includePhpFile($this->ruleFile);
         }
 
         return $this->rules;
     }
+
+
+    /**
+     * @param string $file
+     * @return array|mixed
+     */
+    protected function includePhpFile($file) {
+
+        if (file_exists($file) && pathinfo($file, PATHINFO_EXTENSION)==='php') return require_once $file;
+
+        return [];
+    }
+
 
 
     /**

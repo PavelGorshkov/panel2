@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\user\components;
+namespace app\modules\user\interfaces;
 
 interface RBACItemInterface {
 
@@ -16,4 +16,9 @@ interface RBACItemInterface {
      * @return string
      */
     public function getTitle($item);
+
+    /**
+     * @return array
+     */
+    public function getTypes();
 }

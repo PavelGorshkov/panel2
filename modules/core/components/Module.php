@@ -1,6 +1,12 @@
 <?php
 namespace app\modules\core\components;
 
+use app\modules\core\helpers\ModuleMenuTrait;
+use app\modules\core\helpers\ModuleParamsTrait;
+use app\modules\core\helpers\ModuleSettingsTrait;
+use app\modules\core\interfaces\ModuleMenuInterface;
+use app\modules\core\interfaces\ModuleParamsInterface;
+use app\modules\core\interfaces\ModuleSettingsInterface;
 use Yii;
 use \app\modules\core\Module as CoreModule;
 use \yii\base\Module as BaseModule;

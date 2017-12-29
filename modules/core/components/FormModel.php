@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 20.12.2017
- * Time: 15:27
- */
-
 namespace app\modules\core\components;
 
 

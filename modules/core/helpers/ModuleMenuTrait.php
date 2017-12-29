@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\core\components;
+namespace app\modules\core\helpers;
 
 /**
  * Class ModuleMenuTrait

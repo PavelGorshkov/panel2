@@ -15,17 +15,20 @@ class WebAction extends Action {
 
     public $layout = null;
 
+    public $title = null;
+
+    public $smallTitle = null;
+
     public function init() {
 
-        if ($this->layout !== null) {
+        if ($this->layout !== null) $this->controller->layout = $this->layout;
 
-            $this->controller->layout = $this->layout;
-        }
+        if ($this->view === null) $this->view = $this->id;
 
-        if ($this->view == null) {
+        if ($this->title !== null) $this->setTitle($this->title);
 
-            $this->view = $this->id;
-        }
+        if ($this->smallTitle !== null) $this->setSmallTitle($this->smallTitle);
+
     }
 
     public function setTitle($title) {

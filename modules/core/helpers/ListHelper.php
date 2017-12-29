@@ -1,6 +1,8 @@
 <?php
 namespace app\modules\core\helpers;
 
+use app\modules\core\interfaces\ListHelperInterface;
+
 /**
  * Класс helper для работы с различными статусами модулей
  *

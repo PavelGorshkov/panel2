@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 9:10
- */
-
-namespace app\modules\core\components;
+namespace app\modules\core\helpers;
 
 
 trait ModuleParamsTrait {

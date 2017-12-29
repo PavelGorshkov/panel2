@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\core\components;
+namespace app\modules\core\interfaces;
 
 /**
  * Интерфейс модуля для работы меню приложения

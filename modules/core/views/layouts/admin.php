@@ -93,7 +93,7 @@ include __DIR__ . '/_blocks.php';
                     <small><?= $this->getSmallTitle() ?></small>
                 </h1>
                 <?= Breadcrumbs::widget([
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    'links' => $this->getBreadcrumbs(),
                     'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Главная', 'url'=>'/', 'encode'=>false],
                 ]) ?>
             </section>

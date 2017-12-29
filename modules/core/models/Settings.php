@@ -132,6 +132,11 @@ class Settings extends ActiveRecord
     }
 
 
+    /**
+     * @param $module
+     * @param array $data
+     * @return bool
+     */
     public static function saveModuleData($module, $data=[]) {
 
         if (!count($data)) return true;
@@ -140,6 +145,7 @@ class Settings extends ActiveRecord
 
         foreach ($models as $model) {
 
+            /* @var $model Settings */
             if (isset($data[$model->param_name])) {
 
                 if ($data[$model->param_name] != $model->param_value) {

@@ -1,13 +1,14 @@
 <?php
 namespace app\modules\user\models;
 
+use app\modules\core\interfaces\SearchModelInterface;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 
-class SearchUser extends Model
+class SearchUser extends Model implements SearchModelInterface
 {
     /**
      * @var string
@@ -38,7 +39,7 @@ class SearchUser extends Model
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @return ActiveDataProvider
      */
     public function search($params) {

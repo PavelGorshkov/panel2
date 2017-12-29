@@ -19,18 +19,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->setBreadcrumbs([
-    [
-        'label' => $this->getTitle(),
-        'url'=>['index'],
-        'encode' => false,
-    ],
-    [
-        'label' => $this->getSmallTitle(),
-        'encode' => false,
-    ]
-]);
-
 try {
 
     BoxWidget::begin([

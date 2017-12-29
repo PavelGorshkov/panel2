@@ -136,7 +136,7 @@ class ModuleManager extends Component {
 
                 $class = new \ReflectionClass(is_array($value)?$value['class']:$value);
 
-                if (!$class->implementsInterface('\app\modules\core\components\ModuleParamsInterface')) continue;
+                if (!$class->implementsInterface('\app\modules\core\interfaces\ModuleParamsInterface')) continue;
 
                 /**@var Module $module*/
                 $module = app()->getModule($key);
@@ -191,8 +191,8 @@ class ModuleManager extends Component {
 
             $reflection = new \ReflectionClass($classObject);
 
-            /* @var \app\modules\core\components\ModuleSettingsInterface $classObject */
-            if (!$reflection->implementsInterface('\app\modules\core\components\ModuleSettingsInterface')) continue;
+            /* @var \app\modules\core\interfaces\ModuleSettingsInterface $classObject */
+            if (!$reflection->implementsInterface('\app\modules\core\interfaces\ModuleSettingsInterface')) continue;
 
             foreach ($classObject::dependsOnModules() as $d_module) {
 
