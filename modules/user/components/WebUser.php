@@ -2,16 +2,15 @@
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
+use app\modules\user\models\IdentityUser;
 use app\modules\user\models\User;
-use app\modules\user\models\Profile;
 
 /**
  * Class WebUser
  * @package app\modules\user\components
  *
- * @property User $identity
- * @property-read Profile $profile
- * @property-read User $info
+ * @property IdentityUser $identity
+ * @property-read IdentityUser $info
  */
 class WebUser extends \yii\web\User
 {
@@ -24,11 +23,6 @@ class WebUser extends \yii\web\User
     const ERROR_MESSAGE = 'error';
 
     protected $_access = null;
-
-    /**
-     * @var Profile
-     */
-    protected $_profile = null;
 
     /**
      * @var User
@@ -109,6 +103,7 @@ class WebUser extends \yii\web\User
 
     /**
      * Установка сообщения предупреждения
+     *
      * @param string $message
      */
     public function setWarningFlash($message) {
@@ -119,6 +114,7 @@ class WebUser extends \yii\web\User
 
     /**
      * Установка успешного сообщения
+     *
      * @param $message
      */
     public function setSuccessFlash($message) {
@@ -144,21 +140,6 @@ class WebUser extends \yii\web\User
     public function setInfoFlash($message) {
 
         $this->setFlash(self::INFO_MESSAGE, $message);
-    }
-
-
-    /**
-     * Получение профиля авторизованного пользователя
-     *
-     * @return \app\modules\user\models\Profile
-     */
-    public function getProfile() {
-
-        if ($this->isGuest) return null;
-
-        if ($this->_profile === null) $this->_profile = $this->identity->userProfile;
-
-        return $this->_profile;
     }
 
 
@@ -193,6 +174,9 @@ class WebUser extends \yii\web\User
     }
 
 
+    /**
+     * @return array|null
+     */
     public function getAccessData() {
 
         if ($this->isGuest) return [];

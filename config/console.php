@@ -8,9 +8,21 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
+    'modules'=>[
+        'core'=> [
+            'class' => 'app\modules\core\Module',
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
+        ],
+    ],
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'db' => $db,
+        'migrator'=>[
+            'class'=>'\app\modules\core\components\Migrator',
         ],
         'log' => [
             'targets' => [
@@ -20,7 +32,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
+
         'authManager' => [
             'class' => '\app\modules\user\components\PhpManager',
         ],

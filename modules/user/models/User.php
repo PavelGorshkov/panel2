@@ -31,8 +31,10 @@ use yii\helpers\Html;
  * @property integer $logged_at
  * @property string $created_at
  * @property string $updated_at
- *
- * @property Profile $userProfile
+ * @property string $full_name
+ * @property string $avatar
+ * @property string $about
+ * @property string $phone
  */
 class User extends ActiveRecord
 {
@@ -94,7 +96,7 @@ class User extends ActiveRecord
     {
         return [
 
-            [['username', 'email', 'hash'], 'required'],
+            [['username', 'email', 'hash', 'full_name'], 'required'],
 
             [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
 
@@ -103,12 +105,22 @@ class User extends ActiveRecord
             [['status_change_at', 'visited_at', 'created_at', 'updated_at'], 'safe'],
 
             [['username'], 'string', 'max' => 25],
-            ['access_level', 'in', 'range' => array_keys(self::getAccessLevelList())],
-            [['email'], 'string', 'max' => 150],
-            [['hash'], 'string', 'max' => 60],
-            [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
+
+            [['email'], 'string', 'max' => 150],
             [['email'], 'unique'],
+
+            [['hash'], 'string', 'max' => 60],
+
+            [['auth_key'], 'string', 'max' => 32],
+
+            ['access_level', 'in', 'range' => array_keys(self::getAccessLevelList())],
+
+            [['about'], 'string'],
+
+            [['full_name', 'avatar'], 'string', 'max' => 150],
+
+            [['phone'], 'string', 'max' => 30],
         ];
     }
 
@@ -134,17 +146,13 @@ class User extends ActiveRecord
             'logged_at' => 'Logged At',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'full_name' => 'ФИО',
+            'avatar' => 'Аватар',
+            'about' => 'Должность, место работы',
+            'phone' => 'Телефон',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfile()
-    {
-        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
-    }
-	
 	public function getToken()
 	{
 		return $this->hasOne(Token::className(), ['user_id' => 'id']);
@@ -175,17 +183,6 @@ class User extends ActiveRecord
     public function isUFAccessLevel() {
 
         return $this->access_level >= 100;
-    }
-
-
-    /**
-     * Проверка заблокированности пользователя
-     *
-     * @return bool
-     */
-    public function getIsBlocked()
-    {
-        return (int) $this->status === UserStatusHelper::STATUS_BLOCK;
     }
 
 

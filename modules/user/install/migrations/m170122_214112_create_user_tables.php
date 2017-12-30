@@ -3,8 +3,10 @@ namespace app\modules\user\install\migrations;
 
 use app\modules\core\components\Migration;
 use app\modules\user\helpers\Password;
+use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
+use yii\db\Expression;
 
 class m170122_214112_create_user_tables extends Migration {
 
@@ -33,6 +35,10 @@ class m170122_214112_create_user_tables extends Migration {
                 'access_level'=>$this->boolean()->notNull()->defaultValue('0'),
                 'logged_in_from'=> $this->boolean()->null(),
                 'logged_at'=> $this->integer()->null(),
+                'full_name' => $this->string(150)->notNull(),
+                'avatar' => $this->string(150)->null(),
+                'about' => $this->text()->null(),
+                'phone' => $this->char(30)->null(),
             ],
             $this->getOptions('InnoDB')
         );
@@ -43,38 +49,19 @@ class m170122_214112_create_user_tables extends Migration {
 
         $this->createDateColumns();
 
-        $table = '{{%user_profile}}';
-        $tableName = $this->gettableName($table);
-
-        $this->createTable(
-            $table,
-            [
-                'user_id'=> $this->integer()->notNull()->append('PRIMARY KEY'),
-                'full_name' => $this->string(150)->notNull(),
-                'avatar' => $this->string(150)->null(),
-                'about' => $this->text()->null(),
-                'post' => $this->string(255)->null(),
-                'phone' => $this->char(30)->null(),
-            ],
-            $this->getOptions('InnoDB')
-        );
-
-        $this->addForeignKey("fx_{$tableName}_user_profile", $table, 'user_id', $this->table, 'id', $this->cascade, $this->restrict);
-
-        $this->insert($this->table, [
+       $this->insert($this->table, [
             'id'=>1,
             'username'=> 'admin',
             'email'=> 'webmaster@marsu.ru',
             'email_confirm'=> 1,
             'hash'=> Password::hash('ifynmtylhfyfn'),
-            'access_level'=> UserAccessLevelHelper::LEVEL_ADMIN,
             'auth_key'=> app()->security->generateRandomKey(),
             'status'=>UserStatusHelper::STATUS_ACTIVE,
-        ]);
-
-        $this->insert($table, [
-            'user_id'=>1,
-            'full_name'=>'Администратор',
+            'status_change_at'=>new Expression('NOW()'),
+            'registered_from'=>RegisterFromHelper::FORM,
+            'access_level'=> UserAccessLevelHelper::LEVEL_ADMIN,
+            'full_name'=> 'Администратор',
+            'about'=> 'Системный администратор',
         ]);
     }
 

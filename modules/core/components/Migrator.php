@@ -118,7 +118,7 @@ class Migrator extends Component{
     {
         $data = (new Query())
             ->select(['version', 'apply_time'])
-            ->from('{{%migrations}}')
+            ->from($this->migrationTable)
             ->orderBy(['id'=>SORT_DESC])
             ->where('module = :module', [':module'=>$module])
             ->limit($limit)
@@ -317,7 +317,7 @@ class Migrator extends Component{
                 ['apply_time' => time()],
                 "version = :ver AND module = :mod", [
                     ':ver' => $className,
-                    ':mod' => ''
+                    ':mod' => $module,
                 ]
             );
 

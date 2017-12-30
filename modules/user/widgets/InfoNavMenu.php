@@ -25,7 +25,7 @@ class InfoNavMenu extends Widget {
      */
     public function run() {
 
-        $user = user()->profile;
+        $user = user()->info;
 
         $avatar = $user->avatar?$user->avatar:$this->module->defaultAvatar;
 
@@ -40,9 +40,9 @@ class InfoNavMenu extends Widget {
                 160,
                 160
             ),
-            'email'=>user()->info->email,
-            'full_name'=>user()->profile->full_name,
-            'about'=>user()->profile->about,
+            'email'=>$user->email,
+            'full_name'=>$user->full_name,
+            'about'=>user()->$user->about,
         ]);
     }
 
