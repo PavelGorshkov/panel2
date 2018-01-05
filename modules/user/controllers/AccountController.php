@@ -65,13 +65,12 @@ class AccountController extends WebController
 
         $this->performAjaxValidation($model);
 
-
         if (
             $model->load(app()->request->post())
-        &&  $model->login()
+        &&  $model->validate()
         ) {
 
-            return $this->goBack();
+            if ($model->login())  return $this->goBack();
         }
 
         return $this->render('login', [
@@ -135,9 +134,9 @@ class AccountController extends WebController
     /**
      * @param $token
      * @throws \Exception
-     * @throws \Throwable
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
+     * @throws \Throwable
      */
     public function actionActivation($token) {
 

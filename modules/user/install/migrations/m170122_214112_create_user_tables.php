@@ -2,6 +2,7 @@
 namespace app\modules\user\install\migrations;
 
 use app\modules\core\components\Migration;
+use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
@@ -53,15 +54,16 @@ class m170122_214112_create_user_tables extends Migration {
             'id'=>1,
             'username'=> 'admin',
             'email'=> 'webmaster@marsu.ru',
-            'email_confirm'=> 1,
+            'email_confirm'=> EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
             'hash'=> Password::hash('ifynmtylhfyfn'),
-            'auth_key'=> app()->security->generateRandomKey(),
+            'auth_key'=> app()->security->generateRandomString(),
             'status'=>UserStatusHelper::STATUS_ACTIVE,
             'status_change_at'=>new Expression('NOW()'),
             'registered_from'=>RegisterFromHelper::FORM,
             'access_level'=> UserAccessLevelHelper::LEVEL_ADMIN,
             'full_name'=> 'Администратор',
             'about'=> 'Системный администратор',
+            'created_at'=>new Expression('NOW()'),
         ]);
     }
 

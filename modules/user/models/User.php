@@ -4,7 +4,6 @@ namespace app\modules\user\models;
 
 use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
-use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -71,7 +70,7 @@ class User extends ActiveRecord
 
             if ($this->isNewRecord) {
 
-                $this->auth_key = \Yii::$app->security->generateRandomString();
+                $this->auth_key = app()->security->generateRandomString();
             }
             return true;
         }
@@ -211,13 +210,13 @@ class User extends ActiveRecord
     public function getContact() {
 
         $text = [
-            $this->userProfile->full_name,
+            $this->full_name,
             Html::a($this->email, "mailto:".$this->email),
         ];
 
-        if ($this->userProfile->phone)  {
+        if ($this->phone)  {
 
-            $text[] = $this->userProfile->phone;
+            $text[] = $this->phone;
         }
 
         return implode('<br>', $text);

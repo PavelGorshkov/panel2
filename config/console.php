@@ -32,10 +32,6 @@ $config = [
                 ],
             ],
         ],
-
-        'authManager' => [
-            'class' => '\app\modules\user\components\PhpManager',
-        ],
     ],
     'params' => $params,
     /*

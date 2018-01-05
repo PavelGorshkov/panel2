@@ -3,10 +3,14 @@ namespace app\modules\user\forms;
 
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
-use app\modules\user\models\User;
+use app\modules\user\models\IdentityUser;
 use yii\base\Model;
 use yii\db\Expression;
 
+/**
+ * Class LoginForm
+ * @package app\modules\user\forms
+ */
 class LoginForm extends Model {
 
     use ModuleTrait;
@@ -18,7 +22,7 @@ class LoginForm extends Model {
     public $rememberMe = false;
 
     /**
-     * @var User
+     * @var IdentityUser
      */
     protected $user;
 
@@ -81,17 +85,12 @@ class LoginForm extends Model {
 
     public function login() {
 
-        if ($this->validate()) {
+        $this->user->updateAttributes(
+        [
+            'visited_at'=> new Expression('NOW()'),
+            'user_ip' => ip2long(app()->request->getUserIP())
+        ]);
 
-            $this->user->updateAttributes(
-                [
-                    'visited_at'=> new Expression('NOW()'),
-                    'user_ip' => ip2long(app()->request->getUserIP())
-                ]);
-
-            return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
-        }
-
-        return false;
+        return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
     }
 }

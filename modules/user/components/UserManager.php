@@ -10,12 +10,12 @@ use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserManagerEventHelper;
 use app\modules\user\helpers\UserStatusHelper;
+use app\modules\user\models\IdentityUser;
 use app\modules\user\models\query\AccessQuery;
 use app\modules\user\models\query\UserQuery;
 use app\modules\user\models\RegisterUser;
 use app\modules\user\models\User;
 use app\modules\user\models\Access;
-use app\modules\user\models\Profile;
 use app\modules\user\models\Token;
 use Yii;
 use yii\base\Component;
@@ -92,11 +92,11 @@ class UserManager extends Component {
 
     /**
      * @param $usernameOrEmail
-     * @return User|null|\yii\db\ActiveRecord
+     * @return User|IdentityUser|null|\yii\db\ActiveRecord
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
     {
-        return $this->userQuery
+        return IdentityUser::find()
             ->findUser('username = :user OR email = :user', [':user' => $usernameOrEmail])
             ->one();
     }

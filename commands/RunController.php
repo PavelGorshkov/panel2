@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use yii\base\Exception;
 use yii\console\Controller;
 
 /**
@@ -31,6 +32,9 @@ class RunController extends Controller
 
     public function actionMigrate()
     {
-        app()->migrator->updateToLatestSystem();
+        try {
+            app()->migrator->updateToLatestSystem();
+        } catch (Exception $e) {
+        }
     }
 }

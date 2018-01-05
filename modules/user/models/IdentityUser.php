@@ -8,6 +8,9 @@ use yii\web\IdentityInterface;
 /**
  * Class IdentityUser
  * @package app\modules\user\models
+ * @property integer $id
+ * @property string $username
+ * @property string $email
  */
 class IdentityUser extends User implements IdentityInterface
 {
