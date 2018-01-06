@@ -19,7 +19,6 @@ class PhpManager extends AuthPhpManager
 
     public $ruleFile = '@app/runtime/rbac/rules.php';
 
-
     /**
      * @throws \yii\base\Exception
      */
@@ -72,5 +71,7 @@ class PhpManager extends AuthPhpManager
     public static function flush() {
 
         File::rmDir(Yii::getAlias('@app/runtime/rbac/*'));
+
+
     }
 }

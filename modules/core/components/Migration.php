@@ -11,8 +11,8 @@ use yii\db\Exception;
  *
  * @property string $tableName - table without prefix
  */
-class Migration extends \yii\db\Migration {
-
+class Migration extends \yii\db\Migration
+{
     protected $restrict = 'RESTRICT';
 
     protected $cascade = 'CASCADE';
@@ -21,12 +21,17 @@ class Migration extends \yii\db\Migration {
 
     protected $table;
 
-    protected function gettableName($table = null) {
-
+    /**
+     * @param string|null $table
+     * @return mixed
+     */
+    protected function gettableName($table = null)
+    {
         if ($table === null) $table = $this->table;
 
         return str_replace(['{', '}', '%'], '', $table);
     }
+
 
     public function init()
     {
@@ -37,15 +42,19 @@ class Migration extends \yii\db\Migration {
 
                 $this->dbType = 'mysql';
                 break;
+
             case 'pgsql':
                 $this->dbType = 'pgsql';
                 break;
+
             case 'dblib':
             case 'mssql':
             case 'sqlsrv':
+
                 $this->restrict = 'NO ACTION';
                 $this->dbType = 'sqlsrv';
                 break;
+
             default:
                 throw new \RuntimeException('Your database is not supported!');
         }
@@ -64,7 +73,7 @@ class Migration extends \yii\db\Migration {
 
             case 'mysql':
 
-                return 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE='.$type;
+                return 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=' . $type;
 
             default:
                 return null;
@@ -76,8 +85,8 @@ class Migration extends \yii\db\Migration {
      * Создание колонок дат (создание и обновление) в таблице БД
      * @param string $table
      */
-    protected function createDateColumns($table = null) {
-
+    protected function createDateColumns($table = null)
+    {
         if ($table === null && $this->table) {
 
             $table = $this->table;
@@ -95,8 +104,8 @@ class Migration extends \yii\db\Migration {
      * Создание колонок пользователей (кто создал и изменил) в таблице БД
      * @param null $table
      */
-    protected function createUserColumns($table = null) {
-
+    protected function createUserColumns($table = null)
+    {
         if ($table === null && $this->table) {
 
             $table = $this->table;

@@ -117,4 +117,61 @@ class File extends FileHelper {
             return false;
         }
     }
+
+
+    /**
+     * @param string $original_file
+     * @param string $file
+     *
+     * @return bool
+     */
+    public static function cpFileOriginal($original_file, $file)
+    {
+        if (file_crc32($original_file) !== file_crc32($file)) {
+
+            return File::cpFile($original_file, $file);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param string $file
+     * @return array|mixed
+     */
+    public static function includePhpFile($file) {
+
+        if (
+            file_exists($file)
+         && pathinfo($file, PATHINFO_EXTENSION) === 'php'
+        ) {
+            return include $file;
+        } else {
+
+            return [];
+        }
+    }
+
+
+    /**
+     * @param string $file
+     * @param mixed $data
+     *
+     * @return bool
+     */
+    public static function savePhpFile($file, $data) {
+
+        $content = '<?php return ' . var_export($data, true) . ';';
+
+        if (crc32($content) != file_crc32($file)) {
+
+            if (!@file_put_contents($file, $content)) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

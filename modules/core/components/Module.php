@@ -21,7 +21,6 @@ abstract class Module
     extends BaseModule
     implements ModuleSettingsInterface, ModuleParamsInterface, ModuleMenuInterface
 {
-
     const CHECK_ERROR = 'danger';
 
     const CHECK_NOTICE = 'warning';

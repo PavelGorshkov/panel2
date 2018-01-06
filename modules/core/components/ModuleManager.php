@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\ModulePriority;
@@ -17,7 +18,8 @@ use yii\helpers\ArrayHelper;
  * Class ModuleManager
  * @package app\modules\core\components
  */
-class ModuleManager extends Component {
+class ModuleManager extends Component
+{
 
     private $_all_modules = null;
 
@@ -31,10 +33,9 @@ class ModuleManager extends Component {
     /**
      * Определение всех модулей системы зависимых от приложения
      */
-    private function _initAllModules() {
-
-        //$modules = cache()->get('all_modules');
-        $modules = false;
+    private function _initAllModules()
+    {
+        $modules = cache()->get('all_modules');
 
         if ($modules === false) {
 
@@ -44,8 +45,8 @@ class ModuleManager extends Component {
 
             $chain->dependencies = [
 
-                new FileDependency(['fileName'=>Yii::getAlias('@app/config/web.php')]),
-                new FileDependency(['fileName'=>Yii::getAlias('@app/config/console.php')]),
+                new FileDependency(['fileName' => Yii::getAlias('@app/config/web.php')]),
+                new FileDependency(['fileName' => Yii::getAlias('@app/config/console.php')]),
                 new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
                 new FolderDependency(['folder' => Yii::getAlias('@app/modules')]),
             ];
@@ -60,7 +61,8 @@ class ModuleManager extends Component {
     /**
      * Определение неактивных (неустановленных) модулей в системе
      */
-    private function _initDisabledModules() {
+    private function _initDisabledModules()
+    {
 
         $modules = cache()->get('disabled_modules');
 
@@ -80,7 +82,7 @@ class ModuleManager extends Component {
             $chain = new ChainedDependency();
 
             $chain->dependencies = [
-                new TagDependency(['tags'=>['all_modules', 'enabled_modules']])
+                new TagDependency(['tags' => ['all_modules', 'enabled_modules']])
             ];
 
             cache()->set('disabled_modules', $modules, 3600, $chain);
@@ -93,8 +95,8 @@ class ModuleManager extends Component {
     /**
      * Определение установленных модулей, зависимых от приложения
      */
-    private function _initEnabledModules() {
-
+    private function _initEnabledModules()
+    {
         $modules = cache()->get('enabled_modules');
 
         if ($modules === false) {
@@ -104,9 +106,9 @@ class ModuleManager extends Component {
             $chain = new ChainedDependency();
 
             $chain->dependencies = [
-                new TagDependency(['tags'=>['all_modules']]),
+                new TagDependency(['tags' => ['all_modules']]),
                 new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
-                new FileDependency(['fileName'=> ModulePriority::model()->getFile()]),
+                new FileDependency(['fileName' => ModulePriority::model()->getFile()]),
             ];
 
             app()->cache->set('enabled_modules', $modules, 3600, $chain);
@@ -121,8 +123,8 @@ class ModuleManager extends Component {
      *
      * @return array
      */
-    private function _scanEnabledModules() {
-
+    private function _scanEnabledModules()
+    {
         $modules = [];
         $allModules = $this->getAllModules();
 
@@ -134,16 +136,16 @@ class ModuleManager extends Component {
 
                 if (!isset($allModules[$key])) continue;
 
-                $class = new \ReflectionClass(is_array($value)?$value['class']:$value);
+                $class = new \ReflectionClass(is_array($value) ? $value['class'] : $value);
 
                 if (!$class->implementsInterface('\app\modules\core\interfaces\ModuleParamsInterface')) continue;
 
-                /**@var Module $module*/
+                /**@var Module $module */
                 $module = app()->getModule($key);
 
                 $data = ArrayHelper::merge($allModules[$key],
                     [
-                        'priority' => $allModules[$key]['is_system']?($counter++):ModulePriority::model()->$key,
+                        'priority' => $allModules[$key]['is_system'] ? ($counter++) : ModulePriority::model()->$key,
                         'paramsCounter' => count($module->getParamLabels()),
                     ]);
 
@@ -162,7 +164,8 @@ class ModuleManager extends Component {
      *
      * @return array
      */
-    private function _scanModules() {
+    private function _scanModules()
+    {
 
         $modules = [];
         $dependentModules = [];
@@ -174,11 +177,11 @@ class ModuleManager extends Component {
 
             $moduleName = $item->getBaseName();
 
-            if (!is_dir($modulesPath. DIRECTORY_SEPARATOR. $moduleName)) continue;
+            if (!is_dir($modulesPath . DIRECTORY_SEPARATOR . $moduleName)) continue;
 
             $classObject = 'Module';
 
-            if (!file_exists($item->getRealPath().DIRECTORY_SEPARATOR.$classObject.'.php'))
+            if (!file_exists($item->getRealPath() . DIRECTORY_SEPARATOR . $classObject . '.php'))
                 continue;
 
             $isInstallConfig = file_exists(implode(DIRECTORY_SEPARATOR, [
@@ -187,7 +190,7 @@ class ModuleManager extends Component {
                 'config.php',
             ]));
 
-            $classObject = '\\app\\modules\\'.$moduleName.'\\'.$classObject;
+            $classObject = '\\app\\modules\\' . $moduleName . '\\' . $classObject;
 
             $reflection = new \ReflectionClass($classObject);
 
@@ -200,14 +203,14 @@ class ModuleManager extends Component {
             }
 
             $modules[$moduleName] = [
-                'title'=>$classObject::Title(),
-                'is_system'=>!$isInstallConfig,
-                'dependsOn'=>$classObject::dependsOnModules(),//зависит от модулей
-                'dependent'=>  [], //зависимые модули
+                'title' => $classObject::Title(),
+                'is_system' => !$isInstallConfig,
+                'dependsOn' => $classObject::dependsOnModules(),//зависит от модулей
+                'dependent' => [], //зависимые модули
             ];
         }
 
-        foreach($modules as $module => $temp) {
+        foreach ($modules as $module => $temp) {
 
             if (isset($dependentModules[$module])) {
 
@@ -255,8 +258,8 @@ class ModuleManager extends Component {
      *
      * @return bool
      */
-    public function can($module, $access) {
-
+    public function can($module, $access)
+    {
         $list = $this->getEnabledModules();
 
         if (!isset($list[$module])) return false;
@@ -269,8 +272,8 @@ class ModuleManager extends Component {
      * Получение массива всех модулей приложения, наследованных
      * от базового модуля \app\modules\core\components\Module
      */
-    public function getAllModules() {
-
+    public function getAllModules()
+    {
         if ($this->_all_modules === null) $this->_initAllModules();
 
         return $this->_all_modules;
@@ -282,8 +285,8 @@ class ModuleManager extends Component {
      *
      * @return array|null
      */
-    public function getDisabledModules() {
-
+    public function getDisabledModules()
+    {
         if ($this->_disabled_modules === null) $this->_initDisabledModules();
 
         return $this->_disabled_modules;
@@ -295,8 +298,8 @@ class ModuleManager extends Component {
      *
      * @return array|null
      */
-    public function getEnabledModules() {
-
+    public function getEnabledModules()
+    {
         if ($this->_enabled_modules === null) $this->_initEnabledModules();
 
         return $this->_enabled_modules;
@@ -308,8 +311,8 @@ class ModuleManager extends Component {
      *
      * @return array
      */
-    public function getListAllModules() {
-
+    public function getListAllModules()
+    {
         return array_keys($this->getAllModules());
     }
 
@@ -319,8 +322,8 @@ class ModuleManager extends Component {
      *
      * @return array
      */
-    public function getListEnabledModules() {
-
+    public function getListEnabledModules()
+    {
         return array_keys($this->getEnabledModules());
     }
 
@@ -331,13 +334,14 @@ class ModuleManager extends Component {
      * @param array $types
      * @return array
      */
-    public function getMenu(array $types) {
+    public function getMenu(array $types)
+    {
 
         $menu = [];;
 
         foreach ($types as $type) {
 
-            $method = 'getMenu'. ucfirst($type);
+            $method = 'getMenu' . ucfirst($type);
             $menu[$type] = [];
 
             foreach ($this->getListEnabledModules() as $module) {
@@ -363,7 +367,8 @@ class ModuleManager extends Component {
      *
      * @return bool
      */
-    public function isExistsModule($module) {
+    public function isExistsModule($module)
+    {
 
         return in_array($module, $this->getListAllModules());
     }
@@ -376,7 +381,8 @@ class ModuleManager extends Component {
      *
      * @return bool
      */
-    public function isInstallModule($module) {
+    public function isInstallModule($module)
+    {
 
         return in_array($module, $this->getListEnabledModules());
     }

@@ -16,4 +16,11 @@ Yii::setAlias('@app', __DIR__.'/../');
 
 $configManager = new ConfigManager(ConfigManager::ENV_WEB);
 
-(new yii\web\Application($configManager->merge($config)))->run();
+try {
+
+    (new yii\web\Application($configManager->merge($config)))->run();
+
+} catch (\yii\base\Exception $e) {
+
+    echo $e->getMessage();
+}

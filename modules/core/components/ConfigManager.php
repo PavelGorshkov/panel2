@@ -1,13 +1,13 @@
 <?php
+
 namespace app\modules\core\components;
 
+use app\modules\core\helpers\ConfigCacheTrait;
 use app\modules\core\helpers\File;
 use GlobIterator;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
-use yii\web\HttpException;
-use yii\web\ServerErrorHttpException;
 
 /**
  * Класс конфигуратор сборки конфига всего приложения
@@ -15,7 +15,9 @@ use yii\web\ServerErrorHttpException;
  * Class ConfigManager
  * @package app\modules\core\components
  */
-class ConfigManager {
+class ConfigManager
+{
+    use ConfigCacheTrait;
 
     const ENV_WEB = 'web';
 
@@ -38,8 +40,8 @@ class ConfigManager {
     private $env = self::ENV_WEB;
 
 
-    public function __construct($type = null) {
-
+    public function __construct($type = null)
+    {
         if ($type !== null) {
 
             switch ($type) {
@@ -55,6 +57,31 @@ class ConfigManager {
 
 
     /**
+     * Проверка на актульность конфига модуля
+     *
+     * @param \SplFileInfo $moduleConfigFile
+     *
+     * @return bool
+     */
+    protected function checkUpdateModuleConfig(\SplFileInfo $moduleConfigFile)
+    {
+        $moduleFile = Yii::getAlias(
+            sprintf(
+                '@app/modules/%s/install/config.php',
+                $moduleConfigFile->getBaseName('.php')
+            ));
+
+        if (!file_exists($moduleFile)) {
+
+            unlink(Yii::getAlias('@app/config/modules/' . $moduleConfigFile->getBasename()));
+            return true;
+        }
+
+        return File::cpFileOriginal($moduleFile, $moduleConfigFile->getRealPath());
+    }
+
+
+    /**
      * Объединяет конфиги приложения
      *
      * @param array $base
@@ -64,8 +91,8 @@ class ConfigManager {
     public function merge(array $base = [])
     {
         $this->_base = empty($base)
-            ?require_once $this->getConfigEnv()
-            :$base;
+            ? File::includePhpFile($this->getConfigEnv())
+            : $base;
 
         $config = $this->getSettings();
 
@@ -76,47 +103,11 @@ class ConfigManager {
 
 
     /**
-     * Возвращает закешированный конфиг
-     *
-     * @return array|null
-     * @throws Exception
-     * @throws HttpException
-     */
-    protected function getCacheSettings() {
-
-        return $this->isCached()?$this->loadCache():null;
-    }
-
-
-    /**
      * @return string path
      */
-    protected function getConfigEnv() {
-
-        return Yii::getAlias('@app/config/').$this->env.'.php';
-    }
-
-
-    /**
-     * @return bool
-     * @throws HttpException
-     */
-    protected function isCached() {
-
-        if ($this->isDebug()) return false;
-
-        return $this->isUpdateConfigModules() ? false : file_exists($this->getCacheFile());
-    }
-
-
-    /**
-     * путь хранения директории cache конфига
-     *
-     * @return bool|string
-     */
-    protected function getCachePath() {
-
-        return Yii::getAlias('@app/runtime/config');
+    protected function getConfigEnv()
+    {
+        return Yii::getAlias('@app/config/') . $this->env . '.php';
     }
 
 
@@ -133,7 +124,7 @@ class ConfigManager {
 
             /* @var \SplFileInfo $item */
             // Если нет такого модуля, нет необходимости в обработке:
-            if (!is_dir( Yii::getAlias( sprintf('@app/modules/%s', $item->getBaseName('.php'))))) {
+            if (!is_dir(Yii::getAlias(sprintf('@app/modules/%s', $item->getBaseName('.php'))))) {
 
                 unlink($item->getPathname());
                 continue;
@@ -151,131 +142,14 @@ class ConfigManager {
 
 
     /**
-     * Проверка на актульность конфига модуля
-     *
-     * @param \SplFileInfo $moduleConfigFile
-     *
-     * @return bool
-     */
-    protected function checkUpdateModuleConfig(\SplFileInfo $moduleConfigFile) {
-
-        $moduleFile = Yii::getAlias(sprintf('@app/modules/%s/install/config.php', $moduleConfigFile->getBaseName('.php')));
-
-        if (!file_exists($moduleFile)) {
-
-            unlink(Yii::getAlias('@app/config/modules/'.$moduleConfigFile->getBasename()));
-            return true;
-        }
-
-        if (file_crc32($moduleFile) !== file_crc32($moduleConfigFile->getRealPath())) {
-
-            File::cpFile($moduleFile, $moduleConfigFile->getRealPath());
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * @return string
-     *
-     * @throws HttpException
-     */
-    protected function getCacheFile() {
-
-        if (!File::checkPath($this->getCachePath())) {
-
-            throw new HttpException(500, 'Check rights path: '.$this->getCachePath());
-        };
-
-        return Yii::getAlias(sprintf("%s/%s.json", $this->getCachePath(), $this->env));
-    }
-
-
-    /**
-     * Шаблон генерации json файла
-     *
-     * @param array $data
-     * @return string
-     */
-    private function getFileTemplateJSON(array $data) {
-
-        return json_encode($data);
-    }
-
-
-    /**
-     * Проверка debug режима
-     *
-     * @return bool
-     */
-    protected function isDebug() {
-
-        return (defined('\YII_DEBUG') && \YII_DEBUG === true)
-            || (defined('YII_ENV') && YII_ENV === 'dev');
-    }
-
-
-    /**
-     * @param array $data
-     * @return bool
-     *
-     * @throws HttpException
-     */
-    public function createCache(array $data) {
-
-        // Если выключена опция кеширования настроек - не выполняем его:
-        if ($this->isDebug()) return true;
-
-        if (!@file_put_contents($this->getCacheFile(), $this->getFileTemplateJSON($data), LOCK_EX)) {
-            throw new ServerErrorHttpException('Ошибка записи кеша в файл '.$this->getCacheFile().' в классе "'.__CLASS__.'"');
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Загрузка из кэша
-     *
-     * @return array|null
-     */
-    protected function loadCache()
-    {
-        try {
-            $data = @json_decode(file_get_contents($this->getCacheFile()), 1);
-
-            if (is_array($data) === false) {$data = null;}
-
-        } catch (Exception $e) {
-
-            $data = null;
-        }
-
-        return $data;
-    }
-
-
-    /**
-     * Очистка cache конфига
-     */
-    public function flushCache() {
-
-        if (is_dir($this->getCachePath())) {
-
-            File::rmDir($this->getCachePath().DIRECTORY_SEPARATOR.'*');
-        }
-    }
-
-
-    /**
      * @return mixed
      * @throws Exception
      */
     protected function getSettings()
     {
-        $settings = $this->getCacheSettings();
+        $settings = $this->isUpdateConfigModules()
+            ? null
+            : $this->getCacheSettings();
 
         if ($settings === null) {
 
@@ -287,7 +161,6 @@ class ConfigManager {
                 throw new Exception('Не возможно создать кеш файла конфигурации');
             }
         }
-
 
         $settings = $this->mergeSettings($settings);
 
@@ -304,15 +177,19 @@ class ConfigManager {
     {
         $settings = [];
 
-        foreach (new GlobIterator(Yii::getAlias('@app/config/modules/*.php')) as $item ) {
+        foreach (new GlobIterator(Yii::getAlias('@app/config/modules/*.php')) as $item) {
 
-            if (is_dir(Yii::getAlias(sprintf('@app/modules/%s', $item->getBaseName('.php')))) == false) {
+            if (
+                is_dir(
+                    Yii::getAlias(
+                        sprintf('@app/modules/%s', $item->getBaseName('.php')))
+                ) === false) {
                 continue;
             }
 
             $this->checkUpdateModuleConfig($item);
 
-            $moduleConfig = require $item->getRealPath();
+            $moduleConfig = File::includePhpFile($item->getRealPath());
 
             foreach ($this->configCategories as $category) {
 
@@ -349,39 +226,47 @@ class ConfigManager {
     }
 
 
-    protected function mergeSettings($settings = []) {
-
+    /**
+     * @param array $settings
+     * @return array
+     */
+    protected function mergeSettings($settings = [])
+    {
         $this->_config = ArrayHelper::merge(
             $this->_base,
             [
                 'bootstrap' => ArrayHelper::merge(
-                    isset($this->_config['bootstrap'])? $this->_config['bootstrap']: [],
-                    isset($settings['bootstrap'])? $settings['bootstrap']: []
+                    isset($this->_config['bootstrap']) ? $this->_config['bootstrap'] : [],
+                    isset($settings['bootstrap']) ? $settings['bootstrap'] : []
                 ),
 
-                'aliases'=> ArrayHelper::merge(
-                    isset($this->_config['aliases'])? $this->_config['aliases']: [],
-                    isset($settings['aliases'])? $settings['aliases']: []
+                'aliases' => ArrayHelper::merge(
+                    isset($this->_config['aliases']) ? $this->_config['aliases'] : [],
+                    isset($settings['aliases']) ? $settings['aliases'] : []
                 ),
 
                 // Модули:
                 'modules' => ArrayHelper::merge(
-                    isset($this->_config['modules'])? $this->_config['modules']: [],
-                    isset($settings['modules'])? $settings['modules']: []
+                    isset($this->_config['modules']) ? $this->_config['modules'] : [],
+                    isset($settings['modules']) ? $settings['modules'] : []
                 ),
 
                 'components' => ArrayHelper::merge(
-                    isset($this->_config['components'])? $this->_config['components']: [],
-                    isset($settings['components'])? $settings['components']: []
+                    isset($this->_config['components']) ? $this->_config['components'] : [],
+                    isset($settings['components']) ? $settings['components'] : []
                 ),
 
-                'rules' => isset($settings['rules'])? $settings['rules']: [],
+                'rules' => isset($settings['rules']) ? $settings['rules'] : [],
             ]
         );
 
-        if (!array_key_exists('rules', $settings)) {$settings['rules'] = [];}
+        if (!array_key_exists('rules', $settings)) {
+            $settings['rules'] = [];
+        }
 
-        if (!array_key_exists('cache', $settings)) {$settings['cache'] = [];}
+        if (!array_key_exists('cache', $settings)) {
+            $settings['cache'] = [];
+        }
 
         if (isset($this->_config['components']['urlManager']['rules'])) {
             // Фикс для настроек маршрутизации:
@@ -403,7 +288,12 @@ class ConfigManager {
     }
 
 
-    protected function mergeRules($settings = []) {
+    /**
+     * @param array $settings
+     * @return array
+     */
+    protected function mergeRules($settings = [])
+    {
 
         if (isset($settings['components']['urlManager'])) {
 
@@ -428,6 +318,4 @@ class ConfigManager {
 
         return $settings;
     }
-
-
 }

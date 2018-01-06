@@ -11,6 +11,9 @@ use yii\web\IdentityInterface;
  * @property integer $id
  * @property string $username
  * @property string $email
+ * @property string $avatar
+ * @property string $about
+ * @property string $phone
  */
 class IdentityUser extends User implements IdentityInterface
 {

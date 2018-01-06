@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 /**
@@ -8,9 +9,11 @@ namespace app\modules\core\helpers;
  * Class RouterUrlHelper
  * @package app\modules\core\helpers
  */
-class RouterUrlHelper {
+class RouterUrlHelper
+{
 
-    protected static function parseUrl($url){
+    protected static function parseUrl($url)
+    {
 
         if (is_array($url)) {
 
@@ -26,7 +29,8 @@ class RouterUrlHelper {
      *
      * @return null|string
      */
-    public static function to($url) {
+    public static function to($url)
+    {
 
         $route = self::parseUrl($url);
 
@@ -37,7 +41,7 @@ class RouterUrlHelper {
 
         if (empty($route)) {
 
-            return '/'.implode('/', [$m, $c, $a]);
+            return '/' . implode('/', [$m, $c, $a]);
         }
 
         switch (count($route)) {
@@ -62,10 +66,11 @@ class RouterUrlHelper {
                 }
                 break;
 
-            default:return null;
+            default:
+                return null;
         }
 
-        return '/'.implode('/', $route);
+        return '/' . implode('/', $route);
     }
 
 
@@ -75,7 +80,8 @@ class RouterUrlHelper {
      * @param $url
      * @return array|bool|null
      */
-    public static function isActiveRoute($url) {
+    public static function isActiveRoute($url)
+    {
 
         $route = self::parseUrl($url);
 
@@ -86,7 +92,7 @@ class RouterUrlHelper {
         $c = $controller->id;
         $a = $controller->action->id;
 
-        switch(count($route)) {
+        switch (count($route)) {
 
             case 3:
 
@@ -107,10 +113,11 @@ class RouterUrlHelper {
     }
 
 
-    public static function getAction($url) {
+    public static function getAction($url)
+    {
 
         $url = self::parseUrl($url);
 
-        return !empty($url)?$url[count($url)-1]:null;
+        return !empty($url) ? $url[count($url) - 1] : null;
     }
 }

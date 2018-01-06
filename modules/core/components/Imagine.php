@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use Imagine\Gd\Imagine as GdImagine;
@@ -11,8 +12,12 @@ use Imagine\Imagick\Imagine as ImagickImagine;
 use yii\base\BaseObject;
 use yii\base\Exception;
 
-
-class Imagine extends BaseObject{
+/**
+ * Class Imagine
+ * @package app\modules\core\components
+ */
+class Imagine extends BaseObject
+{
 
     /**
      * GD2 driver definition for Imagine implementation using the GD library.

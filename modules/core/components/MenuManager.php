@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use Yii;
@@ -15,8 +16,8 @@ use yii\helpers\ArrayHelper;
  * @property array redactor - Меню редактора
  *
  */
-class MenuManager extends Component {
-
+class MenuManager extends Component
+{
     const MENU_DATABASE = 'database';
 
     const MENU_MODULE = 'module';
@@ -35,15 +36,15 @@ class MenuManager extends Component {
      * @var array|null
      */
     public $type = [
-        self::TYPE_ADMIN=>self::MENU_MODULE,
-        self::TYPE_MAIN=>self::MENU_MODULE,
-        self::TYPE_REDACTOR=>self::MENU_MODULE,
+        self::TYPE_ADMIN => self::MENU_MODULE,
+        self::TYPE_MAIN => self::MENU_MODULE,
+        self::TYPE_REDACTOR => self::MENU_MODULE,
     ];
 
     protected $internalType = null;
 
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         if ($this->type !== null) {
@@ -56,19 +57,19 @@ class MenuManager extends Component {
     }
 
 
-    public function getData() {
-
+    public function getData()
+    {
         if ($this->_menu === null) $this->setMenu();
 
         return $this->_menu;
     }
 
 
-    public function setMenu() {
+    public function setMenu()
+    {
+        $this->_menu = app()->cache->get('cacheMenu_' . user()->id);
 
-        $this->_menu = app()->cache->get('cacheMenu_'.user()->id);
-
-        if ($this->_menu === false ) {
+        if ($this->_menu === false) {
 
             $this->prepareMenu();
         }
@@ -78,14 +79,14 @@ class MenuManager extends Component {
      * @param $type
      * @return string
      */
-    public function getMenuConfigFile($type) {
-
-        return Yii::getAlias('@app/config/menu/'.$type.'.php');
+    public function getMenuConfigFile($type)
+    {
+        return Yii::getAlias('@app/config/menu/' . $type . '.php');
     }
 
 
-    public function clearCache() {
-
+    public function clearCache()
+    {
         app()->cache->flush();
     }
 
@@ -120,7 +121,9 @@ class MenuManager extends Component {
 
                     else {
 
-                        foreach ($types as $key) {$menu[$key] = $this->getDBMenu($key);}
+                        foreach ($types as $key) {
+                            $menu[$key] = $this->getDBMenu($key);
+                        }
                     }
 
                     break;
@@ -129,7 +132,7 @@ class MenuManager extends Component {
 
         $this->_menu = $menu;
 
-        app()->cache->set('cacheMenu_'.user()->id, $menu, 0);
+        app()->cache->set('cacheMenu_' . user()->id, $menu, 0);
     }
 
 
@@ -138,7 +141,8 @@ class MenuManager extends Component {
      * @return mixed|null
      * @throws UnknownPropertyException
      */
-    public function __get($name) {
+    public function __get($name)
+    {
 
         if ($this->_menu === null) $this->setMenu();
 
@@ -152,8 +156,8 @@ class MenuManager extends Component {
     }
 
 
-    public function __isset($name) {
-
+    public function __isset($name)
+    {
         if ($this->_menu === null) $this->setMenu();
 
         $name = strtolower($name);
@@ -163,16 +167,16 @@ class MenuManager extends Component {
     }
 
 
-    public function getSubMenu($name) {
-
+    public function getSubMenu($name)
+    {
         if ($this->_menu === null) $this->setMenu();
 
-        return isset($this->_menu[$name])?$this->_menu[$name]:null;
+        return isset($this->_menu[$name]) ? $this->_menu[$name] : null;
     }
 
 
-    public function getDBMenu($key = null) {
-
+    public function getDBMenu($key = null)
+    {
         if ($key) return [];
         /*
         if (app()->moduleManager->has('menu')) {
@@ -184,6 +188,4 @@ class MenuManager extends Component {
         */
         return [];
     }
-
-
 }

@@ -1,6 +1,8 @@
 <?php
 namespace app\modules\core\helpers;
 
+use app\modules\core\components\Module;
+
 /**
  * Class ModuleMenuTrait
  * @package app\modules\core\components

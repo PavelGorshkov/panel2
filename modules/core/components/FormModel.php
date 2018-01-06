@@ -1,12 +1,15 @@
 <?php
-namespace app\modules\core\components;
 
+namespace app\modules\core\components;
 
 use yii\base\Model;
 
-
-class FormModel extends Model {
-
+/**
+ * Class FormModel
+ * @package app\modules\core\components
+ */
+class FormModel extends Model
+{
     /**
      * Метод хранящий описания атрибутов:
      *
@@ -16,6 +19,7 @@ class FormModel extends Model {
     {
         return $this->attributeLabels();
     }
+
 
     /**
      * Метод получения описания атрибутов
@@ -30,5 +34,4 @@ class FormModel extends Model {
 
         return (isset($descriptions[$attribute])) ? $descriptions[$attribute] : '';
     }
-
 }

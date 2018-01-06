@@ -1,15 +1,18 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 
-trait ModuleSettingsTrait {
+trait ModuleSettingsTrait
+{
 
     /**
      * Выводит список модулей, от которых он будет зависеть
      *
      * @return array
      */
-    public static function dependsOnModules() {
+    public static function dependsOnModules()
+    {
 
         return [];
     }

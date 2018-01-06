@@ -22,9 +22,7 @@ class InfoProfileWidget extends Widget {
 
         if ($user === null) return null;
 
-        $profile = user()->profile;
-
-        $avatar = $profile->avatar?$profile->avatar:$this->module->defaultAvatar;
+        $avatar = $user->avatar?$user->avatar:$this->module->defaultAvatar;
 
         return $this->render(
             $this->view,
@@ -35,9 +33,9 @@ class InfoProfileWidget extends Widget {
                     128
                 ),
                 'email'=>$user->email,
-                'full_name'=>$profile->full_name,
-                'about'=>$profile->about,
-                'phone'=>$profile->phone,
+                'full_name'=>$user->full_name,
+                'about'=>$user->about,
+                'phone'=>$user->phone,
             ]
         );
     }

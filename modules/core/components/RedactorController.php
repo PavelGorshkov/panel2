@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\RouterUrlHelper;
@@ -10,7 +11,8 @@ use yii\web\HttpException;
  * Class RedactorController
  * @package app\modules\core\components
  */
-class RedactorController extends WebController {
+class RedactorController extends WebController
+{
 
     protected $actionMenu = null;
 
@@ -25,13 +27,14 @@ class RedactorController extends WebController {
      *
      * @throws \yii\web\BadRequestHttpException
      */
-    public function beforeAction($action) {
+    public function beforeAction($action)
+    {
 
         parent::beforeAction($action);
 
         if (empty($this->actionMenu) || !is_array($this->actionMenu)) {
 
-            throw new HttpException('500', 'In class '.__CLASS__.' not found property actionMenu');
+            throw new HttpException('500', 'In class ' . __CLASS__ . ' not found property actionMenu');
         }
 
         $this->view->params['actionMenu'] = $this->getActionsMenu();
@@ -41,14 +44,15 @@ class RedactorController extends WebController {
         if (isset($this->actionMenu[$this->action->id]))
             $this->setSmallTitle($this->actionMenu[$this->action->id]);
 
-        if (isset($this->actionMenu['@'.$this->action->id]))
-            $this->setSmallTitle($this->actionMenu['@'.$this->action->id]);
+        if (isset($this->actionMenu['@' . $this->action->id]))
+            $this->setSmallTitle($this->actionMenu['@' . $this->action->id]);
 
         return true;
     }
 
 
-    public function getActionsMenu() {
+    public function getActionsMenu()
+    {
 
         $menu = [];
 
@@ -62,10 +66,10 @@ class RedactorController extends WebController {
                 $access = true;
 
             $menu[] = [
-                'label'=>$label,
-                'url'=>[$url],
-                'active'=>RouterUrlHelper::isActiveRoute($url),
-                'visible'=>$access?app()->moduleManager->can($this->module->id, RouterUrlHelper::to($url)):true,
+                'label' => $label,
+                'url' => [$url],
+                'active' => RouterUrlHelper::isActiveRoute($url),
+                'visible' => $access ? app()->moduleManager->can($this->module->id, RouterUrlHelper::to($url)) : true,
             ];
         }
 

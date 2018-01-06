@@ -9,7 +9,8 @@
 namespace app\modules\core\helpers;
 
 
-trait SingletonTrait {
+trait SingletonTrait
+{
 
     /**
      * @var mixed
@@ -21,23 +22,33 @@ trait SingletonTrait {
      */
     private static $_instance = null;
 
-    private function __clone(){}
-    private function __construct(){}
+
+    private function __clone()
+    {
+    }
+
+    private function __construct()
+    {
+    }
 
 
-    public function initData(){}
+    public function initData()
+    {
+    }
+
 
     /**
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
 
-        return ($this->_data!==null)?$this->_data:[];
+        return ($this->_data !== null) ? $this->_data : [];
     }
 
 
-    public static function model() {
-
+    public static function model()
+    {
         if (self::$_instance === null) {
 
             self::$_instance = new self;
@@ -47,5 +58,4 @@ trait SingletonTrait {
 
         return self::$_instance;
     }
-
 }

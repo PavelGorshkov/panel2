@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 use app\modules\core\models\Settings;
@@ -9,28 +10,32 @@ use app\modules\core\models\Settings;
  * Class ModuleSettings
  * @package app\modules\core\helpers
  */
-class ModuleSettings {
+class ModuleSettings
+{
 
     use SingletonTrait;
 
-    public function __get($module) {
+    public function __get($module)
+    {
 
-        return isset($this->_data[$module])?$this->_data[$module]:[];
+        return isset($this->_data[$module]) ? $this->_data[$module] : [];
 
     }
 
 
-    public function __set($module, $data) {
+    public function __set($module, $data)
+    {
 
         if (!is_array($data) || !count($data)) return;
 
-        if(!isset($this->_data[$module])) $this->_data[$module] = [];
+        if (!isset($this->_data[$module])) $this->_data[$module] = [];
 
         Settings::saveModuleData($data);
     }
 
 
-    public function initData() {
+    public function initData()
+    {
 
         $this->_data = Settings::findAllModuleData();
     }

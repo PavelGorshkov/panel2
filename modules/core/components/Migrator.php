@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use Yii;
@@ -13,8 +14,8 @@ use yii\helpers\ArrayHelper;
  * Class Migrator
  * @package app\modules\core\components
  */
-class Migrator extends Component{
-
+class Migrator extends Component
+{
     public $migrationTable = '{{%migration}}';
 
     /**
@@ -35,7 +36,7 @@ class Migrator extends Component{
             ->select(['version', 'apply_time'])
             ->distinct()
             ->from($this->migrationTable)
-            ->orderBy(['id'=>SORT_DESC])
+            ->orderBy(['id' => SORT_DESC])
             ->where('module = :module', [':module' => $module])
             ->all();
 
@@ -48,28 +49,28 @@ class Migrator extends Component{
 
                 if ($migration['apply_time'] == 0) {
 
-                    echo 'Откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
-                    Yii::trace('Откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
+                    echo 'Откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.<br />';
+                    Yii::trace('Откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
 
                     if ($this->migrateDown($module, $migration['version']) !== false) {
 
                         (new Migration())->delete(
                             $this->migrationTable,
                             'version = :version AND module=:module',
-                            [':version'=>$migration['version'], ':module'=>$module]);
+                            [':version' => $migration['version'], ':module' => $module]);
 
                     } else {
 
-                        Yii::warning('Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.', __METHOD__);
-                        echo 'Не удалось выполнить откат миграции '.$migration['version'].' для модуля '.$module.'.<br />';
+                        Yii::warning('Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
+                        echo 'Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.<br />';
 
                         return false;
                     }
                 }
             }
         } else {
-            Yii::trace('Для модуля '.$module.' не требуется откат миграции.', __METHOD__);
-            echo 'Для модуля '.$module.' не требуется откат миграции.<br />';
+            Yii::trace('Для модуля ' . $module . ' не требуется откат миграции.', __METHOD__);
+            echo 'Для модуля ' . $module . ' не требуется откат миграции.<br />';
         }
 
         return true;
@@ -79,21 +80,21 @@ class Migrator extends Component{
     /**
      * Создает таблицу историй миграций
      */
-    protected function createMigrationHistoryTable() {
+    protected function createMigrationHistoryTable()
+    {
+        Yii::trace("Создаем таблицу для хранения версий миграций " . __METHOD__);
 
-        Yii::trace("Создаем таблицу для хранения версий миграций ".__METHOD__);
-
-        echo "Создаем таблицу для хранения версий миграций ".$this->migrationTable;
+        echo "Создаем таблицу для хранения версий миграций " . $this->migrationTable;
 
         $migration = new Migration();
 
         $migration->createTable(
             $this->migrationTable,
             [
-                'id'=>$migration->primaryKey(),
-                'module'=>$migration->string()->notNull(),
-                'version'=>$migration->string()->notNull(),
-                'apply_time'=>$migration->integer()->defaultValue('0')
+                'id' => $migration->primaryKey(),
+                'module' => $migration->string()->notNull(),
+                'version' => $migration->string()->notNull(),
+                'apply_time' => $migration->integer()->defaultValue('0')
             ],
             $migration->getOptions()
         );
@@ -119,8 +120,8 @@ class Migrator extends Component{
         $data = (new Query())
             ->select(['version', 'apply_time'])
             ->from($this->migrationTable)
-            ->orderBy(['id'=>SORT_DESC])
-            ->where('module = :module', [':module'=>$module])
+            ->orderBy(['id' => SORT_DESC])
+            ->where('module = :module', [':module' => $module])
             ->limit($limit)
             ->all();
 
@@ -157,14 +158,13 @@ class Migrator extends Component{
 
                 if ($file === '.' || $file === '..') continue;
 
-                $path = $migrationsPath.'/'.$file;
+                $path = $migrationsPath . '/' . $file;
 
                 if (
                     preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches)
                     && is_file($path)
                     && !isset($applied[$matches[2]])
-                )
-                {
+                ) {
                     $migrations[] = $matches[1];
                 }
             }
@@ -184,13 +184,15 @@ class Migrator extends Component{
      *
      * @return string
      */
-    public static function getPathMigration($module) {
+    public static function getPathMigration($module)
+    {
 
         return Yii::getAlias(sprintf("@app/modules/%s/install/migrations", $module));
     }
 
 
-    public function init() {
+    public function init()
+    {
 
         if (app()->db->schema->getTableSchema($this->migrationTable) === null) {
 
@@ -214,9 +216,9 @@ class Migrator extends Component{
 //        $file = (string) self::getPathMigration($module).DIRECTORY_SEPARATOR.$class.'.php';
 //        require_once $file;
 
-        $namespace = '\\app\\modules\\'.$module.'\\install\\migrations\\';
+        $namespace = '\\app\\modules\\' . $module . '\\install\\migrations\\';
 
-        $class = $namespace.$className;
+        $class = $namespace . $className;
 
         return new $class;
     }
@@ -233,12 +235,12 @@ class Migrator extends Component{
      */
     public function migrateDown($module, $class)
     {
-        Yii::trace('Отменяем миграцию '.$class, __METHOD__);
+        Yii::trace('Отменяем миграцию ' . $class, __METHOD__);
 
         $start = microtime(true);
         $migration = $this->instantiateMigration($module, $class);
 
-        if (!($migration instanceof Migration )) return true;
+        if (!($migration instanceof Migration)) return true;
 
         ob_start();
         ob_implicit_flush(false);
@@ -253,12 +255,12 @@ class Migrator extends Component{
 
             (new Migration())->delete(
                 $this->migrationTable,
-                 "version = :ver AND module = :module",
-                [':ver'=>$class, ':module'=>$module]
+                "version = :ver AND module = :module",
+                [':ver' => $class, ':module' => $module]
             );
 
             $time = microtime(true) - $start;
-            Yii::trace('Миграция '.$class.' отменена за '.sprintf("%.3f", $time).' сек.', __METHOD__);
+            Yii::trace('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.', __METHOD__);
 
             return true;
 
@@ -266,9 +268,9 @@ class Migrator extends Component{
 
             $time = microtime(true) - $start;
 
-            Yii::error('Ошибка отмены миграции '.$class.' ('.sprintf("%.3f", $time).' сек.)', __METHOD__);
+            Yii::error('Ошибка отмены миграции ' . $class . ' (' . sprintf("%.3f", $time) . ' сек.)', __METHOD__);
 
-            throw new Exception('Во время установки возникла ошибка: '.$msg);
+            throw new Exception('Во время установки возникла ошибка: ' . $msg);
         }
     }
 
@@ -287,12 +289,12 @@ class Migrator extends Component{
         $start = microtime(true);
         $migration = $this->instantiateMigration($module, $className);
 
-        if (!($migration instanceof Migration )) return;
+        if (!($migration instanceof Migration)) return;
 
         ob_start();
         ob_implicit_flush(false);
 
-        echo 'Применяем миграцию '.$className.'<br />';
+        echo 'Применяем миграцию ' . $className . '<br />';
 
         // Вставляем запись о начале миграции
         /* @var Migration $className */
@@ -323,16 +325,16 @@ class Migrator extends Component{
 
             $time = microtime(true) - $start;
 
-            Yii::trace("Миграция ".$className." применена за ".sprintf("%.3f", $time)." сек.", __METHOD__);
-            echo "Миграция ".$className." применена за ".sprintf("%.3f", $time)." сек...<br />";
+            Yii::trace("Миграция " . $className . " применена за " . sprintf("%.3f", $time) . " сек.", __METHOD__);
+            echo "Миграция " . $className . " применена за " . sprintf("%.3f", $time) . " сек...<br />";
 
         } else {
 
             $time = microtime(true) - $start;
 
-            Yii::error('Ошибка применения миграции '.$className.' ('.sprintf("%.3f", $time).' сек.)', __METHOD__);
+            Yii::error('Ошибка применения миграции ' . $className . ' (' . sprintf("%.3f", $time) . ' сек.)', __METHOD__);
 
-            throw new Exception('Во время установки возникла ошибка: '.$msg);
+            throw new Exception('Во время установки возникла ошибка: ' . $msg);
         }
     }
 
@@ -348,8 +350,8 @@ class Migrator extends Component{
     {
         if (($newMigrations = $this->getNewMigrations($module)) !== []) {
 
-            Yii::trace("Обновляем до последней версии базы модуль ".$module, __METHOD__);
-            echo "Обновляем до последней версии базы модуль ".$module.'<br />';
+            Yii::trace("Обновляем до последней версии базы модуль " . $module, __METHOD__);
+            echo "Обновляем до последней версии базы модуль " . $module . '<br />';
 
             foreach ($newMigrations as $migration) {
 
@@ -368,8 +370,8 @@ class Migrator extends Component{
      * Обновление миграций системных модулей (core и user)
      * @throws Exception
      */
-    public function updateToLatestSystem() {
-
+    public function updateToLatestSystem()
+    {
         foreach (['core', 'user'] as $module) {
 
             $this->updateToLatestModule($module);

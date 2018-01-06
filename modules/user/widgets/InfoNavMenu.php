@@ -42,7 +42,7 @@ class InfoNavMenu extends Widget {
             ),
             'email'=>$user->email,
             'full_name'=>$user->full_name,
-            'about'=>user()->$user->about,
+            'about'=>$user->about,
         ]);
     }
 

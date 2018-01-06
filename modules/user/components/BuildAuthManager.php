@@ -1,12 +1,15 @@
 <?php
+
 namespace app\modules\user\components;
 
+use app\modules\core\helpers\File;
 use app\modules\user\interfaces\RBACItemInterface;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Rule;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Класс ответственный за создание файлов авторизации приложения
@@ -14,8 +17,8 @@ use yii\rbac\Rule;
  * Class BuildAuthManager
  * @package app\modules\user\components
  */
-class BuildAuthManager extends Component {
-
+class BuildAuthManager extends Component
+{
     public $pathModuleAlias = '@app/modules/';
 
     /**
@@ -28,14 +31,21 @@ class BuildAuthManager extends Component {
      */
     public $ruleFile;
 
+    /**
+     * @var array|null
+     */
     protected $rules = null;
 
+    /**
+     * @var null
+     */
     protected $_instances = null;
 
     protected $listTalk;
 
 
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
@@ -47,20 +57,21 @@ class BuildAuthManager extends Component {
      * Создание файла конфигурации RBAC приложения
      * @throws Exception
      */
-    public function createAuthFiles() {
+    public function createAuthFiles()
+    {
 
         $settings = $this->generateAuth(new Roles);
         $this->_instances = [];
 
         foreach (app()->moduleManager->getListAllModules() as $module) {
 
-            $files = Yii::getAlias('@app/modules/'.$module.'/auth/*Task.php');
-            $nameSpace = '\\app\\modules\\'.$module.'\\auth\\';
+            $files = Yii::getAlias('@app/modules/' . $module . '/auth/*Task.php');
+            $nameSpace = '\\app\\modules\\' . $module . '\\auth\\';
 
             /* @var \SplFileInfo $item */
             foreach (new \GlobIterator($files) as $item) {
 
-                $className = $nameSpace. $item->getBasename('.php');
+                $className = $nameSpace . $item->getBasename('.php');
                 if (!class_exists($className)) continue;
 
                 $instance = new $className;
@@ -83,8 +94,8 @@ class BuildAuthManager extends Component {
      *
      * @return array
      */
-    protected function generateAuth($instance) {
-
+    protected function generateAuth($instance)
+    {
         $data = [];
 
         $tree = $instance->getTree();
@@ -94,9 +105,11 @@ class BuildAuthManager extends Component {
         foreach ($instance->getTypes() as $type => $type_role) {
 
             $t = [
-                'type'=>$type_role,
-                'name'=>$type,
-                'description'=>isset($descriptionList[$type])?$descriptionList[$type]:'',
+                'type' => $type_role,
+                'name' => $type,
+                'description' => isset($descriptionList[$type])
+                    ?$descriptionList[$type]
+                    : '',
             ];
 
             if (isset($ruleList[$type])) {
@@ -129,8 +142,8 @@ class BuildAuthManager extends Component {
      *
      * @return string
      */
-    protected function searchRule($rule) {
-
+    protected function searchRule($rule)
+    {
         if (!class_exists($rule)) return '';
 
         $class = new $rule;
@@ -155,11 +168,11 @@ class BuildAuthManager extends Component {
     /**
      * @return array|null
      */
-    protected function getRules() {
-
+    protected function getRules()
+    {
         if ($this->rules === null) {
 
-            $this->rules = $this->includePhpFile($this->ruleFile);
+            $this->rules = File::includePhpFile($this->ruleFile);
         }
 
         return $this->rules;
@@ -167,58 +180,35 @@ class BuildAuthManager extends Component {
 
 
     /**
-     * @param string $file
-     * @return array|mixed
-     */
-    protected function includePhpFile($file) {
-
-        if (file_exists($file) && pathinfo($file, PATHINFO_EXTENSION)==='php') return require_once $file;
-
-        return [];
-    }
-
-
-
-    /**
      * @param Rule $ruleObj
      */
-    protected function addRule($ruleObj) {
-
+    protected function addRule($ruleObj)
+    {
         $this->rules[$ruleObj->name] = serialize($ruleObj);
     }
 
 
     /**
-     * @throws Exception
+     * @throws ServerErrorHttpException
      */
-    protected function saveRules() {
+    protected function saveRules()
+    {
+        if (!File::savePhpFile($this->ruleFile, $this->getRules())) {
 
-        $rules = '<?php return ' . var_export($this->getRules(), true) . ';';
-
-        if (crc32($rules) != file_crc32($this->ruleFile)) {
-
-            if (!@file_put_contents($this->ruleFile, $rules)) {
-
-                throw new Exception('Error write rbac rules in '.$this->ruleFile.'...');
-            }
+            throw new ServerErrorHttpException('Error write rbac rules in ' . $this->ruleFile . '...');
         }
     }
 
 
     /**
-     * @param $items
-     * @throws Exception
+     * @param mixed $items
+     * @throws ServerErrorHttpException
      */
-    protected function saveItems($items) {
+    protected function saveItems($items)
+    {
+        if (!File::savePhpFile($this->itemFile, $items)) {
 
-        $content = '<?php return ' . var_export($items, true) . ';';
-
-        if (crc32($content) != file_crc32($this->itemFile)) {
-
-            if (!@file_put_contents($this->itemFile, $content)) {
-
-                throw new Exception('Error write rbac rules in '.$this->itemFile.'...');
-            }
+            throw new ServerErrorHttpException('Error write rbac items in ' . $this->itemFile . '...');
         }
     }
 }
