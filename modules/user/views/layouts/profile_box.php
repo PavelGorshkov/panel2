@@ -10,7 +10,7 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
 ?>
 <div class="row">
     <div class="col-md-3">
-        <?=InfoProfileWidget::widget()?>
+        <?=InfoProfileWidget::widget();?>
     </div>
     <div class="col-md-9">
         <? BoxWidget::begin([

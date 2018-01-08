@@ -2,11 +2,9 @@
 /* @var $this \app\modules\core\components\View */
 /* @var $module Module */
 /* @var $info User */
-/* @var $profile Profile */
 
 use app\modules\core\widgets\BoxSolidWidget;
 use app\modules\user\models\User;
-use app\modules\user\models\Profile;
 use app\modules\user\Module;
 use app\modules\user\widgets\AvatarWidget;
 use yii\helpers\Html;
@@ -53,15 +51,15 @@ use yii\helpers\Url;
         <table class="table table-condensed table-hover">
             <tr>
                 <th>ФИО</th>
-                <td><?=$profile->full_name?></td>
+                <td><?=$info->full_name?></td>
             </tr>
             <tr>
                 <th>Телефон</th>
-                <td><?=$profile->phone?></td>
+                <td><?=$info->phone?></td>
             </tr>
             <tr>
                 <th>Должность, место работы</th>
-                <td><?=$profile->about?></td>
+                <td><?=$info->about?></td>
             </tr>
             <tr>
                 <th>Аватар</th>

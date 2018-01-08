@@ -19,8 +19,6 @@ class LoginForm extends Model {
 
     public $password;
 
-    public $rememberMe = false;
-
     /**
      * @var IdentityUser
      */
@@ -83,6 +81,9 @@ class LoginForm extends Model {
     }
 
 
+    /**
+     * @return bool
+     */
     public function login() {
 
         $this->user->updateAttributes(

@@ -5,7 +5,7 @@ use app\modules\core\helpers\File;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use yii\base\Component;
-use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Компонент по работе с превьшками изображений
@@ -35,7 +35,7 @@ class Thumbnailer extends Component{
      * @param boolean $crop Обрезка миниатюры по размеру
      *
      * @return string
-     * @throws HttpException
+     * @throws ServerErrorHttpException
      * @throws \yii\base\Exception
      */
     public function thumbnail(
@@ -46,7 +46,7 @@ class Thumbnailer extends Component{
         $crop = true
     ) {
         if (!$width && !$height) {
-            throw new HttpException(500, "Incorrect width/height");
+            throw new ServerErrorHttpException("Incorrect width/height");
         }
 
         $name = $width . 'x' . $height . '_' . basename($file);
@@ -59,7 +59,7 @@ class Thumbnailer extends Component{
         if (!file_exists($thumbFile)) {
 
             if (false === File::checkPath($uploadDir)) {
-                throw new HttpException(500, 'Директория "'.$uploadDir.'не доступна для записи!');
+                throw new ServerErrorHttpException('Директория "'.$uploadDir.'не доступна для записи!');
             }
 
             $img = Imagine::getImagine()->open($file);

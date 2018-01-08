@@ -3,7 +3,7 @@ namespace app\modules\user\widgets;
 
 use app\modules\core\widgets\Widget;
 use app\modules\user\assets\AvatarWidgetAssets;
-use app\modules\user\models\Profile;
+use app\modules\user\models\IdentityUser;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -48,7 +48,7 @@ class AvatarWidget extends Widget {
 
     /**
      * Модель пользователя
-     * @var Profile
+     * @var IdentityUser
      */
     public $user;
 
@@ -66,7 +66,7 @@ class AvatarWidget extends Widget {
      */
     public function run() {
 
-        if ($this->user === null) $this->user = user()->profile;
+        if ($this->user === null) $this->user = user()->info;
 
         $this->imageSrc = $this->user->getAvatarSrc($this->size);
 
@@ -77,7 +77,7 @@ class AvatarWidget extends Widget {
 
         $this->imageAlt = empty($this->imageAlt)?$this->user->full_name:$this->imageAlt;
         $this->width = $this->size.'px';
-        $this->options = ['class' => 'avatar avatar-'.$this->user->user_id];
+        $this->options = ['class' => 'avatar avatar-'.$this->user->id];
 
         if (!$this->height) {
             $this->height = $this->width;

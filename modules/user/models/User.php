@@ -123,6 +123,7 @@ class User extends ActiveRecord
         ];
     }
 
+
     /**
      * @inheritdoc
      */

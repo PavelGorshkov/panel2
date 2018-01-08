@@ -4,7 +4,10 @@ namespace app\modules\user\widgets;
 use app\modules\core\widgets\Widget;
 use app\modules\user\helpers\ModuleTrait;
 
-
+/**
+ * Class InfoProfileWidget
+ * @package app\modules\user\widgets
+ */
 class InfoProfileWidget extends Widget {
 
     use ModuleTrait;
@@ -14,7 +17,6 @@ class InfoProfileWidget extends Widget {
     /**
      * @return null|string
      * @throws \yii\base\Exception
-     * @throws \yii\web\HttpException
      */
     public function run() {
 
@@ -27,7 +29,7 @@ class InfoProfileWidget extends Widget {
         return $this->render(
             $this->view,
             [
-                'icon'=>app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
+                'icon'=>app()->thumbNailer->thumbnail($this->module->avatarDirs . $avatar,
                     $this->module->avatarDirs,
                     128,
                     128

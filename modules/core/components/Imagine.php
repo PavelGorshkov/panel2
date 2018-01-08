@@ -11,6 +11,7 @@ use Imagine\Image\Point;
 use Imagine\Imagick\Imagine as ImagickImagine;
 use yii\base\BaseObject;
 use yii\base\Exception;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Class Imagine
@@ -52,7 +53,7 @@ class Imagine extends BaseObject
     /**
      * @return GdImagine|GmagickImagine|ImagickImagine
      *
-     * @throws Exception
+     * @throws ServerErrorHttpException
      */
     protected static function createImagine()
     {
@@ -76,10 +77,10 @@ class Imagine extends BaseObject
                     }
                     break;
                 default:
-                    throw new Exception("Unknown driver: $driver");
+                    throw new ServerErrorHttpException("Unknown driver: $driver");
             }
         }
-        throw new Exception(
+        throw new ServerErrorHttpException(
             "Your system does not support any of these drivers: " . implode(
                 ',',
                 (array)static::$driver

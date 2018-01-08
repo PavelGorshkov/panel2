@@ -67,7 +67,7 @@ class AccountController extends WebController
 
         if (
             $model->load(app()->request->post())
-        &&  $model->validate()
+         && $model->validate()
         ) {
 
             if ($model->login())  return $this->goBack();

@@ -72,7 +72,6 @@ class ProfileController extends RedactorController
     {
         return $this->render('view', [
             'info'=>user()->info,
-            'profile'=>user()->profile,
             'module'=>$this->module,
         ]);
     }
