@@ -7,7 +7,6 @@ use app\modules\core\components\View;
 use app\modules\core\helpers\RouterUrlHelper;
 use app\modules\core\widgets\BoxWidget;
 use app\modules\core\widgets\CustomGridView;
-use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
 use app\modules\user\models\User;
@@ -105,7 +104,7 @@ try {
                 'hAlign'=>'center',
                 'vAlign'=>'middle',
                 'format'=>'raw',
-                'editableOptions'=>function($model, $key, $index) {
+                'editableOptions'=>function() { //$model, $key, $index
                     return [
                         'size'=> PopoverX::SIZE_MEDIUM,
                         'inputType'=> Editable::INPUT_DROPDOWN_LIST,
@@ -132,7 +131,7 @@ try {
                 'hAlign'=>'center',
                 'vAlign'=>'middle',
                 'format'=>'raw',
-                'editableOptions'=>function($model, $key, $index) {
+                'editableOptions'=>function() { //$model, $key, $index
                     return [
                         'size'=> PopoverX::SIZE_MEDIUM,
                         'inputType'=> Editable::INPUT_DROPDOWN_LIST,

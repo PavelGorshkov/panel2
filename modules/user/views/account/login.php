@@ -1,6 +1,7 @@
 <?php
 /* @var $this app\modules\core\components\View */
-/* @var $model app\modules\user\models\LoginForm */
+/* @var $model app\modules\user\forms\LoginForm */
+/* @var $module app\modules\user\Module */
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;

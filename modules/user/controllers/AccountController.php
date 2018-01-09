@@ -107,14 +107,14 @@ class AccountController extends WebController
 
         $this->performAjaxValidationMultiply([$profile, $model]);
 
-        if ($model->load(app()->request->post())
-         && $profile->load(app()->request->post())) {
+        if (
+             $model->load(app()->request->post())
+          && $profile->load(app()->request->post())
+          && $model->validate()
+          && $profile->validate()
+        ) {
 
-            if (
-                $model->validate()
-             && $profile->validate()
-             && app()->userManager->registerForm($model, $profile)
-            ) {
+            if (app()->userManager->registerForm($model, $profile)) {
 
                 user()->setSuccessFlash('Учетная запись создана! Проверьте вашу электронную почту');
 
@@ -122,6 +122,7 @@ class AccountController extends WebController
                 app()->end();
             }
         }
+
 
         return $this->render('registration', [
             'model' => $model,

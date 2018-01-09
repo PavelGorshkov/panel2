@@ -1,11 +1,8 @@
 <?php
 /* @var $this app\modules\core\components\View */
-/* @var $model app\modules\user\models\RecoveryForm */
+/* @var $model app\modules\user\forms\RecoveryForm */
 
-use app\modules\core\components\View;
 use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Button;
-use yii\captcha\Captcha;
 use yii\helpers\Html;
 
 $this->setTitle('Восстановление пароля');

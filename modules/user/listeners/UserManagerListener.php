@@ -11,20 +11,20 @@ class UserManagerListener {
 
 
     /**
-     * @param RegistrationEvent $event
+     * @param UserEvent $event
      */
-    public static function onUserRegistration(RegistrationEvent $event) {
+    public static function onUserRegistration(UserEvent $event) {
 
-        $registration = $event->getRegistrationForm();
+        $user = $event->getUser();
 
         self::sendMessage(
-            $registration->email,
+            $user->email,
             'Регистрация на сайте "'.app()->name.'"',
             'welcome',
             [
-                'email'=>$registration->email,
-                'fullName'=>$registration->full_name,
-                'login'=>$registration->username
+                'email'=>$user->email,
+                'fullName'=>$user->full_name,
+                'login'=>$user->username
             ]
         );
 
@@ -32,20 +32,20 @@ class UserManagerListener {
 
 
     /**
-     * @param RegistrationEvent $event
+     * @param TokenEvent $event
      */
-    public static function onUserRegistrationNeedActivation(RegistrationEvent $event) {
+    public static function onUserRegistrationNeedActivation(TokenEvent $event) {
 
-        $registration = $event->getRegistrationForm();
+        $user = $event->getUser();
 
         self::sendMessage(
-            $registration->email,
+            $user->email,
             'Регистрация на сайте "'.app()->name.'"',
             'activation',
             [
-                'email'=>$registration->email,
-                'fullName'=>$registration->full_name,
-                'login'=>$registration->username,
+                'email'=>$user->email,
+                'fullName'=>$user->full_name,
+                'login'=>$user->username,
                 'token'=>$event->getToken(),
                 'expire'=>self::setExpireDateTime(app()->getModule('user')->expireTokenActivationLifeHours*3600),
             ]
@@ -67,7 +67,7 @@ class UserManagerListener {
             'recovery',
             [
                 'email'=>$user->email,
-                'fullName'=>$user->userProfile->full_name,
+                'fullName'=>$user->full_name,
                 'token'=>$event->getToken(),
                 'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenPasswordLifeHours*3600)),
             ]
@@ -88,7 +88,7 @@ class UserManagerListener {
             'generatePassword',
             [
                 'email'=>$user->email,
-                'fullName'=>$user->userProfile->full_name,
+                'fullName'=>$user->full_name,
                 'password'=>$event->getPassword(),
             ]
         );
@@ -108,7 +108,7 @@ class UserManagerListener {
             'changePassword',
             [
                 'email'=>$user->email,
-                'fullName'=>$user->userProfile->full_name,
+                'fullName'=>$user->full_name,
             ]
         );
     }
@@ -126,7 +126,7 @@ class UserManagerListener {
             'Активация электронной почты',
             'changeEmail',
             [
-                'fullName'=>$user->userProfile->full_name,
+                'fullName'=>$user->full_name,
                 'token'=>$event->getToken(),
                 'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenActivationLifeHours*3600)),
             ]

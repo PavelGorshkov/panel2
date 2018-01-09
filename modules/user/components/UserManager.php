@@ -76,7 +76,10 @@ class UserManager extends Component {
 
         $this->accessQuery = Access::find();
 
-        $this->setTokenStorage(Yii::createObject(['class' => TokenStorage::className()]));
+        /** @var $tokenStorage TokenStorage */
+        $tokenStorage = Yii::createObject(['class'=>TokenStorage::className()]);
+
+        $this->setTokenStorage($tokenStorage);
 
         $this->setListener();
     }
@@ -126,30 +129,27 @@ class UserManager extends Component {
      */
     public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile) {
 
-        $event = $this->getRegistrationEvent($model, $profile);
-
-        /* заполнение пользователя */
         $user = $this->createUserForRegistration($model);
+
+        $user->setAttributes($profile->getAttributes());
 
         $transaction  = app()->db->beginTransaction();
 
         if (!$user->save()) $this->failureTransaction($transaction);
 
-        $event->setUser($user);
-
-        $userProfile = $this->createProfileForRegistration($model, $profile, $user);
-
-        if (!$userProfile->save()) $this->failureTransaction($transaction);
-
         if (!$this->module->emailAccountVerification) {
 
-            $this->trigger(self::EVENT_SUCCESS_REGISTRATION, $event);
+            $this->trigger(
+                self::EVENT_SUCCESS_REGISTRATION,
+                $this->getUserEvent($user)
+            );
 
         } else {
 
-            $event->setToken($this->tokenStorage->createAccountActivationToken($user));
-
-            $this->trigger(self::EVENT_SUCCESS_REGISTRATION_NEED_ACTIVATION, $event);
+            $this->trigger(
+                self::EVENT_SUCCESS_REGISTRATION_NEED_ACTIVATION,
+                $this->getUserTokenEvent($user, $this->tokenStorage->createAccountActivationToken($user))
+            );
         }
 
         return $this->successTransaction($transaction);
@@ -214,6 +214,7 @@ class UserManager extends Component {
     protected function createUserForRegistration(RegistrationForm $model) {
 
         $user = new RegisterUser();
+
         $user->setScenario(RegisterUser::SCENARIO_REGISTER);
 
         $user->setAttributes($model->getAttributes());
@@ -225,25 +226,6 @@ class UserManager extends Component {
         $user->registered_from = RegisterFromHelper::FORM;
 
         return $user;
-    }
-
-
-    /**
-     * @param RegistrationForm $model
-     * @param ProfileRegistrationForm $modelProfile
-     * @param User $user
-     *
-     * @return Profile
-     */
-    protected function createProfileForRegistration(RegistrationForm $model, ProfileRegistrationForm $modelProfile, User $user) {
-
-        $profile = new Profile();
-
-        $profile->setAttributes($model->getAttributes());
-        $profile->setAttributes($modelProfile->getAttributes());
-        $profile->user_id = $user->id;
-
-        return $profile;
     }
 
 

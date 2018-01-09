@@ -1,7 +1,7 @@
 <?php
 /* @var $this app\modules\core\components\View */
-/* @var $model app\modules\user\models\RegistrationForm */
-/* @var $profile app\modules\user\models\ProfileRegistrationForm */
+/* @var $model app\modules\user\forms\RegistrationForm */
+/* @var $profile app\modules\user\forms\ProfileRegistrationForm */
 /* @var $module app\modules\user\Module */
 
 use app\modules\core\components\View;
@@ -29,7 +29,8 @@ $this->setTitle('Регистрация');
     $form->errorSummary($model);
 
     $formName = $model->formName();
-    $this->registerJs(<<<JS
+    $this->registerJs(/** @lang text */
+        <<<JS
 !function ($) {
 $(function() {
 
@@ -78,12 +79,12 @@ JS
 <?php endif;?>
 <div class='row'>
     <div class="col-sm-12">
-        <?= $form->field($model, 'full_name', [
+        <?= $form->field($profile, 'full_name', [
             'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-user form-control-feedback"></span></span></div>',
             'enableLabel'=>false,
             'inputOptions'=>[
                 'autofocus' => 'autofocus',
-                'placeholder'=>$model->getAttributeLabel('full_name'),
+                'placeholder'=>$profile->getAttributeLabel('full_name'),
                 'tabindex'=>'2',
             ],
         ]); ?>
@@ -164,16 +165,16 @@ JS
 </div>
 <div class="row">
     <div class="col-sm-12 form-group">
-        <?=Button::widget(
-        [
-            'label' => 'Сгенерировать пароль',
-            'options' => [
-                'id' => 'generate_password',
-                'data-minlength' => $module->minPasswordLength,
-                'class'=>'btn btn-block btn-sm'
-            ],
-        ]
-    ); ?>
+        <?= Button::widget(
+                [
+                    'label' => 'Сгенерировать пароль',
+                    'options' => [
+                        'id' => 'generate_password',
+                        'data-minlength' => $module->minPasswordLength,
+                        'class' => 'btn btn-block btn-sm'
+                    ],
+                ]
+            );?>
     </div>
 </div>
 <?php if ($module->showCaptcha && Captcha::checkRequirements()): { ?>

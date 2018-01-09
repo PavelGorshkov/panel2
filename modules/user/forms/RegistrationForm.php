@@ -15,8 +15,6 @@ class RegistrationForm extends Model
 
     public $email;
 
-    public $full_name;
-
     public $password;
 
     public $r_password;
@@ -52,9 +50,9 @@ class RegistrationForm extends Model
     {
 
         return [
-            [['username', 'full_name'], 'filter', 'filter' => 'trim',],
+            [['username'], 'filter', 'filter' => 'trim',],
             [
-                ['username', 'full_name'], 'filter',
+                ['username'], 'filter',
                 'filter' => function ($html) {
                     return HtmlPurifier::process(
                         $html,
@@ -62,7 +60,7 @@ class RegistrationForm extends Model
                     );
                 }
             ],
-            [['username', 'full_name', 'email', 'password', 'r_password'], 'required'],
+            [['username', 'email', 'password', 'r_password'], 'required'],
             ['username', 'unique', 'targetClass' => User::className(), 'message' => 'Имя пользователя уже занято'],
             [
                 'username',
@@ -83,7 +81,8 @@ class RegistrationForm extends Model
     public function beforeValidate()
     {
         if ($this->module->generateUserName) {
-            $this->user = 'user' . time();
+
+            $this->username = 'user' . time();
         }
 
         return parent::beforeValidate();
@@ -92,7 +91,6 @@ class RegistrationForm extends Model
     public function attributeLabels()
     {
         return [
-            'full_name' => 'ФИО',
             'username' => 'Логин',
             'email' => 'E-mail',
             'password' => 'Пароль',
