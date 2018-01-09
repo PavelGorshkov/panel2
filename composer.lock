@@ -207,7 +207,7 @@
             "version": "v1.3.8",
             "source": {
                 "type": "git",
-                "url": "git@github.com:rochal/jQuery-slimScroll.git",
+                "url": "https://github.com/rochal/jQuery-slimScroll.git",
                 "reference": "cf39d364e777ef95574c30c42d3b85cb2bf325d3"
             },
             "dist": {

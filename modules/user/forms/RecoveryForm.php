@@ -1,10 +1,8 @@
 <?php
 namespace app\modules\user\forms;
 
-
 use app\modules\user\models\User;
 use yii\base\Model;
-
 
 class RecoveryForm extends Model
 {
@@ -14,7 +12,7 @@ class RecoveryForm extends Model
 
     public function formName()
     {
-        return 'recovery-form';
+        return 'recovery-email-form';
     }
 
     public function rules()
@@ -32,7 +30,9 @@ class RecoveryForm extends Model
     {
         if ($this->hasErrors() === false) {
 
-            if (($this->_user = User::find()->email($this->$attribute)) === null) {
+            $this->_user = User::find()->email($this->email);
+
+            if ($this->_user === null) {
 
                 $this->addError($attribute, 'Email "' . $this->email . '" не найден или пользователь заблокирован!');
             }

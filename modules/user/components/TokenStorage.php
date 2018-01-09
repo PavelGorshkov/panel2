@@ -57,7 +57,7 @@ class TokenStorage extends Component {
         $model->status = TokenStatusHelper::STATUS_NEW;
         $model->ip = ip2long(app()->request->userIP);
 
-        $model->token = app()->security->generateRandomKey();
+        $model->token = app()->security->generateRandomString();
 
         if (!$model->save()) {
 

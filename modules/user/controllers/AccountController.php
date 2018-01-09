@@ -199,11 +199,11 @@ class AccountController extends WebController
      * @return string
      * @throws NotFoundHttpException
      * @throws \Exception
-     * @throws \Throwable
      * @throws \yii\base\ExitException
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
+     * @throws \Throwable
      */
     public function actionRecoveryPassword($token) {
 

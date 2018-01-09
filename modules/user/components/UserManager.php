@@ -461,6 +461,6 @@ class UserManager extends Component {
         unset($data['avatar_file']);
         unset($data['email']);
 
-        return user()->identity->userProfile->updateAttributes($data);
+        return user()->info->updateAttributes($data);
     }
 }

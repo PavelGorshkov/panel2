@@ -118,6 +118,7 @@ class ProfileController extends RedactorController
     /**
      * @return string
      * @throws \yii\base\ExitException
+     * @throws \yii\base\Exception
      */
     public function actionChangePassword()
     {
@@ -159,7 +160,7 @@ class ProfileController extends RedactorController
         $this->setSmallTitle('Изменение профиля');
 
         $model = new ProfileForm();
-        $model->setAttributes(user()->profile->getAttributes());
+        $model->setAttributes(user()->info->getAttributes());
         $model->email = user()->info->email;
 
         $this->performAjaxValidation($model);

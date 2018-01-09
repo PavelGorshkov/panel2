@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\ArrayHelper;
-use yii\swiftmailer\Mailer;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
