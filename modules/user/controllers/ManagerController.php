@@ -15,8 +15,15 @@ use kartik\grid\EditableColumnAction;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Class ManagerController
+ * @package app\modules\user\controllers
+ */
 class ManagerController extends WebController
 {
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -41,6 +48,9 @@ class ManagerController extends WebController
     }
 
 
+    /**
+     * @return array
+     */
     public function actions()
     {
 

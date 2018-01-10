@@ -6,12 +6,19 @@ use kartik\grid\ActionColumn;
 use Yii;
 use yii\helpers\Html;
 
+/**
+ * Class CustomActionColumn
+ * @package app\modules\core\widgets
+ */
 class CustomActionColumn extends ActionColumn
 {
     public $header = '&nbsp;';
 
     public $template = '{view}&nbsp;{update}&nbsp;{delete}';
 
+    /**
+     * @inheritdoc
+     */
     protected function initDefaultButtons()
     {
         $this->initDefaultButton('view', 'eye');

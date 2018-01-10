@@ -41,7 +41,8 @@ class SearchUser extends Model implements SearchModelInterface
      * @param array $params
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
 
         /* @var $query UserQuery */
         $query = ManagerUser::find();
