@@ -10,7 +10,7 @@ use app\modules\user\components\Roles;
 use app\modules\user\forms\UserFormModel;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
-use app\modules\user\models\User;
+use app\modules\user\models\ManagerUser;
 use kartik\grid\EditableColumnAction;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -53,20 +53,20 @@ class ManagerController extends WebController
             'update'=>[
                 'class'=>SaveModelAction::className(),
                 'modelForm'=>UserFormModel::className(),
-                'model'=>User::className(),
+                'model'=>ManagerUser::className(),
                 'isNewRecord'=>false,
             ],
             'access-level' => [
                 'class' => EditableColumnAction::className(),
-                'modelClass' => User::className(),
-                'outputValue' => function ($model) {
+                'modelClass' => ManagerUser::className(),
+                'outputValue' => function (ManagerUser $model) {
 
                    return $model->getAccessGroup();
                 },
             ],
             'status' => [
                 'class' => EditableColumnAction::className(),
-                'modelClass' => User::className(),
+                'modelClass' => ManagerUser::className(),
                 'outputValue' => function ($model, $attribute) {
 
                     return UserStatusHelper::getValue($model->$attribute, true);

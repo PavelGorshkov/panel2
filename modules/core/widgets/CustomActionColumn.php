@@ -4,6 +4,7 @@ namespace app\modules\core\widgets;
 
 use kartik\grid\ActionColumn;
 use Yii;
+use yii\helpers\Html;
 
 class CustomActionColumn extends ActionColumn
 {
@@ -13,7 +14,7 @@ class CustomActionColumn extends ActionColumn
 
     protected function initDefaultButtons()
     {
-        $this->initDefaultButton('view', 'eye-open');
+        $this->initDefaultButton('view', 'eye');
         $this->initDefaultButton('update', 'pencil', ['class'=>'btn btn-warning btn-xs']);
         $this->initDefaultButton('delete', 'trash', [
             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -52,7 +53,8 @@ class CustomActionColumn extends ActionColumn
                     'aria-label' => $title,
                     'data-pjax' => '0',
                 ], $additionalOptions, $this->buttonOptions);
-                $icon = Html::tag('span', '', ['class' => "fa fa-fw fa-$iconName"]);
+
+                $icon = Html::tag('i', '', ['class' => "fa fa-$iconName"]);
                 return Html::a($icon, $url, $options);
             };
         }

@@ -9,6 +9,10 @@ use app\modules\core\models\Settings;
  *
  * Class UserSettings
  * @package app\modules\core\helpers
+ *
+ * @method static UserSettings model
+ * @property string $skinTemplate
+ * @property string $sideBar
  */
 class UserSettings {
 

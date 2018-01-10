@@ -6,7 +6,6 @@ use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\query\UserQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveQuery;
 
 class SearchUser extends Model implements SearchModelInterface
 {
@@ -45,7 +44,7 @@ class SearchUser extends Model implements SearchModelInterface
     public function search($params) {
 
         /* @var $query UserQuery */
-        $query = User::find();
+        $query = ManagerUser::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

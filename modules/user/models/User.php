@@ -200,6 +200,12 @@ class User extends ActiveRecord
     }
 
 
+    public function isAdmin() {
+
+        return $this->access_level === UserAccessLevelHelper::LEVEL_ADMIN;
+    }
+
+
     public function getAccessGroup() {
 
         $data = self::getAccessLevelList();

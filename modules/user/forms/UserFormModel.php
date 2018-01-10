@@ -3,7 +3,6 @@ namespace app\modules\user\forms;
 
 use app\modules\core\interfaces\SaveModelInterface;
 use yii\base\Model;
-use yii\db\ActiveRecordInterface;
 
 
 class UserFormModel extends Model implements SaveModelInterface
@@ -26,14 +25,6 @@ class UserFormModel extends Model implements SaveModelInterface
 
     public $phone;
 
-    /**
-     * @param $model Model|ActiveRecordInterface
-     */
-    public function processingModel($model) {
-
-
-    }
-
 
     public function rules() {
 
@@ -44,11 +35,10 @@ class UserFormModel extends Model implements SaveModelInterface
 
 
     /**
-     * @param Model $user
-     *
+     * @param Model $model
      * @return bool|void
      */
-    public function processingData(Model $user) {
+    public function processingData(Model $model) {
 
 
     }

@@ -18,7 +18,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions'=>['captcha', 'migrate', 'test'],
+                        'actions'=>['captcha', 'migrate'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -56,12 +56,6 @@ class SiteController extends Controller
         $this->redirect(Url::to(app()->getModule('user')->profilePage));
 
         app()->end();
-    }
-
-
-    public function actionTest() {
-
-        printr(app()->db->createCommand('SELECT * FROM {{%user_user}}')->queryAll());
     }
 
 

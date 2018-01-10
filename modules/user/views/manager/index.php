@@ -9,7 +9,7 @@ use app\modules\core\widgets\CustomActionColumn;
 use app\modules\core\widgets\CustomGridView;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
-use app\modules\user\models\User;
+use app\modules\user\models\ManagerUser;
 use kartik\editable\Editable;
 use kartik\grid\GridView;
 use kartik\popover\PopoverX;
@@ -86,7 +86,7 @@ echo CustomGridView::widget([
             'format' => 'raw',
             'value' => function($model) {
 
-                /** @var $model User */
+                /** @var $model ManagerUser */
                 return $model->getContact();
             }
         ],
@@ -96,12 +96,16 @@ echo CustomGridView::widget([
             'hAlign'=>'center',
             'vAlign'=>'middle',
             'format'=>'raw',
+            'readonly'=>function(ManagerUser $model) {
+
+                return $model->id === user()->id;
+            },
             'editableOptions'=>function() { //$model, $key, $index
                 return [
                     'size'=> PopoverX::SIZE_MEDIUM,
                     'inputType'=> Editable::INPUT_DROPDOWN_LIST,
                     'placement'=>PopoverX::ALIGN_TOP,
-                    'data'=> User::getAccessLevelList(),
+                    'data'=> ManagerUser::getAccessLevelList(),
                     'submitButton'=>[
                         'icon'=>'<i class="fa fa-fw fa-check"></i>',
                         'label'=>'Применить',
@@ -112,10 +116,10 @@ echo CustomGridView::widget([
             },
             'value'=>function ($model) {
 
-                /** @var $model User */
+                /** @var $model ManagerUser */
                 return $model->getAccessGroup();
             },
-            'filter'=> User::getAccessLevelList(),
+            'filter'=> ManagerUser::getAccessLevelList(),
         ],
         [
             'class' => 'kartik\grid\EditableColumn',
@@ -123,6 +127,10 @@ echo CustomGridView::widget([
             'hAlign'=>'center',
             'vAlign'=>'middle',
             'format'=>'raw',
+            'readonly'=>function(ManagerUser $model) {
+
+                return $model->isAdmin();
+            },
             'editableOptions'=>function() { //$model, $key, $index
                 return [
                     'size'=> PopoverX::SIZE_MEDIUM,
@@ -139,14 +147,14 @@ echo CustomGridView::widget([
             },
             'value'=>function ($model) {
 
-                /** @var $model User */
+                /** @var $model ManagerUser */
                 return UserStatusHelper::getValue($model->status, true);
             },
             'filter'=> UserStatusHelper::getList(),
         ],
         [
             'class' => CustomActionColumn::className(),
-            'template' => '{access}{update}{password}{delete}',
+            'template' => '{access} {update} {password} {delete}',
             'buttons' => [
                 ''
             ],
