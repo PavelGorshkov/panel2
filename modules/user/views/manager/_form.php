@@ -1,14 +1,13 @@
 <?php
 use app\modules\core\components\View;
-use app\modules\core\widgets\CalloutWidget;
+use app\modules\core\widgets\ActiveForm;
 use app\modules\user\forms\UserFormModel;
-use app\modules\user\models\ManagerUser;
+use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\Module;
-use yii\bootstrap\ActiveForm;
+
 
 /* @var $this  View */
-/* @var $modelForm UserFormModel */
-/* @var $model ManagerUser */
+/* @var $model UserFormModel */
 /* @var $module Module */
 
 $form = ActiveForm::begin([
@@ -22,11 +21,25 @@ $form = ActiveForm::begin([
         'enctype' => 'multipart/form-data',
     ]
 ]);
-echo CalloutWidget::widget([
-    'message'=>'Поля отмеченные <span class="text-danger">*</span> обязательны для заполнения!',
-]);
+
 echo $form->errorSummary($model);
-
-
-
+?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?=$form->field($model, 'username')?>
+        </div>
+        <div class="col-sm-6">
+            <?=$form->field($model, 'email')->input('email');?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <?=$form->field($model, 'full_name')?>
+        </div>
+        <div class="col-sm-6">
+            <?=$form->field($model, 'email_confirm')
+                ->dropDownList(EmailConfirmStatusHelper::getList());?>
+        </div>
+    </div>
+<?php
 $form->end();

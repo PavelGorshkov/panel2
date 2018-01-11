@@ -11,6 +11,10 @@ use yii\web\Response;
 use yii\web\ServerErrorHttpException;
 use yii\widgets\ActiveForm;
 
+/**
+ * Class SaveModelAction
+ * @package app\modules\core\components\actions
+ */
 class SaveModelAction extends WebAction
 {
     public $modelForm = null;
@@ -130,8 +134,7 @@ class SaveModelAction extends WebAction
         }
 
         return $this->render([
-            'modelForm'=>$this->modelFormInstance,
-            'model'=>$this->modelInstance,
+            'model'=>$this->modelFormInstance,
             'module'=>app()->controller->module,
         ]);
     }
@@ -187,6 +190,10 @@ class SaveModelAction extends WebAction
         }
     }
 
+
+    /**
+     * @return Response
+     */
     protected function redirectPage() {
 
         if ($this->isRefresh) return $this->controller->refresh();
