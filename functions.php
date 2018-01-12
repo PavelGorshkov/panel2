@@ -5,7 +5,11 @@ use yii\console\Application as ConsoleApplication;
 use yii\web\Application as WebApplication;
 
 	/**
-	*/
+	 * debug function
+	 * @param $data
+	 * @param bool $isDie
+	 *
+	 */
 	function printr($data, $isDie = false) {
 
         //if (!((defined('YII_ENV') && YII_ENV === 'dev') && (defined('YII_DEBUG') && YII_DEBUG))) return;
@@ -48,7 +52,10 @@ use yii\web\Application as WebApplication;
     }
 
 
-
+    /**
+     * @param $file
+     * @return int
+     */
     function file_crc32($file) {
 
         if (!file_exists($file)) return 0;
