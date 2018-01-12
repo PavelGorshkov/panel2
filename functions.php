@@ -63,12 +63,3 @@ function printr($data, $isDie = false) {
 
         return crc32(file_get_contents($file));
     }
-
-
-    /**
-     * @return null
-     */
-    function test() {
-
-        return null;
-    }
