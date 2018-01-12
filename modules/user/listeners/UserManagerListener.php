@@ -3,7 +3,6 @@ namespace app\modules\user\listeners;
 
 use app\modules\user\events\PasswordEvent;
 use app\modules\user\events\TokenEvent;
-use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use DateTime;
 

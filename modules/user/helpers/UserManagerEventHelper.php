@@ -4,7 +4,6 @@ namespace app\modules\user\helpers;
 use app\modules\user\components\UserManager;
 use app\modules\user\events\PasswordEvent;
 use app\modules\user\events\TokenEvent;
-use app\modules\user\events\RegistrationEvent;
 use app\modules\user\events\UserEvent;
 use app\modules\user\models\User;
 use app\modules\user\models\Token;

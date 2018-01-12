@@ -8,7 +8,6 @@ use app\modules\core\assets\iCheckAssets;
 use app\modules\core\widgets\MenuWidget;
 use app\modules\user\helpers\UserSettings;
 use app\modules\user\widgets\FlashMessages;
-use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
@@ -94,7 +93,7 @@ include __DIR__ . '/_blocks.php';
                 </h1>
                 <?= Breadcrumbs::widget([
                     'links' => $this->getBreadcrumbs(),
-                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Главная', 'url'=>'/', 'encode'=>false],
+                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Р“Р»Р°РІРЅР°СЏ', 'url'=>'/', 'encode'=>false],
                 ]) ?>
             </section>
 
@@ -109,7 +108,7 @@ include __DIR__ . '/_blocks.php';
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs"></div>
-            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Все права защищены</strong>
+            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹</strong>
         </footer>
 
         <?= $this->blocks['controlSidebar']; ?>
