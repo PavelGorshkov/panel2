@@ -21,6 +21,9 @@ use yii\db\Expression;
  */
 class Role extends ActiveRecord
 {
+    /**
+     * @return array
+     */
     public function behaviors() {
 
         return [

@@ -66,6 +66,9 @@ class View extends BaseView
         $this->params['breadcrumbs'] = $breadcrumbs;
     }
 
+    /**
+     * @return array
+     */
     public function getBreadcrumbs() {
 
         return empty($this->params['breadcrumbs'])

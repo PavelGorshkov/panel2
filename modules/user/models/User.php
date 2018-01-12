@@ -6,6 +6,7 @@ use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\query\UserQuery;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -39,6 +40,9 @@ class User extends ActiveRecord
 {
     protected static $_accessList = null;
 
+    /**
+     * @return array
+     */
     public function behaviors() {
 
         return [
@@ -78,6 +82,10 @@ class User extends ActiveRecord
     }
 
 
+    /**
+     * @param $insert
+     * @param $changedAttributes
+     */
     public function afterSafe($insert, $changedAttributes) {
 
         parent::afterSave($insert, $changedAttributes);
@@ -153,6 +161,9 @@ class User extends ActiveRecord
         ];
     }
 
+    /**
+     * @return ActiveQuery|Token
+     */
 	public function getToken()
 	{
 		return $this->hasOne(Token::className(), ['user_id' => 'id']);
@@ -180,12 +191,18 @@ class User extends ActiveRecord
     }
 
 
+    /**
+     * @return bool
+     */
     public function isUFAccessLevel() {
 
         return $this->access_level >= 100;
     }
 
 
+    /**
+     * @return array|null
+     */
     public static function getAccessLevelList()
     {
         if (self::$_accessList === null) {
@@ -200,12 +217,18 @@ class User extends ActiveRecord
     }
 
 
+    /**
+     * @return bool
+     */
     public function isAdmin() {
 
         return $this->access_level === UserAccessLevelHelper::LEVEL_ADMIN;
     }
 
 
+    /**
+     * @return string
+     */
     public function getAccessGroup() {
 
         $data = self::getAccessLevelList();
@@ -214,6 +237,9 @@ class User extends ActiveRecord
     }
 
 
+    /**
+     * @return string
+     */
     public function getContact() {
 
         $text = [

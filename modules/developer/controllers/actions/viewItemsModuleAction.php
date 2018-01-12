@@ -4,6 +4,10 @@ namespace app\modules\developer\controllers\actions;
 use app\modules\core\components\actions\WebAction;
 use yii\web\ServerErrorHttpException;
 
+/**
+ * Class viewItemsModuleAction
+ * @package app\modules\developer\controllers\actions
+ */
 class viewItemsModuleAction extends WebAction{
 
     public $model = null;
@@ -23,6 +27,11 @@ class viewItemsModuleAction extends WebAction{
         parent::init();
     }
 
+
+    /**
+     * @param string $module
+     * @return string
+     */
     public function run($module = '') {
 
         return $this->render(['model'=>new $this->model($module)]);

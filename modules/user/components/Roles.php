@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 12.12.2017
- * Time: 11:55
- */
-
 namespace app\modules\user\components;
 
 use yii\rbac\Item;
 
+/**
+ * Class Roles
+ * @package app\modules\user\components
+ */
 class Roles extends RBACItem {
 
     const ADMIN = 'admin';
@@ -32,6 +29,9 @@ class Roles extends RBACItem {
     ];
 
 
+    /**
+     * @return array
+     */
     public function titleList() {
 
         return [
@@ -44,6 +44,9 @@ class Roles extends RBACItem {
     }
 
 
+    /**
+     * @return array
+     */
     public function getTree() {
 
         return [
@@ -67,6 +70,9 @@ class Roles extends RBACItem {
     }
 
 
+    /**
+     * @return null
+     */
     public function getTitleTask() {
 
         return null;

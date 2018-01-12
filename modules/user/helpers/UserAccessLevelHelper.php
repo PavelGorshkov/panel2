@@ -22,7 +22,6 @@ class UserAccessLevelHelper extends ListHelper {
 
     /**
      * @return array
-     * @throws HttpException
      */
     public static function getHtmlList() {
 
@@ -30,6 +29,9 @@ class UserAccessLevelHelper extends ListHelper {
     }
 
 
+    /**
+     * @return array
+     */
     public static function getList() {
 
         return [

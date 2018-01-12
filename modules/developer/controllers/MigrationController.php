@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 13.12.2017
- * Time: 11:39
- */
-
 namespace app\modules\developer\controllers;
 
 use app\modules\core\auth\ModuleTask;
@@ -14,8 +7,16 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\ServerErrorHttpException;
 
+/**
+ * Class MigrationController
+ * @package app\modules\developer\controllers
+ */
 class MigrationController extends WebController {
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function behaviors() {
 
         return [
@@ -46,6 +47,10 @@ class MigrationController extends WebController {
     }
 
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function actions() {
 
         return [

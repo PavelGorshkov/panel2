@@ -39,35 +39,37 @@ class PhpManager extends AuthPhpManager
 
             if (($role = user()->getRole())!== null) {
 
-                $this->assign($this->createObjRole($role), user()->id);
+                $this->assign(
+                    Yii::createObject(
+                        Role::className(),
+                        ['name'=>$role]
+                    ),
+                    user()->id
+                );
             } else {
 
                 foreach (user()->getAccessData() as $access => $temp) {
 
-                    if ($this->getItem($access)!== null) $this->assign($this->createObjItem($access), user()->id);
+                    if ($this->getItem($access)!== null) {
+
+                        $this->assign(
+                            Yii::createObject(
+                                Item::className(),
+                                ['name' => $access]
+                            ),
+                            user()->id
+                        );
+
+                    }
                 }
             }
         }
     }
 
 
-    protected function createObjRole($role) {
-
-        $class = new Role();
-        $class->name = $role;
-
-        return $class;
-    }
-
-    protected function createObjItem($item) {
-
-        $class = new Item();
-        $class->name = $item;
-
-        return $class;
-    }
-
-
+    /**
+     *  Очистка файлов авторизации RBAC
+     */
     public static function flush() {
 
         File::rmDir(Yii::getAlias('@app/runtime/rbac/*'));

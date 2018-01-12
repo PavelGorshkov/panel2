@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 13:51
- */
-
 namespace app\modules\core\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class FontAwesomeAssets
+ * @package app\modules\core\assets
+ */
 class FontAwesomeAssets extends  AssetBundle {
 
     public $sourcePath = '@bower/font-awesome';

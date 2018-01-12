@@ -19,30 +19,52 @@ class IdentityUser extends User implements IdentityInterface
 {
     use ModuleTrait;
 
+    /**
+     * @param int|string $id
+     * @return null|IdentityInterface|static
+     */
     public static function findIdentity($id) {
 
         return static::findOne($id);
     }
 
+    /**
+     * @param mixed $token
+     * @param null $type
+     * @return void|IdentityInterface
+     */
     public static function findIdentityByAccessToken($token, $type = null) {
 
 
     }
 
+    /**
+     * @return int|mixed|string
+     */
     public function getId() {
 
         return $this->getAttribute('id');
     }
 
+
+    /**
+     * @return mixed|string
+     */
     public function getAuthKey() {
 
         return $this->getAttribute('auth_key');
     }
 
+
+    /**
+     * @param string $authKey
+     * @return bool
+     */
     public function validateAuthKey($authKey) {
 
         return $this->getAuthKey() === $authKey;
     }
+
 
     /**
      * Проверка заблокированности пользователя

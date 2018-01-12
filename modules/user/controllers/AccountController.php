@@ -23,6 +23,10 @@ class AccountController extends WebController
 {
     public $layout = "@app/modules/user/views/layouts/login";
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -80,6 +84,9 @@ class AccountController extends WebController
     }
 
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionLogout()
     {
         user()->logout();
@@ -122,7 +129,6 @@ class AccountController extends WebController
                 app()->end();
             }
         }
-
 
         return $this->render('registration', [
             'model' => $model,
@@ -248,11 +254,5 @@ class AccountController extends WebController
         }
 
         return $this->render($this->action->id, ['model'=>$model, 'module'=>$this->module]);
-    }
-
-
-    public function actionTest() {
-
-
     }
 }

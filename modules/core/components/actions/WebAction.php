@@ -19,6 +19,9 @@ class WebAction extends Action {
 
     public $smallTitle = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         if ($this->layout !== null) $this->controller->layout = $this->layout;
@@ -31,6 +34,9 @@ class WebAction extends Action {
 
     }
 
+    /**
+     * @param string $title
+     */
     public function setTitle($title) {
 
         if (method_exists($this->controller, 'setTitle')) {
@@ -43,6 +49,9 @@ class WebAction extends Action {
     }
 
 
+    /**
+     * @param string $small_title
+     */
     public function setSmallTitle($small_title) {
 
         if (method_exists($this->controller, 'setSmallTitle')) {
@@ -51,7 +60,11 @@ class WebAction extends Action {
         }
     }
 
-    public function render($params) {
+    /**
+     * @param array $params
+     * @return string
+     */
+    public function render(array $params) {
 
         return $this->controller->render($this->view, $params);
     }

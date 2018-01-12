@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 16.12.2017
- * Time: 12:44
- */
-
 namespace app\modules\user\widgets;
 
 use app\modules\user\helpers\ModuleTrait;
 use yii\base\Widget;
 
-
+/**
+ * Class InfoNavMenu
+ * @package app\modules\user\widgets
+ */
 class InfoNavMenu extends Widget {
 
     use ModuleTrait;

@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 13:24
- */
-
 namespace app\modules\core\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class AppAssets
+ * @package app\modules\core\assets
+ */
 class AppAssets extends  AssetBundle {
 
     public $basePath = '@webroot';

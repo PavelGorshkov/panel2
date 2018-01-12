@@ -1,10 +1,10 @@
 <?php
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\ConfigCacheTrait;
 use app\modules\core\helpers\File;
 use GlobIterator;
+use \SplFileInfo;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
@@ -40,6 +40,10 @@ class ConfigManager
     private $env = self::ENV_WEB;
 
 
+    /**
+     * ConfigManager constructor.
+     * @param null $type
+     */
     public function __construct($type = null)
     {
         if ($type !== null) {
@@ -68,7 +72,7 @@ class ConfigManager
         $moduleFile = Yii::getAlias(
             sprintf(
                 '@app/modules/%s/install/config.php',
-                $moduleConfigFile->getBaseName('.php')
+                $moduleConfigFile->getBasename('.php')
             ));
 
         if (!file_exists($moduleFile)) {
@@ -124,7 +128,7 @@ class ConfigManager
 
             /* @var \SplFileInfo $item */
             // Если нет такого модуля, нет необходимости в обработке:
-            if (!is_dir(Yii::getAlias(sprintf('@app/modules/%s', $item->getBaseName('.php'))))) {
+            if (!is_dir(Yii::getAlias(sprintf('@app/modules/%s', $item->getBasename('.php'))))) {
 
                 unlink($item->getPathname());
                 continue;
@@ -155,7 +159,6 @@ class ConfigManager
 
             $settings = $this->prepareSettings();
 
-            // Создание кеша настроек:
             if (($error = $this->createCache($settings)) !== true) {
 
                 throw new Exception('Не возможно создать кеш файла конфигурации');
@@ -177,12 +180,13 @@ class ConfigManager
     {
         $settings = [];
 
+        /** @var SplFileInfo $item */
         foreach (new GlobIterator(Yii::getAlias('@app/config/modules/*.php')) as $item) {
 
             if (
                 is_dir(
                     Yii::getAlias(
-                        sprintf('@app/modules/%s', $item->getBaseName('.php')))
+                        sprintf('@app/modules/%s', $item->getBasename('.php')))
                 ) === false) {
                 continue;
             }
@@ -201,7 +205,7 @@ class ConfigManager
 
                             $settings['modules'] = ArrayHelper::merge(
                                 isset($settings['modules']) ? $settings['modules'] : [],
-                                [$item->getBaseName('.php') => $moduleConfig['module']]
+                                [$item->getBasename('.php') => $moduleConfig['module']]
                             );
                         }
 

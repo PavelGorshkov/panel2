@@ -3,8 +3,15 @@ namespace app\modules\core\components\actions;
 
 use yii\base\Exception;
 
+/**
+ * Class ErrorAction
+ * @package app\modules\core\components\actions
+ */
 class ErrorAction extends \yii\web\ErrorAction {
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         parent::init();
@@ -12,6 +19,9 @@ class ErrorAction extends \yii\web\ErrorAction {
         $this->view = '@app/modules/core/views/errorHandler/error';
     }
 
+    /**
+     * @return string
+     */
     protected function getExceptionName()
     {
         if ($this->exception instanceof Exception) {
@@ -25,6 +35,9 @@ class ErrorAction extends \yii\web\ErrorAction {
     }
 
 
+    /**
+     * @return array
+     */
     protected function getViewRenderParams()
     {
         return [

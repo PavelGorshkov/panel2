@@ -1,17 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 13.12.2017
- * Time: 16:02
- */
-
 namespace app\modules\core\widgets;
 
 use yii\bootstrap\ButtonGroup;
+use yii\bootstrap\Widget;
 use yii\helpers\Html;
 
-class BoxWidget extends \yii\bootstrap\Widget {
+/**
+ * Class BoxWidget
+ * @package app\modules\core\widgets
+ */
+class BoxWidget extends Widget {
 
     const TYPE_INFO = 'info';
 
@@ -55,6 +53,8 @@ class BoxWidget extends \yii\bootstrap\Widget {
     public $withBorder = true;
 
     public $tooltip = '';
+
+    public $tooltipPlacement = 'bottom';
 
     public $title = '';
 
@@ -116,6 +116,10 @@ HTML;
     }
 
 
+    /**
+     * @inheritdoc
+     * @return string
+     */
     public function run()
     {
         if($this->footer){
@@ -132,6 +136,9 @@ HTML;
     }
 
 
+    /**
+     * @return array
+     */
     protected function prepareHeaderOptions()
     {
         $headerOptions = ['class' => 'box-header'];

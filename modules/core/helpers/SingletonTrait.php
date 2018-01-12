@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 09.12.2017
- * Time: 10:59
- */
-
 namespace app\modules\core\helpers;
 
-
+/**
+ * Trait SingletonTrait
+ * @package app\modules\core\helpers
+ */
 trait SingletonTrait
 {
 
@@ -23,15 +19,24 @@ trait SingletonTrait
     private static $_instance = null;
 
 
+    /**
+     * @inheritdoc
+     */
     private function __clone()
     {
     }
 
+    /**
+     * SingletonTrait constructor.
+     */
     private function __construct()
     {
     }
 
 
+    /**
+     * @inheritdoc
+     */
     public function initData()
     {
     }
@@ -47,6 +52,9 @@ trait SingletonTrait
     }
 
 
+    /**
+     * @return SingletonTrait
+     */
     public static function model()
     {
         if (self::$_instance === null) {

@@ -7,6 +7,10 @@ use app\modules\user\models\query\UserQuery;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
+/**
+ * Class SearchUser
+ * @package app\modules\user\models
+ */
 class SearchUser extends Model implements SearchModelInterface
 {
     /**
@@ -20,6 +24,9 @@ class SearchUser extends Model implements SearchModelInterface
 
     public $status;
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -29,6 +36,10 @@ class SearchUser extends Model implements SearchModelInterface
         ];
     }
 
+
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [

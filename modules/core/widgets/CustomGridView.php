@@ -5,6 +5,10 @@ use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
+/**
+ * Class CustomGridView
+ * @package app\modules\core\widgets
+ */
 class CustomGridView extends GridView {
 
     public $panelPrefix = 'box box-';
@@ -47,6 +51,9 @@ HTML;
     public $itemLabelPlural = 'записей';
 
 
+    /**
+     * @inheritdoc
+     */
     protected function renderPanel()
     {
         if (!$this->bootstrap || !is_array($this->panel) || empty($this->panel)) {

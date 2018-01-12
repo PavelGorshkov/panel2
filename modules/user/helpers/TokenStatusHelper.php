@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 21.12.2017
- * Time: 8:53
- */
-
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
 
-
+/**
+ * Class TokenStatusHelper
+ * @package app\modules\user\helpers
+ */
 class TokenStatusHelper extends ListHelper{
 
     const STATUS_NEW = 0;
@@ -20,6 +16,9 @@ class TokenStatusHelper extends ListHelper{
     const STATUS_FAIL = 2;
 
 
+    /**
+     * @return array
+     */
     public static function getList()
     {
         return [
@@ -31,6 +30,9 @@ class TokenStatusHelper extends ListHelper{
     }
 
 
+    /**
+     * @return array
+     */
     public static function getHtmlList() {
 
         return [

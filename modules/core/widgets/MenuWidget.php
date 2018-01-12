@@ -4,12 +4,20 @@ namespace app\modules\core\widgets;
 
 use app\modules\core\helpers\RouterUrlHelper;
 
+/**
+ * Class MenuWidget
+ * @package app\modules\core\widgets
+ */
 class MenuWidget extends Widget {
 
     public $view = 'menu';
 
     public $menu;
 
+    /**
+     * @inheritdoc
+     * @return string|void
+     */
     public function run() {
 
         $menu = $this->menu;
@@ -22,6 +30,9 @@ class MenuWidget extends Widget {
     }
 
 
+    /**
+     * @param array $menu
+     */
     protected function addPermission(&$menu) {
 
         foreach ($menu as &$item) {

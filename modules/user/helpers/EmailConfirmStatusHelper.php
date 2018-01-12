@@ -20,6 +20,9 @@ class EmailConfirmStatusHelper extends ListHelper {
     const EMPTY_STATUS = '*неизвестно*';
 
 
+    /**
+     * @return array
+     */
     public static function getList()
     {
         return [
@@ -29,6 +32,9 @@ class EmailConfirmStatusHelper extends ListHelper {
     }
 
 
+    /**
+     * @return array
+     */
     public static function getHtmlList()
     {
         return [

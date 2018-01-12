@@ -4,6 +4,10 @@ namespace app\modules\user\forms;
 use app\modules\core\components\FormModel;
 use app\modules\user\helpers\ModuleTrait;
 
+/**
+ * Class PasswordProfileForm
+ * @package app\modules\user\forms
+ */
 class PasswordProfileForm extends FormModel {
 
     use ModuleTrait;
@@ -12,6 +16,9 @@ class PasswordProfileForm extends FormModel {
 
     public $r_password;
 
+    /**
+     * @return array
+     */
     public function rules() {
 
         return [
@@ -23,6 +30,10 @@ class PasswordProfileForm extends FormModel {
     }
 
 
+    /**
+     * @param string $attribute
+     * @param array $params
+     */
     public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */  $params)
     {
         if ($this->hasErrors()) {
@@ -32,12 +43,18 @@ class PasswordProfileForm extends FormModel {
     }
 
 
+    /**
+     * @return string
+     */
     public function formName() {
 
         return 'email-profile-form';
     }
 
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [

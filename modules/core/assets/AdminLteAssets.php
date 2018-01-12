@@ -3,6 +3,10 @@ namespace app\modules\core\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class AdminLteAssets
+ * @package app\modules\core\assets
+ */
 class AdminLteAssets extends  AssetBundle {
 
     public $sourcePath = '@app/modules/core/assets/adminlte';

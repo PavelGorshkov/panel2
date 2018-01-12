@@ -1,12 +1,21 @@
 <?php
 namespace app\modules\user\models;
 
-
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 
+/**
+ * Class ManagerUser
+ * @package app\modules\user\models
+ */
 class ManagerUser extends User
 {
+
+    /**
+     * @param bool $insert
+     * @return bool
+     * @throws \yii\base\Exception
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {

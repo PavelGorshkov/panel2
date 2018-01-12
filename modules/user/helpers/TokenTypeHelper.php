@@ -1,17 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 21.12.2017
- * Time: 8:49
- */
 
 namespace app\modules\user\helpers;
 
-
 use app\modules\core\helpers\ListHelper;
 
-class TokenTypeHelper extends ListHelper {
+/**
+ * Class TokenTypeHelper
+ * @package app\modules\user\helpers
+ */
+class TokenTypeHelper extends ListHelper
+{
 
     const ACTIVATE = 1;
 
@@ -20,7 +18,9 @@ class TokenTypeHelper extends ListHelper {
     const EMAIL_VERIFY = 3;
 
 
-
+    /**
+     * @return array
+     */
     public static function getList()
     {
         return [
@@ -31,7 +31,11 @@ class TokenTypeHelper extends ListHelper {
     }
 
 
-    public static function getHtmlList() {
+    /**
+     * @return array
+     */
+    public static function getHtmlList()
+    {
 
         return [
             self::ACTIVATE => '<span class="label label-info">Активация пользователя</span>',

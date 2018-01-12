@@ -4,17 +4,30 @@ namespace app\modules\user\forms;
 use app\modules\user\models\User;
 use yii\base\Model;
 
+/**
+ * Class RecoveryForm
+ * @package app\modules\user\forms
+ */
 class RecoveryForm extends Model
 {
     public $email;
 
+    /**
+     * @var User
+     */
     protected $_user;
 
+    /**
+     * @return string
+     */
     public function formName()
     {
         return 'recovery-email-form';
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
 
@@ -26,6 +39,10 @@ class RecoveryForm extends Model
     }
 
 
+    /**
+     * @param string $attribute
+     * @param null $params
+     */
     public function checkEmail($attribute, /** @noinspection PhpUnusedParameterInspection */ $params = null)
     {
         if ($this->hasErrors() === false) {
@@ -39,6 +56,10 @@ class RecoveryForm extends Model
         }
     }
 
+
+    /**
+     * @return User
+     */
     public function getUser() {
 
         return $this->_user;

@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 13:26
- */
-
 namespace app\modules\core\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class IonAssets
+ * @package app\modules\core\assets
+ */
 class IonAssets extends  AssetBundle {
 
     public $sourcePath = '@bower/ionicons-min';

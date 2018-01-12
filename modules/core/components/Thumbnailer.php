@@ -82,6 +82,10 @@ class Thumbnailer extends Component{
     }
 
 
+    /**
+     * @param string $path
+     * @return string
+     */
     protected function path2Url($path) {
 
         $base_path = realpath(app()->basePath).'/web';

@@ -9,12 +9,21 @@ namespace app\modules\core\interfaces;
  */
 interface ModuleMenuInterface {
 
+    /**
+     * @return array
+     */
     public function getMenuAdmin();
 
 
+    /**
+     * @return array
+     */
     public function getMenuMain();
 
 
+    /**
+     * @return array
+     */
     public function getMenuRedactor();
 
 

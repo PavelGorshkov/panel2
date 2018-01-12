@@ -12,12 +12,18 @@ use app\modules\user\components\Roles;
  */
 class Module extends ParentModule
 {
+    /**
+     * @return string
+     */
     public static function Title() {
 
         return 'Разработка';
     }
 
 
+    /**
+     * @return array
+     */
     public function getMenuAdmin() {
 
         return [

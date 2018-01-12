@@ -6,6 +6,10 @@ use app\modules\user\events\TokenEvent;
 use app\modules\user\events\UserEvent;
 use DateTime;
 
+/**
+ * Class UserManagerListener
+ * @package app\modules\user\listeners
+ */
 class UserManagerListener {
 
 

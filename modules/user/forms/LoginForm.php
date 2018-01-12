@@ -24,6 +24,9 @@ class LoginForm extends Model {
      */
     protected $user;
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -33,6 +36,9 @@ class LoginForm extends Model {
     }
 
 
+    /**
+     * @return array
+     */
     public function rules() {
 
         return [
@@ -69,6 +75,9 @@ class LoginForm extends Model {
     }
 
 
+    /**
+     * @return bool
+     */
     public function beforeValidate() {
 
         if (parent::beforeValidate()) {

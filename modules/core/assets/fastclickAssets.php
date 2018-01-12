@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 14:14
- */
-
 namespace app\modules\core\assets;
-
 
 use yii\web\AssetBundle;
 
+/**
+ * Class fastclickAssets
+ * @package app\modules\core\assets
+ */
 class fastclickAssets extends AssetBundle
 {
     public $sourcePath = '@bower/fastclick';

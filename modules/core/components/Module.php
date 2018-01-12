@@ -58,6 +58,9 @@ abstract class Module
     }
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

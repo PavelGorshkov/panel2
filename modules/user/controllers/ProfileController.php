@@ -29,6 +29,9 @@ class ProfileController extends RedactorController
     protected $title = 'Профиль';
 
 
+    /**
+     * @return array
+     */
     public function behaviors() {
 
         return [
@@ -68,6 +71,9 @@ class ProfileController extends RedactorController
     }
 
 
+    /**
+     * @return string
+     */
     public function actionView()
     {
         return $this->render('view', [

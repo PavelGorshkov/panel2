@@ -3,6 +3,10 @@ namespace app\modules\user\events;
 
 use app\modules\user\models\Token;
 
+/**
+ * Class TokenEvent
+ * @package app\modules\user\events
+ */
 class TokenEvent extends UserEvent {
 
     /**

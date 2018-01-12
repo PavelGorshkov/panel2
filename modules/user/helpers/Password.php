@@ -27,12 +27,21 @@ class Password {
     }
 
 
+    /**
+     * @param string $password
+     * @param string $hash
+     * @return bool
+     */
     public static function validate($password, $hash)
     {
         return app()->security->validatePassword($password, $hash);
     }
 
 
+    /**
+     * @param integer $length
+     * @return string
+     */
     public static function generate($length)
     {
         $sets = [

@@ -26,6 +26,9 @@ class CreateAuthTask extends RBACItem
 
     ];
 
+    /**
+     * @return array
+     */
     public function titleList()
     {
 
@@ -36,6 +39,9 @@ class CreateAuthTask extends RBACItem
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getTree()
     {
 
@@ -50,6 +56,9 @@ class CreateAuthTask extends RBACItem
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getTitleTask()
     {
         return self::TASK;

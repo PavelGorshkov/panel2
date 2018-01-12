@@ -1,12 +1,14 @@
 <?php
-
 namespace app\modules\user\auth;
 
 use app\modules\user\components\RBACItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
-
+/**
+ * Class ManagerTask
+ * @package app\modules\user\auth
+ */
 class ManagerTask extends RBACItem {
 
     const TASK = '/user/manager';
@@ -29,7 +31,9 @@ class ManagerTask extends RBACItem {
     ];
 
 
-
+    /**
+     * @return array
+     */
     public function titleList()
     {
         return [
@@ -42,6 +46,9 @@ class ManagerTask extends RBACItem {
     }
 
 
+    /**
+     * @return array
+     */
     public function getTree()
     {
         return [

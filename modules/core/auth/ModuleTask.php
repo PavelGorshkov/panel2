@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 13.12.2017
- * Time: 11:31
- */
-
 namespace app\modules\core\auth;
 
 use app\modules\user\components\RBACItem;
@@ -39,6 +32,9 @@ class ModuleTask extends RBACItem {
     ];
 
 
+    /**
+     * @return array
+     */
     public function titleList()
     {
         return [
@@ -51,6 +47,9 @@ class ModuleTask extends RBACItem {
     }
 
 
+    /**
+     * @return array
+     */
     public function getTree()
     {
         return [

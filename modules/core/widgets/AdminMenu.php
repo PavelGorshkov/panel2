@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 15.12.2017
- * Time: 16:41
- */
-
 namespace app\modules\core\widgets;
-
 
 use app\modules\core\helpers\RouterUrlHelper;
 use yii\widgets\Menu;
 
+/**
+ * Class AdminMenu
+ * @package app\modules\core\widgets
+ */
 class AdminMenu extends \yii\bootstrap\Widget {
 
     public $menu;
@@ -38,6 +34,10 @@ class AdminMenu extends \yii\bootstrap\Widget {
     }
 
 
+    /**
+     * @param array $menu
+     * @return array
+     */
     protected function transformMenu($menu) {
 
         $transform = [];
@@ -68,6 +68,10 @@ class AdminMenu extends \yii\bootstrap\Widget {
     }
 
 
+    /**
+     * @param array $item
+     * @return string
+     */
     protected function setIcon($item) {
 
         if (strpos($item['icon'], 'icon') === false && strpos($item['icon'], 'fa') === false) {
@@ -81,6 +85,10 @@ class AdminMenu extends \yii\bootstrap\Widget {
     }
 
 
+    /**
+     * @param array $items
+     * @return array
+     */
     protected function transformSubMenu(&$items) {
 
         $subMenu = [];
@@ -128,6 +136,9 @@ class AdminMenu extends \yii\bootstrap\Widget {
     }
 
 
+    /**
+     * @param array $menu
+     */
     protected function addPermission(&$menu) {
 
         foreach ($menu as &$item) {

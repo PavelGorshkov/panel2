@@ -18,11 +18,18 @@ class UserSettings {
 
     use GetterSingletonTrait;
 
+    /**
+     * Инициализация данных
+     */
     public function initData() {
 
         $this->_data = Settings::findAllUserData();
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function __set($name, $value) {
 
         $this->_data[$name] = $value;

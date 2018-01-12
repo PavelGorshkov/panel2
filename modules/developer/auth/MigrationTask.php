@@ -31,6 +31,9 @@ class MigrationTask extends RBACItem {
     ];
 
 
+    /**
+     * @return array
+     */
     public function titleList()
     {
         return [
@@ -42,6 +45,9 @@ class MigrationTask extends RBACItem {
     }
 
 
+    /**
+     * @return array
+     */
     public function getTree()
     {
 

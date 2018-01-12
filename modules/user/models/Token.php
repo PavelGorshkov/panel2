@@ -27,7 +27,11 @@ use yii\db\Expression;
  */
 class Token extends ActiveRecord
 {
-    public function behaviors() {
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
 
         return [
             [
@@ -38,7 +42,7 @@ class Token extends ActiveRecord
             ],
             [
                 'class' => ModelWebUserBehavior::className(),
-                'value' => user()->id?user()->id:0,
+                'value' => user()->id ? user()->id : 0,
             ],
         ];
     }

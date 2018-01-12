@@ -17,6 +17,9 @@ use Yii;
  */
 trait UserManagerEventHelper {
 
+    /**
+     * Установка наблюдателей
+     */
     protected function setListener() {
 
         $this->on(

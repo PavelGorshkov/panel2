@@ -1,64 +1,89 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 20.12.2017
- * Time: 13:59
- */
 
 namespace app\modules\developer\models;
 
 use app\modules\core\components\FormModel;
 use yii\helpers\Html;
 
+
+/**
+ * Class MigrationFormModel
+ * @package app\modules\developer\models
+ */
 class MigrationFormModel extends FormModel implements GenerateFileModuleInterface
 {
     public $className;
 
     public $module;
 
-    public function rules() {
+    /**
+     * @inheritdoc
+     * @return array
+     */
+    public function rules()
+    {
 
         return [
-            ['className', 'filter', 'filter'=>'trim'],
+            ['className', 'filter', 'filter' => 'trim'],
             [['className', 'module'], 'required'],
-            [['className', 'module'], 'string', 'max'=>60],
-            ['module', 'in', 'range'=>array_keys(app()->moduleManager->getListAllModules())],
+            [['className', 'module'], 'string', 'max' => 60],
+            ['module', 'in', 'range' => array_keys(app()->moduleManager->getListAllModules())],
         ];
     }
 
-    public function attributeLabels() {
+    /**
+     * @return array
+     */
+    public function attributeLabels()
+    {
 
         return [
-            'className'=>'Название класса',
+            'className' => 'Название класса',
             'module' => 'Модуль'
         ];
     }
 
-    public function attributeDescriptions() {
+    /**
+     * @return array
+     */
+    public function attributeDescriptions()
+    {
 
         return [
-            'className'=>'Название класса миграции должно содержать название модуля, таблицы
+            'className' => 'Название класса миграции должно содержать название модуля, таблицы
                     и краткое содержание действия, что хотите сделать...<br>
                     например:<br>
-                    <span class="label label-default">'.Html::encode('<module>_<table>_<action>').'</span>
+                    <span class="label label-default">' . Html::encode('<module>_<table>_<action>') . '</span>
                 ',
-            'module'=>'Модуль должен быть определен в системе корректно.'
+            'module' => 'Модуль должен быть определен в системе корректно.'
         ];
     }
 
-    public function setModule($module) {
+    /**
+     * @param string $module
+     */
+    public function setModule($module)
+    {
 
         $this->module = $module;
     }
 
-    public function generate() {
 
-        return (new MigrationConstructor($this->getAttributes()))->generate() ;
+    /**
+     * @return bool|mixed
+     */
+    public function generate()
+    {
+
+        return (new MigrationConstructor($this->getAttributes()))->generate();
     }
 
 
-    public function getSuccessMessage() {
+    /**
+     * @return string
+     */
+    public function getSuccessMessage()
+    {
 
         return 'Миграция успешно создана!';
     }

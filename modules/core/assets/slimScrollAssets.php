@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 14:34
- */
-
 namespace app\modules\core\assets;
 
 
 use yii\web\AssetBundle;
 
+/**
+ * Class slimScrollAssets
+ * @package app\modules\core\assets
+ */
 class slimScrollAssets extends AssetBundle {
 
     public $sourcePath = '@bower/slimScroll';

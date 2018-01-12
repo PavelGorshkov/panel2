@@ -35,6 +35,9 @@ class RoleQuery extends ActiveQuery
     }
 
 
+    /**
+     * @return array
+     */
     public function allListRoles() {
 
         return ArrayHelper::map(

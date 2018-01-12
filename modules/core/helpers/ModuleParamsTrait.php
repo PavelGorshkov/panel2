@@ -1,7 +1,10 @@
 <?php
 namespace app\modules\core\helpers;
 
-
+/**
+ * Trait ModuleParamsTrait
+ * @package app\modules\core\helpers
+ */
 trait ModuleParamsTrait {
 
     /**

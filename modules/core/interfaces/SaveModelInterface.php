@@ -3,6 +3,10 @@ namespace app\modules\core\interfaces;
 
 use yii\base\Model;
 
+/**
+ * Interface SaveModelInterface
+ * @package app\modules\core\interfaces
+ */
 interface SaveModelInterface
 {
     /**

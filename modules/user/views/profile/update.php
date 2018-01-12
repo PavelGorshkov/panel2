@@ -1,5 +1,5 @@
 <?php
-/* @var $this yii\web\View */
+/* @var $this app\modules\core\components\View */
 /* @var $model ProfileForm */
 /* @var $module Module */
 

@@ -51,6 +51,10 @@ class ModulePriority {
     }
 
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
     public function __get($name) {
 
         if(isset($this->_data[$name]))

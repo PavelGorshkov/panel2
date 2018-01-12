@@ -4,6 +4,10 @@ namespace app\modules\user\widgets;
 use app\modules\core\widgets\Widget;
 use yii\bootstrap\Alert;
 
+/**
+ * Class FlashMessages
+ * @package app\modules\user\widgets
+ */
 class FlashMessages extends Widget{
 
     public $alertTypes = [

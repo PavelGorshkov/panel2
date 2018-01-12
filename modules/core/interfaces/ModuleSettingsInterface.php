@@ -1,7 +1,10 @@
 <?php
 namespace app\modules\core\interfaces;
 
-
+/**
+ * Interface ModuleSettingsInterface
+ * @package app\modules\core\interfaces
+ */
 interface ModuleSettingsInterface {
 
     /**

@@ -7,6 +7,10 @@ use yii\base\Model;
 use yii\captcha\Captcha;
 use yii\helpers\HtmlPurifier;
 
+/**
+ * Class RegistrationForm
+ * @package app\modules\user\forms
+ */
 class RegistrationForm extends Model
 {
     use ModuleTrait;
@@ -36,6 +40,9 @@ class RegistrationForm extends Model
     }
 
 
+    /**
+     * @return string
+     */
     public function formName() {
 
         return 'registration-form';
@@ -78,6 +85,9 @@ class RegistrationForm extends Model
     }
 
 
+    /**
+     * @return bool
+     */
     public function beforeValidate()
     {
         if ($this->module->generateUserName) {
@@ -88,6 +98,10 @@ class RegistrationForm extends Model
         return parent::beforeValidate();
     }
 
+
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -99,6 +113,11 @@ class RegistrationForm extends Model
         ];
     }
 
+
+    /**
+     * @param string|mixed $attribute
+     * @param array $params
+     */
     public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */  $params)
     {
         if ($this->hasErrors()) {

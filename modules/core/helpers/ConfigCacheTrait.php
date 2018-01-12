@@ -4,7 +4,10 @@ namespace app\modules\core\helpers;
 use Yii;
 use yii\web\ServerErrorHttpException;
 
-
+/**
+ * Trait ConfigCacheTrait
+ * @package app\modules\core\helpers
+ */
 trait ConfigCacheTrait
 {
     /**

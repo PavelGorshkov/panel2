@@ -19,11 +19,19 @@ abstract class RBACItem extends BaseObject implements RBACItemInterface
 
     public $types = null;
 
+    /**
+     * @return null
+     */
     public function getRuleNames()
     {
         return null;
     }
 
+
+    /**
+     * @param string $item
+     * @return string
+     */
     public function getTitle($item)
     {
         $list = $this->titleList();
@@ -32,6 +40,10 @@ abstract class RBACItem extends BaseObject implements RBACItemInterface
     }
 
 
+    /**
+     * @param $role
+     * @return null|string
+     */
     public static function getDescription($role)
     {
         $class = get_called_class();
@@ -42,6 +54,7 @@ abstract class RBACItem extends BaseObject implements RBACItemInterface
 
         return $class->getTitle($role);
     }
+
 
     /**
      * @return string

@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 22.12.2017
- * Time: 17:18
- */
-
 namespace app\modules\core\widgets;
-
 
 use app\modules\core\helpers\RouterUrlHelper;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Class ShortCutMenuWidget
+ * @package app\modules\core\widgets
+ */
 class ShortCutMenuWidget extends Widget {
 
     public $menu;
@@ -21,6 +17,9 @@ class ShortCutMenuWidget extends Widget {
     public $view = 'short_menu';
 
 
+    /**
+     * @param array $menu
+     */
     protected function addPermission(&$menu) {
 
         foreach ($menu as &$item) {
@@ -43,6 +42,10 @@ class ShortCutMenuWidget extends Widget {
     }
 
 
+    /**
+     * @param array $menu
+     * @return array
+     */
     protected function scanMenu($menu) {
 
         $newMenu = [];
@@ -75,6 +78,11 @@ class ShortCutMenuWidget extends Widget {
         return $newMenu;
     }
 
+    /**
+     * @param string $icon
+     * @param string $label
+     * @return string
+     */
     protected function setLabel($icon, $label) {
 
         if (strpos($icon, 'icon') === false && strpos($icon, 'fa') === false) {
@@ -90,6 +98,9 @@ class ShortCutMenuWidget extends Widget {
     }
 
 
+    /**
+     * @return string
+     */
     public function run() {
 
         $this->addPermission($this->menu);

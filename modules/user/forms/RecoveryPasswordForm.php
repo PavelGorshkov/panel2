@@ -1,12 +1,16 @@
 <?php
-namespace app\modules\user\forms;
 
+namespace app\modules\user\forms;
 
 use app\modules\user\helpers\ModuleTrait;
 use yii\base\Model;
 
-
-class RecoveryPasswordForm extends Model {
+/**
+ * Class RecoveryPasswordForm
+ * @package app\modules\user\forms
+ */
+class RecoveryPasswordForm extends Model
+{
 
     use ModuleTrait;
 
@@ -14,12 +18,19 @@ class RecoveryPasswordForm extends Model {
 
     public $r_password;
 
+    /**
+     * @return string
+     */
     public function formName()
     {
         return 'recovery-password-form';
     }
 
-    public function rules() {
+    /**
+     * @return array
+     */
+    public function rules()
+    {
 
         return [
             [['password', 'r_password'], 'required'],
@@ -30,7 +41,11 @@ class RecoveryPasswordForm extends Model {
         ];
     }
 
-    public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */ $params)
+    /**
+     * @param string $attribute
+     * @param array $params
+     */
+    public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */ $params = null)
     {
         if ($this->hasErrors()) {
 
@@ -38,6 +53,9 @@ class RecoveryPasswordForm extends Model {
         }
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [

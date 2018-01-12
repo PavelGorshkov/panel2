@@ -1,8 +1,10 @@
 <?php
-
 namespace app\modules\core\helpers;
 
-
+/**
+ * Trait ModuleSettingsTrait
+ * @package app\modules\core\helpers
+ */
 trait ModuleSettingsTrait
 {
 

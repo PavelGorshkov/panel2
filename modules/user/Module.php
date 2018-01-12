@@ -64,6 +64,9 @@ class Module extends ParentModule
     public $cost = 10;
 
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         parent::init();
@@ -74,18 +77,27 @@ class Module extends ParentModule
     }
 
 
+    /**
+     * @return string
+     */
     public static function Title() {
 
         return 'Модуль пользователей';
     }
 
 
+    /**
+     * @return bool
+     */
     public function isNotFromLDAP() {
 
         return $this->fromAuthorization !== 1;
     }
 
 
+    /**
+     * @return array
+     */
     public function getMenuAdmin() {
 
         return [
@@ -156,31 +168,45 @@ class Module extends ParentModule
     }
 
 
-
+    /**
+     * @return string
+     */
     public function getLoginPage() {
 
         return  '/user/account/login';
     }
 
 
+    /**
+     * @return string
+     */
     public function getRegisterPage() {
 
         return  '/user/account/registration';
     }
 
 
+    /**
+     * @return string
+     */
     public function getProfilePage() {
 
         return  'user/profile/index';
     }
 
 
+    /**
+     * @return string
+     */
     public function getLogoutPage() {
 
         return  '/user/account/logout';
     }
 
 
+    /**
+     * @return string
+     */
     public function getRecoveryPage() {
 
         return  '/user/account/recovery';

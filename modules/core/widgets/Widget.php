@@ -1,18 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 15:43
- */
-
 namespace app\modules\core\widgets;
 
+/**
+ * Class Widget
+ * @package app\modules\core\widgets
+ */
 abstract class Widget extends \yii\bootstrap\Widget
 {
 
     public $cacheTime = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         parent::init();

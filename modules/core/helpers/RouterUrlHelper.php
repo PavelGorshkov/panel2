@@ -12,6 +12,10 @@ namespace app\modules\core\helpers;
 class RouterUrlHelper
 {
 
+    /**
+     * @param string $url
+     * @return array
+     */
     protected static function parseUrl($url)
     {
 
@@ -113,6 +117,10 @@ class RouterUrlHelper
     }
 
 
+    /**
+     * @param string $url
+     * @return string|null
+     */
     public static function getAction($url)
     {
 

@@ -4,6 +4,10 @@ namespace app\modules\core\interfaces;
 
 use yii\data\DataProviderInterface;
 
+/**
+ * Interface SearchModelInterface
+ * @package app\modules\core\interfaces
+ */
 interface SearchModelInterface
 {
     /**

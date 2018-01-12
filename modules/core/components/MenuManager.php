@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\components;
 
 use Yii;
@@ -30,6 +29,9 @@ class MenuManager extends Component
 
     const TYPE_REDACTOR = 'redactor';
 
+    /**
+     * @var array|null
+     */
     protected $_menu = null;
 
     /**
@@ -43,6 +45,9 @@ class MenuManager extends Component
 
     protected $internalType = null;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -57,6 +62,9 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * @return array|null
+     */
     public function getData()
     {
         if ($this->_menu === null) $this->setMenu();
@@ -65,6 +73,9 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * Установка меню
+     */
     public function setMenu()
     {
         $this->_menu = app()->cache->get('cacheMenu_' . user()->id);
@@ -85,12 +96,18 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * Очистка кеша
+     */
     public function clearCache()
     {
         app()->cache->flush();
     }
 
 
+    /**
+     * Сборка меню
+     */
     protected function prepareMenu()
     {
         $menu = [];
@@ -156,6 +173,10 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function __isset($name)
     {
         if ($this->_menu === null) $this->setMenu();
@@ -167,6 +188,10 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * @param $name
+     * @return mixed|null
+     */
     public function getSubMenu($name)
     {
         if ($this->_menu === null) $this->setMenu();
@@ -175,6 +200,10 @@ class MenuManager extends Component
     }
 
 
+    /**
+     * @param null $key
+     * @return array
+     */
     public function getDBMenu($key = null)
     {
         if ($key) return [];

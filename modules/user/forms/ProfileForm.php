@@ -5,6 +5,10 @@ use app\modules\core\components\FormModel;
 use app\modules\user\helpers\ModuleTrait;
 use yii\web\UploadedFile;
 
+/**
+ * Class ProfileForm
+ * @package app\modules\user\forms
+ */
 class ProfileForm extends FormModel {
 
     use ModuleTrait;
@@ -20,6 +24,9 @@ class ProfileForm extends FormModel {
     public $email;
 
 
+    /**
+     * @return array
+     */
     public function scenarios() {
 
         return [
@@ -34,6 +41,9 @@ class ProfileForm extends FormModel {
     }
 
 
+    /**
+     * @return array
+     */
     public function rules() {
 
         return [
@@ -61,6 +71,9 @@ class ProfileForm extends FormModel {
     }
 
 
+    /**
+     * @return bool
+     */
     public function upload() {
 
         if (($this->avatar_file = UploadedFile::getInstance($this, 'avatar_file')) !== null) {
@@ -84,13 +97,18 @@ class ProfileForm extends FormModel {
     }
 
 
-
+    /**
+     * @return string
+     */
     public function formName() {
 
         return 'profile-form';
     }
 
 
+    /**
+     * @return array
+     */
     public function attributeLabels() {
 
         return [

@@ -52,11 +52,20 @@ class AccessQuery extends ActiveQuery
     }
 
 
+    /**
+     * @param $id
+     * @return array|null
+     */
     public function getDataForUser($id) {
 
         return $this->getData($id, Access::TYPE_USER);
     }
 
+
+    /**
+     * @param $id
+     * @return array|null
+     */
     public function getDataForRole($id) {
 
         return $this->getData($id, Access::TYPE_ROLE);

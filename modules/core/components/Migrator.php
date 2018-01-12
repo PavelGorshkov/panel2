@@ -191,6 +191,9 @@ class Migrator extends Component
     }
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
 

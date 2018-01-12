@@ -51,6 +51,9 @@ class RedactorController extends WebController
     }
 
 
+    /**
+     * @return array
+     */
     public function getActionsMenu()
     {
 

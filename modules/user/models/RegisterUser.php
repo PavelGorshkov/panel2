@@ -3,7 +3,10 @@ namespace app\modules\user\models;
 
 use yii\helpers\ArrayHelper;
 
-
+/**
+ * Class RegisterUser
+ * @package app\modules\user\models
+ */
 class RegisterUser extends User
 {
     const SCENARIO_REGISTER = 'register';
@@ -22,6 +25,9 @@ class RegisterUser extends User
     }
 
 
+    /**
+     * @return array
+     */
     public function rules() {
 
         return [

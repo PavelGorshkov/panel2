@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
@@ -44,6 +43,9 @@ class BuildAuthManager extends Component
     protected $listTalk;
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
 

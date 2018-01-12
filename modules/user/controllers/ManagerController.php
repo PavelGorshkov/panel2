@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\actions\GridViewAction;

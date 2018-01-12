@@ -9,6 +9,10 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\HtmlPurifier;
 
+/**
+ * Class ModuleController
+ * @package app\modules\core\controllers
+ */
 class ModuleController extends RedactorController{
 
 
@@ -18,6 +22,10 @@ class ModuleController extends RedactorController{
         'flush'=>'Очистить кеш',
     ];
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function behaviors() {
 
         return [
@@ -36,6 +44,10 @@ class ModuleController extends RedactorController{
     }
 
 
+    /**
+     * @return string|\yii\web\Response
+     * @throws \yii\web\HttpException
+     */
     public function actionIndex() {
 
         $modules = app()->moduleManager->getEnabledModules();

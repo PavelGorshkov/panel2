@@ -15,7 +15,12 @@ abstract class ListHelper implements ListHelperInterface {
 
     const EMPTY_STATUS = '*неизвестно*';
 
-    public static function getValue($status, $asHtml = false) {
+    /**
+     * @param string $key
+     * @param bool $asHtml
+     * @return string
+     */
+    public static function getValue($key, $asHtml = false) {
 
         /* @var ListHelper $class*/
         $class = get_called_class();
@@ -24,7 +29,7 @@ abstract class ListHelper implements ListHelperInterface {
             ?$class::getHtmlList()
             :$class::getList();
 
-        if (isset($list[$status])) return $list[$status];
+        if (isset($list[$key])) return $list[$key];
 
         return $asHtml?self::EMPTY_STATUS_HTML:self::EMPTY_STATUS;
     }

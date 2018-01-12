@@ -28,6 +28,9 @@ class TokenStorage extends Component {
      */
     protected $userTokenQuery;
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         parent::init();

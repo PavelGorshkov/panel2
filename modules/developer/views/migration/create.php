@@ -3,9 +3,7 @@
 /* @var $model app\modules\developer\models\MigrationFormModel */
 
 use app\modules\core\widgets\BoxWidget;
-use app\modules\developer\models\MigrationFormModel;
 use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Button;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;

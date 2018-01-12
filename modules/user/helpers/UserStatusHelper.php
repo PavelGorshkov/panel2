@@ -18,6 +18,9 @@ class UserStatusHelper extends ListHelper {
     const STATUS_NOT_ACTIVE = 2;
 
 
+    /**
+     * @return array
+     */
     public static function getList()
     {
         return [
@@ -28,6 +31,9 @@ class UserStatusHelper extends ListHelper {
     }
 
 
+    /**
+     * @return array
+     */
     public static function getHtmlList()
     {
         return [

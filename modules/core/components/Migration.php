@@ -33,6 +33,9 @@ class Migration extends \yii\db\Migration
     }
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

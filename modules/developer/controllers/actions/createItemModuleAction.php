@@ -1,19 +1,24 @@
 <?php
 namespace app\modules\developer\controllers\actions;
 
-
 use app\modules\core\components\actions\WebAction;
 use app\modules\developer\models\GenerateFileModuleInterface;
 use yii\base\Model;
 use yii\web\ServerErrorHttpException;
 
-
+/**
+ * Class createItemModuleAction
+ * @package app\modules\developer\controllers\actions
+ */
 class createItemModuleAction extends WebAction  {
 
     public $model;
 
     public $successMessage = 'Данные обновлены';
 
+    /**
+     * @inheritdoc
+     */
     public function init() {
 
         parent::init();

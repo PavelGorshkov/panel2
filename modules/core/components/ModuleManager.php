@@ -175,7 +175,7 @@ class ModuleManager extends Component
         /* @var \SplFileInfo $item */
         foreach (new FilesystemIterator(Yii::getAlias('@app/modules')) as $item) {
 
-            $moduleName = $item->getBaseName();
+            $moduleName = $item->getBasename();
 
             if (!is_dir($modulesPath . DIRECTORY_SEPARATOR . $moduleName)) continue;
 

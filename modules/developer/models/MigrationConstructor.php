@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\developer\models;
 
 use app\modules\core\components\Migrator;
@@ -6,8 +7,14 @@ use app\modules\core\helpers\File;
 use Yii;
 use yii\base\BaseObject;
 
-
-class MigrationConstructor extends BaseObject {
+/**
+ * Class MigrationConstructor
+ * @package app\modules\developer\models
+ * @property string className
+ * @property string module
+ */
+class MigrationConstructor extends BaseObject
+{
 
     const ACCESS_FOLDER = 0777;
 
@@ -19,7 +26,12 @@ class MigrationConstructor extends BaseObject {
      */
     private $_attributes;
 
-    public function __construct(array $attributes) {
+    /**
+     * MigrationConstructor constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes)
+    {
 
         $this->_attributes = $attributes;
 
@@ -32,11 +44,12 @@ class MigrationConstructor extends BaseObject {
      * @return mixed
      * @throws \yii\base\UnknownPropertyException
      */
-    public function __get($name) {
+    public function __get($name)
+    {
 
         return isset($this->_attributes[$name])
-            ?$this->_attributes[$name]
-            :parent::__get($name);
+            ? $this->_attributes[$name]
+            : parent::__get($name);
 
     }
 
@@ -46,7 +59,8 @@ class MigrationConstructor extends BaseObject {
      * @param mixed $value
      * @throws \yii\base\UnknownPropertyException
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
 
         if (isset($this->_attributes[$name])) $this->_attributes[$name] = $value;
 
@@ -54,7 +68,11 @@ class MigrationConstructor extends BaseObject {
     }
 
 
-    public function generate() {
+    /**
+     * @return bool
+     */
+    public function generate()
+    {
 
         $this->className = 'm' . date('ymd_His') . '_' . $this->className;
 
@@ -62,6 +80,9 @@ class MigrationConstructor extends BaseObject {
     }
 
 
+    /**
+     * @return string
+     */
     protected function getFileContent()
     {
         ob_start();
@@ -73,6 +94,9 @@ class MigrationConstructor extends BaseObject {
     }
 
 
+    /**
+     * @return bool
+     */
     protected function createFileMigration()
     {
         $path = Migrator::getPathMigration($this->module);
@@ -90,11 +114,16 @@ class MigrationConstructor extends BaseObject {
     }
 
 
+    /**
+     * @param $file
+     * @param $content
+     * @return bool
+     */
     protected function createFile($file, $content)
     {
         if ($isCreate = file_put_contents($file, $content)) chmod($file, self::ACCESS_FILE);
 
-        return $isCreate;
+        return (bool) $isCreate;
     }
 
 }

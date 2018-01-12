@@ -29,6 +29,11 @@ class Settings extends ActiveRecord
     }
 
 
+    /**
+     * @inheritdoc
+     * @param bool $insert
+     * @return bool
+     */
     public function beforeSave($insert) {
 
         if ($this->module === self::USER_DATA) {
@@ -67,6 +72,9 @@ class Settings extends ActiveRecord
     }
 
 
+    /**
+     * @return array|bool|mixed
+     */
     public static function findAllModuleData() {
 
         $data = cache()->get('find_all_module_data');
@@ -92,6 +100,9 @@ class Settings extends ActiveRecord
     }
 
 
+    /**
+     * @return array|mixed
+     */
     public static function findAllUserData() {
 
         $data = cache()->get('find_all_user_data');
@@ -113,6 +124,11 @@ class Settings extends ActiveRecord
     }
 
 
+    /**
+     * @param string $name
+     * @param string $value
+     * @return bool
+     */
     public static function saveUserData($name, $value) {
 
         $model = self::find()->findUserParam($name, self::USER_DATA)->one();

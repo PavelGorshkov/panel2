@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 07.12.2017
- * Time: 14:22
- */
-
 namespace app\modules\core\assets;
-
 
 use yii\web\AssetBundle;
 
+/**
+ * Class sparklineAssets
+ * @package app\modules\core\assets
+ */
 class sparklineAssets extends AssetBundle {
 
     public $sourcePath = '@bower/';

@@ -23,12 +23,18 @@ class Module extends ParentModule
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
 
 
+    /**
+     * @return string
+     */
     public static function Title() {
 
         return 'Ядро приложения';
     }
 
 
+    /**
+     * @return array
+     */
     public function getMenuAdmin() {
 
         $items = [];

@@ -19,6 +19,9 @@ class ProfileRegistrationForm extends Model {
 
     public $about;
 
+    /**
+     * @return array
+     */
     public function rules() {
 
         return [
@@ -38,6 +41,10 @@ class ProfileRegistrationForm extends Model {
         ];
     }
 
+
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -47,6 +54,10 @@ class ProfileRegistrationForm extends Model {
         ];
     }
 
+
+    /**
+     * @return string
+     */
     public function formName() {
 
         return 'profile-registration-form';

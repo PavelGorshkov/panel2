@@ -1,7 +1,10 @@
 <?php
 namespace app\modules\user\events;
 
-
+/**
+ * Class PasswordEvent
+ * @package app\modules\user\events
+ */
 class PasswordEvent extends UserEvent {
 
     /**

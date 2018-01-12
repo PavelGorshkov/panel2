@@ -4,6 +4,10 @@ namespace app\modules\core\helpers;
 
 use yii\base\Exception;
 
+/**
+ * Class TranslitHelper
+ * @package app\modules\core\helpers
+ */
 class TranslitHelper
 {
     protected static $rus = [
@@ -27,6 +31,10 @@ class TranslitHelper
     ];
 
 
+    /**
+     * @param string $str
+     * @return string
+     */
     protected static function route($str)
     {
         return (preg_match('#[A-Za-z]+#', $str))

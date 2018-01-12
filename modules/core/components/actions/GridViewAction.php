@@ -1,11 +1,14 @@
 <?php
 namespace app\modules\core\components\actions;
 
-
 use app\modules\core\interfaces\SearchModelInterface;
 use Yii;
 use yii\web\ServerErrorHttpException;
 
+/**
+ * Class GridViewAction
+ * @package app\modules\core\components\actions
+ */
 class GridViewAction extends WebAction
 {
     public $searchModel = null;
@@ -16,6 +19,10 @@ class GridViewAction extends WebAction
     protected $model = null;
 
 
+    /**
+     * @throws ServerErrorHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
     public function init() {
 
         parent::init();
@@ -35,6 +42,9 @@ class GridViewAction extends WebAction
     }
 
 
+    /**
+     * @return string
+     */
     public function run() {
 
         $dataProvider = $this->model->search(app()->request->get());

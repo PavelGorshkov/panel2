@@ -13,6 +13,9 @@ use app\modules\core\Module;
  */
 trait ModuleTrait {
 
+    /**
+     * @return null|Module
+     */
     public function getModule() {
 
         return app()->getModule('core');

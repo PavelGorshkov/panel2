@@ -6,6 +6,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
 
+/**
+ * Class SideBarWidget
+ * @package app\modules\core\widgets
+ */
 class SideBarWidget extends Menu {
 
     /**

@@ -15,6 +15,10 @@ class ModuleSettings
 
     use SingletonTrait;
 
+    /**
+     * @param $module
+     * @return array
+     */
     public function __get($module)
     {
 
@@ -23,6 +27,10 @@ class ModuleSettings
     }
 
 
+    /**
+     * @param string $module
+     * @param array $data
+     */
     public function __set($module, $data)
     {
 
@@ -34,6 +42,9 @@ class ModuleSettings
     }
 
 
+    /**
+     * @inheritdoc
+     */
     public function initData()
     {
 

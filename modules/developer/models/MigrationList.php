@@ -1,23 +1,38 @@
 <?php
+
 namespace app\modules\developer\models;
 
 use app\modules\developer\helpers\MigrationHelper;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 
-
-class MigrationList {
+/**
+ * Class MigrationList
+ * @package app\modules\developer\models
+ */
+class MigrationList
+{
 
     protected $_migrations;
 
 
-    public function __construct($module = null) {
+    /**
+     * MigrationList constructor.
+     * @param string|null $module
+     */
+    public function __construct($module = null)
+    {
 
         $this->_migrations = $this->getInitMigrations($module);
     }
 
 
-    protected function getInitMigrations($module = null) {
+    /**
+     * @param string|null $module
+     * @return array
+     */
+    protected function getInitMigrations($module = null)
+    {
 
         $modules = app()->moduleManager->getListAllModules();
 
@@ -60,7 +75,12 @@ class MigrationList {
     }
 
 
-    protected function getListMigrationsClass($module) {
+    /**
+     * @param string $module
+     * @return array
+     */
+    protected function getListMigrationsClass($module)
+    {
 
         $migrations = [];
         $m = [];
@@ -76,13 +96,12 @@ class MigrationList {
                     continue;
                 }
 
-                $path = $migrationsPath.'/'.$file;
+                $path = $migrationsPath . '/' . $file;
 
                 if (
                     preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches)
-                 && is_file($path)
-                )
-                {
+                    && is_file($path)
+                ) {
                     $m[] = $matches[1];
                     $migrations[] = $matches;
                 }
@@ -90,7 +109,7 @@ class MigrationList {
             closedir($handle);
             ksort($m);
 
-            foreach ($m as $k=> $temp) {
+            foreach ($m as $k => $temp) {
 
                 $data[$k] = [
                     'classname' => $migrations[$k][1],
@@ -103,22 +122,33 @@ class MigrationList {
     }
 
 
-    public function getMigrations() {
+    /**
+     * @return array
+     */
+    public function getMigrations()
+    {
 
         return $this->_migrations;
     }
 
 
-    public function search() {
+    /**
+     * @return ArrayDataProvider
+     */
+    public function search()
+    {
 
         return new ArrayDataProvider([
             'key' => 'migration_id',
-            'allModels'=>$this->_migrations,
+            'allModels' => $this->_migrations,
         ]);
     }
 
-    public static function getValidators() {
-
+    /**
+     * @return bool
+     */
+    public static function getValidators()
+    {
         return true;
     }
 }
