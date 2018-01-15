@@ -34,7 +34,8 @@
         "iiifx-production/yii2-folder-dependency": "^0.1.0",
         "kartik-v/yii2-grid": "^3.1",
         "kartik-v/yii2-widgets": "^3.4",
-        "kartik-v/yii2-editable": "*"
+        "kartik-v/yii2-editable": "*",
+        "Adldap2/Adldap2": "^8.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
