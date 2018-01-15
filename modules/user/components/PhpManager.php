@@ -40,10 +40,10 @@ class PhpManager extends AuthPhpManager
             if (($role = user()->getRole())!== null) {
 
                 $this->assign(
-                    Yii::createObject(
-                        Role::className(),
-                        ['name'=>$role]
-                    ),
+                    Yii::createObject([
+                        'class' => Role::className(),
+                        'name'=>$role
+                    ]),
                     user()->id
                 );
             } else {
@@ -53,10 +53,10 @@ class PhpManager extends AuthPhpManager
                     if ($this->getItem($access)!== null) {
 
                         $this->assign(
-                            Yii::createObject(
+                            Yii::createObject([
                                 Item::className(),
-                                ['name' => $access]
-                            ),
+                                'name' => $access
+                            ]),
                             user()->id
                         );
 
