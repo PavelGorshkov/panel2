@@ -93,7 +93,7 @@ include __DIR__ . '/_blocks.php';
                 </h1>
                 <?= Breadcrumbs::widget([
                     'links' => $this->getBreadcrumbs(),
-                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Р“Р»Р°РІРЅР°СЏ', 'url'=>'/', 'encode'=>false],
+                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Главная', 'url'=>'/', 'encode'=>false],
                 ]) ?>
             </section>
 
@@ -108,7 +108,7 @@ include __DIR__ . '/_blocks.php';
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs"></div>
-            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹</strong>
+            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Все права защищены</strong>
         </footer>
 
         <?= $this->blocks['controlSidebar']; ?>

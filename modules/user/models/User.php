@@ -181,6 +181,22 @@ class User extends ActiveRecord
 
 
     /**
+     * @param mixed $id
+     * @return User|array|null|ActiveRecord
+     */
+    public static function findByPk($id) {
+
+        return self::find()->findUser('id = :id', [':id'=>$id])->one();
+    }
+
+
+    public static function findCountAdmin() {
+
+        return self::find()->findCountAdmin();
+    }
+
+
+    /**
      * Проверка подтверждения статуса
      *
      * @return bool

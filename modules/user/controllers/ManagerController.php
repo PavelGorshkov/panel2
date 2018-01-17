@@ -59,6 +59,12 @@ class ManagerController extends WebController
                 'searchModel'=>SearchUser::className(),
                 'smallTitle'=>'Список',
             ],
+            'create'=>[
+                'class'=>SaveModelAction::className(),
+                'modelForm'=>UserFormModel::className(),
+                'model'=>ManagerUser::className(),
+                'isNewRecord'=>true,
+            ],
             'update'=>[
                 'class'=>SaveModelAction::className(),
                 'modelForm'=>UserFormModel::className(),

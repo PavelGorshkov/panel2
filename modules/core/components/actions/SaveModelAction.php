@@ -5,6 +5,7 @@ use app\modules\core\interfaces\SaveModelInterface;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecordInterface;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -184,7 +185,7 @@ class SaveModelAction extends WebAction
         if (app()->request->isAjax && $this->modelFormInstance->load(app()->request->post())) {
 
             app()->response->format = Response::FORMAT_JSON;
-            app()->response->data = ActiveForm::validate($this->modelForm);
+            app()->response->data = ActiveForm::validate($this->modelFormInstance);
             app()->response->send();
             app()->end();
         }
@@ -201,8 +202,14 @@ class SaveModelAction extends WebAction
         if ($this->successRedirect !== null) return $this->controller->redirect(Url::to($this->successRedirect));
 
         $key = $this->modelInstance->primaryKey();
+        $query = [];
 
-        $request = app()->request->post('submit-type', ['update', 'id'=>$this->modelInstance->$key]);
+        foreach ($key as $v) {
+
+            $query[$v] = $this->modelInstance->$v;
+        }
+
+        $request = app()->request->post('submit-type', ArrayHelper::merge(['update'], $query));
 
         return $this->controller->redirect(Url::to($request));
     }
