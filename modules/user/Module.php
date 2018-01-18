@@ -106,18 +106,18 @@ class Module extends ParentModule
                 'icon'=>'fa fa-fw fa-users',
                 'items'=>[
                     [
-                        'label' => 'Роли',
+                        'label' => 'Группы',
                         'visible'=>true //user()->checkAccess(RolesTask::TASK),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-list-alt',
-                        'label' => 'Список ролей',
+                        'label' => 'Список групп',
                         'url'=>$this->getMenuUrl('roles/index'),
                         //'visible'=>user()->checkAccess(TaskRoles::OPERATION_READ)
                     ],
                     [
                         'icon' => 'fa fa-fw fa-user-plus',
-                        'label' => 'Добавить роль',
+                        'label' => 'Добавить группу',
                         'url'=>$this->getMenuUrl('roles/create'),
                         //'visible'=>user()->checkAccess(TaskRoles::OPERATION_EDIT)
                     ],

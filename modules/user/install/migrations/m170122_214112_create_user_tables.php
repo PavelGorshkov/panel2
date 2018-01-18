@@ -9,12 +9,16 @@ use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use yii\db\Expression;
 
+/**
+ * Class m170122_214112_create_user_tables
+ * @package app\modules\user\install\migrations
+ */
 class m170122_214112_create_user_tables extends Migration {
 
     protected $table = '{{%user_user}}';
 
     /**
-     * @return bool|void
+     * @return void
      * @throws \yii\base\Exception
      */
     public function safeUp() {
@@ -68,6 +72,9 @@ class m170122_214112_create_user_tables extends Migration {
     }
 
 
+    /**
+     * @return void
+     */
     public function safeDown() {
 
         $this->dropTable('{{%user_profile}}');

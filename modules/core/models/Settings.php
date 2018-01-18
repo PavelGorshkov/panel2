@@ -117,7 +117,7 @@ class Settings extends ActiveRecord
 
             $data = ArrayHelper::map($temp, 'param_name', 'param_value');
 
-            cache()->set('find_all_user_data', $data);
+            cache()->set('find_all_user_data', $data, 3600);
         }
 
         return $data;

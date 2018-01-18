@@ -53,7 +53,8 @@ $config = [
 
         'cache' => [
             'class' => '\yii\caching\FileCache',
-            //'class' => 'yii\caching\MemCache',
+            // 'class' => 'yii\caching\MemCache',
+
         ],
 
         'db' => $db,

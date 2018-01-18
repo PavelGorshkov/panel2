@@ -158,7 +158,7 @@ class UserFormModel extends Model implements SaveModelInterface
 
     /**
      * @param Model|ManagerUser $model
-     * @return bool|void
+     * @return bool
      */
     public function processingData(Model $model) {
 

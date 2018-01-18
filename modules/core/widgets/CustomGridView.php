@@ -36,9 +36,6 @@ HTML;
 HTML;
 
     public $panelFooterTemplate = <<< HTML
-    <div class="pull-right">
-        {pageSizer}
-    </div>
     <div class="kv-panel-pager">
         {pager}
     </div>

@@ -10,8 +10,10 @@ use yii\base\Model;
 interface SaveModelInterface
 {
     /**
-     * @param Model $model
+     * Передача данных в $model и обработка данных в переданной модели
+     * Например, Передаем данные в ActiveRecord и сохранение данных AR в БД
      *
+     * @param Model $model
      * @return boolean
      */
     public function processingData(Model $model);

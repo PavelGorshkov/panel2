@@ -1,5 +1,5 @@
 <?php
-/* @var $this  View */
+/* @var $this View */
 /* @var $model UserFormModel */
 /* @var $module Module */
 
