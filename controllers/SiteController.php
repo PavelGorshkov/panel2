@@ -6,6 +6,10 @@ use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 
+/**
+ * Class SiteController
+ * @package app\controllers
+ */
 class SiteController extends Controller
 {
     /**
@@ -30,6 +34,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -71,12 +76,20 @@ class SiteController extends Controller
     }
 
 
+    /**
+     * @throws \yii\base\Exception
+     */
     public function actionMigrate() {
 
         app()->migrator->updateToLatestSystem();
+
+        echo app()->migrator->getHtml();
     }
 
 
+    /**
+     * @param $sidebar
+     */
     public function actionSidebar($sidebar) {
 
         if (in_array($sidebar, ['remove', 'add'])) {

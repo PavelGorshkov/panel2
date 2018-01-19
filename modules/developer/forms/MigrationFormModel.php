@@ -1,14 +1,16 @@
 <?php
 
-namespace app\modules\developer\models;
+namespace app\modules\developer\forms;
 
 use app\modules\core\components\FormModel;
+use app\modules\developer\interfaces\GenerateFileModuleInterface;
+use app\modules\developer\models\MigrationConstructor;
 use yii\helpers\Html;
 
 
 /**
  * Class MigrationFormModel
- * @package app\modules\developer\models
+ * @package app\modules\developer\forms
  */
 class MigrationFormModel extends FormModel implements GenerateFileModuleInterface
 {

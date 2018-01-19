@@ -1,8 +1,8 @@
 <?php
 namespace app\modules\developer\controllers;
 
-use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\WebController;
+use app\modules\developer\auth\MigrationTask;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\ServerErrorHttpException;
@@ -22,7 +22,7 @@ class MigrationController extends WebController {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'rules' => ModuleTask::createRulesController()
+                'rules' => MigrationTask::createRulesController()
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -61,7 +61,7 @@ class MigrationController extends WebController {
             'create'=>[
                 'class'=>'\app\modules\developer\controllers\actions\createItemModuleAction',
                 'model'=>'\app\modules\developer\models\MigrationFormModel',
-            ]
+            ],
         ];
     }
 
@@ -81,15 +81,10 @@ class MigrationController extends WebController {
             throw new ServerErrorHttpException(sprintf('Модуль "%s" не найден в активных модулях!', $module));
         }
 
-        ob_start();
-
         app()->migrator->updateToLatestModule($module);
-        $logs = ob_get_contents();
-        ob_end_clean();
 
         return $this->render($this->action->id, [
            'module'=>$module,
-            'logs'=>$logs,
         ]);
     }
 }

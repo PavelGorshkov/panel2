@@ -7,8 +7,10 @@
 
 namespace app\commands;
 
+use app\modules\core\components\OutputMessage;
 use yii\base\Exception;
 use yii\console\Controller;
+use yii\helpers\Console;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -30,11 +32,34 @@ class RunController extends Controller
     }
 
 
+    /**
+     * Обновление через консоль.
+     */
     public function actionMigrate()
     {
         try {
             app()->migrator->updateToLatestSystem();
+
+            $this->getMessages();
+
         } catch (Exception $e) {
+
+            $this->getMessages();
+
+            $this->stdout($e->getMessage()."\n", Console::FG_RED);
+        }
+    }
+
+
+    /**
+     * Вывод сообщение мигратора
+     */
+    protected function getMessages() {
+
+        /* @var $message OutputMessage */
+        foreach (app()->migrator->getConsole() as $message) {
+
+            $this->stdout($message->getMessage()."\n", $message->getType(true));
         }
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\developer\models;
 
 use app\modules\developer\helpers\MigrationHelper;

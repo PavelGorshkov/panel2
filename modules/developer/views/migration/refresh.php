@@ -8,6 +8,8 @@ use yii\helpers\Html;
 $this->setSmallTitle('Обновление БД');
 $this->setTitle($module);
 
+$logs = app()->migrator->getHtml();
+
 $this->setBreadcrumbs([
     [
         'label' => $this->getTitle(),
@@ -22,10 +24,10 @@ $this->setBreadcrumbs([
 
 BoxWidget::begin([
     'title'=>$this->getSmallTitle()
-])
+]);
 ?>
-    <p><?=$logs?$logs:'БД модуля актуальна на текущий момент!'?></p>
-    <p><?=Html::a('<i class="fa fa-reply"></i> Вернуться', ['index', 'module'=>$module], ['class'=>'btn btn-sm btn-success'])?></p>
+    <?=$logs?$logs:Html::tag('p', 'БД модуля актуальна на текущий момент!', ['class'=>'text text-success'])?>
+    <div><?=Html::a('<i class="fa fa-reply"></i> Вернуться', ['index', 'module'=>$module], ['class'=>'btn btn-sm btn-success'])?></div>
 <?php
 BoxWidget::end();
 

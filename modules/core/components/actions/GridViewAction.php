@@ -45,7 +45,7 @@ class GridViewAction extends WebAction
     /**
      * @return string
      */
-    public function run() {
+    public function run($module) {
 
         $dataProvider = $this->model->search(app()->request->get());
 

@@ -1,8 +1,8 @@
 <?php
-/* @var $this \app\modules\core\components\View */
 use yii\widgets\Menu;
 
 /* @var $content string */
+/* @var $this \app\modules\core\components\View */
 
 $this->beginContent('@app/modules/core/views/layouts/admin.php');
 ?>
@@ -11,7 +11,7 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
         <div class="callout callout-default" style="background-color: #fff">
 <?php
             $menu=[[
-                    'label'=>'Всё',
+                    'label'=>'Все модули',
                     'url' => [app()->controller->action->id],
                     'active'=>!app()->request->get('module'),
             ]];

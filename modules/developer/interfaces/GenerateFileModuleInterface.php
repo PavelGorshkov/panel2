@@ -1,10 +1,10 @@
 <?php
-namespace app\modules\developer\models;
+namespace app\modules\developer\interfaces;
 
 
 /**
  * Interface GenerateFileModuleInterface
- * @package app\modules\developer\models
+ * @package app\modules\developer\interfaces
  */
 interface GenerateFileModuleInterface {
 
