@@ -60,12 +60,12 @@ class Module extends ParentModule
                     [
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Список задач',
-                        'url' => $this->getMenuUrl('auth/index'),
+                        'url' => $this->getMenuUrl('rbac/index'),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Добавить задачу',
-                        'url' => $this->getMenuUrl('auth/create'),
+                        'url' => $this->getMenuUrl('rbac/create'),
                     ],
                     [
                         'label' => '',

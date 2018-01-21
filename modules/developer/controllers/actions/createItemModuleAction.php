@@ -2,7 +2,7 @@
 namespace app\modules\developer\controllers\actions;
 
 use app\modules\core\components\actions\WebAction;
-use app\modules\developer\models\GenerateFileModuleInterface;
+use app\modules\developer\interfaces\GenerateFileModuleInterface;
 use yii\base\Model;
 use yii\web\ServerErrorHttpException;
 

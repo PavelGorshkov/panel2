@@ -6,7 +6,6 @@ use app\modules\core\components\ConfigManager;
 use app\modules\core\components\RedactorController;
 use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\helpers\HtmlPurifier;
 
 /**
@@ -31,14 +30,7 @@ class ModuleController extends RedactorController{
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                //'only' => ['logout'],
                 'rules' => ModuleTask::createRulesController(),
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
             ],
         ];
     }

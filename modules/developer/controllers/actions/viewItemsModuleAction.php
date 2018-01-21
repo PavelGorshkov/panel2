@@ -2,17 +2,16 @@
 
 namespace app\modules\developer\controllers\actions;
 
-use app\modules\core\components\actions\GridViewAction;
+use app\modules\core\components\actions\WebAction;
 use yii\web\ServerErrorHttpException;
 
 /**
  * Class viewItemsModuleAction
  * @package app\modules\developer\controllers\actions
  */
-class viewItemsModuleAction extends GridViewAction
+class viewItemsModuleAction extends WebAction
 {
-
-    public $model = null;
+    public $model;
 
     public $layout = '@app/modules/developer/views/layouts/modules_menu';
 
@@ -37,7 +36,6 @@ class viewItemsModuleAction extends GridViewAction
      */
     public function run($module = '')
     {
-
         return $this->render(['model' => new $this->model($module)]);
     }
 }

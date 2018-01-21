@@ -3,8 +3,11 @@ namespace app\modules\developer\controllers;
 
 use app\modules\core\components\WebController;
 use app\modules\developer\auth\MigrationTask;
+use app\modules\developer\controllers\actions\createItemModuleAction;
+use app\modules\developer\controllers\actions\viewItemsModuleAction;
+use app\modules\developer\forms\MigrationFormModel;
+use app\modules\developer\models\MigrationList;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -23,12 +26,6 @@ class MigrationController extends WebController {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => MigrationTask::createRulesController()
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
             ],
         ];
     }
@@ -55,12 +52,12 @@ class MigrationController extends WebController {
 
         return [
             'index'=>[
-                'class'=>'\app\modules\developer\controllers\actions\viewItemsModuleAction',
-                'model'=>'\app\modules\developer\models\MigrationList',
+                'class'=>viewItemsModuleAction::className(),
+                'model'=>MigrationList::className(),
             ],
             'create'=>[
-                'class'=>'\app\modules\developer\controllers\actions\createItemModuleAction',
-                'model'=>'\app\modules\developer\models\MigrationFormModel',
+                'class'=>createItemModuleAction::className(),
+                'model'=>MigrationFormModel::className(),
             ],
         ];
     }

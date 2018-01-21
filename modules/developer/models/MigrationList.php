@@ -11,6 +11,11 @@ use yii\helpers\ArrayHelper;
  */
 class MigrationList
 {
+    public static function className() {
+
+        return get_called_class();
+    }
+
 
     protected $_migrations;
 
@@ -140,6 +145,9 @@ class MigrationList
         return new ArrayDataProvider([
             'key' => 'migration_id',
             'allModels' => $this->_migrations,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
         ]);
     }
 
