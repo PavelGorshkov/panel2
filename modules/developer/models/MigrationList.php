@@ -11,6 +11,9 @@ use yii\helpers\ArrayHelper;
  */
 class MigrationList
 {
+    /**
+     * @return string
+     */
     public static function className() {
 
         return get_called_class();

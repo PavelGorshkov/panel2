@@ -3,6 +3,7 @@ namespace app\modules\core\components\actions;
 
 use app\modules\core\interfaces\SearchModelInterface;
 use Yii;
+use yii\base\Model;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -14,7 +15,7 @@ class GridViewAction extends WebAction
     public $searchModel = null;
 
     /**
-     * @var SearchModelInterface
+     * @var Model|SearchModelInterface
      */
     protected $model = null;
 

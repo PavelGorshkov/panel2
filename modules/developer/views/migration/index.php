@@ -1,11 +1,14 @@
 <?php
-/* @var $this app\modules\core\components\View */
 
 use app\modules\core\widgets\CustomGridView;
+use app\modules\developer\models\SearchMigration;
+use yii\data\DataProviderInterface;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
-/* @var $model app\modules\developer\models\MigrationList */
+/* @var $this app\modules\core\components\View */
+/* @var $searchModel SearchMigration */
+/* @var $dataProvider DataProviderInterface */
 
 $this->setSmallTitle('Список');
 
@@ -27,8 +30,8 @@ $moduleParam = app()->request->get('module') ? ['module' => app()->request->get(
     <div class="col-sm-12">
         <?php
         echo CustomGridView::widget([
-            'dataProvider' => $model->search(),
-            'filterModel' => null,
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
             'pjax' => false,
             'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
             'headerRowOptions' => ['class' => 'kartik-sheet-style'],
@@ -72,23 +75,21 @@ $moduleParam = app()->request->get('module') ? ['module' => app()->request->get(
                 [
                     'label' => "Модуль",
                     'attribute' => 'module',
+                    'filter'=>false,
                     'value' => function ($data) {
                         return $data["module"];
                     }
                 ],
                 [
                     'label' => "Класс",
-                    'attribute' => 'classname',
-                    'value' => function ($data) {
-                        return $data["classname"];
-                    }
+                    'attribute' => 'className',
                 ],
                 [
                     'label' => 'Дата создания',
-                    'attribute' => 'createtime',
+                    'attribute' => 'createTime',
                     'value' => function ($data) {
                         /* @var $date \DateTime */
-                        $date = $data['createtime'];
+                        $date = \DateTime::createFromFormat('ymd_His', $data->createTime);
 
                         return $date->format("Y-m-d H:i:s");
                     },

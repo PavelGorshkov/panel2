@@ -2,30 +2,24 @@
 
 namespace app\modules\developer\controllers\actions;
 
-use app\modules\core\components\actions\WebAction;
+use app\modules\core\components\actions\GridViewAction;
 use yii\web\ServerErrorHttpException;
 
 /**
  * Class viewItemsModuleAction
  * @package app\modules\developer\controllers\actions
  */
-class viewItemsModuleAction extends WebAction
+class viewItemsModuleAction extends GridViewAction
 {
-    public $model;
-
     public $layout = '@app/modules/developer/views/layouts/modules_menu';
 
+
     /**
+     * @throws \yii\base\InvalidConfigException
      * @throws ServerErrorHttpException
      */
     public function init()
     {
-
-        if ($this->model === null) {
-
-            throw new ServerErrorHttpException('В action "' . $this->id . '" контроллера "' . $this->controller->id . '" не привязана модель "model"');
-        }
-
         parent::init();
     }
 
@@ -36,6 +30,13 @@ class viewItemsModuleAction extends WebAction
      */
     public function run($module = '')
     {
-        return $this->render(['model' => new $this->model($module)]);
+        if ($module !== '') {
+
+            $this->model->setAttributes([
+                'module'=>$module
+            ]);
+        }
+
+        return parent::run();
     }
 }
