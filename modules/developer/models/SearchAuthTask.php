@@ -1,15 +1,9 @@
 <?php
-
 namespace app\modules\developer\models;
 
 use Yii;
 
-
-/**
- * Class SearchMigration
- * @package app\modules\developer\models
- */
-class SearchMigration extends SearchClassesModule
+class SearchAuthTask extends SearchClassesModule
 {
     /**
      * @param string $module
@@ -17,9 +11,18 @@ class SearchMigration extends SearchClassesModule
      */
     protected function pathForModule($module) {
 
-        $migrationPath = Yii::getAlias("@app/modules/".$module."/install/migrations");
+        $migrationPath = Yii::getAlias("@app/modules/".$module."/auth");
 
         return is_dir($migrationPath)?$migrationPath:null;
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getModelClassName()
+    {
+        return AuthTask::className();
     }
 
 
@@ -71,34 +74,8 @@ class SearchMigration extends SearchClassesModule
         return $data;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getModelClassName() {
-
-        return Migration::className();
-    }
-
-
-    /**
-     * @return array
-     */
-    protected function setFilterData() {
-
-        $list = $this->setListData();
-
-        if (!empty($this->className)) {
-
-            foreach ($list as $key => $model) {
-
-                if (mb_strpos($model->className, $this->className) === false) {
-
-                    unset($list[$key]);
-                }
-            }
-        }
-
-        return $list;
+    protected function setFilterData()
+    {
+        // TODO: Implement setFilterData() method.
     }
 }

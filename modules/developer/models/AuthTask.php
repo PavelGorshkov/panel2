@@ -4,10 +4,10 @@ namespace app\modules\developer\models;
 use yii\base\Model;
 
 /**
- * Class Migration
+ * Class AuthTask
  * @package app\modules\developer\models
  */
-class Migration extends Model
+class AuthTask extends Model
 {
     public $id;
 
@@ -15,7 +15,6 @@ class Migration extends Model
 
     public $className;
 
-    public $createTime;
 
     /**
      * @return array
@@ -25,7 +24,6 @@ class Migration extends Model
         return [
             'module'=>'Модуль',
             'className'=>'Название класса',
-            'createTime'=>'Время создания',
         ];
     }
 }

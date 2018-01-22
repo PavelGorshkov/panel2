@@ -7,7 +7,7 @@ use app\modules\developer\auth\CreateAuthTask;
 use app\modules\developer\controllers\actions\createItemModuleAction;
 use app\modules\developer\controllers\actions\viewItemsModuleAction;
 use app\modules\developer\forms\MigrationFormModel;
-use app\modules\developer\models\MigrationList;
+use app\modules\developer\models\SearchAuthTask;
 use yii\filters\AccessControl;
 
 
@@ -50,7 +50,7 @@ class RbacController extends WebController
         return [
             'index'=>[
                 'class'=>viewItemsModuleAction::className(),
-                'model'=>MigrationList::className(),
+                'searchModel'=>SearchAuthTask::className(),
             ],
             'create'=>[
                 'class'=>createItemModuleAction::className(),
