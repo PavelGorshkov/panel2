@@ -1,6 +1,6 @@
 <?php
 /* @var $this app\modules\core\components\View */
-/* @var $model app\modules\developer\models\MigrationFormModel */
+/* @var $model app\modules\developer\forms\MigrationFormModel */
 
 use app\modules\core\widgets\BoxWidget;
 use yii\bootstrap\ActiveForm;
@@ -54,7 +54,7 @@ $form->errorSummary($model);
                 'class'               => 'popover-help',
                 'data-placement'      => 'top',
             ],
-        ])->dropDownList(ArrayHelper::merge(['Выберите модуль'], $modules));
+        ])->dropDownList(ArrayHelper::merge([''=>'Выберите модуль'], $modules));
         ?>
     </div>
     <div class="col-sm-6">

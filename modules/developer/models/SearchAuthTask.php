@@ -1,8 +1,14 @@
 <?php
 namespace app\modules\developer\models;
 
+use app\modules\user\components\RBACItem;
+use Symfony\Component\Finder\SplFileInfo;
 use Yii;
 
+/**
+ * Class SearchAuthTask
+ * @package app\modules\developer\models
+ */
 class SearchAuthTask extends SearchClassesModule
 {
     /**
@@ -30,52 +36,50 @@ class SearchAuthTask extends SearchClassesModule
      * @param string $module
      * @return array
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\web\ServerErrorHttpException
      */
     protected function getListClass($module)
     {
-        $list = [];
-        $m = [];
         $data = [];
 
-        if (($migrationsPath = $this->pathForModule($module)) !== null) {
+        /* @var $item SplFileInfo */
+        foreach (new \GlobIterator($this->pathForModule($module).'/*Task.php') as $item) {
 
-            $handle = opendir($migrationsPath);
+            $classObject = '\\app\\modules\\' . $module . '\\auth\\' . $item->getBasename('.php');
 
-            while (($file = readdir($handle)) !== false) {
+            /** @var  RBACItem $classObject */
+            $classObject = new $classObject;
 
-                if ($file === '.' || $file === '..') {
-                    continue;
-                }
-
-                $path = $migrationsPath . '/' . $file;
-
-                if (
-                    preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/', $file, $matches)
-                    && is_file($path)
-                ) {
-                    $m[] = $matches[1];
-                    $list[] = $matches;
-                }
-            }
-            closedir($handle);
-            ksort($m);
-
-            foreach ($m as $k => $temp) {
-
-                $data[$k] = Yii::createObject([
-                    'class'=>$this->getModelClassName(),
-                    'module'=>$module,
-                    'className'=>$list[$k][1],
-                    'createTime'=>$list[$k][2],
-                ]);
-            }
+            $data[] = Yii::createObject([
+                'class'=>$this->getModelClassName(),
+                'module'=>$module,
+                'className'=>$item->getBasename(),
+                'title'=>$classObject->getTitleTask(),
+            ]);
         }
 
         return $data;
     }
 
+
+    /**
+     * @return array
+     */
     protected function setFilterData()
     {
-        // TODO: Implement setFilterData() method.
+        $list = $this->setListData();
+
+        if (!empty($this->className)) {
+
+            foreach ($list as $key => $model) {
+
+                if (mb_strpos($model->className, $this->className) === false) {
+
+                    unset($list[$key]);
+                }
+            }
+        }
+
+        return $list;
     }
 }

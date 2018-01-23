@@ -15,6 +15,8 @@ class AuthTask extends Model
 
     public $className;
 
+    public $title;
+
 
     /**
      * @return array
@@ -24,6 +26,7 @@ class AuthTask extends Model
         return [
             'module'=>'Модуль',
             'className'=>'Название класса',
+            'title'=>'Заголовок',
         ];
     }
 }

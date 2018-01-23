@@ -2,8 +2,6 @@
 
 namespace app\modules\developer\forms;
 
-use app\modules\core\components\FormModel;
-use app\modules\developer\interfaces\GenerateFileModuleInterface;
 use app\modules\developer\models\MigrationConstructor;
 use yii\helpers\Html;
 
@@ -12,45 +10,25 @@ use yii\helpers\Html;
  * Class MigrationFormModel
  * @package app\modules\developer\forms
  */
-class MigrationFormModel extends FormModel implements GenerateFileModuleInterface
+class MigrationFormModel extends FileGeneratorFormModel
 {
-    public $className;
-
-    public $module;
-
-    /**
-     * @inheritdoc
-     * @return array
-     */
-    public function rules()
-    {
-
-        return [
-            ['className', 'filter', 'filter' => 'trim'],
-            [['className', 'module'], 'required'],
-            [['className', 'module'], 'string', 'max' => 60],
-            ['module', 'in', 'range' => array_keys(app()->moduleManager->getListAllModules())],
-        ];
-    }
-
     /**
      * @return array
      */
     public function attributeLabels()
     {
-
         return [
             'className' => 'Название класса',
             'module' => 'Модуль'
         ];
     }
 
+
     /**
      * @return array
      */
     public function attributeDescriptions()
     {
-
         return [
             'className' => 'Название класса миграции должно содержать название модуля, таблицы
                     и краткое содержание действия, что хотите сделать...<br>
@@ -59,15 +37,6 @@ class MigrationFormModel extends FormModel implements GenerateFileModuleInterfac
                 ',
             'module' => 'Модуль должен быть определен в системе корректно.'
         ];
-    }
-
-    /**
-     * @param string $module
-     */
-    public function setModule($module)
-    {
-
-        $this->module = $module;
     }
 
 
@@ -86,7 +55,6 @@ class MigrationFormModel extends FormModel implements GenerateFileModuleInterfac
      */
     public function getSuccessMessage()
     {
-
         return 'Миграция успешно создана!';
     }
 

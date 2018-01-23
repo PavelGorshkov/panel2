@@ -62,9 +62,17 @@ abstract class RBACItem extends BaseObject implements RBACItemInterface
      */
     public function getTitleTask()
     {
-        if (self::TASK) return self::TASK;
+        $class = get_called_class();
 
-        else throw new ServerErrorHttpException('Create method "public function getTitleTask()" in class "' . get_called_class() . '"');
+        if ($class::TASK) {
+
+            if ($title = $this->getTitle($class::TASK)) {
+
+                return $title;
+            }
+        }
+
+        throw new ServerErrorHttpException('Create method "public function getTitleTask()" in class "' . get_called_class() . '"');
     }
 
 

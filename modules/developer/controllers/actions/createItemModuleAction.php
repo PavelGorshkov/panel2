@@ -48,15 +48,14 @@ class createItemModuleAction extends WebAction  {
 
         app()->controller->performAjaxValidation($model);
 
-        if (
-            $model->load(app()->request->post())
-         && $model->validate()
-         && $model->generate()
-        ) {
+        if ($model->load(app()->request->post()) && $model->validate()) {
 
-            user()->setSuccessFlash($model->getSuccessMessage());
+            if ($model->generate()) {
 
-            return $this->controller->redirect(app()->request->referrer);
+                user()->setSuccessFlash($model->getSuccessMessage());
+
+                return $this->controller->redirect(app()->request->referrer);
+            }
         }
 
         return $this->controller->render($this->view, ['model'=>$model]);

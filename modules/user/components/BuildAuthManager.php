@@ -55,6 +55,17 @@ class BuildAuthManager extends Component
         $this->ruleFile = Yii::getAlias('@app/runtime/rbac/rules.php');
     }
 
+
+    /**
+     * @param string $module
+     * @return string
+     */
+    public static function getPathAuthTask($module)
+    {
+        return  Yii::getAlias('@app/modules/' . $module. '/auth');
+
+    }
+
     /**
      * Создание файла конфигурации RBAC приложения
      * @throws Exception
@@ -67,7 +78,7 @@ class BuildAuthManager extends Component
 
         foreach (app()->moduleManager->getListAllModules() as $module) {
 
-            $files = Yii::getAlias('@app/modules/' . $module . '/auth/*Task.php');
+            $files = self::getPathAuthTask($module).'/*Task.php';
             $nameSpace = '\\app\\modules\\' . $module . '\\auth\\';
 
             /* @var \SplFileInfo $item */

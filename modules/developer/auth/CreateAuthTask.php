@@ -55,12 +55,4 @@ class CreateAuthTask extends RBACItem
             ]
         ];
     }
-
-    /**
-     * @return string
-     */
-    public function getTitleTask()
-    {
-        return self::TASK;
-    }
 }

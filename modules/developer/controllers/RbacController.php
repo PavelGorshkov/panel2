@@ -6,7 +6,7 @@ use app\modules\core\components\WebController;
 use app\modules\developer\auth\CreateAuthTask;
 use app\modules\developer\controllers\actions\createItemModuleAction;
 use app\modules\developer\controllers\actions\viewItemsModuleAction;
-use app\modules\developer\forms\MigrationFormModel;
+use app\modules\developer\forms\AuthTaskFormModel;
 use app\modules\developer\models\SearchAuthTask;
 use yii\filters\AccessControl;
 
@@ -17,6 +17,10 @@ use yii\filters\AccessControl;
  */
 class RbacController extends WebController
 {
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -54,7 +58,7 @@ class RbacController extends WebController
             ],
             'create'=>[
                 'class'=>createItemModuleAction::className(),
-                'model'=>MigrationFormModel::className(),
+                'model'=>AuthTaskFormModel::className(),
             ],
         ];
     }
