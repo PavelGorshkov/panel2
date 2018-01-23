@@ -74,7 +74,7 @@ class AccountController extends WebController
          && $model->validate()
         ) {
 
-            if ($model->login())  return $this->goBack();
+            if (app()->userManager->login($model))  return $this->goBack();
         }
 
         return $this->render('login', [

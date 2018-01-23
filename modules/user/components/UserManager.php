@@ -463,4 +463,10 @@ class UserManager extends Component {
 
         return user()->info->updateAttributes($data);
     }
+
+
+    public function login() {
+
+
+    }
 }
