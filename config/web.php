@@ -7,8 +7,8 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'panel2',
-    'name'=>'Панель',
-    'language'=>'ru',
+    'name' => 'Панель',
+    'language' => 'ru',
     'basePath' => dirname(__DIR__),
 
     'bootstrap' => ['log'],
@@ -19,18 +19,18 @@ $config = [
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-        '@kvgrid'   => '@vendor/kartik-v/yii2-grid',
+        '@npm' => '@vendor/npm-asset',
+        '@kvgrid' => '@vendor/kartik-v/yii2-grid',
     ],
 
-    'modules'=>[
-        'core'=> [
+    'modules' => [
+        'core' => [
             'class' => 'app\modules\core\Module',
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
         ],
-        'gridview' =>  [
+        'gridview' => [
             'class' => '\kartik\grid\Module',
             'i18n' => [
                 'class' => 'yii\i18n\PhpMessageSource',
@@ -61,10 +61,10 @@ $config = [
 
         'errorHandler' => [
             'errorAction' => 'site/error',
-            'errorView'=>'@app/modules/core/views/errorHandler/error.php'
+            'errorView' => '@app/modules/core/views/errorHandler/error.php'
         ],
 
-        'i18n'=>[
+        'i18n' => [
             'translations' => [
                 'kvgrid' => [
                     'class' => 'yii\i18n\PhpMessageSource',
@@ -74,6 +74,29 @@ $config = [
                         'app'       => 'app.php',
                         'app/error' => 'error.php',
                     ],*/
+                ],
+            ],
+        ],
+
+        'ldap' => [
+            'class' => '\app\modules\сщку\components\ADLdapComponent',
+            'options' => [
+                'user'=>[
+                    'domainControllers' => ['ad.marsu.ru'],
+                    'base_dn' => 'DC=ad,DC=marsu,DC=ru',
+                    'admin_username' => 'corp_bitrix_usr',
+                    'admin_password' => '33281996',
+
+                    //  'account_prefix'        => 'ACME-',
+                    'account_suffix' => '@ad.marsu.ru',
+                    //  'admin_account_prefix'  => 'ACME-ADMIN-',
+                    //  'admin_account_suffix'  => '@acme.org',
+                    'port' => 3268,
+                    //  'port'                  => 389,
+                    'follow_referrals' => false,
+                    'use_ssl' => false,
+                    'use_tls' => false,
+                    'timeout' => 5,
                 ],
             ],
         ],
@@ -96,16 +119,16 @@ $config = [
             'useFileTransport' => true,
         ],
 
-        'menuManager'=>[
-            'class'=>'\app\modules\core\components\MenuManager',
+        'menuManager' => [
+            'class' => '\app\modules\core\components\MenuManager',
         ],
 
-        'migrator'=>[
-            'class'=>'\app\modules\core\components\Migrator',
+        'migrator' => [
+            'class' => '\app\modules\core\components\Migrator',
         ],
 
-        'moduleManager'=>[
-            'class'=>'\app\modules\core\components\ModuleManager',
+        'moduleManager' => [
+            'class' => '\app\modules\core\components\ModuleManager',
         ],
 
         'request' => [
@@ -113,8 +136,8 @@ $config = [
             'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
         ],
 
-        'thumbNailer'=> [
-            'class'=>'\app\modules\core\components\Thumbnailer',
+        'thumbNailer' => [
+            'class' => '\app\modules\core\components\Thumbnailer',
         ],
 
         'urlManager' => [
@@ -128,7 +151,7 @@ $config = [
                 '/activation' => 'user/account/activation',
                 '/recovery-password' => 'user/account/recovery-password',
                 '/recovery' => 'user/account/recovery',
-                'gii'=>'gii',
+                'gii' => 'gii',
                 'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
@@ -136,17 +159,17 @@ $config = [
         ],
 
         'user' => [
-            'class'=>'\app\modules\user\components\WebUser',
+            'class' => '\app\modules\user\components\WebUser',
             'identityClass' => '\app\modules\user\models\IdentityUser',
             'enableAutoLogin' => true,
             'loginUrl' => ['/user/account/login'],
         ],
 
-        'userManager'=> [
+        'userManager' => [
             'class' => 'app\modules\user\components\UserManager',
         ],
 
-        'view'=>[
+        'view' => [
             'class' => 'app\modules\core\components\View',
         ],
     ],
@@ -171,11 +194,11 @@ if (YII_ENV_DEV) {
     ];
 
     $config['components']['urlManager']['rules'] = ArrayHelper::merge(
-    [
-        'gii' => 'gii',
-        'gii/<controller:\w+>' => 'gii/<controller>',
-        'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
-    ], $config['components']['urlManager']['rules']);
+        [
+            'gii' => 'gii',
+            'gii/<controller:\w+>' => 'gii/<controller>',
+            'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+        ], $config['components']['urlManager']['rules']);
 }
 
 

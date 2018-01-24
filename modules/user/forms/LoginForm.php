@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\forms;
 
 use app\modules\user\helpers\ModuleTrait;
@@ -11,7 +12,8 @@ use yii\db\Expression;
  * Class LoginForm
  * @package app\modules\user\forms
  */
-class LoginForm extends Model {
+class LoginForm extends Model
+{
 
     use ModuleTrait;
 
@@ -30,8 +32,8 @@ class LoginForm extends Model {
     public function attributeLabels()
     {
         return [
-            'login'      => 'Email или Логин',
-            'password'   => 'Пароль',
+            'login' => 'Email или Логин',
+            'password' => 'Пароль',
         ];
     }
 
@@ -39,14 +41,14 @@ class LoginForm extends Model {
     /**
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
             [['login', 'password'], 'required'],
             ['login', 'trim'],
-            ['login', function($attribute) {
+            ['login', function ($attribute) {
 
-                if ($this->user !== null){
+                if ($this->user !== null) {
 
                     $confirmationRequired = $this->module->enableConfirmation
                         && !$this->module->enableUnconfirmedLogin;
@@ -62,15 +64,19 @@ class LoginForm extends Model {
                     }
                 }
             }],
-            [
-                'password', function ($attribute) {
+            ['password', function ($attribute) {
 
-                    if ($this->user === null || !Password::validate($this->password, $this->user->hash)) {
+                if ($this->user === null && $this->module->isFromLDAP()) {
 
-                        $this->addError($attribute, 'Неверный логин или пароль');
-                    }
+                    $this->user = app()->userManager->findUserLDAP($this);
                 }
-            ],
+
+
+                if ($this->user === null || !Password::validate($this->password, $this->user->hash)) {
+
+                    $this->addError($attribute, 'Неверный логин или пароль');
+                }
+            }],
         ];
     }
 
@@ -78,7 +84,8 @@ class LoginForm extends Model {
     /**
      * @return bool
      */
-    public function beforeValidate() {
+    public function beforeValidate()
+    {
 
         if (parent::beforeValidate()) {
 
@@ -93,14 +100,15 @@ class LoginForm extends Model {
     /**
      * @return bool
      */
-    public function login() {
+    public function login()
+    {
 
         $this->user->updateAttributes(
-        [
-            'visited_at'=> new Expression('NOW()'),
-            'user_ip' => ip2long(app()->request->getUserIP())
-        ]);
+            [
+                'visited_at' => new Expression('NOW()'),
+                'user_ip' => ip2long(app()->request->getUserIP())
+            ]);
 
-        return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24* 3600);
+        return app()->user->login($this->user, $this->module->sessionLifeTimeDate * 24 * 3600);
     }
 }

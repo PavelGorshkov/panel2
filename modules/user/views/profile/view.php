@@ -14,7 +14,7 @@ use yii\helpers\Url;
 <div class="row">
     <div class="col-sm-12">
         <?=Html::a('<i class="fa fa-pencil"></i> Изменить', Url::to(['update']), ['class'=>'btn btn-sm btn-warning'])?>
-    <?php if ($module->isNotFromLDAP()):?>
+    <?php if (!$module->isFromLDAP()):?>
         <?=Html::a('<i class="fa fa-lock"></i> Сменить пароль', Url::to(['change-password']), ['class'=>'btn btn-sm btn-info'])?>
     <?php endif;?>
     </div>

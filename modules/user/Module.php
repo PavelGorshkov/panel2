@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user;
 
 use app\modules\core\auth\ModuleTask;
@@ -67,7 +68,8 @@ class Module extends ParentModule
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
@@ -80,7 +82,8 @@ class Module extends ParentModule
     /**
      * @return string
      */
-    public static function Title() {
+    public static function Title()
+    {
 
         return 'Модуль пользователей';
     }
@@ -89,62 +92,64 @@ class Module extends ParentModule
     /**
      * @return bool
      */
-    public function isNotFromLDAP() {
+    public function isFromLDAP()
+    {
 
-        return $this->fromAuthorization !== 1;
+        return $this->fromAuthorization === 1;
     }
 
 
     /**
      * @return array
      */
-    public function getMenuAdmin() {
+    public function getMenuAdmin()
+    {
 
         return [
             [
-                'label'=>'<span class="hidden-xs">Пользователи</span>',
-                'icon'=>'fa fa-fw fa-users',
-                'items'=>[
+                'label' => '<span class="hidden-xs">Пользователи</span>',
+                'icon' => 'fa fa-fw fa-users',
+                'items' => [
                     [
                         'label' => 'Группы',
-                        'visible'=>true //user()->checkAccess(RolesTask::TASK),
+                        'visible' => true //user()->checkAccess(RolesTask::TASK),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Список групп',
-                        'url'=>$this->getMenuUrl('roles/index'),
+                        'url' => $this->getMenuUrl('roles/index'),
                         //'visible'=>user()->checkAccess(TaskRoles::OPERATION_READ)
                     ],
                     [
                         'icon' => 'fa fa-fw fa-user-plus',
                         'label' => 'Добавить группу',
-                        'url'=>$this->getMenuUrl('roles/create'),
+                        'url' => $this->getMenuUrl('roles/create'),
                         //'visible'=>user()->checkAccess(TaskRoles::OPERATION_EDIT)
                     ],
                     // ->
                     [
                         'label' => 'Пользователи',
-                        'visible'=>true //user()->checkAccess(TaskManager::TASK)
+                        'visible' => true //user()->checkAccess(TaskManager::TASK)
                     ],
                     [
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Все пользователи',
-                        'url'=>$this->getMenuUrl('manager/index'),
+                        'url' => $this->getMenuUrl('manager/index'),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-user-plus',
                         'label' => 'Добавить пользователя',
-                        'url'=>$this->getMenuUrl('manager/create'),
+                        'url' => $this->getMenuUrl('manager/create'),
                     ],
                     // ->
                     [
                         'label' => 'Токены',
-                        'visible'=>true //user()->checkAccess(TokenTask::TASK),
+                        'visible' => true //user()->checkAccess(TokenTask::TASK),
                     ],
                     [
                         'icon' => 'fa fa-fw fa-list-alt',
                         'label' => 'Токены',
-                        'url'=>$this->getMenuUrl('token/index'),
+                        'url' => $this->getMenuUrl('token/index'),
                     ],
                     // -----
                     [
@@ -153,16 +158,16 @@ class Module extends ParentModule
                             'role' => 'separator',
                             'class' => 'divider',
                         ],
-                        'visible'=>user()->can(ModuleTask::OPERATION_SETTINGS),
+                        'visible' => user()->can(ModuleTask::OPERATION_SETTINGS),
                     ],
                     [
                         'label' => 'Настройки',
                         'icon' => 'fa fa-fw fa-cog',
-                        'url' => ['/core/module/settings', 'module'=>'user'],
-                        'visible'=>user()->can(ModuleTask::OPERATION_SETTINGS)
+                        'url' => ['/core/module/settings', 'module' => 'user'],
+                        'visible' => user()->can(ModuleTask::OPERATION_SETTINGS)
                     ],
                 ],
-                'visible'=>user()->can(Roles::ADMIN),
+                'visible' => user()->can(Roles::ADMIN),
             ],
         ];
     }
@@ -171,44 +176,49 @@ class Module extends ParentModule
     /**
      * @return string
      */
-    public function getLoginPage() {
+    public function getLoginPage()
+    {
 
-        return  '/user/account/login';
+        return '/user/account/login';
     }
 
 
     /**
      * @return string
      */
-    public function getRegisterPage() {
+    public function getRegisterPage()
+    {
 
-        return  '/user/account/registration';
+        return '/user/account/registration';
     }
 
 
     /**
      * @return string
      */
-    public function getProfilePage() {
+    public function getProfilePage()
+    {
 
-        return  'user/profile/index';
+        return 'user/profile/index';
     }
 
 
     /**
      * @return string
      */
-    public function getLogoutPage() {
+    public function getLogoutPage()
+    {
 
-        return  '/user/account/logout';
+        return '/user/account/logout';
     }
 
 
     /**
      * @return string
      */
-    public function getRecoveryPage() {
+    public function getRecoveryPage()
+    {
 
-        return  '/user/account/recovery';
+        return '/user/account/recovery';
     }
 }

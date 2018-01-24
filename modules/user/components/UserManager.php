@@ -1,6 +1,8 @@
 <?php
+
 namespace app\modules\user\components;
 
+use app\modules\user\forms\LoginForm;
 use app\modules\user\forms\ProfileForm;
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
@@ -31,7 +33,10 @@ use yii\helpers\ArrayHelper;
  *
  *
  */
-class UserManager extends Component {
+class UserManager extends Component
+{
+
+    const EVENT_CHANGE_EMAIL = 'user.change.email';
 
     const EVENT_SUCCESS_REGISTRATION = 'user.success.registration';
 
@@ -43,20 +48,20 @@ class UserManager extends Component {
 
     const EVENT_CHANGE_PASSWORD = 'user.change.password';
 
-    const EVENT_CHANGE_EMAIL = 'user.change.email';
 
     use ModuleTrait;
     use UserManagerEventHelper;
 
     /**
-     * @var TokenStorage
-     */
-    protected $tokenStorage;
-
-    /**
      * @var AccessQuery
      */
     protected $accessQuery;
+
+
+    /**
+     * @var TokenStorage
+     */
+    protected $tokenStorage;
 
 
     /**
@@ -66,30 +71,129 @@ class UserManager extends Component {
 
 
     /**
+     * @param User $user
+     * @param string $email
+     *
+     * @return bool
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     * @throws \yii\base\Exception
      */
-    public function init() {
+    public function changeEmail(User $user, $email)
+    {
 
-        parent::init();
+        if ($email == $user->email && $user->isConfirmedEmail()) return true;
 
-        $this->userQuery = User::find();
+        $transaction = app()->db->beginTransaction();
 
-        $this->accessQuery = Access::find();
+        $user = $this->setUserStatusTypeAndEmailConfirm($user);
+        $user->email = $email;
 
-        /** @var $tokenStorage TokenStorage */
-        $tokenStorage = Yii::createObject(['class'=>TokenStorage::className()]);
+        if (!$user->save()) return $this->failureTransaction($transaction);
 
-        $this->setTokenStorage($tokenStorage);
+        if (!$this->module->emailAccountVerification) return $this->successTransaction($transaction);
 
-        $this->setListener();
+        $token = $this->tokenStorage->createEmailActivationToken($user);
+
+        if ($token === false) return $this->failureTransaction($transaction);
+
+        $this->trigger(self::EVENT_CHANGE_EMAIL, $this->getUserTokenEvent($user, $token));
+
+        return $this->successTransaction($transaction);
     }
 
+
     /**
-     * @param TokenStorage $tokenStorage
+     * @param User $user
+     * @param Token $token
+     * @param string $password
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
-    public function setTokenStorage(TokenStorage $tokenStorage)
+    public function changePassword(User $user, Token $token, $password)
     {
-        $this->tokenStorage = $tokenStorage;
+
+        $transaction = app()->db->beginTransaction();
+
+        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
+
+        if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
+
+        $this->trigger(self::EVENT_CHANGE_PASSWORD, $this->getUserEvent($user));
+
+        $transaction->commit();
+
+        return true;
+    }
+
+
+    /**
+     * @param string $password
+     *
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    public function changePasswordProfile($password)
+    {
+        return $this->updateUserHashPassword(app()->user->info, $password);
+    }
+
+
+    /**
+     * @param RegistrationForm $model
+     *
+     * @return RegisterUser|User
+     * @throws \yii\base\Exception
+     */
+    protected function createUserForRegistration(RegistrationForm $model)
+    {
+
+        $user = new RegisterUser();
+
+        $user->setScenario(RegisterUser::SCENARIO_REGISTER);
+
+        $user->setAttributes($model->getAttributes());
+
+        $user = $this->setUserStatusTypeAndEmailConfirm($user);
+
+        $user->hash = Password::hash($model->password);
+
+        $user->registered_from = RegisterFromHelper::FORM;
+
+        return $user;
+    }
+
+
+    /**
+     * @param Transaction $transaction
+     * @return bool
+     *
+     * @throws \yii\db\Exception
+     */
+    protected function failureTransaction(Transaction $transaction)
+    {
+        $transaction->rollBack();
+
+        return false;
+    }
+
+
+    /**
+     * @param $id
+     * @return User|array|null
+     */
+    public function findUserById($id)
+    {
+
+        return $this->userQuery
+            ->findUser('id = :id', [':id' => (int)$id])
+            ->one();
     }
 
 
@@ -106,14 +210,123 @@ class UserManager extends Component {
 
 
     /**
-     * @param $id
-     * @return User|array|null
+     * @param LoginForm $form
      */
-    public function findUserById($id) {
+    public function findUserLDAP(LoginForm $form)
+    {
 
-        return $this->userQuery
-            ->findUser('id = :id', [':id' => (int) $id])
-            ->one();
+    }
+
+
+    /**
+     * @param User $user
+     * @param Token $token
+     * @return bool
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
+     */
+    public function generatePassword(User $user, Token $token)
+    {
+
+        $password = Password::generate(8);
+
+        $transaction = app()->db->beginTransaction();
+
+        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
+
+        $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getUserPasswordEvent($user, $password));
+
+        if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
+
+        return $this->successTransaction($transaction);
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getAccessForUser(User $user)
+    {
+
+        if ($user === null) return [];
+
+        $data = $this->accessQuery->getDataForUser($user->id);
+
+        if ($user->isUFAccessLevel()) {
+
+            $data = ArrayHelper::merge($data, $this->accessQuery->getDataForRole($user->access_level));
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * @param $token
+     * @param $tokenType
+     * @return array list(UserToken, User)
+     */
+    public function getTokenUserList($token, $tokenType)
+    {
+
+        $tokenModel = $this->tokenStorage->getToken($token, $tokenType);
+
+        if ($tokenModel === null) return [null, null];
+
+        return [$tokenModel, $this->findUserById($tokenModel->user_id)];
+    }
+
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function init()
+    {
+
+        parent::init();
+
+        $this->userQuery = User::find();
+
+        $this->accessQuery = Access::find();
+
+        /** @var $tokenStorage TokenStorage */
+        $tokenStorage = Yii::createObject(['class' => TokenStorage::className()]);
+
+        $this->setTokenStorage($tokenStorage);
+
+        $this->setListener();
+    }
+
+
+    /**
+     * Восстановление пароля, отправка токена смены пароля
+     *
+     * @param User $user
+     *
+     * @return bool
+     * @throws \yii\db\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
+     */
+    public function recoverySendMail(User $user)
+    {
+
+        if (null === $user) return false;
+
+        $transaction = app()->getDb()->beginTransaction();
+
+        $token = $this->tokenStorage->createPasswordToken($user);
+
+        if ($token === null) return $this->failureTransaction($transaction);
+
+        $this->trigger(self::EVENT_RECOVERY_PASSWORD, $this->getUserTokenEvent($user, $token));
+
+        return $this->successTransaction($transaction);
     }
 
 
@@ -127,13 +340,14 @@ class UserManager extends Component {
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\Exception
      */
-    public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile) {
+    public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile)
+    {
 
         $user = $this->createUserForRegistration($model);
 
         $user->setAttributes($profile->getAttributes());
 
-        $transaction  = app()->db->beginTransaction();
+        $transaction = app()->db->beginTransaction();
 
         if (!$user->save()) $this->failureTransaction($transaction);
 
@@ -157,11 +371,40 @@ class UserManager extends Component {
 
 
     /**
+     * @param ProfileForm $model
+     *
+     * @return bool
+     */
+    public function saveProfile(ProfileForm $model)
+    {
+
+        $data = $model->getAttributes();
+
+        $data['avatar'] = $data['avatar_file'];
+
+        unset($data['avatar_file']);
+        unset($data['email']);
+
+        return user()->info->updateAttributes($data);
+    }
+
+
+    /**
+     * @param TokenStorage $tokenStorage
+     */
+    public function setTokenStorage(TokenStorage $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
+
+    /**
      * @param User $user
      *
      * @return User
      */
-    protected function setUserStatusTypeAndEmailConfirm(User $user) {
+    protected function setUserStatusTypeAndEmailConfirm(User $user)
+    {
 
         if (!$this->module->emailAccountVerification) {
 
@@ -183,64 +426,12 @@ class UserManager extends Component {
      *
      * @throws \yii\db\Exception
      */
-    protected function failureTransaction(Transaction $transaction) {
-
-        $transaction->rollBack();
-
-        return false;
-    }
-
-
-    /**
-     * @param Transaction $transaction
-     * @return bool
-     *
-     * @throws \yii\db\Exception
-     */
-    protected function successTransaction(Transaction $transaction) {
+    protected function successTransaction(Transaction $transaction)
+    {
 
         $transaction->commit();
 
         return true;
-    }
-
-
-    /**
-     * @param RegistrationForm $model
-     *
-     * @return RegisterUser|User
-     * @throws \yii\base\Exception
-     */
-    protected function createUserForRegistration(RegistrationForm $model) {
-
-        $user = new RegisterUser();
-
-        $user->setScenario(RegisterUser::SCENARIO_REGISTER);
-
-        $user->setAttributes($model->getAttributes());
-
-        $user = $this->setUserStatusTypeAndEmailConfirm($user);
-
-        $user->hash = Password::hash($model->password);
-
-        $user->registered_from = RegisterFromHelper::FORM;
-
-        return $user;
-    }
-
-
-    /**
-     * @param User $user
-     *
-     * @return bool
-     */
-    protected function updateUserSuccessStatus(User $user) {
-
-        return (bool) $user->updateAttributes([
-            'status'=>UserStatusHelper::STATUS_ACTIVE,
-            'status_change_at'=>new Expression('NOW()'),
-            'email_confirm'=>EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
-        ]);
     }
 
 
@@ -250,9 +441,26 @@ class UserManager extends Component {
      * @return bool
      * @throws \yii\base\Exception
      */
-    protected function updateUserHashPassword(User $user, $password) {
+    protected function updateUserHashPassword(User $user, $password)
+    {
 
-        return (bool) $user->updateAttributes(['hash'=>Password::hash($password)]);
+        return (bool)$user->updateAttributes(['hash' => Password::hash($password)]);
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function updateUserSuccessStatus(User $user)
+    {
+
+        return (bool)$user->updateAttributes([
+            'status' => UserStatusHelper::STATUS_ACTIVE,
+            'status_change_at' => new Expression('NOW()'),
+            'email_confirm' => EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
+        ]);
     }
 
 
@@ -268,13 +476,14 @@ class UserManager extends Component {
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function verifyEmail($token, $tokenType) {
+    public function verifyEmail($token, $tokenType)
+    {
 
         /* @var User $user */
         /* @var Token $tokenModel */
         list($tokenModel, $user) = $this->getTokenUserList($token, $tokenType);
 
-        if ($user === null || $tokenModel === null)  return false;
+        if ($user === null || $tokenModel === null) return false;
 
         $transaction = app()->db->beginTransaction();
 
@@ -283,190 +492,5 @@ class UserManager extends Component {
         if (!$this->tokenStorage->delete($tokenModel)) return $this->failureTransaction($transaction);
 
         return $this->successTransaction($transaction);
-    }
-
-
-    /**
-     * @param $token
-     * @param $tokenType
-     * @return array list(UserToken, User)
-     */
-    public function getTokenUserList($token, $tokenType) {
-
-        $tokenModel =  $this->tokenStorage->getToken($token, $tokenType);
-
-        if ($tokenModel === null) return [null, null];
-
-        return [$tokenModel, $this->findUserById($tokenModel->user_id)];
-    }
-
-
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    public function getAccessForUser(User $user) {
-
-        if ($user === null) return [];
-
-        $data = $this->accessQuery->getDataForUser($user->id);
-
-        if ($user->isUFAccessLevel()) {
-
-            $data = ArrayHelper::merge($data, $this->accessQuery->getDataForRole($user->access_level));
-        }
-
-        return $data;
-    }
-
-
-    /**
-     * @param User $user
-     * @param Token $token
-     * @return bool
-     * @throws \Exception
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\Exception
-     * @throws \yii\db\StaleObjectException
-     */
-    public function generatePassword(User $user, Token $token) {
-
-        $password = Password::generate(8);
-
-        $transaction = app()->db->beginTransaction();
-
-        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
-
-        $this->trigger(self::EVENT_GENERATE_PASSWORD, $this->getUserPasswordEvent($user, $password));
-
-        if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
-
-        return $this->successTransaction($transaction);
-    }
-
-
-    /**
-     * Восстановление пароля, отправка токена смены пароля
-     *
-     * @param User $user
-     *
-     * @return bool
-     * @throws \yii\db\Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\Exception
-     */
-    public function recoverySendMail(User $user) {
-
-        if (null === $user) return false;
-
-        $transaction = app()->getDb()->beginTransaction();
-
-        $token = $this->tokenStorage->createPasswordToken($user);
-
-        if ($token === null) return $this->failureTransaction($transaction);
-
-        $this->trigger(self::EVENT_RECOVERY_PASSWORD, $this->getUserTokenEvent($user, $token));
-
-        return $this->successTransaction($transaction);
-    }
-
-
-    /**
-     * @param User $user
-     * @param Token $token
-     * @param string $password
-     *
-     * @return bool
-     *
-     * @throws \Exception
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\Exception
-     * @throws \yii\db\StaleObjectException
-     */
-    public function changePassword(User $user, Token $token, $password) {
-
-        $transaction = app()->db->beginTransaction();
-
-        if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
-
-        if (!$this->tokenStorage->delete($token)) return $this->failureTransaction($transaction);
-
-        $this->trigger(self::EVENT_CHANGE_PASSWORD, $this->getUserEvent($user));
-
-        $transaction->commit();
-
-        return true;
-    }
-
-
-    /**
-     * @param string $password
-     *
-     * @return bool
-     * @throws \yii\base\Exception
-     */
-    public function changePasswordProfile($password) {
-
-        return $this->updateUserHashPassword(app()->user->info, $password);
-    }
-
-
-    /**
-     * @param User $user
-     * @param string $email
-     *
-     * @return bool
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\Exception
-     * @throws \yii\base\Exception
-     */
-    public function changeEmail(User $user, $email) {
-
-        if ($email==$user->email && $user->isConfirmedEmail()) return true;
-
-        $transaction = app()->db->beginTransaction();
-
-        $user = $this->setUserStatusTypeAndEmailConfirm($user);
-        $user->email = $email;
-
-        if (!$user->save()) return $this->failureTransaction($transaction);
-
-        if (!$this->module->emailAccountVerification) return $this->successTransaction($transaction);
-
-        $token = $this->tokenStorage->createEmailActivationToken($user);
-
-        if ($token === false) return $this->failureTransaction($transaction);
-
-        $this->trigger(self::EVENT_CHANGE_EMAIL, $this->getUserTokenEvent($user, $token));
-
-        return $this->successTransaction($transaction);
-    }
-
-
-    /**
-     * @param ProfileForm $model
-     *
-     * @return bool
-     */
-    public function saveProfile(ProfileForm $model) {
-
-        $data = $model->getAttributes();
-
-        $data['avatar'] = $data['avatar_file'];
-
-        unset($data['avatar_file']);
-        unset($data['email']);
-
-        return user()->info->updateAttributes($data);
-    }
-
-
-    public function login() {
-
-
     }
 }
