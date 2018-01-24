@@ -79,9 +79,9 @@ $config = [
         ],
 
         'ldap' => [
-            'class' => '\app\modules\сщку\components\ADLdapComponent',
+            'class' => '\app\modules\core\components\ADLdapComponent',
             'options' => [
-                'user'=>[
+                'userFind'=>[
                     'domainControllers' => ['ad.marsu.ru'],
                     'base_dn' => 'DC=ad,DC=marsu,DC=ru',
                     'admin_username' => 'corp_bitrix_usr',
@@ -191,6 +191,14 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         //'allowedIPs' => ['127.0.0.1', '::1'],
         // uncomment the following to add your IP if you are not connecting from localhost.
+        'generators' => [
+            'module' => [
+                'class' => 'app\modules\core\generators\module\Generator',
+                'templates' => [
+                    'default' => '@app/core/generators/module/default',
+                ]
+            ]
+        ],
     ];
 
     $config['components']['urlManager']['rules'] = ArrayHelper::merge(
