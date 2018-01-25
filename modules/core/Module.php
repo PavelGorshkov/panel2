@@ -2,6 +2,7 @@
 namespace app\modules\core;
 
 use app\modules\core\auth\ModuleTask;
+use app\modules\core\components\ConfigManager;
 use app\modules\core\components\Module as ParentModule;
 use app\modules\user\components\Roles;
 use yii\helpers\ArrayHelper;
@@ -76,5 +77,21 @@ class Module extends ParentModule
                 'visible' => user()->can(Roles::ADMIN),
             ]
         ];
+    }
+
+
+    /**
+     *
+     * @return bool
+     */
+    public function allFlush() {
+
+        app()->cache->flush();
+
+        (new ConfigManager(ConfigManager::ENV_WEB))->flushCache();
+
+        app()->authManager->flush();
+
+        return true;
     }
 }

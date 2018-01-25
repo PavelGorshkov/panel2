@@ -28,14 +28,17 @@ trait LoggerTrait
 
         if (is_array($targets) && !empty($targets)) {
 
+            if (count($targets) === count($targets, true)) {
+
+                $targets = [$targets];
+            }
+
             $locator = new ServiceLocator();
             $id = uniqid("log_");
             $locator->set($id, [
                 'class' => 'yii\log\Dispatcher',
                 'traceLevel' => 0,
-                'targets' => [
-                    $targets,
-                ],
+                'targets' => $targets,
             ]);
             $this->logger = $locator->get($id);
 

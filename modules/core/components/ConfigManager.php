@@ -32,6 +32,7 @@ class ConfigManager
         'components',
         'bootstrap',
         'module',
+        'modules',
     ];
 
     /**
@@ -198,6 +199,16 @@ class ConfigManager
             foreach ($this->configCategories as $category) {
 
                 switch ($category) {
+
+                    case 'modules':
+                        if (!empty($moduleConfig['modules'])) {
+
+                            $settings['modules'] = ArrayHelper::merge(
+                                isset($settings['modules']) ? $settings['modules'] : [],
+                                 $moduleConfig['modules']
+                            );
+                        }
+                    break;
 
                     case 'module':
 

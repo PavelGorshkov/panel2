@@ -2,7 +2,6 @@
 namespace app\modules\core\controllers;
 
 use app\modules\core\auth\ModuleTask;
-use app\modules\core\components\ConfigManager;
 use app\modules\core\components\RedactorController;
 use app\modules\core\helpers\ModulePriority;
 use yii\filters\AccessControl;
@@ -87,20 +86,22 @@ class ModuleController extends RedactorController{
 
 
     /**
-     * @throws \yii\base\ExitException
+     * Очистка кеша
      */
     public function actionFlush() {
 
-        app()->cache->flush();
+        /** @var $module \app\modules\core\Module  */
+        $module = app()->getModule('core');
 
-        (new ConfigManager(ConfigManager::ENV_WEB))->flushCache();
+        if ($module->allFlush()) {
 
-        app()->authManager->flush();
+            user()->setSuccessFlash('Кеш успешно очищен');
+        } else {
 
-        user()->setSuccessFlash('Кеш успешно очищен');
+            user()->setErrorFlash('Кеш не удалось очистить');
+        }
 
         $this->redirect(app()->request->referrer);
-
         app()->end();
     }
 }

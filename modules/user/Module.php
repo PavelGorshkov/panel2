@@ -199,7 +199,7 @@ class Module extends ParentModule
     public function getProfilePage()
     {
 
-        return 'user/profile/index';
+        return '/user/profile/index';
     }
 
 
