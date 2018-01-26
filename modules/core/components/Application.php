@@ -22,6 +22,7 @@ use app\modules\user\components\WebUser;
  * @property UserManager $userManager
  * @property BuildAuthManager $buildAuthManager
  * @property Thumbnailer $thumbNailer
+ * @property WebService $ws
  *
  */
 class Application extends \yii\web\Application {}

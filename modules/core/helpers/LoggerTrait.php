@@ -36,7 +36,7 @@ trait LoggerTrait
             $locator = new ServiceLocator();
             $id = uniqid("log_");
             $locator->set($id, [
-                'class' => 'yii\log\Dispatcher',
+                'class' => Dispatcher::className(),
                 'traceLevel' => 0,
                 'targets' => $targets,
             ]);

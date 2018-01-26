@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$webservice = require __DIR__.'/webservice.php';
 
 $config = [
     'id' => 'panel2',
@@ -54,14 +55,7 @@ $config = [
             //'class' => 'yii\caching\MemCache',
         ],
 
-
-        'ws' =>[
-            'class'=>'\app\modules\core\components\WebService',
-            'url'=>'http://1cuni.ad.marsu.ru/schedule/ws/wsPanelRectora.1cws?wsdl',
-            'login'=>'schedule',
-            'password'=>'2KzQMd',
-            'log'=>true,
-        ],
+        'ws'=>$webservice,
 
         'db' => $db,
 

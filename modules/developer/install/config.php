@@ -25,7 +25,19 @@ if (YII_ENV_DEV) {
                 'templates' => [
                     'default' => '@app/modules/developer/generators/controller/default',
                 ]
-            ]
+            ],
+            'console'=>[
+                'class' => 'app\modules\developer\generators\console\Generator',
+                'templates' => [
+                    'default' => '@app/modules/developer/generators/console/default',
+                ]
+            ],
+            'crud'=>[
+                'class' => 'app\modules\developer\generators\crud\Generator',
+                'templates' => [
+                    'default' => '@app/modules/developer/generators/crud/default',
+                ]
+            ],
         ],
     ];
 

@@ -88,8 +88,20 @@ class Module extends ParentModule
                     ],
                     [
                         'icon' => 'fa fa-fw fa-plus',
+                        'label' => 'Создать CRUD контроллер',
+                        'url' => ['/gii/crud'],
+                        'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
+                    ],
+                    [
+                        'icon' => 'fa fa-fw fa-plus',
                         'label' => 'Создать контроллер',
                         'url' => ['/gii/controller'],
+                        'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
+                    ],
+                    [
+                        'icon' => 'fa fa-fw fa-plus',
+                        'label' => 'Создать команду',
+                        'url' => ['/gii/console'],
                         'visible' => app()->hasModule('gii') && user()->can(Roles::ADMIN),
                     ],
                     [
