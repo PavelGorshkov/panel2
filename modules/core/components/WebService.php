@@ -60,6 +60,7 @@ class WebService extends Component implements LoggerInterface
      * @param string $provider
      * @return WebServiceInstance
      * @throws ServerErrorHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public function getProvider($provider)
     {
