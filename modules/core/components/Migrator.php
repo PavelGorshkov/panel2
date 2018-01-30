@@ -220,15 +220,6 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
 
     /**
-     * @param string $message
-     */
-    protected function error($message) {
-
-        $this->addLog(Logger::LEVEL_ERROR, $message, self::CATEGORY_LOG);
-    }
-
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -274,10 +265,10 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
         if ($type === OutputMessageListHelper::ERROR) {
 
-            $this->error($message);
+            $this->addLog(Logger::LEVEL_ERROR, $message, self::CATEGORY_LOG);
         } else {
 
-            $this->trace($message);
+            $this->addLog(Logger::LEVEL_INFO, $message, self::CATEGORY_LOG);
         }
     }
 
@@ -318,7 +309,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
             );
 
             $time = microtime(true) - $start;
-            $this->message('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.');
+            $this->message('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.', OutputMessageListHelper::ERROR);
 
             return true;
 
@@ -326,7 +317,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
             $time = microtime(true) - $start;
 
-            $this->error('Ошибка отмены миграции ' . $class . ' (' . sprintf("%.3f", $time) . ' сек.)');
+            $this->message('Ошибка отмены миграции ' . $class . ' (' . sprintf("%.3f", $time) . ' сек.)', OutputMessageListHelper::ERROR);
 
             throw new Exception('Во время установки возникла ошибка: ' . $msg);
         }
@@ -398,7 +389,6 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 "Во время установки возникла ошибка: {$msg}",
                 OutputMessageListHelper::ERROR
             );
-            $this->error('Ошибка применения миграции ' . $className . ' (' . sprintf("%.3f", $time) . ' сек.)');
 
             throw new Exception($msg);
         }
@@ -419,14 +409,6 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 'logVars' => [],
             ]
         ];
-    }
-
-    /**
-     * @param string $message
-     */
-    protected function trace($message) {
-
-        $this->addLog(Logger::LEVEL_INFO, $message, self::CATEGORY_LOG);
     }
 
 
