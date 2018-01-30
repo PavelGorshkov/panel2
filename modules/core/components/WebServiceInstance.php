@@ -1,18 +1,20 @@
 <?php
 namespace app\modules\core\components;
 
-use app\modules\core\interfaces\LoggerInterface;
 use Exception;
 use SoapClient;
-use SoapFault;
 use yii\base\BaseObject;
+use yii\log\Dispatcher;
 use yii\log\Logger;
 
+/**
+ * Class WebServiceInstance
+ * @package app\modules\core\components
+ */
 class WebServiceInstance extends BaseObject
 {
     /**
-     * @var LoggerInterface
-     */
+     * @var Dispatcher
     public $logger;
 
     public $isLogger = false;
@@ -122,7 +124,7 @@ class WebServiceInstance extends BaseObject
                 'features' => $this->soap_use_xsi,
             ]);
 
-        } catch (SoapFault $sf) {
+        } catch (\SoapFault $sf) {
 
             $this->setLog(Logger::LEVEL_ERROR, "Соединение с веб-сервисом не установлено! " . $sf->getMessage());
             error_clear_last();

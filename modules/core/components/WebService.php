@@ -5,7 +5,6 @@ namespace app\modules\core\components;
 use app\modules\core\helpers\LoggerTrait;
 use app\modules\core\interfaces\LoggerInterface;
 use SoapClient;
-use SoapFault;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;

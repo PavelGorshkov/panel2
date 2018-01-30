@@ -28,7 +28,7 @@ trait LoggerTrait
 
         if (is_array($targets) && !empty($targets)) {
 
-            if (count($targets) === count($targets, true)) {
+            if (count($targets) == count($targets, true)) {
 
                 $targets = [$targets];
             }

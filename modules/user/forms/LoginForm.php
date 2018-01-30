@@ -71,10 +71,16 @@ class LoginForm extends Model
                     $this->user = app()->userManager->findUserLDAP($this);
                 }
 
-
                 if ($this->user === null || !Password::validate($this->password, $this->user->hash)) {
 
-                    $this->addError($attribute, 'Неверный логин или пароль');
+                    if ($this->module->isFromLDAP()) {
+
+                        $this->user = app()->userManager->findUserById($this);
+                    }
+
+                    if ($this->user === null) {
+                        $this->addError($attribute, 'Неверный логин или пароль');
+                    }
                 }
             }],
         ];
