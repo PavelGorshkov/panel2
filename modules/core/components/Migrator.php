@@ -2,14 +2,17 @@
 
 namespace app\modules\core\components;
 
+use app\modules\core\helpers\LoggerTrait;
 use app\modules\core\helpers\OutputMessageListHelper;
 use app\modules\core\helpers\OutputMessageTrait;
+use app\modules\core\interfaces\LoggerInterface;
 use app\modules\core\interfaces\OutputMessageInterface;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use yii\log\Logger;
 
 /**
  * Компонент по управлению миграциями приложения через web
@@ -17,9 +20,12 @@ use yii\helpers\ArrayHelper;
  * Class Migrator
  * @package app\modules\core\components
  */
-class Migrator extends Component implements OutputMessageInterface
+class Migrator extends Component implements OutputMessageInterface, LoggerInterface
 {
+    const CATEGORY_LOG = 'migration';
+
     use OutputMessageTrait;
+    use LoggerTrait;
 
     public $migrationTable = '{{%migration}}';
 
@@ -35,7 +41,7 @@ class Migrator extends Component implements OutputMessageInterface
      */
     public function checkForBadMigration($module, $class = false)
     {
-        $this->addMessage(
+        $this->message(
             'Проверяем на наличие незавершённых миграций.',
             OutputMessageListHelper::INFO
         );
@@ -57,11 +63,10 @@ class Migrator extends Component implements OutputMessageInterface
 
                 if ($migration['apply_time'] == 0) {
 
-                    $this->addMessage(
+                    $this->message(
                         'Откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.',
                         OutputMessageListHelper::WARNING
                     );
-                    Yii::trace('Откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
 
                     if ($this->migrateDown($module, $migration['version']) !== false) {
 
@@ -70,7 +75,7 @@ class Migrator extends Component implements OutputMessageInterface
                             'version = :version AND module=:module',
                             [':version' => $migration['version'], ':module' => $module]);
 
-                        $this->addMessage(
+                        $this->message(
                             'Выполнено.',
                             OutputMessageListHelper::SUCCESS
                         );
@@ -78,18 +83,13 @@ class Migrator extends Component implements OutputMessageInterface
                     } else {
 
                         Yii::warning('Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
-                        $this->addMessage(
-                            'Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.',
-                            OutputMessageListHelper::WARNING
-                        );
 
                         return false;
                     }
                 }
             }
         } else {
-            Yii::trace('Для модуля ' . $module . ' не требуется откат миграции.', __METHOD__);
-            $this->addMessage(
+            $this->message(
                 'Для модуля ' . $module . ' не требуется откат миграции.',
                 OutputMessageListHelper::INFO
             );
@@ -104,9 +104,7 @@ class Migrator extends Component implements OutputMessageInterface
      */
     protected function createMigrationHistoryTable()
     {
-        Yii::trace("Создаем таблицу для хранения версий миграций " . __METHOD__);
-
-        $this->addMessage(
+        $this->message(
             "Создаем таблицу для хранения версий миграций \"{$this->migrationTable}\"",
             OutputMessageListHelper::WARNING
         );
@@ -131,7 +129,7 @@ class Migrator extends Component implements OutputMessageInterface
             false
         );
 
-        $this->addMessage(
+        $this->message(
             'Выполнено',
             OutputMessageListHelper::SUCCESS
         );
@@ -222,14 +220,26 @@ class Migrator extends Component implements OutputMessageInterface
 
 
     /**
+     * @param string $message
+     */
+    protected function error($message) {
+
+        $this->addLog(Logger::LEVEL_ERROR, $message, self::CATEGORY_LOG);
+    }
+
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        $this->initLogger();
+
         if (app()->db->schema->getTableSchema($this->migrationTable, true) === null) {
 
             $this->createMigrationHistoryTable();
         }
+
 
         parent::init();
     }
@@ -254,6 +264,25 @@ class Migrator extends Component implements OutputMessageInterface
 
 
     /**
+     * @param string $message
+     * @param int $type
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function message($message, $type = null) {
+
+        $this->addMessage($message, $type);
+
+        if ($type === OutputMessageListHelper::ERROR) {
+
+            $this->error($message);
+        } else {
+
+            $this->trace($message);
+        }
+    }
+
+
+    /**
      * Отмена миграции:
      *
      * @param string $module
@@ -264,7 +293,7 @@ class Migrator extends Component implements OutputMessageInterface
      */
     public function migrateDown($module, $class)
     {
-        Yii::trace('Отменяем миграцию ' . $class, __METHOD__);
+        $this->message('Отменяем миграцию ' . $class, OutputMessageListHelper::INFO);
 
         $start = microtime(true);
         $migration = $this->instantiateMigration($module, $class);
@@ -276,7 +305,7 @@ class Migrator extends Component implements OutputMessageInterface
 
         $result = $migration->down();
 
-        Yii::trace($msg = ob_get_clean());
+        $this->message($msg = ob_get_clean());
 
         app()->cache->delete('getMigrationHistory');
 
@@ -289,7 +318,7 @@ class Migrator extends Component implements OutputMessageInterface
             );
 
             $time = microtime(true) - $start;
-            Yii::trace('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.', __METHOD__);
+            $this->message('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.');
 
             return true;
 
@@ -297,7 +326,7 @@ class Migrator extends Component implements OutputMessageInterface
 
             $time = microtime(true) - $start;
 
-            Yii::error('Ошибка отмены миграции ' . $class . ' (' . sprintf("%.3f", $time) . ' сек.)', __METHOD__);
+            $this->error('Ошибка отмены миграции ' . $class . ' (' . sprintf("%.3f", $time) . ' сек.)');
 
             throw new Exception('Во время установки возникла ошибка: ' . $msg);
         }
@@ -320,7 +349,7 @@ class Migrator extends Component implements OutputMessageInterface
 
         if (!($migration instanceof Migration)) return;
 
-        $this->addMessage(
+        $this->message(
             'Применяем миграцию ' . $className,
             OutputMessageListHelper::WARNING
         );
@@ -341,8 +370,7 @@ class Migrator extends Component implements OutputMessageInterface
 
         $result = $migration->up();
 
-        Yii::trace($msg = ob_get_clean());
-        $this->addMessage($msg);
+        $this->message($msg = ob_get_clean());
 
         $time = microtime(true) - $start;
 
@@ -359,22 +387,46 @@ class Migrator extends Component implements OutputMessageInterface
             );
 
 
-            Yii::trace("Миграция " . $className . " применена за " . sprintf("%.3f", $time) . " сек.", __METHOD__);
-            $this->addMessage(
+            $this->message(
                 "Миграция \"{$className}\" применена за ".sprintf("%.3f", $time). "сек...",
                 OutputMessageListHelper::SUCCESS
             );
 
         } else {
 
-            $this->addMessage(
+            $this->message(
                 "Во время установки возникла ошибка: {$msg}",
                 OutputMessageListHelper::ERROR
             );
-            Yii::error('Ошибка применения миграции ' . $className . ' (' . sprintf("%.3f", $time) . ' сек.)', __METHOD__);
+            $this->error('Ошибка применения миграции ' . $className . ' (' . sprintf("%.3f", $time) . ' сек.)');
 
             throw new Exception($msg);
         }
+    }
+
+
+    /**
+     * Set configTargets
+     * @return mixed
+     */
+    public function setTargets(){
+
+        return [
+            [
+                'class' => 'yii\log\FileTarget',
+                'categories' => [self::CATEGORY_LOG],
+                'logFile' => '@runtime/logs/migrations.log',
+                'logVars' => [],
+            ]
+        ];
+    }
+
+    /**
+     * @param string $message
+     */
+    protected function trace($message) {
+
+        $this->addLog(Logger::LEVEL_INFO, $message, self::CATEGORY_LOG);
     }
 
 
@@ -389,8 +441,7 @@ class Migrator extends Component implements OutputMessageInterface
     {
         $this->checkForBadMigration($module);
 
-        Yii::trace("Обновляем до последней версии базы модуль " . $module, __METHOD__);
-        $this->addMessage(
+        $this->message(
             "Обновляем до последней версии базы модуль \"$module\"",
             OutputMessageListHelper::WARNING
         );
@@ -406,7 +457,7 @@ class Migrator extends Component implements OutputMessageInterface
             }
         }
 
-        $this->addMessage(
+        $this->message(
             "Модуль \"{$module}\" обновлен!",
             OutputMessageListHelper::SUCCESS
         );

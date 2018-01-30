@@ -15,6 +15,7 @@ class WebServiceInstance extends BaseObject
 {
     /**
      * @var Dispatcher
+     */
     public $logger;
 
     public $isLogger = false;
