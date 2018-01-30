@@ -25,7 +25,7 @@ class ADLdapComponent extends Component
     /**
      * @var Adldap
      */
-    protected $ad;
+    protected $ad = null;
 
 
     /**
@@ -33,22 +33,78 @@ class ADLdapComponent extends Component
      */
     public function init()
     {
-        parent::init();
-
-        try {
+        if ($this->ad === null) {
 
             $this->ad = new Adldap();
-
-            foreach ($this->options as $provider => $options) {
-
-                $this->ad->addProvider($provider, new Provider($options));
-                $this->ad->connect($provider);
-            }
-
-        } catch (\Exception $e) {
-
-            throw new InvalidConfigException($e->getMessage());
         }
+
+        parent::init();
+    }
+
+
+    /**
+     * @param string $provider
+     * @param array $options
+     * @throws InvalidConfigException
+     * @throws \Adldap\AdldapException
+     */
+    public function addProvider($provider, array $options)
+    {
+        $providers = $this->ad->getProviders();
+
+        if (!isset($providers[$provider]) || empty($options)) {
+
+            throw new InvalidConfigException("Provider \"$provider\" already exists!");
+        }
+
+        $this->setProvider($provider);
+    }
+
+
+    /**
+     * @param $provider
+     * @return \Adldap\Connections\ProviderInterface|mixed
+     * @throws InvalidConfigException
+     * @throws \Adldap\AdldapException
+     */
+    public function getProvider($provider)
+    {
+        if (!isset($this->options[$provider])) {
+
+            throw new InvalidConfigException("Adldap Provider \"$provider\" not found");
+        }
+
+        $providers = $this->ad->getProviders();
+
+        if (!isset($providers[$provider])) $this->setProvider($provider);
+
+        return $this->ad->getProvider($provider);
+    }
+
+
+    /**
+     * @param $provider
+     * @param null $options
+     * @throws \Adldap\AdldapException
+     */
+    protected function setProvider($provider, $options = null)
+    {
+
+        if ($options === null) {
+
+            $options = $this->options[$provider];
+        }
+
+        $config = new Provider($options);
+
+        $this->ad->addProvider($config, $provider);
+
+        if (isset($options['schema']) && is_object($options['schema'])) {
+
+            $this->ad->getProvider($provider)->setSchema($options['schema']);
+        }
+
+        $this->ad->connect($provider);
     }
 
 
@@ -71,23 +127,6 @@ class ADLdapComponent extends Component
 
 
     /**
-     * @param string $method
-     * @param array $params
-     * @return mixed
-     */
-    public function __call($method, $params)
-    {
-        if (is_callable([$this->ad, $method])) {
-
-            return call_user_func_array([$this->ad, $method], $params);
-        } else {
-
-            return parent::__call($method, $params);
-        }
-    }
-
-
-    /**
      * Convert time
      * @param string $time
      * @param string $format
@@ -97,8 +136,8 @@ class ADLdapComponent extends Component
     {
         // http://stackoverflow.com/questions/10411954/convert-windows-timestamp-to-date-using-php-on-a-linux-box
         return ($time > 0 && $time != '9223372036854775807')
-            ?date($format, $time / 10000000 - 11644473600)
-            :null;
+            ? date($format, $time / 10000000 - 11644473600)
+            : null;
     }
 
 

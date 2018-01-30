@@ -23,6 +23,7 @@ use app\modules\user\components\WebUser;
  * @property BuildAuthManager $buildAuthManager
  * @property Thumbnailer $thumbNailer
  * @property WebService $ws
+ * @property ADLdapComponent $ldap
  *
  */
 class Application extends \yii\web\Application {}

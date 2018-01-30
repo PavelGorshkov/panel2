@@ -22,7 +22,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions'=>['captcha', 'migrate'],
+                        'actions'=>['captcha', 'migrate', 'test'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -96,5 +96,15 @@ class SiteController extends Controller
 
             UserSettings::model()->sideBar = $sidebar=='add'?'sidebar-collapse':"s";
         }
+    }
+
+
+    /**
+     * @throws \Adldap\AdldapException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionTest() {
+
+        var_dump(app()->ldap->getProvider('user')->auth()->attempt('gorshkov_pv', '..,djnb)'));
     }
 }

@@ -82,7 +82,7 @@ $config = [
             'class' => '\app\modules\core\components\ADLdapComponent',
             'options' => [
                 'user'=>[
-                    'domainControllers' => ['ad.marsu.ru'],
+                    'domain_controllers' => ['ad.marsu.ru'],
                     'base_dn' => 'DC=ad,DC=marsu,DC=ru',
                     'admin_username' => 'corp_bitrix_usr',
                     'admin_password' => '33281996',

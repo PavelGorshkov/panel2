@@ -214,6 +214,11 @@ class UserManager extends Component
      */
     public function findUserLDAP(LoginForm $form)
     {
+        $login = $form->login;
+        $password = $form->password;
+
+        printr(app()->ldap->getProvider('user')->auth()->attempt($login, $password), 1);
+
 
     }
 
