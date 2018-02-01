@@ -79,20 +79,20 @@ $config = [
         ],
 
         'ldap' => [
-            'class' => '\app\modules\core\components\ADLdapComponent',
+            'class' => '\app\modules\core\components\AdLdapComponent',
             'options' => [
                 'user'=>[
                     'domain_controllers' => ['ad.marsu.ru'],
-                    'base_dn' => 'DC=ad,DC=marsu,DC=ru',
-                    'admin_username' => 'corp_bitrix_usr',
-                    'admin_password' => '33281996',
+                    //'base_dn' => 'DC=ad,DC=marsu,DC=ru',
+                    'admin_username' => 'yii',
+                    'admin_password' => 'v7vkk$3p',
 
                     //  'account_prefix'        => 'ACME-',
                     'account_suffix' => '@ad.marsu.ru',
                     //  'admin_account_prefix'  => 'ACME-ADMIN-',
                     //  'admin_account_suffix'  => '@acme.org',
-                    'port' => 3268,
-                    //  'port'                  => 389,
+                    //'port' => 3268,
+                    'port' => 389,
                     'follow_referrals' => false,
                     'use_ssl' => false,
                     'use_tls' => false,
@@ -107,6 +107,11 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class'=> '\app\modules\core\components\BitrixTarget',
+                    'url'=>'https://corp.marsu.ru/marsu/send_message2support.php',
+                    'debug'=>true,
+                ]
             ],
         ],
 

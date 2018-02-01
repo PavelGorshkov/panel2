@@ -7,6 +7,7 @@ use app\modules\core\components\View;
 use app\modules\core\helpers\RouterUrlHelper;
 use app\modules\core\widgets\CustomActionColumn;
 use app\modules\core\widgets\CustomGridView;
+use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
 use app\modules\user\models\ManagerUser;
@@ -78,7 +79,7 @@ echo CustomGridView::widget([
                     :$model->username;
             },
             'contentOptions' => ['class' => 'kv-align-middle'],
-            'headerOptions' => ['class' => 'kv-align-middle'],
+            'headerOptions' => ['class\' => \'kv-align-middle'],
         ],
         [
             'header'=>'Информация',
@@ -154,9 +155,31 @@ echo CustomGridView::widget([
         ],
         [
             'class' => CustomActionColumn::className(),
-            'template' => '{access} {update} {password} {delete}',
+            'template' => '{access}&nbsp;{update}&nbsp;{password}&nbsp;{delete}',
+            'headerOptions' => ['class' => 'col-sm-1'],
+            'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
             'buttons' => [
-                ''
+                'password'=>function ($url, $model) {
+
+                    /* @var $model ManagerUser */
+                    if ($model->registered_from !== RegisterFromHelper::LDAP) {
+
+                        return Html::a(
+                            '<i class="fa fa-lock"></i>',
+                              $url,
+                              [
+                                  'class'=>'btn btn-xs btn-success',
+                                  'data-pjax'=>0,
+                                  'aria-label'=>'Изменить пароль',
+                                  'title'=>'Изменить пароль'
+                              ]
+                        );
+
+                    } else {
+
+                        return '';
+                    }
+                }
             ],
         ]
 

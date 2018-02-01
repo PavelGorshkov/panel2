@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use Adldap\Models\User;
 use app\modules\user\helpers\UserSettings;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
@@ -105,6 +106,20 @@ class SiteController extends Controller
      */
     public function actionTest() {
 
+       // Yii::trace('Test message', 'bitrix');
+
+        printr(app()->userManager->findUserByLdap('gorshkov_pv', '..,djnb)'), 1);
+
         var_dump(app()->ldap->getProvider('user')->auth()->attempt('gorshkov_pv', '..,djnb)'));
+
+        /* @var $user User*/
+        $user = app()->ldap->getProvider('user')->search()->users()->in('OU=staff,OU=MarSU,DC=ad,DC=marsu,DC=ru')->find('gorshkov_pv');
+
+        printr($user->getDepartment());
+        printr($user->getCommonName());
+        printr($user->getAccountName());
+        printr($user->getTelephoneNumber());
+        printr($user->getEmail());
+        printr($user, 1);
     }
 }

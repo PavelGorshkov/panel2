@@ -38,7 +38,7 @@ class SideBarWidget extends Menu {
      * By default uses for Font Awesome (http://fontawesome.io/)
      */
 
-    public static $iconClassPrefix = 'fa fa-';
+    public static $iconClassPrefix = '';
 
     private $noDefaultAction;
 

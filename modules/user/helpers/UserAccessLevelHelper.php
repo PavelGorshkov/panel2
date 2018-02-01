@@ -19,6 +19,8 @@ class UserAccessLevelHelper extends ListHelper {
 
     const LEVEL_USER = 0;
 
+    const LEVEL_LDAP = 4;
+
 
     /**
      * @return array
@@ -39,6 +41,7 @@ class UserAccessLevelHelper extends ListHelper {
             self::LEVEL_REDACTOR => 'Редакторы',
             self::LEVEL_OBSERVER =>  'Наблюдатели',
             self::LEVEL_USER =>  'Пользователи',
+            self::LEVEL_LDAP =>  'LDAP пользоаватель',
         ];
     }
 }

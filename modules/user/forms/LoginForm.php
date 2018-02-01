@@ -68,17 +68,26 @@ class LoginForm extends Model
 
                 if ($this->user === null && $this->module->isFromLDAP()) {
 
-                    $this->user = app()->userManager->findUserLDAP($this);
+                    if (app()->userManager->isAuthLDAP($this->login, $this->password)) {
+
+                        $this->user = app()->userManager->findUserByLdap($this->login, $this->password);
+                    }
                 }
 
-                if ($this->user === null || !Password::validate($this->password, $this->user->hash)) {
+                if ($this->user === null) {
 
-                    if ($this->module->isFromLDAP()) {
+                    $this->addError($attribute, 'Неверный логин или пароль');
 
-                        $this->user = app()->userManager->findUserById($this);
-                    }
+                } elseif (!Password::validate($this->password, $this->user->hash)) {
 
-                    if ($this->user === null) {
+                    if (
+                        $this->module->isFromLDAP()
+                    && app()->userManager->isAuthLDAP($this->login, $this->password)
+                    ) {
+
+                         app()->userManager->updateUserHashPassword($this->user, $this->password);
+                    } else {
+
                         $this->addError($attribute, 'Неверный логин или пароль');
                     }
                 }

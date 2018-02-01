@@ -236,7 +236,7 @@ class Generator extends \yii\gii\Generator
 
                 if (isset($params['implements'])) {
 
-                    if (!($class instanceof $params['implements'])) {
+                    if (!((new $class) instanceof $params['implements'])) {
 
                         $this->addError($attribute, "'$class' must implement from '{$params['implements']}' interface.");
                     }

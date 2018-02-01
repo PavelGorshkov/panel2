@@ -58,7 +58,7 @@ class Module extends ParentModule
 
     public $expireTokenPasswordLifeHours = 10;
 
-    public $fromAuthorization = 0;
+    public $fromAuthorization = 1;
 
 
     /** @var int Cost параметр, используемый алгоритмом хеширования Blowfish. */

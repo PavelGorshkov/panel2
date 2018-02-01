@@ -8,10 +8,10 @@ use yii\base\Component;
 use yii\base\InvalidConfigException;
 
 /**
- * Class ADLdapComponent
+ * Class AdLdapComponent
  * @package app\modules\core\components
  */
-class ADLdapComponent extends Component
+class AdLdapComponent extends Component
 {
     const PROVIDER_NAME = 'default';
 

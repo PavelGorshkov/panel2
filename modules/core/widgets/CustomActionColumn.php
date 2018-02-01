@@ -16,6 +16,8 @@ class CustomActionColumn extends ActionColumn
 
     public $template = '{view}&nbsp;{update}&nbsp;{delete}';
 
+    public $width = null;
+
     /**
      * @inheritdoc
      */

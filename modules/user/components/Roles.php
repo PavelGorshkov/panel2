@@ -17,6 +17,8 @@ class Roles extends RBACItem {
 
     const USER = 'user';
 
+    const LDAP = 'ldap';
+
     const GUEST = 'guest';
 
 
@@ -39,6 +41,7 @@ class Roles extends RBACItem {
             self::REDACTOR => 'Редактор',
             self::OBSERVER => 'Наблюдатель',
             self::USER => 'Пользователь',
+            self::USER => 'LDAP пользователь',
             self::GUEST => 'Гость',
         ];
     }

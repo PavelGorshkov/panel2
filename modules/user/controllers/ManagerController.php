@@ -6,6 +6,7 @@ use app\modules\core\components\actions\SaveModelAction;
 use app\modules\core\components\WebController;
 use app\modules\user\auth\ManagerTask;
 use app\modules\user\components\Roles;
+use app\modules\user\forms\PasswordProfileForm;
 use app\modules\user\forms\UserFormModel;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
@@ -39,6 +40,11 @@ class ManagerController extends WebController
                         [
                             'allow' => true,
                             'actions' => ['access-level', 'status'],
+                            'roles' => [ManagerTask::OPERATION_UPDATE],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['password'],
                             'roles' => [ManagerTask::OPERATION_UPDATE],
                         ],
                     ])
@@ -87,6 +93,13 @@ class ManagerController extends WebController
                     return UserStatusHelper::getValue($model->$attribute, true);
                 },
             ],
+            'password' => [
+                'class'=>SaveModelAction::className(),
+                'modelForm'=>PasswordProfileForm::className(),
+                'model'=>ManagerUser::className(),
+                'isNewRecord'=>false,
+                'view'=>'@app/modules/user/views/profile/password'
+            ]
         ];
     }
 

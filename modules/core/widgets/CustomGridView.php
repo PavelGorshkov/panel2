@@ -47,6 +47,8 @@ HTML;
 
     public $itemLabelPlural = 'записей';
 
+    public $resizableColumns = false;
+
 
     /**
      * @inheritdoc

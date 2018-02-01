@@ -18,7 +18,7 @@ echo "<?php\n";
 use yii\helpers\Html;
 use app\modules\core\components\View;
 use app\modules\core\widgets\BoxWidget;
-use <?= ltrim($generator->formModelClass, '\\'); ?>
+use <?= ltrim($generator->formModelClass, '\\'); ?>;
 use app\modules\<?= $generator->module?>\Module;
 
 //$this->setSmallTitle('Title');

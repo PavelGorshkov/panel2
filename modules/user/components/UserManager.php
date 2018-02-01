@@ -2,7 +2,7 @@
 
 namespace app\modules\user\components;
 
-use app\modules\user\forms\LoginForm;
+use Adldap\Models\User as LdapUser;
 use app\modules\user\forms\ProfileForm;
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
@@ -10,6 +10,7 @@ use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserManagerEventHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\IdentityUser;
@@ -24,6 +25,8 @@ use yii\base\Component;
 use yii\db\Expression;
 use yii\db\Transaction;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Компонент для управления пользовательскими данными
@@ -190,10 +193,53 @@ class UserManager extends Component
      */
     public function findUserById($id)
     {
-
         return $this->userQuery
             ->findUser('id = :id', [':id' => (int)$id])
             ->one();
+    }
+
+
+    /**
+     * @param string $accountName
+     * @param string $password
+     * @return User|null
+     * @throws ServerErrorHttpException
+     * @throws \Adldap\AdldapException
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function findUserByLdap($accountName, $password)
+    {
+        /* @var $ldapData LdapUser */
+        $ldapData = app()->ldap->getProvider('user')->search()->users()->in('OU=staff,OU=MarSU,DC=ad,DC=marsu,DC=ru')->find($accountName);
+
+        if ($ldapData !== null) {
+
+            $user = new User();
+            $user->setAttributes([
+                'username'=>$ldapData->getAccountName(),
+                'email'=>$ldapData->getEmail(),
+                'email_confirm'=>EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
+                'hash'=>Password::hash($password),
+                'status'=>UserStatusHelper::STATUS_ACTIVE,
+                'registered_from'=>RegisterFromHelper::LDAP,
+                'access_level'=>UserAccessLevelHelper::LEVEL_LDAP,
+                'full_name'=>$ldapData->getCommonName(),
+                'about'=>$ldapData->getDepartment(),
+                'phone'=>$ldapData->getTelephoneNumber()!==null?$ldapData->getTelephoneNumber():null,
+            ]);
+
+            if (!$user->validate()) {
+
+                throw new ServerErrorHttpException(Html::errorSummary($user));
+            }
+
+            $user->save();
+
+            return $user;
+        }
+
+        return null;
     }
 
 
@@ -206,20 +252,6 @@ class UserManager extends Component
         return IdentityUser::find()
             ->findUser('username = :user OR email = :user', [':user' => $usernameOrEmail])
             ->one();
-    }
-
-
-    /**
-     * @param LoginForm $form
-     */
-    public function findUserLDAP(LoginForm $form)
-    {
-        $login = $form->login;
-        $password = $form->password;
-
-        printr(app()->ldap->getProvider('user')->auth()->attempt($login, $password), 1);
-
-
     }
 
 
@@ -305,6 +337,19 @@ class UserManager extends Component
         $this->setTokenStorage($tokenStorage);
 
         $this->setListener();
+    }
+
+
+    /**
+     * @param string $login
+     * @param string $password
+     * @return bool
+     * @throws \Adldap\AdldapException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function isAuthLDAP($login, $password)
+    {
+        return app()->ldap->getProvider('user')->auth()->attempt($login, $password);
     }
 
 
@@ -446,7 +491,7 @@ class UserManager extends Component
      * @return bool
      * @throws \yii\base\Exception
      */
-    protected function updateUserHashPassword(User $user, $password)
+    public function updateUserHashPassword(User $user, $password)
     {
 
         return (bool)$user->updateAttributes(['hash' => Password::hash($password)]);
