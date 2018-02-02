@@ -6,7 +6,7 @@ use app\modules\core\components\actions\SaveModelAction;
 use app\modules\core\components\WebController;
 use app\modules\user\auth\ManagerTask;
 use app\modules\user\components\Roles;
-use app\modules\user\forms\PasswordProfileForm;
+use app\modules\user\forms\PasswordForm;
 use app\modules\user\forms\UserFormModel;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
@@ -95,10 +95,13 @@ class ManagerController extends WebController
             ],
             'password' => [
                 'class'=>SaveModelAction::className(),
-                'modelForm'=>PasswordProfileForm::className(),
+                'modelForm'=>PasswordForm::className(),
                 'model'=>ManagerUser::className(),
                 'isNewRecord'=>false,
-                'view'=>'@app/modules/user/views/profile/password'
+                'view'=>'password',
+                'successFlashMessage'=>'Пароль успешно изменен!',
+                'errorFlashMessage'=>'Не удалось изменить пароль',
+                'successRedirect'=>['index'],
             ]
         ];
     }

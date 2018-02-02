@@ -1,11 +1,13 @@
 <?php
 namespace app\modules\user\controllers;
 
+use app\modules\core\components\actions\SaveModelAction;
 use app\modules\core\components\RedactorController;
 use app\modules\user\forms\EmailProfileForm;
-use app\modules\user\forms\PasswordProfileForm;
+use app\modules\user\forms\PasswordForm;
 use app\modules\user\forms\ProfileForm;
 use app\modules\user\helpers\TokenTypeHelper;
+use app\modules\user\models\ManagerUser;
 use app\modules\user\Module;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
@@ -53,6 +55,27 @@ class ProfileController extends RedactorController
                     ],
                 ],
             ],
+        ];
+    }
+
+
+    /**
+     * @inheritdoc
+     * @return array
+     */
+    public function actions() {
+
+        return [
+            'change-password'=>[
+                'class'=>SaveModelAction::className(),
+                'modelForm'=>PasswordForm::className(),
+                'model'=>ManagerUser::className(),
+                'isNewRecord'=>true,
+                'view'=>'password',
+                'successFlashMessage'=>'Ваш пароль успешно изменен!',
+                'errorFlashMessage'=>'Не удалось изменить пароль',
+                'successRedirect'=>['view'],
+            ]
         ];
     }
 
@@ -125,14 +148,14 @@ class ProfileController extends RedactorController
      * @return string
      * @throws \yii\base\ExitException
      * @throws \yii\base\Exception
-     */
+     *
     public function actionChangePassword()
     {
         $this->layout = '@app/modules/user/views/layouts/profile_box';
 
         $this->setSmallTitle('Изменение пароля');
 
-        $model = new PasswordProfileForm();
+        $model = new PasswordForm();
 
         $this->performAjaxValidation($model);
 
@@ -147,13 +170,12 @@ class ProfileController extends RedactorController
                 user()->setErrorFlash('Не удалось изменить пароль');
             }
 
-            $this->redirect(Url::to(['view']));
-            app()->end();
+            return $this->redirect(Url::to(['view']));
         }
 
         return $this->render('password', ['model'=>$model]);
     }
-
+    */
 
     /**
      * @return string

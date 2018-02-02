@@ -1,11 +1,11 @@
 <?php
 
 /* @var $this View */
-/* @var $model PasswordProfileForm */
+/* @var $model PasswordForm */
 /* @var $module Module */
 
 use app\modules\core\components\View;
-use app\modules\user\forms\PasswordProfileForm;
+use app\modules\user\forms\PasswordForm;
 use app\modules\user\Module;
 use yii\helpers\Html;
 use yii\helpers\Url;

@@ -123,7 +123,7 @@ class SaveModelAction extends WebAction
             if ($this->modelFormInstance->processingData($this->modelInstance)) {
 
                 user()->setSuccessFlash($this->successFlashMessage);
-                $this->redirectPage();
+                return $this->redirectPage();
 
             } else {
 

@@ -96,7 +96,9 @@ echo $form->errorSummary($model);
             ]
         ); ?>
         <?= Html::a('Oтмена', Url::to(['view']), ['class' => 'btn btn-sm btn-default']); ?>
-        <?= Html::a('<i class="fa fa-lock"></i> Сменить пароль', ['password'], ['class' => 'btn btn-sm btn-info']); ?>
+        <?php if (!app()->user->identity->isLdap()) :?>
+        <?= Html::a('<i class="fa fa-lock"></i> Сменить пароль', ['change-password'], ['class' => 'btn btn-sm btn-info']); ?>
+        <?php endif; ?>
     </div>
 </div>
 <br/>

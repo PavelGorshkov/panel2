@@ -3,6 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\query\UserQuery;
 use yii\behaviors\TimestampBehavior;
@@ -43,7 +44,8 @@ class User extends ActiveRecord
     /**
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             [
@@ -87,7 +89,8 @@ class User extends ActiveRecord
      * @param $insert
      * @param $changedAttributes
      */
-    public function afterSafe($insert, $changedAttributes) {
+    public function afterSafe($insert, $changedAttributes)
+    {
 
         parent::afterSave($insert, $changedAttributes);
 
@@ -163,13 +166,22 @@ class User extends ActiveRecord
     }
 
     /**
+     * @return bool
+     */
+    public function isLdap()
+    {
+
+        return $this->registered_from === RegisterFromHelper::LDAP;
+    }
+
+    /**
      * @return ActiveQuery|Token
      */
-	public function getToken()
-	{
-		return $this->hasOne(Token::className(), ['user_id' => 'id']);
-	}
-	
+    public function getToken()
+    {
+        return $this->hasOne(Token::className(), ['user_id' => 'id']);
+    }
+
 
     /**
      * @inheritdoc
@@ -185,14 +197,18 @@ class User extends ActiveRecord
      * @param mixed $id
      * @return User|array|null|ActiveRecord
      */
-    public static function findByPk($id) {
+    public static function findByPk($id)
+    {
 
-        return self::find()->findUser('id = :id', [':id'=>$id])->one();
+        return self::find()->findUser('id = :id', [':id' => $id])->one();
     }
 
 
-    public static function findCountAdmin() {
-
+    /**
+     * @return int
+     */
+    public static function findCountAdmin()
+    {
         return self::find()->findCountAdmin();
     }
 
@@ -202,16 +218,18 @@ class User extends ActiveRecord
      *
      * @return bool
      */
-    public function isConfirmedEmail() {
+    public function isConfirmedEmail()
+    {
 
-        return (int) $this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
+        return (int)$this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
     }
 
 
     /**
      * @return bool
      */
-    public function isUFAccessLevel() {
+    public function isUFAccessLevel()
+    {
 
         return $this->access_level >= 100;
     }
@@ -237,7 +255,8 @@ class User extends ActiveRecord
     /**
      * @return bool
      */
-    public function isAdmin() {
+    public function isAdmin()
+    {
 
         return $this->access_level === UserAccessLevelHelper::LEVEL_ADMIN;
     }
@@ -246,7 +265,8 @@ class User extends ActiveRecord
     /**
      * @return string
      */
-    public function getAccessGroup() {
+    public function getAccessGroup()
+    {
 
         $data = self::getAccessLevelList();
 
@@ -257,14 +277,15 @@ class User extends ActiveRecord
     /**
      * @return string
      */
-    public function getContact() {
+    public function getContact()
+    {
 
         $text = [
             $this->full_name,
-            Html::a($this->email, "mailto:".$this->email),
+            Html::a($this->email, "mailto:" . $this->email),
         ];
 
-        if ($this->phone)  {
+        if ($this->phone) {
 
             $text[] = $this->phone;
         }

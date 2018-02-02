@@ -139,12 +139,18 @@ class UserManager extends Component
     /**
      * @param string $password
      *
+     * @param null $model
      * @return bool
      * @throws \yii\base\Exception
      */
-    public function changePasswordProfile($password)
+    public function changePasswordProfile($password, $model = null)
     {
-        return $this->updateUserHashPassword(app()->user->info, $password);
+        if ($model === null) {
+
+            $model = app()->user->info;
+        }
+
+        return $this->updateUserHashPassword($model, $password);
     }
 
 

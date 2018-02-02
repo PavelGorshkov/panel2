@@ -143,7 +143,7 @@ echo CustomGridView::widget([
                         'label'=>'Применить',
                         'class' => 'btn btn-sm btn-primary',
                     ],
-                    'formOptions' => ['action' => Url::to('status')]
+                    'formOptions' => ['action' => Url::to(['status'])]
                 ];
             },
             'value'=>function ($model) {
