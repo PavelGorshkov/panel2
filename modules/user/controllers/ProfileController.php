@@ -147,39 +147,6 @@ class ProfileController extends RedactorController
     /**
      * @return string
      * @throws \yii\base\ExitException
-     * @throws \yii\base\Exception
-     *
-    public function actionChangePassword()
-    {
-        $this->layout = '@app/modules/user/views/layouts/profile_box';
-
-        $this->setSmallTitle('Изменение пароля');
-
-        $model = new PasswordForm();
-
-        $this->performAjaxValidation($model);
-
-        if ($model->load(app()->request->post()) && $model->validate()) {
-
-            if (app()->userManager->changePasswordProfile($model->password)) {
-
-                user()->setSuccessFlash('Ваш пароль успешно изменен!');
-
-            } else {
-
-                user()->setErrorFlash('Не удалось изменить пароль');
-            }
-
-            return $this->redirect(Url::to(['view']));
-        }
-
-        return $this->render('password', ['model'=>$model]);
-    }
-    */
-
-    /**
-     * @return string
-     * @throws \yii\base\ExitException
      */
     public function actionUpdate()
     {

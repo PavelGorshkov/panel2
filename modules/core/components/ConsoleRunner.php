@@ -55,7 +55,7 @@ class ConsoleRunner extends Component implements LoggerInterface
 
     /**
      * Запуск на выполнение команды
-     *
+     * 
      * @param string $command команда запуска (module/controller/action или controller/action)
      * @param array $params массив параметров
      * @param bool $isParallel флаг передачи выполнения в другой поток
