@@ -13,7 +13,7 @@ if (empty($safeAttributes)) {
     $safeAttributes = $model->attributes();
 }
 
-$modelClass = StringHelper::basename($generator->modelClass);
+$formClass = StringHelper::basename($generator->formModelClass);
 
 echo "<?php\n";
 ?>
@@ -21,12 +21,12 @@ echo "<?php\n";
 use app\modules\core\components\View;
 use yii\helpers\Html;
 use app\modules\core\widgets\ActiveForm;
-use <?= ltrim($generator->modelClass, '\\') ?>;
+use <?= ltrim($generator->formModelClass, '\\') ?>;
 use yii\helpers\Url;
 use app\modules\<?= $generator->module?>\Module;
 
 /** @var $this  View */
-/** @var $model <?= $modelClass ?> */
+/** @var $model <?= $formClass ?> */
 /** @var $module Module */
 
 

@@ -19,10 +19,11 @@ echo "<?php\n";
 
 namespace <?= StringHelper::dirname(ltrim($generator->formModelClass, '\\')) ?>;
 
+use app\modules\core\components\FormModel;
 use app\modules\core\interfaces\SaveModelInterface;
-use yii\base\Model;
 use <?= $generator->modelClass ?>;
 use app\modules\<?= $generator->module ?>\helpers\ModuleTrait;
+use yii\base\Model;
 
 /**
  * <?= $formModelClass ?> represents the model
@@ -31,7 +32,7 @@ use app\modules\<?= $generator->module ?>\helpers\ModuleTrait;
  * Class <?= $formModelClass . "\n" ?>
  * @package <?= StringHelper::dirname(ltrim($generator->formModelClass, '\\')) . "\n" ?>
  */
-class <?= $formModelClass ?> extends Model implements SaveModelInterface
+class <?= $formModelClass ?> extends FormModel implements SaveModelInterface
 {
     use ModuleTrait;
 

@@ -43,6 +43,9 @@ echo CustomGridView::widget([
                 [
                     'title' => 'Добавить',
                     'class' => 'btn btn-success',
+                    'data' => [
+                        'pjax'=>0,
+                    ]
                 ]
              )
         ], */

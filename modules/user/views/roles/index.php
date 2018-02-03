@@ -4,12 +4,15 @@
 /* @var $searchModel  SearchRole*/
 /* @var $dataProvider DataProviderInterface */
 
+use app\modules\core\helpers\RouterUrlHelper;
+use app\modules\core\widgets\CustomActionColumn;
 use kartik\grid\GridView;
 use app\modules\core\components\View;
 use yii\data\DataProviderInterface;
 use app\modules\user\models\SearchRole;
 use app\modules\core\widgets\CustomGridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 echo CustomGridView::widget([
@@ -27,6 +30,9 @@ echo CustomGridView::widget([
                 [
                     'title' => 'Добавить роль',
                     'class' => 'btn btn-success',
+                    'data'=>[
+                        'pjax'=>0,
+                    ],
                 ]
              )
         ],
@@ -48,6 +54,64 @@ echo CustomGridView::widget([
     ],
     'persistResize' => false,
     'columns' => [
+        [
+            'class' => 'kartik\grid\SerialColumn',
+            'contentOptions' => ['class' => 'kartik-sheet-style'],
+            'width' => '30px',
+            'header' => '',
+            'headerOptions' => ['class' => 'kartik-sheet-style']
+        ],
+        [
+            'attribute' => 'title',
+            'format' => 'raw',
+            'value' => function($model) {
 
+                return user()->can(RouterUrlHelper::to(['update']))
+                    ?Html::a($model->description, Url::to(['update', 'id'=>$model->id]))
+                    :$model->title;
+            },
+            'contentOptions' => ['class' => 'kv-align-middle'],
+            'headerOptions' => ['class\' => \'kv-align-middle'],
+        ],
+        [
+            'attribute' => 'description',
+            'format' => 'raw',
+            'value' => function($model) {
+
+                return user()->can(RouterUrlHelper::to(['update']))
+                    ?Html::a($model->description, Url::to(['update', 'id'=>$model->id]))
+                    :$model->description;
+            },
+            'contentOptions' => ['class' => 'kv-align-middle'],
+            'headerOptions' => ['class\' => \'kv-align-middle'],
+        ],
+        [
+            'attribute' => 'created_at',
+            'format' => 'date',
+            'xlFormat' => "dd\\.mm\\. \\-yyyy",
+            'contentOptions' => ['class' => 'kv-align-middle'],
+            'headerOptions' => ['class\' => \'kv-align-middle'],
+        ],
+        [
+            'class' => CustomActionColumn::className(),
+            'template' => '{access}&nbsp;{update}&nbsp;{password}&nbsp;{delete}',
+            'headerOptions' => ['class' => 'col-sm-1'],
+            'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
+            'buttons' => [
+                'access'=>function ($url, $model) {
+
+                    return Html::a(
+                        '<i class="fa fa-lock"></i>',
+                        $url,
+                        [
+                            'class'=>'btn btn-xs btn-success',
+                            'data-pjax'=>0,
+                            'aria-label'=>'Изменить пароль',
+                            'title'=>'Изменить пароль'
+                        ]
+                    );
+                }
+            ],
+        ]
     ]
 ]);

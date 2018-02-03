@@ -54,10 +54,10 @@ class Role extends ActiveRecord
     public function rules()
     {
         return [
+            [['title'], 'required'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
             [['title'], 'string', 'max' => 50],
+            [['created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -68,14 +68,13 @@ class Role extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
+            'title' => 'Название',
+            'description' => 'Описание',
+            'created_at' => 'Создан',
+            'updated_at' => 'Изменен',
         ];
     }
+
 
     /**
      * @inheritdoc

@@ -9,7 +9,7 @@ use app\modules\core\widgets\BoxWidget;
 use app\modules\user\forms\RoleFormModel;
 use app\modules\user\Module;
 
-//$this->setSmallTitle('Title');
+$this->setSmallTitle('Добавление роли');
 
 BoxWidget::begin([
     'type'=>BoxWidget::TYPE_SUCCESS,
