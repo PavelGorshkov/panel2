@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
@@ -7,6 +8,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
+use yii\rbac\Item;
 use yii\rbac\Rule;
 use yii\web\ServerErrorHttpException;
 
@@ -62,7 +64,7 @@ class BuildAuthManager extends Component
      */
     public static function getPathAuthTask($module)
     {
-        return  Yii::getAlias('@app/modules/' . $module. '/auth');
+        return Yii::getAlias('@app/modules/' . $module . '/auth');
 
     }
 
@@ -78,7 +80,7 @@ class BuildAuthManager extends Component
 
         foreach (app()->moduleManager->getListAllModules() as $module) {
 
-            $files = self::getPathAuthTask($module).'/*Task.php';
+            $files = self::getPathAuthTask($module) . '/*Task.php';
             $nameSpace = '\\app\\modules\\' . $module . '\\auth\\';
 
             /* @var \SplFileInfo $item */
@@ -121,7 +123,7 @@ class BuildAuthManager extends Component
                 'type' => $type_role,
                 'name' => $type,
                 'description' => isset($descriptionList[$type])
-                    ?$descriptionList[$type]
+                    ? $descriptionList[$type]
                     : '',
             ];
 
@@ -223,5 +225,71 @@ class BuildAuthManager extends Component
 
             throw new ServerErrorHttpException('Error write rbac items in ' . $this->itemFile . '...');
         }
+    }
+
+
+    public static function getListOperations()
+    {
+
+        $task = [];
+
+        foreach (app()->moduleManager->getListAllModules() as $module) {
+
+            $files = self::getPathAuthTask($module) . '/*Task.php';
+            $nameSpace = '\\app\\modules\\' . $module . '\\auth\\';
+
+            /* @var \SplFileInfo $item */
+            foreach (new \GlobIterator($files) as $item) {
+
+                $className = $nameSpace . $item->getBasename('.php');
+
+                if (!class_exists($className)) continue;
+
+                $instance = new $className;
+
+                if (!($instance instanceof RBACItemInterface)) continue;
+
+                list($url, $operations) = self::getOperations($instance);
+                $task[$module][$url] = $operations;
+            }
+
+        }
+        printr($task,1);
+        return $task;
+    }
+
+
+    /**
+     * @param RBACItem $instance
+     * @return array[$url, $task]
+     */
+    protected static function getOperations(RBACItem $instance)
+    {
+        $task = [];
+        $operations = [];
+        $url = '';
+
+        foreach ($instance->getTypes() as $type => $role) {
+
+            switch ($role) {
+
+                case Item::TYPE_ROLE:
+
+                    $task['label'] = $instance->getTitle($type);
+                    $url = $type;
+
+                    break;
+
+                case Item::TYPE_PERMISSION:
+
+                    $operations[$type] = $instance->getTitle($type);
+
+                    break;
+            }
+        }
+
+        $task['item'] = $operations;
+
+        return [$url, $task];
     }
 }

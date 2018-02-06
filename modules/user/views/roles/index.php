@@ -6,6 +6,7 @@
 
 use app\modules\core\helpers\RouterUrlHelper;
 use app\modules\core\widgets\CustomActionColumn;
+use app\modules\user\models\Role;
 use kartik\grid\GridView;
 use app\modules\core\components\View;
 use yii\data\DataProviderInterface;
@@ -28,7 +29,7 @@ echo CustomGridView::widget([
                  '<i class="glyphicon glyphicon-plus"></i>',
                 ['create'],
                 [
-                    'title' => 'Добавить роль',
+                    'title' => 'Добавить группу',
                     'class' => 'btn btn-success',
                     'data'=>[
                         'pjax'=>0,
@@ -50,7 +51,7 @@ echo CustomGridView::widget([
     //'showPageSummary' => true,
     'panel' => [
         'type' => GridView::TYPE_SUCCESS,
-        'heading' => 'Пользовательские роли',
+        'heading' => 'Список групп',
     ],
     'persistResize' => false,
     'columns' => [
@@ -67,7 +68,7 @@ echo CustomGridView::widget([
             'value' => function($model) {
 
                 return user()->can(RouterUrlHelper::to(['update']))
-                    ?Html::a($model->description, Url::to(['update', 'id'=>$model->id]))
+                    ?Html::a($model->title, Url::to(['update', 'id'=>$model->id]))
                     :$model->title;
             },
             'contentOptions' => ['class' => 'kv-align-middle'],
@@ -76,38 +77,37 @@ echo CustomGridView::widget([
         [
             'attribute' => 'description',
             'format' => 'raw',
-            'value' => function($model) {
-
-                return user()->can(RouterUrlHelper::to(['update']))
-                    ?Html::a($model->description, Url::to(['update', 'id'=>$model->id]))
-                    :$model->description;
-            },
             'contentOptions' => ['class' => 'kv-align-middle'],
             'headerOptions' => ['class\' => \'kv-align-middle'],
         ],
         [
             'attribute' => 'created_at',
-            'format' => 'date',
-            'xlFormat' => "dd\\.mm\\. \\-yyyy",
+            //'format' => 'date',
             'contentOptions' => ['class' => 'kv-align-middle'],
             'headerOptions' => ['class\' => \'kv-align-middle'],
+            'value'=>function($model) {
+
+                /* @var Role $model */
+                return DateTime::createFromFormat('Y-m-d H:i:s', $model->created_at)
+                        ->format('d.m.Y H:i');
+            }
         ],
         [
             'class' => CustomActionColumn::className(),
-            'template' => '{access}&nbsp;{update}&nbsp;{password}&nbsp;{delete}',
+            'template' => '{access}&nbsp;{update}&nbsp;{delete}',
             'headerOptions' => ['class' => 'col-sm-1'],
             'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
             'buttons' => [
                 'access'=>function ($url, $model) {
 
                     return Html::a(
-                        '<i class="fa fa-lock"></i>',
+                        '<i class="fa fa-user"></i>',
                         $url,
                         [
                             'class'=>'btn btn-xs btn-success',
                             'data-pjax'=>0,
-                            'aria-label'=>'Изменить пароль',
-                            'title'=>'Изменить пароль'
+                            'aria-label'=>'Настроить доступ',
+                            'title'=>'Настроить доступ'
                         ]
                     );
                 }

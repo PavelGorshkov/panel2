@@ -48,11 +48,10 @@ class RolesController extends WebController
      */
     public function beforeAction($action)
     {
-        $this->setTitle('Пользовательские роли');
+        $this->setTitle('Группы пользователей');
 
         return parent::beforeAction($action);
     }
-
 
 
     /**
@@ -61,22 +60,22 @@ class RolesController extends WebController
     public function actions()
     {
         return [
-            'index' =>[
-                'class'=>GridViewAction::className(),
-                'searchModel'=>SearchRole::className(),
-                'smallTitle'=>'Список',
+            'index' => [
+                'class' => GridViewAction::className(),
+                'searchModel' => SearchRole::className(),
+                'smallTitle' => 'Список',
             ],
-            'create'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=>RoleFormModel::className(),
-                'model'=>Role::className(),
-                'isNewRecord'=>true,
+            'create' => [
+                'class' => SaveModelAction::className(),
+                'modelForm' => RoleFormModel::className(),
+                'model' => Role::className(),
+                'isNewRecord' => true,
             ],
-            'update'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=>RoleFormModel::className(),
-                'model'=>Role::className(),
-                'isNewRecord'=>false,
+            'update' => [
+                'class' => SaveModelAction::className(),
+                'modelForm' => RoleFormModel::className(),
+                'model' => Role::className(),
+                'isNewRecord' => false,
             ],
         ];
     }
@@ -88,12 +87,48 @@ class RolesController extends WebController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      *
-    public function actionDelete()
-    {
-        //TODO реализуйте метод удаления данных
-        //$this->findModel()->delete();
-
-        //return $this->redirect(['index']);
-    }
+     * public function actionDelete()
+     * {
+     * //TODO реализуйте метод удаления данных
+     * //$this->findModel()->delete();
+     *
+     * //return $this->redirect(['index']);
+     * }
      **/
+
+
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionAccess($id)
+    {
+        $model = $this->findModel($id);
+
+        $operations = app()->buildAuthManager->getListOperations();
+
+        return $this->render('access', [
+            '$model'=>$model,
+            'operations'=>$operations,
+        ]);
+    }
+
+
+    /**
+     * @param int $id
+     * @return null|Role
+     * @throws NotFoundHttpException
+     */
+    protected function findModel($id)
+    {
+        $model = Role::findOne($id);
+
+        if ($model === null) {
+
+            throw  new NotFoundHttpException('Not found model Role');
+        }
+
+        return $model;
+    }
 }

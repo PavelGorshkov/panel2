@@ -3,7 +3,9 @@
 namespace app\modules\core\components;
 
 use Adldap\Adldap;
+use Adldap\Connections\ConnectionInterface;
 use Adldap\Connections\Provider;
+use Adldap\Schemas\SchemaInterface;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
@@ -85,17 +87,18 @@ class AdLdapComponent extends Component
     /**
      * @param $provider
      * @param null $options
+     * @param ConnectionInterface|null $connection
+     * @param SchemaInterface|null $schema
      * @throws \Adldap\AdldapException
      */
-    protected function setProvider($provider, $options = null)
+    protected function setProvider($provider, $options = null, ConnectionInterface $connection = null, SchemaInterface $schema = null)
     {
-
         if ($options === null) {
 
             $options = $this->options[$provider];
         }
 
-        $config = new Provider($options);
+        $config = new Provider($options, $connection, $schema);
 
         $this->ad->addProvider($config, $provider);
 

@@ -31,7 +31,16 @@ use yii\helpers\Html;
             <?=Html::a('Профиль', array('/user/profile/index'), array('class'=>'btn btn-default btn-flat'))?>
         </div>
         <div class="pull-right">
-            <?=Html::a('Выход', array('/logout'), array('class'=>'btn btn-default btn-flat'))?>
+            <?= Html::a(
+                'Выход',
+                ['/logout'],
+                [
+                    'class'=>'btn btn-default btn-flat',
+                    'data'=>[
+                        'method'=>'post',
+                    ]
+                ]
+            )?>
         </div>
     </li>
 </ul>

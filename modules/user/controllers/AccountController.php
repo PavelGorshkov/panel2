@@ -10,6 +10,7 @@ use app\modules\user\forms\RegistrationForm;
 use app\modules\user\helpers\TokenTypeHelper;
 use app\modules\user\Module;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
@@ -53,6 +54,12 @@ class AccountController extends WebController
                     ],
                 ],
             ],
+            'verb'=>[
+                'class'=>VerbFilter::className(),
+                'actions'=>[
+                    'logout'=>['POST'],
+                ],
+            ]
         ];
     }
 
