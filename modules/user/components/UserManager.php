@@ -217,7 +217,7 @@ class UserManager extends Component
     public function findUserByLdap($accountName, $password)
     {
         /* @var $ldapData LdapUser */
-        $ldapData = app()->ldap->getProvider('user')->search()->users()->in('OU=staff,OU=MarSU,DC=ad,DC=marsu,DC=ru')->find($accountName);
+        $ldapData = app()->ldap->getProvider('user')->search()->users()->find($accountName);
 
         if ($ldapData !== null) {
 
@@ -352,6 +352,7 @@ class UserManager extends Component
      * @return bool
      * @throws \Adldap\AdldapException
      * @throws \yii\base\InvalidConfigException
+     * @throws ServerErrorHttpException
      */
     public function isAuthLDAP($login, $password)
     {

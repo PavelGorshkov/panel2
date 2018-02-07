@@ -3,11 +3,12 @@
 namespace app\modules\core\components;
 
 use Adldap\Adldap;
-use Adldap\Connections\ConnectionInterface;
-use Adldap\Connections\Provider;
+use Adldap\AdldapException;
+use Adldap\Connections\ProviderInterface;
 use Adldap\Schemas\SchemaInterface;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Class AdLdapComponent
@@ -48,7 +49,8 @@ class AdLdapComponent extends Component
      * @param string $provider
      * @param array $options
      * @throws InvalidConfigException
-     * @throws \Adldap\AdldapException
+     * @throws AdldapException
+     * @throws ServerErrorHttpException
      */
     public function addProvider($provider, array $options)
     {
@@ -65,18 +67,19 @@ class AdLdapComponent extends Component
 
     /**
      * @param $provider
-     * @return \Adldap\Connections\ProviderInterface|mixed
+     * @return ProviderInterface|mixed
      * @throws InvalidConfigException
-     * @throws \Adldap\AdldapException
+     * @throws AdldapException
+     * @throws ServerErrorHttpException
      */
     public function getProvider($provider)
     {
-        if (!isset($this->options[$provider])) {
+        $providers = $this->ad->getProviders();
+
+        if (!(isset($this->options[$provider]) || isset($providers[$provider]))) {
 
             throw new InvalidConfigException("Adldap Provider \"$provider\" not found");
         }
-
-        $providers = $this->ad->getProviders();
 
         if (!isset($providers[$provider])) $this->setProvider($provider);
 
@@ -87,20 +90,33 @@ class AdLdapComponent extends Component
     /**
      * @param $provider
      * @param null $options
-     * @param ConnectionInterface|null $connection
      * @param SchemaInterface|null $schema
-     * @throws \Adldap\AdldapException
+     * @param string|null $ProviderClassName
+     * @throws ServerErrorHttpException
+     * @throws AdldapException
      */
-    protected function setProvider($provider, $options = null, ConnectionInterface $connection = null, SchemaInterface $schema = null)
+    public function setProvider($provider, $options = null, SchemaInterface $schema = null, $ProviderClassName = null)
     {
         if ($options === null) {
 
             $options = $this->options[$provider];
         }
 
-        $config = new Provider($options, $connection, $schema);
+        if ($ProviderClassName === null) {
+
+            $ProviderClassName = '\\Adldap\\Connections\\Provider';
+        }
+
+        $config = new $ProviderClassName($options, null, $schema);
+
+        if (!($config instanceof ProviderInterface)) {
+
+            throw new ServerErrorHttpException('config  not implements interface \\Adldap\\Connections\\ProviderInterface');
+        }
 
         $this->ad->addProvider($config, $provider);
+
+        if ($schema !== null) $options['schema'] = $schema;
 
         if (isset($options['schema']) && is_object($options['schema'])) {
 

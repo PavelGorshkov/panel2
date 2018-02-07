@@ -36,7 +36,8 @@
         "kartik-v/yii2-widgets": "^3.4",
         "kartik-v/yii2-editable": "*",
         "Adldap2/Adldap2": "^8.0",
-        "linslin/yii2-curl": "*"
+        "linslin/yii2-curl": "*",
+        "2amigos/yii2-switch-widget": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

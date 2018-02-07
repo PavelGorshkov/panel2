@@ -4,6 +4,8 @@ namespace app\modules\user\controllers;
 
 use app\modules\core\components\actions\GridViewAction;
 use app\modules\core\components\actions\SaveModelAction;
+use app\modules\user\models\Access;
+use app\modules\user\models\RoleAccess;
 use yii\filters\AccessControl;
 use app\modules\core\components\WebController;
 use yii\filters\VerbFilter;
@@ -108,10 +110,31 @@ class RolesController extends WebController
 
         $operations = app()->buildAuthManager->getListOperations();
 
-        return $this->render('access', [
-            '$model'=>$model,
-            'operations'=>$operations,
-        ]);
+        $data = RoleAccess::getData($model->id);
+
+        if (app()->request->isPost) {
+
+            if ($post = app()->request->post('Access', false)) {
+
+                if (RoleAccess::setData($model->id, $post)) {
+
+                    user()->setSuccessFlash('Уровни доступа определены');
+                } else {
+
+                    user()->setWarningFlash('Нет данных для обновления! Настройки не обновлены.');
+                }
+            } else {
+
+                if (RoleAccess::deleteData($model->id)) {
+
+                    user()->setSuccessFlash('Настройки обновлены!');
+                }
+            }
+        }
+
+        return $this->render('access', ['model' => $model,
+            'operations' => $operations,
+            'data' => $data,]);
     }
 
 

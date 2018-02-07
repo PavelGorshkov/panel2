@@ -233,7 +233,7 @@ class BuildAuthManager extends Component
 
         $task = [];
 
-        foreach (app()->moduleManager->getListAllModules() as $module) {
+        foreach (app()->moduleManager->getListEnabledModules() as $module) {
 
             $files = self::getPathAuthTask($module) . '/*Task.php';
             $nameSpace = '\\app\\modules\\' . $module . '\\auth\\';
@@ -254,7 +254,7 @@ class BuildAuthManager extends Component
             }
 
         }
-        printr($task,1);
+
         return $task;
     }
 

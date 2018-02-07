@@ -83,7 +83,7 @@ $config = [
             'options' => [
                 'user'=>[
                     'domain_controllers' => ['ad.marsu.ru'],
-                    //'base_dn' => 'DC=ad,DC=marsu,DC=ru',
+                    'base_dn' => 'DC=ad,DC=marsu,DC=ru',
                     'admin_username' => 'yii',
                     'admin_password' => 'v7vkk$3p',
 

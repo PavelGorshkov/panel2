@@ -361,6 +361,21 @@ class ModuleManager extends Component
 
 
     /**
+     * @param string $module
+     * @return null|string
+     */
+    public function getTitle($module)
+    {
+
+        $modules = $this->getEnabledModules();
+
+        if (!isset($modules[$module])) return null;
+
+        return $modules[$module]['title'];
+    }
+
+
+    /**
      * Существует ли модуль
      *
      * @param string $module
