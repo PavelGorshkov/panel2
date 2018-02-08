@@ -1,18 +1,21 @@
 <?php
 
 /** @var $this View */
-/** @var $model Role */
+/** @var $model ManagerUser */
+/** @var $role Role */
 /** @var $operations array */
 /** @var $data array */
+/** @var $dataRoles array */
 
 use app\modules\core\components\View;
 use app\modules\core\widgets\BoxBodyWidget;
+use app\modules\user\models\ManagerUser;
 use app\modules\user\models\Role;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->setTitle($model->title);
+$this->setTitle($model->username);
 $this->setSmallTitle('Предоставление доступа');
 
 $form = ActiveForm::begin([
@@ -60,6 +63,8 @@ $form = ActiveForm::begin([
                     'tasks' => $tasks,
                     'active' => $active,
                     'data'=>$data,
+                    'role'=>$role,
+                    'dataRoles'=>$dataRoles,
                 ]);
                 if ($active) $active = false;
             endforeach;

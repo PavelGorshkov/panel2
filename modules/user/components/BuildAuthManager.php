@@ -228,6 +228,9 @@ class BuildAuthManager extends Component
     }
 
 
+    /**
+     * @return array
+     */
     public static function getListOperations()
     {
 
@@ -245,9 +248,11 @@ class BuildAuthManager extends Component
 
                 if (!class_exists($className)) continue;
 
+                /** @var $instance RBACItemInterface */
                 $instance = new $className;
 
                 if (!($instance instanceof RBACItemInterface)) continue;
+
 
                 list($url, $operations) = self::getOperations($instance);
                 $task[$module][$url] = $operations;
@@ -260,10 +265,10 @@ class BuildAuthManager extends Component
 
 
     /**
-     * @param RBACItem $instance
+     * @param RBACItemInterface $instance
      * @return array[$url, $task]
      */
-    protected static function getOperations(RBACItem $instance)
+    protected static function getOperations(RBACItemInterface $instance)
     {
         $task = [];
         $operations = [];

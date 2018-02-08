@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models;
 
+use app\modules\user\components\Roles;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
@@ -232,6 +233,11 @@ class User extends ActiveRecord
     {
 
         return $this->access_level >= 100;
+    }
+
+    public function isAccessRoles() {
+
+        return $this->access_level == Roles::USER || $this->isUFAccessLevel();
     }
 
 

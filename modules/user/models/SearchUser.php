@@ -69,8 +69,8 @@ class SearchUser extends Model implements SearchModelInterface
         $query
             ->andFilterWhere(['like', 'username', $this->username])
             ->orFilterWhere(['like', 'email', $this->info])
-            ->orFilterWhere(['like', 'profile.full_name', $this->info])
-            ->orFilterWhere(['like', 'profile.phone', $this->info])
+            ->orFilterWhere(['like', 'full_name', $this->info])
+            ->orFilterWhere(['like', 'phone', $this->info])
             ->andFilterWhere(['access_level'=>$this->access_level])
             ->andFilterWhere(['status'=>$this->status]);
 

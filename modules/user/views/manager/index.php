@@ -7,6 +7,7 @@ use app\modules\core\components\View;
 use app\modules\core\helpers\RouterUrlHelper;
 use app\modules\core\widgets\CustomActionColumn;
 use app\modules\core\widgets\CustomGridView;
+use app\modules\user\auth\ManagerTask;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
@@ -156,19 +157,47 @@ echo CustomGridView::widget([
         [
             'class' => CustomActionColumn::className(),
             'template' => '{access}&nbsp;{update}&nbsp;{password}&nbsp;{delete}',
-            'headerOptions' => ['class' => 'col-sm-1'],
-            'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
+            'hAlign'=>'right',
+            'width'=>'150px',
+            //'headerOptions' => ['class' => 'col-xs-2'],
             'buttons' => [
+                'access' => function ($url, $model) {
+
+                    /* @var $model ManagerUser */
+                    if (
+                         $model->isAccessRoles()
+                      && user()->can(ManagerTask::OPERATION_ACCESS)
+                    ) {
+
+                        return Html::a(
+                            '<i class="fa fa-user"></i>',
+                            $url,
+                            [
+                                'class'=>'btn btn-xs btn-success',
+                                'data-pjax'=>0,
+                                'aria-label'=>'Определить права доступа',
+                                'title'=>'Определить права доступа'
+                            ]
+                        );
+                    } else {
+
+                        return '';
+                    }
+                },
                 'password'=>function ($url, $model) {
 
                     /* @var $model ManagerUser */
-                    if ($model->registered_from !== RegisterFromHelper::LDAP) {
+                    if (
+                         $model->registered_from !== RegisterFromHelper::LDAP
+                      && user()->can(ManagerTask::OPERATION_UPDATE)
+                    )
+                    {
 
                         return Html::a(
                             '<i class="fa fa-lock"></i>',
                               $url,
                               [
-                                  'class'=>'btn btn-xs btn-success',
+                                  'class'=>'btn btn-xs btn-warning',
                                   'data-pjax'=>0,
                                   'aria-label'=>'Изменить пароль',
                                   'title'=>'Изменить пароль'

@@ -4,7 +4,6 @@ namespace app\modules\user\controllers;
 
 use app\modules\core\components\actions\GridViewAction;
 use app\modules\core\components\actions\SaveModelAction;
-use app\modules\user\models\Access;
 use app\modules\user\models\RoleAccess;
 use yii\filters\AccessControl;
 use app\modules\core\components\WebController;
@@ -130,6 +129,13 @@ class RolesController extends WebController
                     user()->setSuccessFlash('Настройки обновлены!');
                 }
             }
+
+            app()->authManager->flush();
+
+            return $this->redirect((array) app()->request->post(
+                'submit-type',
+                ['access', 'id' => $model->id]
+            ));
         }
 
         return $this->render('access', ['model' => $model,

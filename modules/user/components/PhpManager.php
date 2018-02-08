@@ -70,10 +70,8 @@ class PhpManager extends AuthPhpManager
     /**
      *  Очистка файлов авторизации RBAC
      */
-    public static function flush() {
+    public function flush() {
 
         File::rmDir(Yii::getAlias('@app/runtime/rbac/*'));
-
-
     }
 }

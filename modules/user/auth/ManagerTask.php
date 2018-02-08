@@ -21,6 +21,8 @@ class ManagerTask extends RBACItem {
 
     const OPERATION_DELETE = '/user/manager/delete';
 
+    const OPERATION_ACCESS = '/user/manager/access';
+
 
     public $types = [
         self::TASK => Item::TYPE_ROLE,
@@ -28,6 +30,7 @@ class ManagerTask extends RBACItem {
         self::OPERATION_CREATE => Item::TYPE_PERMISSION,
         self::OPERATION_UPDATE => Item::TYPE_PERMISSION,
         self::OPERATION_DELETE => Item::TYPE_PERMISSION,
+        self::OPERATION_ACCESS => Item::TYPE_PERMISSION,
     ];
 
 
@@ -42,6 +45,7 @@ class ManagerTask extends RBACItem {
             self::OPERATION_CREATE => 'Создание пользователя',
             self::OPERATION_UPDATE => 'Изменение пользователя',
             self::OPERATION_DELETE => 'Удаление пользователя',
+            self::OPERATION_ACCESS => 'Удаление пользователя',
         ];
     }
 
@@ -60,6 +64,7 @@ class ManagerTask extends RBACItem {
                 self::OPERATION_CREATE,
                 self::OPERATION_UPDATE,
                 self::OPERATION_DELETE,
+                self::OPERATION_ACCESS,
             ],
         ];
     }

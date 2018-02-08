@@ -80,11 +80,25 @@ class Access extends ActiveRecord
     }
 
 
-    public static function setData($id, $post)
+    public static function setData($id,array $post = [])
     {
+        if (empty($post)) return false;
+
         self::deleteData($id);
 
-        printr($post, 1);
+        $field = ['access', 'type', 'id'];
+        $data = [];
+
+        foreach ($post as $access => $temp) {
+
+            $data[] = [$access, self::TYPE, $id];
+        }
+
+        return app()->db->createCommand()->batchInsert(
+            self::tableName(),
+            $field,
+            $data
+        )->execute();
     }
 
 
