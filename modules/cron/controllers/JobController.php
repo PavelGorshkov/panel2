@@ -82,18 +82,14 @@ class JobController extends WebController {
      * Запуск задания на выполнение
      * @param $id
      * @throws \yii\base\ExitException
-     * @throws \yii\web\HttpException
      */
     public function actionRun($id) {
         $job = RunnerJob::findOne($id);
-        $result = $job->runJob();
+        list($commandStatus, $jobOut) = $job->runJob();
 
-        if($result[0] === ConsoleRunner::STREAM_STATUS_SUCCESS){
-            user()->setSuccessFlash('Команда '.$job->command.' была успешно выполнена.');
-        }
-        else{
-            user()->setErrorFlash('Во время работы команды '.$job->command.' произошла ошибка.');
-        }
+        $commandStatus === ConsoleRunner::STREAM_STATUS_SUCCESS
+            ? user()->setSuccessFlash('Команда '.$job->command.' была успешно выполнена. '.$jobOut)
+            : user()->setErrorFlash('Во время работы команды '.$job->command.' произошла ошибка. '.$jobOut);
 
         $this->redirect('index');
         app()->end();

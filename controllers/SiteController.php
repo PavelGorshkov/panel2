@@ -21,9 +21,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'except'=>['migrate'],
                 'rules' => [
                     [
-                        'actions'=>['captcha', 'migrate', 'test'],
+                        'actions'=>['captcha', 'test'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -102,7 +103,9 @@ class SiteController extends Controller
 
     /**
      * @throws \Adldap\AdldapException
+     * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function actionTest() {
 

@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$webservice = require __DIR__.'/webservice.php';
 
 $config = [
     'id' => 'basic-console',
@@ -37,6 +38,7 @@ $config = [
             'phpPath' => 'E:\OSPanel\modules\php\PHP-7.2-x64\php.exe',
             //'phpPath' => '/usr/local/bin/php',
         ],
+        'ws'=>$webservice,
     ],
     'params' => $params,
     /*

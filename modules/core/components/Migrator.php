@@ -231,7 +231,6 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
             $this->createMigrationHistoryTable();
         }
 
-
         parent::init();
     }
 
@@ -302,11 +301,16 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
         if ($result !== false) {
 
+            ob_start();
+            ob_implicit_flush(false);
+
             (new Migration())->delete(
                 $this->migrationTable,
                 "version = :ver AND module = :module",
                 [':ver' => $class, ':module' => $module]
             );
+
+            $this->message($msg = ob_get_clean());
 
             $time = microtime(true) - $start;
             $this->message('Миграция ' . $class . ' отменена за ' . sprintf("%.3f", $time) . ' сек.', OutputMessageListHelper::ERROR);

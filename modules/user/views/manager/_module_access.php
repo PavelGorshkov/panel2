@@ -76,10 +76,12 @@ use yii\web\View;
                                     $operator = str_replace('/', '_', $action);
 
                                     $options = ['id' => $operator,];
-                                    if (isset($dataRoles[$action])) {$options['disabled'] = 'disabled';}
+                                    if (isset($dataRoles[$action])) {
+                                        $options['disabled'] = 'disabled';
+                                    }
 
                                     echo SwitchBox::widget([
-                                        'name' => isset($dataRoles[$action])?$action:'Access[' . $action . ']',
+                                        'name' => isset($dataRoles[$action]) ? $action : 'Access[' . $action . ']',
                                         'checked' => isset($data[$action]) || isset($dataRoles[$action]),
                                         'clientOptions' => [
                                             'size' => 'small',
@@ -95,7 +97,7 @@ use yii\web\View;
                                 </div>
                                 <div class="col-sm-9">
                                     <label for="<?= $operator ?>" style="cursor: pointer">
-                                        <?= $item ?> <?= isset($dataRoles[$action])?'<span class="label label-success">'.$role->title.'</span>':''?>
+                                        <?= $item ?> <?= isset($dataRoles[$action]) ? '<span class="label label-success">' . $role->title . '</span>' : '' ?>
                                     </label>
                                 </div>
                             </div>

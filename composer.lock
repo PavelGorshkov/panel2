@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a471b8f3378b63b8e5402d3ac97cd5d2",
+    "content-hash": "8cdb40db7b1f437ef87201b975c82891",
     "packages": [
         {
             "name": "2amigos/yii2-switch-widget",
@@ -2359,6 +2359,50 @@
                 "time"
             ],
             "time": "2017-01-16T07:55:07+00:00"
+        },
+        {
+            "name": "omgdef/yii2-multilingual-behavior",
+            "version": "2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OmgDef/yii2-multilingual-behavior.git",
+                "reference": "f857dec31e8cfdcdfe98c82aa5355635034c2512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OmgDef/yii2-multilingual-behavior/zipball/f857dec31e8cfdcdfe98c82aa5355635034c2512",
+                "reference": "f857dec31e8cfdcdfe98c82aa5355635034c2512",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "omgdef\\multilingual\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "OmgDef",
+                    "email": "omgdef@gmail.com"
+                }
+            ],
+            "description": "Port of the yii-multilingual-behavior for yii",
+            "keywords": [
+                " behavior",
+                " i18",
+                " multilingual",
+                " yii2-multilingual-behavior",
+                "extension",
+                "yii2"
+            ],
+            "time": "2015-03-06T10:21:28+00:00"
         },
         {
             "name": "psr/container",
