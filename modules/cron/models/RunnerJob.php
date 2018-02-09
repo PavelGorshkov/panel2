@@ -14,7 +14,6 @@ class RunnerJob extends Job{
     /**
      * Запуск задания
      * @return array
-     * @throws \yii\web\HttpException
      */
     public function runJob(){
         $streamStatus = ConsoleRunner::STREAM_STATUS_SUCCESS;

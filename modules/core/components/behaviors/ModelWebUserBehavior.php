@@ -4,7 +4,10 @@ namespace app\modules\core\components\behaviors;
 use yii\behaviors\AttributeBehavior;
 use yii\db\BaseActiveRecord;
 
-
+/**
+ * Class ModelWebUserBehavior
+ * @package app\modules\core\components\behaviors
+ */
 class ModelWebUserBehavior extends AttributeBehavior {
 
     public $createdAtAttribute = 'created_by';
@@ -30,6 +33,10 @@ class ModelWebUserBehavior extends AttributeBehavior {
     }
 
 
+    /**
+     * @param \yii\base\Event $event
+     * @return int|mixed|string
+     */
     protected function getValue($event)
     {
         if ($this->value === null) {

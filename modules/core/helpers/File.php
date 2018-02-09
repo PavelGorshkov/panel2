@@ -142,15 +142,9 @@ class File extends FileHelper {
      */
     public static function includePhpFile($file) {
 
-        if (
-            file_exists($file)
-         && pathinfo($file, PATHINFO_EXTENSION) === 'php'
-        ) {
-            return include $file;
-        } else {
-
-            return [];
-        }
+        /** @noinspection PhpIncludeInspection */
+        return file_exists($file)
+        && pathinfo($file, PATHINFO_EXTENSION) === 'php' ? include $file : [];
     }
 
 

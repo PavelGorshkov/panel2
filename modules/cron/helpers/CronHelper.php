@@ -1,6 +1,7 @@
 <?php
-
 namespace app\modules\cron\helpers;
+
+use app\modules\core\interfaces\RegisterCommandInterface;
 
 /**
  * Вспомогательный класс для работы с модулем.
@@ -133,6 +134,7 @@ class CronHelper{
                     $command = mb_strtolower($file->getBaseName('.php'));
                     $command= str_replace('controller', '', $command);
 
+                    /* @var RegisterCommandInterface $className */
                     foreach ($className::getList() as $action => $title){
                         $list[$module.'/'.$command.'/'.$action] = $title;
                     }

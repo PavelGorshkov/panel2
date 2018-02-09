@@ -5,7 +5,6 @@ namespace app\modules\core\components;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\Url;
 use yii\log\Logger;
 use yii\log\Target;
 
@@ -53,6 +52,10 @@ class BitrixTarget extends Target
     }
 
 
+    /**
+     * @param array $message
+     * @return string
+     */
     public function transformMessage($message)
     {
         if ($message[1] === Logger::LEVEL_ERROR) {

@@ -7,6 +7,7 @@ use app\modules\core\interfaces\SaveModelInterface;
 use app\modules\cron\helpers\JobStatusListHelper;
 use app\modules\cron\helpers\CronHelper;
 use app\modules\cron\interfaces\TimeParamInterface;
+use app\modules\cron\models\Job;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
@@ -126,7 +127,7 @@ class JobScheduleFormModel extends FormModel implements SaveModelInterface, Time
 
 
     /**
-     * @param Model $model
+     * @param Model|Job $model
      *
      * @return boolean
      */

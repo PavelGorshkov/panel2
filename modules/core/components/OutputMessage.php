@@ -5,6 +5,10 @@ namespace app\modules\core\components;
 use app\modules\core\helpers\OutputMessageListHelper;
 use yii\base\BaseObject;
 
+/**
+ * Class OutputMessage
+ * @package app\modules\core\components
+ */
 class OutputMessage extends BaseObject
 {
     /**

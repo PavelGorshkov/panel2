@@ -3,7 +3,10 @@
 
 namespace app\modules\core\helpers;
 
-
+/**
+ * Class LoggerHelper
+ * @package app\modules\core\helpers
+ */
 class LoggerHelper
 {
 
@@ -62,7 +65,7 @@ class LoggerHelper
      * @param string $name
      * @return array|null
      */
-    public function getLogExist(string $name)
+    public function getLogExist($name)
     {
         $logData = $this->getData();
         foreach ($logData as $source => $logs) {

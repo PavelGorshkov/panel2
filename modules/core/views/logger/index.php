@@ -50,6 +50,8 @@ echo CustomGridView::widget([
             'attribute' => 'source',
             'format' => 'raw',
             'value' => function ($model) {
+
+                /** @var $model LogSourceFormModel */
                 return $model::getSourceType($model->source);
             },
             'filter' => $model::getSourceType(),

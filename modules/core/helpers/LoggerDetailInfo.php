@@ -2,9 +2,12 @@
 
 namespace app\modules\core\helpers;
 
-
 use yii\base\Exception;
 
+/**
+ * Class LoggerDetailInfo
+ * @package app\modules\core\helpers
+ */
 class LoggerDetailInfo
 {
 
@@ -25,7 +28,12 @@ class LoggerDetailInfo
 
     }
 
-    public function __construct(string $source)
+    /**
+     * LoggerDetailInfo constructor.
+     * @param $source
+     * @throws Exception
+     */
+    public function __construct($source)
     {
         $types = $this->getSourceTypeClass();
         if (empty($types[$source]))

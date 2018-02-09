@@ -3,7 +3,10 @@ namespace app\modules\core\helpers;
 
 use yii\helpers\Console;
 
-
+/**
+ * Class OutputMessageListHelper
+ * @package app\modules\core\helpers
+ */
 class OutputMessageListHelper extends ListHelper
 {
     const SUCCESS = 3;

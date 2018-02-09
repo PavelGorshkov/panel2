@@ -125,7 +125,7 @@ class WebServiceInstance extends BaseObject
                 'features' => $this->soap_use_xsi,
             ]);
 
-        } catch (\SoapFault $sf) {
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (\SoapFault $sf) {
 
             $this->setLog(Logger::LEVEL_ERROR, "Соединение с веб-сервисом не установлено! " . $sf->getMessage());
             error_clear_last();

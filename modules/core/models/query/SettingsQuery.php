@@ -7,6 +7,7 @@ use yii\db\ActiveQuery;
 /**
  * Class SettingsQuery
  * @package app\modules\core\models\query
+ * @see \app\modules\core\models\Settings
  */
 class SettingsQuery extends ActiveQuery
 {
@@ -68,6 +69,10 @@ class SettingsQuery extends ActiveQuery
     }
 
 
+    /**
+     * @param string $module
+     * @return $this
+     */
     public function findAllModuleParam($module) {
 
         return

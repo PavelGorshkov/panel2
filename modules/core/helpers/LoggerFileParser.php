@@ -1,10 +1,13 @@
 <?php
 
-
 namespace app\modules\core\helpers;
 
 use yii\base\BaseObject;
 
+/**
+ * Class LoggerFileParser
+ * @package app\modules\core\helpers
+ */
 class LoggerFileParser extends BaseObject
 {
 
@@ -54,7 +57,7 @@ class LoggerFileParser extends BaseObject
      * @param string $string
      * @return array
      */
-    private function strToArrayDate(string $string)
+    private function strToArrayDate($string)
     {
         $pattern = "/(\[\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}\])/";
         $arr = preg_split($pattern, $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
@@ -67,7 +70,7 @@ class LoggerFileParser extends BaseObject
      * @param string $string
      * @return mixed
      */
-    private function strToArrayMesLevel(string $string)
+    private function strToArrayMesLevel($string)
     {
         $pattern = "/(\[-]|\[\w+])/";
         $arr = preg_split($pattern, $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);

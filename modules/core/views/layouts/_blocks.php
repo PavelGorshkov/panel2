@@ -34,7 +34,7 @@ Block::begin(['id'=>'controlSidebar']);
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <li><a href='#control-sidebar-theme-options-tab' data-toggle='tab'><i class='fa fa-paint-brush'></i></a></li>
         <li><a href="#control-sidebar-redactor-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        <li><a href="#control-sidebar-dictionary-tab" data-toggle="tab"><i class="fa fa-book"></i></a></li>
+       <?php /* <li><a href="#control-sidebar-dictionary-tab" data-toggle="tab"><i class="fa fa-book"></i></a></li> */ ?>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">

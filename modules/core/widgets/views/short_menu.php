@@ -16,7 +16,8 @@ if (!count($menu)) return;
 ?>
 </div>
 <?php
-    $this->registerCss( <<<CSS
+    $this->registerCss( /** @lang text */
+        <<<CSS
 
 .shortcuts_menu {
     text-align: left;

@@ -9,6 +9,10 @@ use app\modules\core\helpers\LoggerHelper;
 use app\modules\core\interfaces\SearchModelInterface;
 use yii\data\ArrayDataProvider;
 
+/**
+ * Class LogSourceFormModel
+ * @package app\modules\core\models
+ */
 class LogSourceFormModel extends FormModel implements SearchModelInterface
 {
 
@@ -22,6 +26,10 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
 
     public $fpath;
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -30,6 +38,9 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
     }
 
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -39,6 +50,10 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
         ];
     }
 
+
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -53,7 +68,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
      * @param string|null $param
      * @return mixed
      */
-    public static function getSourceType(string $param = null)
+    public static function getSourceType($param = null)
     {
         $types = LoggerHelper::model()->getSourceType();
         if ($param != null)

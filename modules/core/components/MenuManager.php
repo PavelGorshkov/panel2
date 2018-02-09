@@ -121,7 +121,8 @@ class MenuManager extends Component
                     foreach ($types as $key) {
 
                         $file = $this->getMenuConfigFile($key);
-                        if (file_exists($file)) $menu[$key] = include $file;
+                        if (file_exists($file)) /** @noinspection PhpIncludeInspection */
+                            $menu[$key] = include $file;
                     }
 
                     break;

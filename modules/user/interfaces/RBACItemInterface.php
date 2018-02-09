@@ -13,6 +13,8 @@ interface RBACItemInterface {
     public function titleList();
 
     /**
+     * Возвращает дерево отношений операций
+     *
      * @return array
      */
     public function getTree();

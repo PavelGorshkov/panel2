@@ -32,6 +32,8 @@ class LoggerTask extends RBACItem
 
 
     /**
+     * Возвращает список названий операций
+     *
      * @return array
      */
     public function titleList()
@@ -46,11 +48,12 @@ class LoggerTask extends RBACItem
 
 
     /**
+     * @inheritdoc
+     *
      * @return array
      */
     public function getTree()
     {
-
         return [
             Roles::ADMIN => [
                 self::TASK,

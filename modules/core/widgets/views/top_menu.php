@@ -1,5 +1,4 @@
 <?php
-use yii\widgets\Menu;
 
 printr($menu, 1);
 

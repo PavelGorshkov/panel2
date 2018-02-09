@@ -4,6 +4,7 @@
 /* @var $name string */
 /* @var $message string */
 /* @var $exception Exception */
+/* @var $code int  */
 
 use yii\helpers\Html;
 use yii\helpers\Url;

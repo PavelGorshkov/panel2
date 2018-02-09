@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\modules\core\controllers;
-
 
 use app\modules\core\auth\LoggerTask;
 use app\modules\core\components\WebController;
@@ -12,6 +10,10 @@ use app\modules\core\models\LogSourceFormModel;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 
+/**
+ * Class LoggerController
+ * @package app\modules\core\controllers
+ */
 class LoggerController extends WebController
 {
 

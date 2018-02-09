@@ -1,14 +1,16 @@
 <?php
 
-
 namespace app\modules\core\models;
-
 
 use app\modules\core\components\FormModel;
 use app\modules\core\helpers\LoggerHelper;
 use yii\base\Exception;
 use yii\data\ArrayDataProvider;
 
+/**
+ * Class LogDataFormModel
+ * @package app\modules\core\models
+ */
 class LogDataFormModel extends FormModel
 {
     public $date;
@@ -30,6 +32,10 @@ class LogDataFormModel extends FormModel
     const LEVEL_PROFILE = "profile";
 
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -38,6 +44,10 @@ class LogDataFormModel extends FormModel
     }
 
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -61,6 +71,7 @@ class LogDataFormModel extends FormModel
             'name' => 'Имя Лог-файла'
         ];
     }
+
 
     /**
      * @param $params
@@ -118,6 +129,9 @@ class LogDataFormModel extends FormModel
     }
 
 
+    /**
+     * @return array
+     */
     public function getLevelTypes()
     {
         return [

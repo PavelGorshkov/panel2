@@ -6,7 +6,6 @@ use app\modules\core\components\actions\GridViewAction;
 use app\modules\core\components\actions\SaveModelAction;
 use app\modules\core\components\WebController;
 use app\modules\user\auth\ManagerTask;
-use app\modules\user\components\Roles;
 use app\modules\user\forms\PasswordForm;
 use app\modules\user\forms\UserFormModel;
 use app\modules\user\helpers\UserStatusHelper;

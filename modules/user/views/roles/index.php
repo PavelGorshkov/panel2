@@ -98,7 +98,7 @@ echo CustomGridView::widget([
             'headerOptions' => ['class' => 'col-sm-1'],
             'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
             'buttons' => [
-                'access'=>function ($url, $model) {
+                'access'=>function ($url) {
 
                     return Html::a(
                         '<i class="fa fa-user"></i>',

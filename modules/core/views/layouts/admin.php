@@ -5,16 +5,19 @@
 
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
+use app\modules\core\Module;
 use app\modules\core\widgets\MenuWidget;
 use app\modules\user\helpers\UserSettings;
 use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
+/** @var Module $core */
+$core = app()->getModule('core');
 $icon = Html::img(implode('/', [
-    app()->getRequest()->getBaseUrl(true),
-    app()->getModule('core')->uploadPath,
-    app()->getModule('core')->imageUploadPath,
+    app()->getRequest()->getBaseUrl(),
+    $core->uploadPath,
+    $core->imageUploadPath,
     'logo.png'
 ]));
 
@@ -38,9 +41,12 @@ include __DIR__ . '/_blocks.php';
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
+        <!--suppress JSUnresolvedLibraryURL -->
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <!--suppress JSUnresolvedLibraryURL -->
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <!--suppress JSUnusedLocalSymbols -->
         <script type="text/javascript">
             var panelTokenName = '<?= app()->getRequest()->csrfParam;?>';
             var panelToken = '<?= app()->getRequest()->csrfToken;?>';
@@ -108,7 +114,8 @@ include __DIR__ . '/_blocks.php';
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs"></div>
-            <strong>&copy; <?= app()->getModule('core')->copyright ?>  <?= date('Y') ?> Все права защищены</strong>
+            <strong>&copy; <?= /** @noinspection PhpUndefinedFieldInspection */
+                app()->getModule('core')->copyright ?>  <?= date('Y') ?> Все права защищены</strong>
         </footer>
 
         <?= $this->blocks['controlSidebar']; ?>
