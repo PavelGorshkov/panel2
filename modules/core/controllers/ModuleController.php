@@ -85,6 +85,12 @@ class ModuleController extends RedactorController{
     }
 
 
+    public function actionDisabled() {
+
+        
+    }
+
+
     /**
      * Очистка кеша
      */

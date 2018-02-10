@@ -1,9 +1,9 @@
 <?php
 namespace app\modules\core\helpers;
 
+use app\modules\core\components\LogDispatcher;
 use yii\base\Exception;
 use yii\di\ServiceLocator;
-use yii\log\Dispatcher;
 
 /**
  * Trait LoggerTrait
@@ -13,7 +13,7 @@ use yii\log\Dispatcher;
 trait LoggerTrait
 {
     /**
-     * @var Dispatcher:null
+     * @var LogDispatcher|null
      */
     protected $logger = null;
 
@@ -35,11 +35,13 @@ trait LoggerTrait
 
             $locator = new ServiceLocator();
             $id = uniqid("log_");
+
             $locator->set($id, [
-                'class' => Dispatcher::className(),
+                'class' => LogDispatcher::className(),
                 'traceLevel' => 0,
                 'targets' => $targets,
             ]);
+
             $this->logger = $locator->get($id);
 
         } else {

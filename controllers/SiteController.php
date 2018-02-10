@@ -85,7 +85,7 @@ class SiteController extends Controller
 
         app()->migrator->updateToLatestSystem();
 
-        echo app()->migrator->getHtml();
+        return $this->render('@app/modules/core/views/module/migrate', ['message'=> app()->migrator->getHtml()]);
     }
 
 
