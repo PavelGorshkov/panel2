@@ -28,7 +28,7 @@ echo Html::beginForm('', 'post', ['id'=>'modules-form']);
                     $moduleData['priority'],
                     [
                         'class'=>"form-control text-center",
-                        'readonly'=>'readonly',
+                        'disabled'=>$moduleData['is_system'],
                     ]
                 );?>
             </td>

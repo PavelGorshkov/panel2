@@ -87,7 +87,10 @@ class ModuleController extends RedactorController{
 
     public function actionDisabled() {
 
-        
+        $modules = app()->moduleManager->getDisabledModules();
+
+        printr($modules, 1);
+
     }
 
 
