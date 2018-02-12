@@ -20,6 +20,4 @@ interface ModuleSettingsInterface {
      * @return array
      */
     public static function dependsOnModules();
-
-
 }

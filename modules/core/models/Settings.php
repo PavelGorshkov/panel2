@@ -152,6 +152,7 @@ class Settings extends ActiveRecord
      * @param $module
      * @param array $data
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public static function saveModuleData($module, $data=[]) {
 
@@ -178,11 +179,13 @@ class Settings extends ActiveRecord
 
             foreach ($data as $param => $value) {
 
-                $model = new self;
-                $model->module = $module;
-                $model->param_name = $param;
-                $model->param_value = $value;
-                $model->user_id = 0;
+                $model = \Yii::createObject([
+                    'class'=>self::className(),
+                    'module' => $module,
+                    'param_name' => $param,
+                    'param_value' => $value,
+                    'user_id' => 0
+                ]);
 
                 $model->save();
             }

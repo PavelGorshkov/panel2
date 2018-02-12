@@ -2,6 +2,7 @@
 
 namespace app\modules\core\components;
 
+use app\modules\core\helpers\File;
 use app\modules\core\helpers\ModulePriority;
 use FilesystemIterator;
 use iiifx\cache\dependency\FolderDependency;
@@ -131,6 +132,7 @@ class ModuleManager extends Component
         if (count(app()->getModules())) {
 
             $counter = 1;
+            $index = 1;
 
             foreach (app()->getModules() as $key => $value) {
 
@@ -145,7 +147,7 @@ class ModuleManager extends Component
 
                 $data = ArrayHelper::merge($allModules[$key],
                     [
-                        'priority' => $allModules[$key]['is_system'] ? ($counter++) : ModulePriority::model()->$key,
+                        'priority' => $allModules[$key]['is_system'] ? -100 + ($counter++) : $module->getPriority(10 * $index++),
                         'paramsCounter' => count($module->getParamLabels()),
                     ]);
 
@@ -376,6 +378,19 @@ class ModuleManager extends Component
 
 
     /**
+     * @param string $module
+     * @return bool
+     */
+    protected function installConfig($module)
+    {
+        return File::cpFile(
+            Yii::getAlias('@app/modules/'.$module.'/install').'/config.php',
+            Yii::getAlias('@app/config/modules').'/'.$module.'.php'
+        );
+    }
+
+
+    /**
      * Существует ли модуль
      *
      * @param string $module
@@ -400,5 +415,31 @@ class ModuleManager extends Component
     {
 
         return in_array($module, $this->getListEnabledModules());
+    }
+
+
+    /**
+     * @param string $module
+     * @return bool
+     */
+    public function onModule($module)
+    {
+        $data = $this->getDisabledModules();
+
+        if (isset($data[$module])) {
+
+            $data = $data[$module];
+
+            if (count($data['dependsOn'])) {
+
+                foreach ($data['dependsOn'] as $dep_module) $this->onModule($dep_module);
+            }
+
+            $this->installConfig($module);
+
+            return true;
+        }
+
+        return false;
     }
 }

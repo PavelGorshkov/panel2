@@ -3,6 +3,7 @@ namespace app\modules\core\components;
 
 use app\modules\core\helpers\ModuleMenuTrait;
 use app\modules\core\helpers\ModuleParamsTrait;
+use app\modules\core\helpers\ModuleSettings;
 use app\modules\core\helpers\ModuleSettingsTrait;
 use app\modules\core\interfaces\ModuleMenuInterface;
 use app\modules\core\interfaces\ModuleParamsInterface;
@@ -35,6 +36,8 @@ abstract class Module
     use ModuleParamsTrait;
     use ModuleMenuTrait;
 
+    protected $priority;
+
     /**
      * @var int
      */
@@ -59,6 +62,36 @@ abstract class Module
 
 
     /**
+     * @param $defaultValue
+     * @return int
+     */
+    public function getPriority($defaultValue) {
+
+        if ($this->priority) {
+
+            $priority = $this->priority;
+
+        } else {
+
+            $module = $this->id;
+            ModuleSettings::model()->$module = ['priority'=>$defaultValue];
+            $priority = $defaultValue;
+        }
+
+        return $priority;
+    }
+
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority) {
+
+
+    }
+
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -78,7 +111,6 @@ abstract class Module
         // app()->migrator->updateToLatestSystem();
         // app()->migrator->updateToLatest($this->id);
 
-       /*
         $settings = ModuleSettings::model()->$module;
 
         if (count($settings)) {
@@ -89,6 +121,6 @@ abstract class Module
             }
         }
 
-       */
+
     }
 }

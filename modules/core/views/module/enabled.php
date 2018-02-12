@@ -3,6 +3,7 @@
 /* @var $modules [] */
 /* @var $form yii\bootstrap\ActiveForm */
 
+use app\modules\core\auth\ModuleTask;
 use yii\helpers\Html;
 
 $allModules = app()->moduleManager->getAllModules();
@@ -23,14 +24,16 @@ echo Html::beginForm('', 'post', ['id'=>'modules-form']);
     <?php foreach ($modules as $module => $moduleData):?>
         <tr>
             <td class="col-sm-1 text-center">
+                <?php if (!$moduleData['is_system']) : ?>
                 <?=Html::textInput(
-                    !$moduleData['is_system']?"States[".$module."]":null,
+                    !$moduleData['is_system']?"Priority[".$module."]":null,
                     $moduleData['priority'],
                     [
                         'class'=>"form-control text-center",
                         'disabled'=>$moduleData['is_system'],
                     ]
                 );?>
+                <?php endif; ?>
             </td>
             <td>
                 <?=$moduleData['is_system']
@@ -50,13 +53,22 @@ echo Html::beginForm('', 'post', ['id'=>'modules-form']);
                 ?>
             </td>
             <td>
-                <?php if ($moduleData['paramsCounter'] /*&& user()->checkAccess(TaskModule::OPERATION_SETTINGS)*/):?>
+                <?php if ($moduleData['paramsCounter'] && user()->can(ModuleTask::OPERATION_SETTINGS)):?>
                     <?=Html::a('<i class="fa fa-fw fa-cog"></i>', ['settings', 'module'=>$module], ['class'=>'btn btn-default btn-xs', 'title'=>'Настройки'])?>
                 <?php endif;?>
             </td>
             <td>
-                <?php if (!$moduleData['is_system']  /* && user()->checkAccess(TaskModule::OPERATION_SETTINGS) */):?>
-                    <?=Html::a('<i class="fa fa-fw fa-power-off"></i>', ['off', 'module'=>$module], ['class'=>'btn btn-danger btn-xs', 'title'=>'Отключить модуль'])?>
+                <?php if (!$moduleData['is_system']   && user()->can(ModuleTask::OPERATION_ENABLED)):?>
+                    <?=Html::a(
+                        '<i class="fa fa-fw fa-power-off"></i>',
+                        ['off', 'module'=>$module],
+                        [
+                            'class'=>'btn btn-danger btn-xs',
+                            'title'=>'Отключить модуль',
+                            'data'=>[
+                                'method'=>'post',
+                            ]
+                        ])?>
                 <?php endif;?>
             </td>
         </tr>

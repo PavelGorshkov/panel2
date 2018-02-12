@@ -1,7 +1,6 @@
 <?php
-namespace app\modules\cron\helpers;
 
-use app\modules\core\interfaces\RegisterCommandInterface;
+namespace app\modules\cron\helpers;
 
 /**
  * Вспомогательный класс для работы с модулем.
@@ -10,6 +9,13 @@ use app\modules\core\interfaces\RegisterCommandInterface;
  * @package app\modules\cron\helpers
  */
 class CronHelper{
+
+    /**
+     * Сисок всех команд
+     * @var null|array
+     */
+    private static $_actionList = null;
+
 
     /**
      * Параметры крона
@@ -115,34 +121,36 @@ class CronHelper{
      * @return array
      */
     public static function getCommandActionList(){
-        $list = [];
-        foreach(app()->moduleManager->getListEnabledModules() as $module){
+        if(self::$_actionList === null){
+            self::$_actionList = [];
 
-            $commandPath = \Yii::getAlias(sprintf("@app/modules/%s/commands", $module));
-            $nameSpace = '\\app\\modules\\'.$module.'\\commands\\';
+            foreach(app()->moduleManager->getListEnabledModules() as $module){
 
-            foreach (new \GlobIterator($commandPath.'/*.php') as $file) {
+                $commandPath = \Yii::getAlias(sprintf("@app/modules/%s/commands", $module));
+                $nameSpace = '\\app\\modules\\'.$module.'\\commands\\';
 
-                $className = $nameSpace.$file->getBaseName('.php');
-                if (!class_exists($className)) {
-                    continue;
-                }
+                foreach (new \GlobIterator($commandPath.'/*.php') as $file) {
 
-                $reflection = new \ReflectionClass($className);
-                if($reflection->implementsInterface('app\modules\core\interfaces\RegisterCommandInterface')){
+                    $className = $nameSpace.$file->getBaseName('.php');
+                    if (!class_exists($className)) {
+                        continue;
+                    }
 
-                    $command = mb_strtolower($file->getBaseName('.php'));
-                    $command= str_replace('controller', '', $command);
+                    $reflection = new \ReflectionClass($className);
+                    if($reflection->implementsInterface('app\modules\core\interfaces\RegisterCommandInterface')){
 
-                    /* @var RegisterCommandInterface $className */
-                    foreach ($className::getList() as $action => $title){
-                        $list[$module.'/'.$command.'/'.$action] = $title;
+                        $command = mb_strtolower($file->getBaseName('.php'));
+                        $command= str_replace('controller', '', $command);
+
+                        foreach ($className::getList() as $action => $title){
+                            self::$_actionList[$module.'/'.$command.'/'.$action] = $title;
+                        }
                     }
                 }
             }
         }
 
-        return $list;
+        return self::$_actionList;
     }
 
 

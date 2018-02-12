@@ -7,6 +7,10 @@ namespace app\modules\core\helpers;
  */
 trait ModuleSettingsTrait
 {
+    /**
+     * @var int|0
+     */
+    protected $sorting = null;
 
     /**
      * Выводит список модулей, от которых он будет зависеть
@@ -18,5 +22,4 @@ trait ModuleSettingsTrait
 
         return [];
     }
-
 }

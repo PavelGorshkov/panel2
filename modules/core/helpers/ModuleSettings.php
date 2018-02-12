@@ -30,6 +30,7 @@ class ModuleSettings
     /**
      * @param string $module
      * @param array $data
+     * @throws \yii\base\InvalidConfigException
      */
     public function __set($module, $data)
     {
@@ -39,6 +40,17 @@ class ModuleSettings
         if (!isset($this->_data[$module])) $this->_data[$module] = [];
 
         Settings::saveModuleData($data);
+
+
+    }
+
+
+    /**
+     * @param array $data
+     */
+    public function setPriority($data) {
+
+
     }
 
 
