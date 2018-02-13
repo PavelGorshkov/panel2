@@ -53,6 +53,8 @@ class ModuleManager extends Component
             ];
 
             cache()->set('all_modules', $modules, 3600, $chain);
+
+
         }
 
         $this->_all_modules = $modules;
@@ -109,7 +111,6 @@ class ModuleManager extends Component
             $chain->dependencies = [
                 new TagDependency(['tags' => ['all_modules']]),
                 new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
-                new FileDependency(['fileName' => ModulePriority::model()->getFile()]),
             ];
 
             app()->cache->set('enabled_modules', $modules, 3600, $chain);

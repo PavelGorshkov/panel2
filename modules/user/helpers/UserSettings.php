@@ -2,7 +2,7 @@
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\GetterSingletonTrait;
-use app\modules\core\models\Settings;
+use app\modules\core\models\UserSettings as ARUserSettings;
 
 /**
  * Класс helper для работы с пользовательскими данными
@@ -23,7 +23,7 @@ class UserSettings {
      */
     public function initData() {
 
-        $this->_data = Settings::findAllUserData();
+        $this->_data = ARUserSettings::findAllData();
     }
 
     /**
@@ -34,7 +34,15 @@ class UserSettings {
 
         $this->_data[$name] = $value;
 
-        Settings::saveUserData($name, $value);
+        ARUserSettings::saveData($name, $value);
     }
 
+
+    /**
+     *
+     */
+    public function deleteAll() {
+
+        ARUserSettings::deleteAllData();
+    }
 }

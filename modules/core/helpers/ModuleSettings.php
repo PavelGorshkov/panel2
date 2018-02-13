@@ -2,7 +2,8 @@
 
 namespace app\modules\core\helpers;
 
-use app\modules\core\models\Settings;
+use app\modules\core\models\ModuleSettings as ARModuleSettings;
+
 
 /**
  * Класс helper для работы с настройками модулей из БД
@@ -34,23 +35,11 @@ class ModuleSettings
      */
     public function __set($module, $data)
     {
-
         if (!is_array($data) || !count($data)) return;
 
         if (!isset($this->_data[$module])) $this->_data[$module] = [];
 
-        Settings::saveModuleData($data);
-
-
-    }
-
-
-    /**
-     * @param array $data
-     */
-    public function setPriority($data) {
-
-
+        ARModuleSettings::saveData($data);
     }
 
 
@@ -60,6 +49,15 @@ class ModuleSettings
     public function initData()
     {
 
-        $this->_data = Settings::findAllModuleData();
+        $this->_data = ARModuleSettings::findAllData();
+    }
+
+
+    /**
+     * @param string $module
+     */
+    public function delete($module)
+    {
+        ARModuleSettings::deleteAll($module);
     }
 }
