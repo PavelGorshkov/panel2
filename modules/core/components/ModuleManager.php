@@ -4,6 +4,7 @@ namespace app\modules\core\components;
 
 use app\modules\core\helpers\File;
 use app\modules\core\helpers\ModulePriority;
+use app\modules\core\helpers\ModuleSettings;
 use FilesystemIterator;
 use iiifx\cache\dependency\FolderDependency;
 use Yii;
@@ -124,6 +125,7 @@ class ModuleManager extends Component
      * Сканирование установленных модулей системы
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     private function _scanEnabledModules()
     {
@@ -133,7 +135,7 @@ class ModuleManager extends Component
         if (count(app()->getModules())) {
 
             $counter = 1;
-            $index = 1;
+            $index = 1000;
 
             foreach (app()->getModules() as $key => $value) {
 
@@ -148,12 +150,14 @@ class ModuleManager extends Component
 
                 $data = ArrayHelper::merge($allModules[$key],
                     [
-                        'priority' => $allModules[$key]['is_system'] ? -100 + ($counter++) : $module->getPriority(10 * $index++),
+                        'priority' => $allModules[$key]['is_system'] ? -100 + ($counter++) : ModulePriority::model()->getPriority($module->id, $index++),
                         'paramsCounter' => count($module->getParamLabels()),
                     ]);
 
                 $modules[$key] = $data;
             }
+
+            ModulePriority::model()->saveData();
 
             $modules = $this->_sortingModules($modules);
         }
@@ -423,6 +427,21 @@ class ModuleManager extends Component
      * @param string $module
      * @return bool
      */
+    protected function removeModule($module)
+    {
+        ModulePriority::model()->unsetModule($module, true);
+        ModuleSettings::model()->delete($module);
+
+        return @unlink(Yii::getAlias('@app/config/modules').'/'.$module.'.php');
+
+
+    }
+
+
+    /**
+     * @param string $module
+     * @return bool
+     */
     public function onModule($module)
     {
         $data = $this->getDisabledModules();
@@ -437,6 +456,32 @@ class ModuleManager extends Component
             }
 
             $this->installConfig($module);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param string $module
+     * @return bool
+     */
+    public function offModule($module) {
+
+        $data = $this->getEnabledModules();
+
+        if (isset($data[$module])) {
+
+            $data = $data[$module];
+
+            if (count($data['dependent'])) {
+
+                foreach ($data['dependent'] as $dep_module) $this->offModule($dep_module);
+            }
+
+            $this->removeModule($module);
 
             return true;
         }

@@ -62,36 +62,6 @@ abstract class Module
 
 
     /**
-     * @param $defaultValue
-     * @return int
-     */
-    public function getPriority($defaultValue) {
-
-        if ($this->priority) {
-
-            $priority = $this->priority;
-
-        } else {
-
-            $module = $this->id;
-            ModuleSettings::model()->$module = ['priority'=>$defaultValue];
-            $priority = $defaultValue;
-        }
-
-        return $priority;
-    }
-
-
-    /**
-     * @param int $priority
-     */
-    public function setPriority($priority) {
-
-
-    }
-
-
-    /**
      * @inheritdoc
      */
     public function init()

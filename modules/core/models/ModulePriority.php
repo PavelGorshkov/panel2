@@ -27,20 +27,20 @@ class ModulePriority extends Settings
      */
     public static function findAllData()
     {
-        $data = cache()->get('find_all_user_data');
+        $data = cache()->get('find_all_priority_data');
 
         if ($data === false) {
 
             $temp = self::find()
                 ->select(['module', 'param_value'])
                 ->andWhere(['not', ['module'=>self::USER_DATA]])
-                ->andWhere(['param_value' => self::PARAM])
+                ->andWhere(['param_name' => self::PARAM])
                 ->asArray()
                 ->all();
 
             $data = ArrayHelper::map($temp, 'module', 'param_value');
 
-            cache()->set('find_all_user_data', $data, 3600);
+            cache()->set('find_all_priority_data', $data, 3600);
         }
 
         return $data;
@@ -52,10 +52,9 @@ class ModulePriority extends Settings
      */
     public static function findModels()
     {
-
         $models = self::find()
-            ->andWhere(['not', ['module'=>self::USER_DATA]])
-            ->andWhere(['param_value' => self::PARAM])
+            ->andWhere('`module` != :module', [':module'=>self::USER_DATA])
+            ->andWhere(['param_name' => self::PARAM])
             ->all();
 
         $data = [];
@@ -82,17 +81,21 @@ class ModulePriority extends Settings
             if (isset($models[$m])) {
 
                 $model = $models[$m];
+
+                if ($model->param_value == $priority) {continue;}
+
             } else {
 
                 $model = \Yii::createObject([
                     'class'=>self::className(),
                     'module' => $m,
-                    'param_value' => self::PARAM,
+                    'param_name' => self::PARAM,
                     'user_id' => 0
                 ]);
             }
 
-            $model->param_value = $priority;
+            $model->param_value = (string) $priority;
+
             $model->save();
         }
     }

@@ -58,6 +58,7 @@ trait LoggerTrait
      */
     public function addLog($level, $message, $category)
     {
+
         $this->logger->getLogger()->log($message, $level, $category);
     }
 }

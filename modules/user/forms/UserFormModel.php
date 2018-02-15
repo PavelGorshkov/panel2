@@ -40,7 +40,6 @@ class UserFormModel extends Model implements SaveModelInterface
 
     protected $old_attributes;
 
-
     /**
      * @return array
      */

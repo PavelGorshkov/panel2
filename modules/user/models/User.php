@@ -4,6 +4,7 @@ namespace app\modules\user\models;
 
 use app\modules\user\components\Roles;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\query\UserQuery;
@@ -76,9 +77,10 @@ class User extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
 
-            if ($this->isNewRecord) {
+            if ($insert) {
 
                 $this->auth_key = app()->security->generateRandomString();
+                $this->hash = Password::hash(Password::generate(8));
             }
             return true;
         }
@@ -108,7 +110,7 @@ class User extends ActiveRecord
     {
         return [
 
-            [['username', 'email', 'hash', 'full_name'], 'required'],
+            [['username', 'email', 'full_name'], 'required'],
 
             [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
 

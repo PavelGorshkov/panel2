@@ -3,6 +3,7 @@ namespace app\modules\core\controllers;
 
 use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\RedactorController;
+use app\modules\core\helpers\ModulePriority;
 use app\modules\core\Module;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -74,6 +75,7 @@ class ModuleController extends RedactorController{
 
     /**
      * @return string|\yii\web\Response
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex() {
 
@@ -96,26 +98,22 @@ class ModuleController extends RedactorController{
                     }
                     else {
 
-                        $v = trim(HtmlPurifier::process($v, [
+                        $post[$module] = trim(HtmlPurifier::process($v, [
                             'HTML.SafeObject'=>true,
                              'Output.FlashCompat'=>true,
                         ]));
-
-                        if ($v == $modules[$module]['priority'])  unset($post[$module]);
                     }
                 }
 
                 if (empty($post)) $error = true;
             }
 
-            printr($post, 1);
+            if (!$error && ModulePriority::model()->setData($post, true)) {
 
-            if (!$error  ) {
-
-                app()->session->setFlash('contactFormSubmitted');
+                user()->setSuccessFlash('Данные сохранены');
             } else {
 
-                app()->session->setFlash('contactFormSubmitted');
+                user()->setWarningFlash('Данные не обновлены');
             }
 
             return $this->refresh();
@@ -175,6 +173,31 @@ class ModuleController extends RedactorController{
 
                 user()->setErrorFlash('не удалось подключить модуль!');
                 return $this->redirect('disabled');
+            }
+        }
+
+        return $this->redirect('index');
+    }
+
+
+    /**
+     * @param string $module
+     * @return \yii\web\Response
+     */
+    public function actionOff($module) {
+
+        $enabledModules = app()->moduleManager->getEnabledModules();
+
+        if (isset($enabledModules[$module])) {
+
+            if (app()->moduleManager->offModule($module)) {
+
+                user()->setSuccessFlash('Модуль успешно отключен!');
+                $this->module->allFlush();
+
+            } else {
+
+                user()->setErrorFlash('не удалось отключить модуль!');
             }
         }
 

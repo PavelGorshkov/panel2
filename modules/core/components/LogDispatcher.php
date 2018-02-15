@@ -20,8 +20,15 @@ class LogDispatcher extends Dispatcher
         if ($this->_logger === null) {
 
             $this->_logger = new Logger();
+            $this->_logger->dispatcher = $this;
         }
 
         return $this->_logger;
+    }
+
+
+    public function __destruct()
+    {
+        $this->getLogger()->flush();
     }
 }

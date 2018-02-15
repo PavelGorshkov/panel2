@@ -10,6 +10,8 @@ use app\modules\core\models\ModuleSettings as ARModuleSettings;
  *
  * Class ModuleSettings
  * @package app\modules\core\helpers
+ *
+ * @method ModuleSettings model
  */
 class ModuleSettings
 {
@@ -58,6 +60,6 @@ class ModuleSettings
      */
     public function delete($module)
     {
-        ARModuleSettings::deleteAll($module);
+        ARModuleSettings::deleteAll(['module'=>$module]);
     }
 }

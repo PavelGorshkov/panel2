@@ -109,6 +109,12 @@ class SiteController extends Controller
      */
     public function actionTest() {
 
+
+        $path = \Yii::getAlias('@app').'/yii';
+
+        printr(system($path.' cron/test/test'), 1);
+        printr($_SERVER, 1);
+
        // Yii::trace('Test message', 'bitrix');
 
         printr(app()->userManager->findUserByLdap('gorshkov_pv', '..,djnb)'), 1);

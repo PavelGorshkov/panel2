@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 use app\modules\core\models\ModulePriority as ARModulePriority;
@@ -12,9 +13,11 @@ use app\modules\core\models\ModulePriority as ARModulePriority;
  *
  * @method static ModulePriority model()
  */
-class ModulePriority {
-
+class ModulePriority
+{
     use SingletonTrait;
+
+    protected $modified = false;
 
     /**
      * @param $module
@@ -23,44 +26,65 @@ class ModulePriority {
     public function __get($module)
     {
 
-        return isset($this->_data[$module]) ? $this->_data[$module] : [];
+        return isset($this->_data[$module]) ? $this->_data[$module] : null;
     }
 
 
     /**
      * @param string $module
      * @param int $value
-     * @throws \yii\base\InvalidConfigException
      */
-    public function __set($module, $value) {
+    public function __set($module, $value)
+    {
 
         if (empty($value)) return;
 
         if (!isset($this->_data[$module])) $this->_data[$module] = $value;
 
-        $this->_transform();
-
-        ARModulePriority::saveData($this->_data);
+        $this->setModified();
     }
 
 
     /**
      * @param array $data
+     * @param bool $save
+     * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    public function saveData(array $data) {
+    public function setData(array $data, $save = false)
+    {
 
         $this->_data = $data;
-        $this->_transform();
+        $this->setModified();
 
+        if ($save) return $this->saveData();
+
+        return false;
+    }
+
+
+    /**
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function saveData()
+    {
+        if (!$this->modified) return false;
+
+        $this->_transform();
         ARModulePriority::saveData($this->_data);
+
+        cache()->flush();
+
+        return true;
     }
 
 
     /**
      * Сортировка приоритетов
      */
-    private function _transform() {
+    private function _transform()
+    {
 
         $sort = $this->_data;
 
@@ -70,7 +94,7 @@ class ModulePriority {
         $index = 1;
         foreach ($sort as $module => $temp) {
 
-            $data[$module] = 10*$index;
+            $data[$module] = 10 * $index;
             $index++;
         }
 
@@ -80,8 +104,8 @@ class ModulePriority {
     /**
      * @inheritdoc
      */
-    public function initData() {
-
+    public function initData()
+    {
         $this->_data = ARModulePriority::findAllData();
     }
 
@@ -89,13 +113,47 @@ class ModulePriority {
     /**
      * Удаление модулей из файла приоритетов
      *
-     * @param $data
+     * @param string $module
+     * @param bool $execute
+     * @throws \yii\base\InvalidConfigException
      */
-    public function unsetData($data) {
+    public function unsetModule($module, $execute = false)
+    {
 
-        foreach ($data as $module => $temp) {
+        if (isset($this->_data[$module])) {
 
-            if (isset($this->_data[$module])) unset($this->_data[$module]);
+            unset($this->_data[$module]);
+            $this->setModified();
         }
+
+        if ($execute) $this->saveData();
+    }
+
+
+    /**
+     * Изменение модификации данных
+     */
+    public function setModified()
+    {
+        $this->modified = true;
+        $this->_transform();
+    }
+
+
+    /**
+     * @param string $module
+     * @param int $defaultValue
+     * @return int
+     */
+    public function getPriority($module, $defaultValue)
+    {
+        if (!isset($this->_data[$module])) {
+
+            $this->_data[$module] = $defaultValue;
+
+            $this->setModified();
+        }
+
+        return $this->_data[$module];
     }
 }
