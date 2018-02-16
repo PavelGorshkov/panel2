@@ -7,10 +7,21 @@ use yii\helpers\Url;
 use app\modules\cron\helpers\JobStatusListHelper;
 use app\modules\cron\widgets\CronTimeElement;
 use app\modules\cron\forms\JobScheduleFormModel;
+use app\modules\cron\helpers\CronHelper;
+use app\modules\cron\models\Job;
 
 
 /* @var $this  View */
-/* @var $model  JobScheduleFormModel */
+/* @var $model JobScheduleFormModel */
+
+
+$dropdown = CronHelper::getCommandActionList();
+foreach(Job::find()->all() as $job){
+    /* @var $job Job */
+    if($job->id != $model->id){
+        unset($dropdown[$job->command]);
+    }
+}
 
 
 $form = ActiveForm::begin([
@@ -33,8 +44,7 @@ echo $form->errorSummary($model);
                 ->dropDownList(JobStatusListHelper::getList());?>
         </div>
         <div class="col-sm-6">
-            <?=$form->field($model, 'command')
-                    ->dropDownList(\app\modules\cron\helpers\CronHelper::getCommandActionList());?>
+            <?=$form->field($model, 'command')->dropDownList($dropdown);?>
         </div>
     </div>
 

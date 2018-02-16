@@ -426,6 +426,7 @@ class ModuleManager extends Component
     /**
      * @param string $module
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     protected function removeModule($module)
     {
@@ -467,6 +468,7 @@ class ModuleManager extends Component
     /**
      * @param string $module
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function offModule($module) {
 

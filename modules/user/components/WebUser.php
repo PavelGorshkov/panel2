@@ -165,14 +165,14 @@ class WebUser extends \yii\web\User
 
         if ($this->isGuest) return Roles::GUEST;
 
-        switch ($this->identity->access_level) {
+        $roles = UserAccessLevelHelper::listRoles();
 
-            case UserAccessLevelHelper::LEVEL_ADMIN: return Roles::ADMIN;
-            case UserAccessLevelHelper::LEVEL_REDACTOR: return Roles::REDACTOR;
-            case UserAccessLevelHelper::LEVEL_OBSERVER: return Roles::OBSERVER;
+        if (isset($roles[$this->identity->access_level])) {
 
-            default: return null;
+            return $roles[$this->identity->access_level];
         }
+
+        return null;
     }
 
 

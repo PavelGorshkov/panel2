@@ -11,10 +11,6 @@ class Roles extends RBACItem {
 
     const ADMIN = 'admin';
 
-    const REDACTOR = 'redactor';
-
-    const OBSERVER = 'observer';
-
     const USER = 'user';
 
     const LDAP = 'ldap';
@@ -24,10 +20,9 @@ class Roles extends RBACItem {
 
     public $types = [
         self::ADMIN => Item::TYPE_ROLE,
-        self::REDACTOR => Item::TYPE_ROLE,
-        self::OBSERVER => Item::TYPE_ROLE,
         self::USER => Item::TYPE_ROLE,
         self::GUEST => Item::TYPE_ROLE,
+        self::LDAP => Item::TYPE_ROLE,
     ];
 
 
@@ -38,10 +33,8 @@ class Roles extends RBACItem {
 
         return [
             self::ADMIN => 'Администратор',
-            self::REDACTOR => 'Редактор',
-            self::OBSERVER => 'Наблюдатель',
             self::USER => 'Пользователь',
-            self::USER => 'LDAP пользователь',
+            self::LDAP => 'LDAP пользователь',
             self::GUEST => 'Гость',
         ];
     }
@@ -54,20 +47,16 @@ class Roles extends RBACItem {
 
         return [
             self::GUEST => [],
+            self::LDAP => [
+                self::GUEST,
+            ],
             self::USER => [
-                self::GUEST,
-            ],
-            self::OBSERVER => [
-                self::GUEST,
-            ],
-            self::REDACTOR => [
                 self::GUEST,
             ],
             self::ADMIN => [
                 self::GUEST,
-                self::OBSERVER,
-                self::REDACTOR,
                 self::USER,
+                self::LDAP,
             ],
         ];
     }

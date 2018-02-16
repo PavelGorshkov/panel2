@@ -2,6 +2,7 @@
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
+use app\modules\user\components\Roles;
 
 /**
  * Класс helper для работы с уровнями доступа пользователя
@@ -13,13 +14,11 @@ class UserAccessLevelHelper extends ListHelper {
 
     const LEVEL_ADMIN = 1;
 
-    const LEVEL_OBSERVER = 2;
-
-    const LEVEL_REDACTOR = 3;
-
     const LEVEL_USER = 0;
 
     const LEVEL_LDAP = 4;
+
+    const LEVEL_API = 5;
 
 
     /**
@@ -38,10 +37,19 @@ class UserAccessLevelHelper extends ListHelper {
 
         return [
             self::LEVEL_ADMIN => 'Aдминистраторы',
-            self::LEVEL_REDACTOR => 'Редакторы',
-            self::LEVEL_OBSERVER =>  'Наблюдатели',
             self::LEVEL_USER =>  'Пользователи',
             self::LEVEL_LDAP =>  'LDAP пользоаватель',
+            self::LEVEL_API =>  'REST пользователь',
+        ];
+    }
+
+
+    public static function listRoles() {
+
+        return [
+            self::LEVEL_ADMIN => Roles::ADMIN,
+            self::LEVEL_USER => Roles::USER,
+            self::LEVEL_LDAP => Roles::LDAP,
         ];
     }
 }

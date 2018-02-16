@@ -1,9 +1,11 @@
 <?php
+
 namespace app\modules\core\controllers;
 
 use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\RedactorController;
 use app\modules\core\helpers\ModulePriority;
+use app\modules\core\helpers\ModuleSettings;
 use app\modules\core\Module;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -15,13 +17,13 @@ use yii\helpers\HtmlPurifier;
  * @package app\modules\core\controllers
  * @property-read Module $module
  */
-class ModuleController extends RedactorController{
-
+class ModuleController extends RedactorController
+{
 
     protected $actionMenu = [
-        'index'=>'Установленные модули',
-        'disabled'=>'Неустановленные модули',
-        'flush'=>'Очистить кеш',
+        'index' => 'Установленные модули',
+        'disabled' => 'Неустановленные модули',
+        'flush' => 'Очистить кеш',
     ];
 
 
@@ -42,7 +44,8 @@ class ModuleController extends RedactorController{
      * @inheritdoc
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             'access' => [
@@ -63,10 +66,10 @@ class ModuleController extends RedactorController{
                 )
             ],
             'verbs' => [
-                'class'=>VerbFilter::className(),
+                'class' => VerbFilter::className(),
                 'actions' => [
-                    'on'=>['POST'],
-                    'off'=>['POST'],
+                    'on' => ['POST'],
+                    'off' => ['POST'],
                 ],
             ],
         ];
@@ -77,7 +80,8 @@ class ModuleController extends RedactorController{
      * @return string|\yii\web\Response
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         $modules = app()->moduleManager->getEnabledModules();
 
@@ -90,17 +94,18 @@ class ModuleController extends RedactorController{
 
                 foreach ($post as $module => $v) {
 
-                    if (!isset($modules[$module])) {$error = true; break;}
-                    elseif ((bool) $modules[$module]['is_system']) {
+                    if (!isset($modules[$module])) {
+                        $error = true;
+                        break;
+                    } elseif ((bool)$modules[$module]['is_system']) {
 
                         unset($post[$module]);
                         continue;
-                    }
-                    else {
+                    } else {
 
                         $post[$module] = trim(HtmlPurifier::process($v, [
-                            'HTML.SafeObject'=>true,
-                             'Output.FlashCompat'=>true,
+                            'HTML.SafeObject' => true,
+                            'Output.FlashCompat' => true,
                         ]));
                     }
                 }
@@ -119,27 +124,79 @@ class ModuleController extends RedactorController{
             return $this->refresh();
         }
 
-        return $this->render('enabled', ['modules'=>$modules]);
+        return $this->render('enabled', ['modules' => $modules]);
+    }
+
+
+    /**
+     * @param $module
+     * @return \yii\web\Response|string
+     */
+    public function actionSettings($module)
+    {
+
+        $modules = app()->moduleManager->getEnabledModules();
+
+        if (!(isset($modules[$module]) && $modules[$module]['paramsCounter'])) {
+
+            return $this->goBack();
+        }
+
+        $data = ModuleSettings::model()->$module;
+
+        if ($post = app()->request->post('Setting')) {
+
+
+            foreach ($post as $key => $value) {
+
+                $value = trim(HtmlPurifier::process($value, [
+                    'HTML.SafeObject' => true,
+                    'Output.FlashCompat' => true,
+                ]));
+
+                if ($value == $data[$key]) unset($post[$key]);
+                else $post[$key] = $value;
+
+            }
+
+            if (app()->moduleManager->saveSettingsModule($module, $post)) {
+
+                user()->setSuccessFlash('Настройки обновлены!');
+            } else {
+
+                user()->setWarningFlash('Нет данных для обновления! Настройки не обновлены.');
+            }
+
+            return $this->refresh();
+        };
+
+        $this->render('settings', [
+            'module' => app()->getModule($module),
+            'slug' => $module,
+            'data' => $data,
+        ]);
     }
 
 
     /**
      * @return string
      */
-    public function actionDisabled() {
+    public function actionDisabled()
+    {
 
         $modules = app()->moduleManager->getDisabledModules();
 
-        return $this->render('disabled', ['modules'=>$modules]);
+        return $this->render('disabled', ['modules' => $modules]);
     }
 
 
     /**
      * Очистка кеша
      */
-    public function actionFlush() {
+    public function actionFlush()
+    {
 
-        /** @var $module \app\modules\core\Module  */
+        /** @var $module \app\modules\core\Module */
         $module = app()->getModule('core');
 
         if ($module->allFlush()) {
@@ -159,7 +216,8 @@ class ModuleController extends RedactorController{
      * @param $module
      * @return \yii\web\Response
      */
-    public function actionOn($module) {
+    public function actionOn($module)
+    {
 
         $disabledModules = app()->moduleManager->getDisabledModules();
 
@@ -184,7 +242,8 @@ class ModuleController extends RedactorController{
      * @param string $module
      * @return \yii\web\Response
      */
-    public function actionOff($module) {
+    public function actionOff($module)
+    {
 
         $enabledModules = app()->moduleManager->getEnabledModules();
 

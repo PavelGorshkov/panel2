@@ -300,4 +300,27 @@ class User extends ActiveRecord
 
         return implode('<br>', $text);
     }
+
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @return User|null
+     */
+    public static function findApi($username, $password) {
+
+        $model = self::find()
+            ->andWhere([
+                'or',
+                ['username'=>$username],
+                ['email'=>$username]
+            ])->andWhere(['access_level'=>UserAccessLevelHelper::LEVEL_API])->one();
+
+        if ($model !== null) {
+
+            return Password::validate($password, $model->hash)?$model:null;
+        }
+
+        return null;
+    }
 }

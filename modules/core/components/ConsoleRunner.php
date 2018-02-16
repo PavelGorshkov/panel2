@@ -14,8 +14,7 @@ use yii\web\HttpException;
  * Class ConsoleRunner
  * @package app\modules\core\components
  */
-class ConsoleRunner extends Component implements LoggerInterface
-{
+class ConsoleRunner extends Component implements LoggerInterface{
 
     use LoggerTrait;
 
@@ -24,12 +23,6 @@ class ConsoleRunner extends Component implements LoggerInterface
     const STREAM_STATUS_ERROR = -1;
     const STREAM_STATUS_SUCCESS = 1;
 
-
-    /**
-     * Путь до php
-     * @var string
-     */
-    public $phpPath;
 
     /**
      * Путь до файла консольного приложения
@@ -61,16 +54,15 @@ class ConsoleRunner extends Component implements LoggerInterface
      * @param bool $isParallel флаг передачи выполнения в другой поток
      * @return array возвращает статус завершения потока и вевод запускаемой команды
      */
-    public function run($command, $params = [], $isParallel = false)
-    {
+    public function run($command, $params = [], $isParallel = false){
         try {
-            if (!$this->yiiPath || !$this->phpPath) {
+            if(!$this->yiiPath){
                 throw new HttpException('500', 'Path of yii or php not found.');
             }
 
             //Создание команды
             $params = $params ? implode(' ', $params) : '';
-            $cmd = "{$this->phpPath} {$this->yiiPath} $command $params";
+            $cmd = "{$this->yiiPath} $command $params";
 
             if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
                 //Пока хз, как на винде запилить паралельно. Искать пока лень.

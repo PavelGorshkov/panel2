@@ -50,7 +50,6 @@ class ModuleSettings
      */
     public function initData()
     {
-
         $this->_data = ARModuleSettings::findAllData();
     }
 
@@ -60,6 +59,6 @@ class ModuleSettings
      */
     public function delete($module)
     {
-        ARModuleSettings::deleteAll(['module'=>$module]);
+        ARModuleSettings::deleteAll(['module' => $module]);
     }
 }

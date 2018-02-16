@@ -24,6 +24,15 @@ class Module extends ParentModule
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
 
 
+    public function getParamLabels()
+    {
+        return  [
+            'uploadPath'=>'Путь загрузки файлов',
+            'imageUploadPath'=>'Путь загрузки изображений',
+        ];
+    }
+
+
     /**
      * @return string
      */

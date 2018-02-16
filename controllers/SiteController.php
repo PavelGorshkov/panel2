@@ -109,7 +109,6 @@ class SiteController extends Controller
      */
     public function actionTest() {
 
-
         $path = \Yii::getAlias('@app').'/yii';
 
         printr(system($path.' cron/test/test'), 1);
