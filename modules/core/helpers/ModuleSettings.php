@@ -11,7 +11,7 @@ use app\modules\core\models\ModuleSettings as ARModuleSettings;
  * Class ModuleSettings
  * @package app\modules\core\helpers
  *
- * @method ModuleSettings model
+ * @method static ModuleSettings model()
  */
 class ModuleSettings
 {
@@ -41,7 +41,7 @@ class ModuleSettings
 
         if (!isset($this->_data[$module])) $this->_data[$module] = [];
 
-        ARModuleSettings::saveData($data);
+        ARModuleSettings::saveData($module, $data);
     }
 
 

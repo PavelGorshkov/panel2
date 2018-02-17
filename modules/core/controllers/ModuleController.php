@@ -134,6 +134,7 @@ class ModuleController extends RedactorController
      */
     public function actionSettings($module)
     {
+        $this->layout = 'admin';
 
         $modules = app()->moduleManager->getEnabledModules();
 
@@ -142,10 +143,9 @@ class ModuleController extends RedactorController
             return $this->goBack();
         }
 
-        $data = ModuleSettings::model()->$module;
+        $data = app()->moduleManager->getSettings($module);
 
-        if ($post = app()->request->post('Setting')) {
-
+        if ($post = app()->request->post('Settings')) {
 
             foreach ($post as $key => $value) {
 
@@ -159,7 +159,7 @@ class ModuleController extends RedactorController
 
             }
 
-            if (app()->moduleManager->saveSettingsModule($module, $post)) {
+            if (app()->moduleManager->saveSettings($module, $post)) {
 
                 user()->setSuccessFlash('Настройки обновлены!');
             } else {
@@ -170,7 +170,7 @@ class ModuleController extends RedactorController
             return $this->refresh();
         };
 
-        $this->render('settings', [
+        return $this->render('settings', [
             'module' => app()->getModule($module),
             'slug' => $module,
             'data' => $data,

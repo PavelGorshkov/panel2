@@ -122,6 +122,33 @@ class ModuleManager extends Component
 
 
     /**
+     * @param string $module
+     * @return bool
+     */
+    private function _installConfig($module)
+    {
+        return File::cpFile(
+            Yii::getAlias('@app/modules/' . $module . '/install') . '/config.php',
+            Yii::getAlias('@app/config/modules') . '/' . $module . '.php'
+        );
+    }
+
+
+    /**
+     * @param string $module
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    private function _removeModule($module)
+    {
+        ModulePriority::model()->unsetModule($module, true);
+        ModuleSettings::model()->delete($module);
+
+        return @unlink(Yii::getAlias('@app/config/modules') . '/' . $module . '.php');
+    }
+
+
+    /**
      * Сканирование установленных модулей системы
      *
      * @return array
@@ -369,6 +396,29 @@ class ModuleManager extends Component
 
     /**
      * @param string $module
+     * @return array
+     */
+    public function getSettings($module)
+    {
+
+        if (!$this->isInstallModule($module)) return [];
+
+        /* @var Module $app */
+        $app = app()->getModule($module);
+
+        $data = [];
+        $dbData = ModuleSettings::model()->$module;
+        foreach ($app->getParamLabels() as $item => $temp) {
+
+            $data[$item] = isset($dbData['item']) ? $dbData['item'] : $app->$item;
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * @param string $module
      * @return null|string
      */
     public function getTitle($module)
@@ -379,19 +429,6 @@ class ModuleManager extends Component
         if (!isset($modules[$module])) return null;
 
         return $modules[$module]['title'];
-    }
-
-
-    /**
-     * @param string $module
-     * @return bool
-     */
-    protected function installConfig($module)
-    {
-        return File::cpFile(
-            Yii::getAlias('@app/modules/'.$module.'/install').'/config.php',
-            Yii::getAlias('@app/config/modules').'/'.$module.'.php'
-        );
     }
 
 
@@ -428,14 +465,26 @@ class ModuleManager extends Component
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    protected function removeModule($module)
+    public function offModule($module)
     {
-        ModulePriority::model()->unsetModule($module, true);
-        ModuleSettings::model()->delete($module);
 
-        return @unlink(Yii::getAlias('@app/config/modules').'/'.$module.'.php');
+        $data = $this->getEnabledModules();
 
+        if (isset($data[$module])) {
 
+            $data = $data[$module];
+
+            if (count($data['dependent'])) {
+
+                foreach ($data['dependent'] as $dep_module) $this->offModule($dep_module);
+            }
+
+            $this->_removeModule($module);
+
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -456,7 +505,7 @@ class ModuleManager extends Component
                 foreach ($data['dependsOn'] as $dep_module) $this->onModule($dep_module);
             }
 
-            $this->installConfig($module);
+            $this->_installConfig($module);
 
             return true;
         }
@@ -467,27 +516,15 @@ class ModuleManager extends Component
 
     /**
      * @param string $module
+     * @param array $data
      * @return bool
-     * @throws \yii\base\InvalidConfigException
      */
-    public function offModule($module) {
+    public function saveSettings($module, $data=[])
+    {
+        if (empty($data)) return false;
 
-        $data = $this->getEnabledModules();
+        ModuleSettings::model()->$module = $data;
 
-        if (isset($data[$module])) {
-
-            $data = $data[$module];
-
-            if (count($data['dependent'])) {
-
-                foreach ($data['dependent'] as $dep_module) $this->offModule($dep_module);
-            }
-
-            $this->removeModule($module);
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }

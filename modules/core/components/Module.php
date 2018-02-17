@@ -90,7 +90,5 @@ abstract class Module
                 if (property_exists($this, $key)) $this->$key = $value;
             }
         }
-
-
     }
 }
