@@ -24,6 +24,11 @@ class Generator extends \yii\gii\Generator
     public $moduleID;
     public $moduleTitle;
 
+    /**
+     * @var bool
+     */
+    public $moduleDirectories = true;
+
 
     protected $directories = [
         'auth',
@@ -193,6 +198,8 @@ EOD;
      */
     protected function createDirectory()
     {
+        
+
         $modulePath = $this->getModulePath();
 
         foreach ($this->directories as $directory) {

@@ -22,12 +22,12 @@ foreach ($module->getParamLabels() as $item => $label) :
 
     unset($setter[$item]);
 ?>
-<div class="form-group">
+<div class="form-group col-sm-6">
     <label for="<?=$item?>"><?=$label?$label:$item?></label>
     <?php if (isset($dropdown[$item])):?>
         <?=Html::dropDownList(
             'Settings['.$item.']',
-            isset($data[$items]),
+            isset($data[$item])&&$data[$item],
             $dropdown[$item],
             ['class'=>'form-control', 'id'=>$item]
         )?>

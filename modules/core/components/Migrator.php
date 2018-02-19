@@ -394,6 +394,12 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 OutputMessageListHelper::ERROR
             );
 
+            (new Migration())->delete($this->migrationTable,[
+                'version' => $className,
+                'module' => $module,
+                'apply_time' => 0,
+            ]);
+
             throw new Exception($msg);
         }
     }

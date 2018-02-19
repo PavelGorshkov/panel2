@@ -41,7 +41,8 @@ class ConsoleRunner extends Component implements LoggerInterface{
         $this->initLogger();
 
         if (!$this->yiiPath) {
-            $this->yiiPath = \Yii::getAlias("@app") . DIRECTORY_SEPARATOR . 'yii';
+
+            $this->yiiPath = \Yii::getAlias("@app/yii");
         }
     }
 
@@ -68,6 +69,7 @@ class ConsoleRunner extends Component implements LoggerInterface{
                 //Пока хз, как на винде запилить паралельно. Искать пока лень.
                 $cmd = "start /b {$cmd}" . ($isParallel ? "" : "");
             } else {
+
                 $cmd = "{$cmd} > /dev/null 2>" . ($isParallel ? "&1 &" : "/dev/null &");
             }
 
