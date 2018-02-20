@@ -65,6 +65,7 @@ class Generator extends \yii\gii\Generator
             [['moduleID'], 'match', 'pattern' => '/^[\w\\-]+$/', 'message' => 'Only word characters and dashes are allowed.'],
             [['moduleClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['moduleClass'], 'validateModuleClass'],
+            [['moduleDirectories'], 'boolean'],
         ]);
     }
 
@@ -77,6 +78,7 @@ class Generator extends \yii\gii\Generator
             'moduleID' => 'Module ID',
             'moduleClass' => 'Module Class',
             'moduleTitle' => 'Module Title',
+            'moduleDirectories' => 'Create directories in this module?',
         ];
     }
 
@@ -198,7 +200,7 @@ EOD;
      */
     protected function createDirectory()
     {
-        
+        if (!$this->moduleDirectories) return false;
 
         $modulePath = $this->getModulePath();
 
