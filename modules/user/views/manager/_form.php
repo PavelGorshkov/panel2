@@ -64,7 +64,7 @@ echo $form->errorSummary($model);
         <div class="col-sm-6">
             <?=$form->field($model, 'phone')
                 ->widget(
-                    MaskedInput::className(),
+                    MaskedInput::class,
                     [
                         'mask' => $module->phoneMask,
                         'options'=>[

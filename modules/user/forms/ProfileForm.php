@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\forms;
 
 use app\modules\core\components\FormModel;
@@ -9,8 +10,8 @@ use yii\web\UploadedFile;
  * Class ProfileForm
  * @package app\modules\user\forms
  */
-class ProfileForm extends FormModel {
-
+class ProfileForm extends FormModel
+{
     use ModuleTrait;
 
     public $full_name;
@@ -27,7 +28,8 @@ class ProfileForm extends FormModel {
     /**
      * @return array
      */
-    public function scenarios() {
+    public function scenarios()
+    {
 
         return [
             self::SCENARIO_DEFAULT => [
@@ -44,28 +46,28 @@ class ProfileForm extends FormModel {
     /**
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
             [['full_name'], 'required'],
-            [['full_name'], 'string', 'max'=>150],
+            [['full_name'], 'string', 'max' => 150],
 
             [['about'], 'string'],
 
-            [['phone'], 'string', 'max'=>30],
+            [['phone'], 'string', 'max' => 30],
 
             [
                 'avatar_file', 'image',
-                'extensions'=>$this->module->avatarExtensions,
-                'maxSize'=>$this->module->avatarMaxSize,
-                'skipOnEmpty'=>true,
+                'extensions' => $this->module->avatarExtensions,
+                'maxSize' => $this->module->avatarMaxSize,
+                'skipOnEmpty' => true,
             ],
 
             [
                 'phone',
                 'match',
-                'pattern'=>$this->module->phonePattern,
-                'message'=>'Некорректный формат поля {attribute}',
+                'pattern' => $this->module->phonePattern,
+                'message' => 'Некорректный формат поля {attribute}',
             ],
         ];
     }
@@ -74,18 +76,18 @@ class ProfileForm extends FormModel {
     /**
      * @return bool
      */
-    public function upload() {
-
+    public function upload()
+    {
         if (($this->avatar_file = UploadedFile::getInstance($this, 'avatar_file')) !== null) {
 
             if ($this->validate('avatar_file')) {
 
                 if (
-                    $this->avatar_file
-                        ->saveAs($this->module->avatarDirs.'/avatar_'.user()->info->id.'.'.$this->avatar_file->extension,1)
+                $this->avatar_file
+                    ->saveAs($this->module->avatarDirs . '/avatar_' . user()->info->id . '.' . $this->avatar_file->extension, 1)
                 ) {
 
-                    $this->avatar_file = 'avatar_'.user()->info->id.'.'.$this->avatar_file->extension;
+                    $this->avatar_file = 'avatar_' . user()->info->id . '.' . $this->avatar_file->extension;
                     return true;
                 }
             }
@@ -100,8 +102,8 @@ class ProfileForm extends FormModel {
     /**
      * @return string
      */
-    public function formName() {
-
+    public function formName()
+    {
         return 'profile-form';
     }
 
@@ -109,13 +111,13 @@ class ProfileForm extends FormModel {
     /**
      * @return array
      */
-    public function attributeLabels() {
-
+    public function attributeLabels()
+    {
         return [
-            'full_name'=>'ФИО',
-            'about'=>'Должность, место работы',
-            'avatar_file'=>'Аватар',
-            'phone'=>'Телефон',
+            'full_name' => 'ФИО',
+            'about' => 'Должность, место работы',
+            'avatar_file' => 'Аватар',
+            'phone' => 'Телефон',
         ];
     }
 }

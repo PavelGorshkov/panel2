@@ -16,7 +16,7 @@ $this->setSmallTitle($model->email);
 
 BoxWidget::begin([
     'type' => BoxWidget::TYPE_SUCCESS,
-    'title' => 'Изменение пароля '.$model->email
+    'title' => 'Изменение пароля ' . $model->email
 ]);
 /* @var $this  View */
 /* @var $model UserFormModel */

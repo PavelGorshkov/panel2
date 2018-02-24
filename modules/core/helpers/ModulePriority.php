@@ -1,9 +1,7 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 use app\modules\core\models\ModulePriority as ARModulePriority;
-
 
 /**
  * Класс хранящий приоритеты модулей

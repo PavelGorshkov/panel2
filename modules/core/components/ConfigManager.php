@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\ConfigCacheTrait;
@@ -205,10 +206,10 @@ class ConfigManager
 
                             $settings['modules'] = ArrayHelper::merge(
                                 isset($settings['modules']) ? $settings['modules'] : [],
-                                 $moduleConfig['modules']
+                                $moduleConfig['modules']
                             );
                         }
-                    break;
+                        break;
 
                     case 'module':
 

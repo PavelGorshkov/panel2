@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\ModuleTrait;
@@ -19,7 +20,8 @@ use yii\web\ServerErrorHttpException;
  *
  *
  */
-class TokenStorage extends Component {
+class TokenStorage extends Component
+{
 
     use ModuleTrait;
 
@@ -28,11 +30,12 @@ class TokenStorage extends Component {
      */
     protected $userTokenQuery;
 
+
     /**
      * @inheritdoc
      */
-    public function init() {
-
+    public function init()
+    {
         parent::init();
 
         $this->userTokenQuery = Token::find();
@@ -50,13 +53,13 @@ class TokenStorage extends Component {
      */
     public function create(User $user, $expire, $type)
     {
-        $expire = (int) $expire;
+        $expire = (int)$expire;
 
         $model = new Token();
         $model->user_id = $user->id;
         $model->expire = new Expression("DATE_ADD(NOW(), INTERVAL {$expire} SECOND)");
 
-        $model->type = (int) $type;
+        $model->type = (int)$type;
         $model->status = TokenStatusHelper::STATUS_NEW;
         $model->ip = ip2long(app()->request->userIP);
 
@@ -68,7 +71,6 @@ class TokenStorage extends Component {
         }
 
         return $model;
-
     }
 
 
@@ -95,7 +97,7 @@ class TokenStorage extends Component {
     {
         $this->deleteByTypeAndUser(TokenTypeHelper::ACTIVATE, $user);
 
-        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, TokenTypeHelper::ACTIVATE);
+        return $this->create($user, $this->module->expireTokenActivationLifeHours * 3600, TokenTypeHelper::ACTIVATE);
     }
 
 
@@ -104,11 +106,11 @@ class TokenStorage extends Component {
      * @return Token|bool
      * @throws \yii\base\Exception
      */
-    public function createEmailActivationToken(User $user) {
-
+    public function createEmailActivationToken(User $user)
+    {
         $this->deleteByTypeAndUser(TokenTypeHelper::EMAIL_VERIFY, $user);
 
-        return $this->create($user, $this->module->expireTokenActivationLifeHours*3600, TokenTypeHelper::EMAIL_VERIFY);
+        return $this->create($user, $this->module->expireTokenActivationLifeHours * 3600, TokenTypeHelper::EMAIL_VERIFY);
     }
 
 
@@ -119,14 +121,14 @@ class TokenStorage extends Component {
      *
      * @return Token|null
      */
-    public function getToken($token, $type, $status = TokenStatusHelper::STATUS_NEW) {
-
+    public function getToken($token, $type, $status = TokenStatusHelper::STATUS_NEW)
+    {
         return $this->userTokenQuery->where(
             'token = :token AND type = :type AND status = :status',
             [
-                ':token'=>$token,
-                ':type'=>(int) $type,
-                ':status'=>(int) $status
+                ':token' => $token,
+                ':type' => (int)$type,
+                ':status' => (int)$status
             ]
         )->one();
     }
@@ -140,8 +142,8 @@ class TokenStorage extends Component {
      * @throws Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function delete(Token $token) {
-
+    public function delete(Token $token)
+    {
         return $token->delete();
     }
 
@@ -157,7 +159,7 @@ class TokenStorage extends Component {
         return Token::deleteAll(
             'type = :type AND user_id = :user_id',
             [
-                ':type' => (int) $type,
+                ':type' => (int)$type,
                 ':user_id' => $user->id,
             ]
         );
@@ -169,10 +171,10 @@ class TokenStorage extends Component {
      * @return Token|bool
      * @throws \yii\base\Exception
      */
-    public function createPasswordToken(User $user) {
-
+    public function createPasswordToken(User $user)
+    {
         $this->deleteByTypeAndUser(TokenTypeHelper::CHANGE_PASSWORD, $user);
 
-        return $this->create($user, $this->module->expireTokenPasswordLifeHours*3600, TokenTypeHelper::CHANGE_PASSWORD);
+        return $this->create($user, $this->module->expireTokenPasswordLifeHours * 3600, TokenTypeHelper::CHANGE_PASSWORD);
     }
 }

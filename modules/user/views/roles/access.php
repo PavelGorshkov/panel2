@@ -3,6 +3,7 @@
 /** @var $this View */
 /** @var $model Role */
 /** @var $operations array */
+
 /** @var $data array */
 
 use app\modules\core\components\View;
@@ -23,29 +24,34 @@ $form = ActiveForm::begin([
 ?>
     <div class="row">
         <div class="col-sm-3">
-            <? BoxBodyWidget::begin()?>
+            <? BoxBodyWidget::begin() ?>
             <ul class="nav nav-pills nav-stacked" role="tablist" id="tabs">
                 <?php
                 $active = true;
                 foreach ($operations as $module => $temp):
 
-                    $uid = $module.'_tasks';
+                    $uid = $module . '_tasks';
                     ?>
                     <li role="presentation" <?= $active ? 'class="active"' : '' ?>>
-                        <?= Html::a(
-                            app()->moduleManager->getTitle($module),
-                            '#' . $uid,
-                            [
-                                'aria-controls' => $uid,
-                                'role' => "tab",
-                                'data-toggle' => "tab",
-                            ]
-                        ) ?>
+                        <?php try {
+                            echo Html::a(
+                                app()->moduleManager->getTitle($module),
+                                '#' . $uid,
+                                [
+                                    'aria-controls' => $uid,
+                                    'role' => "tab",
+                                    'data-toggle' => "tab",
+                                ]
+                            );
+                        } catch (\yii\base\InvalidConfigException $e) {
+
+                            echo $e->getMessage();
+                        } ?>
                         <?php if ($active) $active = false; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
-            <? BoxBodyWidget::end()?>
+            <? BoxBodyWidget::end() ?>
         </div>
         <div class="col-sm-9 tab-content" id="tab_module">
             <?php
@@ -55,11 +61,10 @@ $form = ActiveForm::begin([
             foreach ($operations as $module => $tasks):
 
                 echo $this->render('_module_access', [
-                    'model' => $model,
                     'module' => $module,
                     'tasks' => $tasks,
                     'active' => $active,
-                    'data'=>$data,
+                    'data' => $data,
                 ]);
                 if ($active) $active = false;
             endforeach;

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\user\models\query;
+
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -11,11 +12,6 @@ use yii\helpers\ArrayHelper;
  */
 class RoleQuery extends ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
-
     /**
      * @inheritdoc
      * @return \app\modules\user\models\Role[]|array
@@ -24,6 +20,7 @@ class RoleQuery extends ActiveQuery
     {
         return parent::all($db);
     }
+
 
     /**
      * @inheritdoc
@@ -38,8 +35,8 @@ class RoleQuery extends ActiveQuery
     /**
      * @return array
      */
-    public function allListRoles() {
-
+    public function allListRoles()
+    {
         return ArrayHelper::map(
             $this
                 ->select('id, title')

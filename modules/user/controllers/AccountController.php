@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
@@ -32,7 +33,7 @@ class AccountController extends WebController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -54,10 +55,10 @@ class AccountController extends WebController
                     ],
                 ],
             ],
-            'verb'=>[
-                'class'=>VerbFilter::className(),
-                'actions'=>[
-                    'logout'=>['POST'],
+            'verb' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['POST'],
                 ],
             ]
         ];
@@ -66,11 +67,10 @@ class AccountController extends WebController
 
     /**
      * @return string|\yii\web\Response
-     * @throws \yii\base\ExitException
      */
     public function actionLogin()
     {
-        if (!app()->user->isGuest) $this->goHome();
+        if (!app()->user->isGuest) return $this->goHome();
 
         $model = new LoginForm();
 
@@ -78,15 +78,15 @@ class AccountController extends WebController
 
         if (
             $model->load(app()->request->post())
-         && $model->validate()
+            && $model->validate()
         ) {
 
-            if ($model->login())  return $this->goBack();
+            if ($model->login()) return $this->goBack();
         }
 
         return $this->render('login', [
-            'model'=>$model,
-            'module'=>$this->module,
+            'model' => $model,
+            'module' => $this->module,
         ]);
     }
 
@@ -110,7 +110,8 @@ class AccountController extends WebController
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
      */
-    public function actionRegistration() {
+    public function actionRegistration()
+    {
 
         if ($this->module->registrationDisabled) {
             throw new NotFoundHttpException();
@@ -122,18 +123,17 @@ class AccountController extends WebController
         $this->performAjaxValidationMultiply([$profile, $model]);
 
         if (
-             $model->load(app()->request->post())
-          && $profile->load(app()->request->post())
-          && $model->validate()
-          && $profile->validate()
+            $model->load(app()->request->post())
+            && $profile->load(app()->request->post())
+            && $model->validate()
+            && $profile->validate()
         ) {
 
             if (app()->userManager->registerForm($model, $profile)) {
 
                 user()->setSuccessFlash('Учетная запись создана! Проверьте вашу электронную почту');
 
-                $this->redirect(Url::to([$this->module->loginPage]));
-                app()->end();
+                return $this->redirect(Url::to([$this->module->loginPage]));
             }
         }
 
@@ -147,12 +147,14 @@ class AccountController extends WebController
 
     /**
      * @param $token
+     * @return \yii\web\Response
      * @throws \Exception
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      * @throws \Throwable
      */
-    public function actionActivation($token) {
+    public function actionActivation($token)
+    {
 
         if (app()->userManager->verifyEmail($token, TokenTypeHelper::ACTIVATE)) {
 
@@ -162,10 +164,10 @@ class AccountController extends WebController
             app()->user->setErrorFlash('Ошибка активации! Возможно указан неверный ключ активации!');
         }
 
-        $this->redirect(
+        return $this->redirect(
             !app()->user->isGuest
-                ?Url::to(['/user/profile/index'])
-                :Url::to($this->module->loginPage)
+                ? Url::to(['/user/profile/index'])
+                : Url::to($this->module->loginPage)
         );
     }
 
@@ -174,11 +176,11 @@ class AccountController extends WebController
      * @return string
      * @throws NotFoundHttpException
      * @throws \yii\base\Exception
-     * @throws \yii\base\ExitException
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
      */
-    public function actionRecovery() {
+    public function actionRecovery()
+    {
 
         if ($this->module->recoveryDisabled) {
             throw new NotFoundHttpException();
@@ -193,17 +195,15 @@ class AccountController extends WebController
             if (app()->userManager->recoverySendMail($model->getUser())) {
 
                 user()->setSuccessFlash('На указанный email отправлено письмо с инструкцией по восстановлению пароля!');
-            } else
-            {
+            } else {
 
                 user()->setErrorFlash('При восстановлении пароля произошла ошибка!');
             }
 
-            $this->redirect(Url::to($this->module->loginPage));
-            app()->end();
+            return $this->redirect(Url::to($this->module->loginPage));
         }
 
-        return $this->render($this->action->id, ['model'=>$model]);
+        return $this->render($this->action->id, ['model' => $model]);
     }
 
 
@@ -218,7 +218,8 @@ class AccountController extends WebController
      * @throws \yii\db\StaleObjectException
      * @throws \Throwable
      */
-    public function actionRecoveryPassword($token) {
+    public function actionRecoveryPassword($token)
+    {
 
         if ($this->module->recoveryDisabled) throw new NotFoundHttpException();
 
@@ -230,7 +231,7 @@ class AccountController extends WebController
 
             if (app()->userManager->generatePassword($user, $tokenModel)) {
 
-                user()->setSuccessFlash( 'Новый пароль отправлен Вам на email!');
+                user()->setSuccessFlash('Новый пароль отправлен Вам на email!');
                 $this->redirect(Url::to($this->module->loginPage));
 
             } else {
@@ -251,15 +252,13 @@ class AccountController extends WebController
             if (app()->userManager->changePassword($user, $tokenModel, $model->password)) {
 
                 user()->setSuccessFlash('Ваш пароль успешно изменен!');
-            } else
-            {
+            } else {
                 user()->setErrorFlash('При изменении пароля произошла ошибка!');
             }
 
-            $this->redirect(Url::to($this->module->loginPage));
-            app()->end();
+            return $this->redirect(Url::to($this->module->loginPage));
         }
 
-        return $this->render($this->action->id, ['model'=>$model, 'module'=>$this->module]);
+        return $this->render($this->action->id, ['model' => $model, 'module' => $this->module]);
     }
 }

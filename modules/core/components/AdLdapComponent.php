@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\components;
 
 use Adldap\Adldap;

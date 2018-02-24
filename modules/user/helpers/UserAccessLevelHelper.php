@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
@@ -10,8 +11,8 @@ use app\modules\user\components\Roles;
  * Class UserAccessLevel
  * @package app\modules\user\helpers
  */
-class UserAccessLevelHelper extends ListHelper {
-
+class UserAccessLevelHelper extends ListHelper
+{
     const LEVEL_ADMIN = 1;
 
     const LEVEL_USER = 0;
@@ -24,8 +25,8 @@ class UserAccessLevelHelper extends ListHelper {
     /**
      * @return array
      */
-    public static function getHtmlList() {
-
+    public static function getHtmlList()
+    {
         return self::getList();
     }
 
@@ -33,19 +34,19 @@ class UserAccessLevelHelper extends ListHelper {
     /**
      * @return array
      */
-    public static function getList() {
-
+    public static function getList()
+    {
         return [
             self::LEVEL_ADMIN => 'Aдминистраторы',
-            self::LEVEL_USER =>  'Пользователи',
-            self::LEVEL_LDAP =>  'LDAP пользоаватель',
-            self::LEVEL_API =>  'REST пользователь',
+            self::LEVEL_USER => 'Пользователи',
+            self::LEVEL_LDAP => 'LDAP пользоаватель',
+            self::LEVEL_API => 'REST пользователь',
         ];
     }
 
 
-    public static function listRoles() {
-
+    public static function listRoles()
+    {
         return [
             self::LEVEL_ADMIN => Roles::ADMIN,
             self::LEVEL_USER => Roles::USER,

@@ -12,11 +12,11 @@ use Yii;
  * Class Module
  * @package app\modules\user
  *
- * @property-read string $loginPage /user/account/login
- * @property-read string $registerPage /user/account/registration
- * @property-read string $profilePage user/profile/index
- * @property-read string $logoutPage /user/account/logout
- * @property-read string $recoveryPage /user/account/recovery
+ * @property-read array $loginPage /user/account/login
+ * @property-read array $registerPage /user/account/registration
+ * @property-read array $profilePage user/profile/index
+ * @property-read array $logoutPage /user/account/logout
+ * @property-read array $recoveryPage /user/account/recovery
  */
 class Module extends ParentModule
 {
@@ -70,7 +70,7 @@ class Module extends ParentModule
     /** @var int */
     public $registrationDisabled = 0;
 
-    /** @var int Срок хранения сессии (в днях)*/
+    /** @var int Срок хранения сессии (в днях) */
     public $sessionLifeTimeDate = 1;
 
     /** @var int Отображать капчу */
@@ -83,21 +83,21 @@ class Module extends ParentModule
     public function getParamLabels()
     {
         return [
-            'autoRecoveryPassword'=>'Автовосстановление пароля',
-            'emailAccountVerification'=>'Подтверждение аккаунта по email',//
-            'enableConfirmation'=>'Пользователь должен ли подтвердить свою учетную запись',
-            'enableUnconfirmedLogin'=>'Разрешить ли вход в систему без подтверждения',
-            'expireTokenActivationLifeHours'=>'Срок действия токенов (в часах)',//
-            'expireTokenPasswordLifeHours'=>'Срок действия токена восстановления пароля (в часах)',//
-            'fromAuthorization'=>'Метод авторизации',//
-            'generateUserName'=>'Автогенерация логина',//
-            'minPasswordLength'=>'Минимальная длина пароля',//
-            'phoneMask'=>'Маска телефона',//
-            'phonePattern'=>'Регулярное выражение телефона',//
-            'recoveryDisabled'=>'Отключение восстановления',
-            'registrationDisabled'=>'Отключение регистрации',
-            'sessionLifeTimeDate'=>'Срок хранения сессии (в днях)',
-            'showCaptcha'=>'Отображать капчу',//
+            'autoRecoveryPassword' => 'Автовосстановление пароля',
+            'emailAccountVerification' => 'Подтверждение аккаунта по email',//
+            'enableConfirmation' => 'Пользователь должен ли подтвердить свою учетную запись',
+            'enableUnconfirmedLogin' => 'Разрешить ли вход в систему без подтверждения',
+            'expireTokenActivationLifeHours' => 'Срок действия токенов (в часах)',//
+            'expireTokenPasswordLifeHours' => 'Срок действия токена восстановления пароля (в часах)',//
+            'fromAuthorization' => 'Метод авторизации',//
+            'generateUserName' => 'Автогенерация логина',//
+            'minPasswordLength' => 'Минимальная длина пароля',//
+            'phoneMask' => 'Маска телефона',//
+            'phonePattern' => 'Регулярное выражение телефона',//
+            'recoveryDisabled' => 'Отключение восстановления',
+            'registrationDisabled' => 'Отключение регистрации',
+            'sessionLifeTimeDate' => 'Срок хранения сессии (в днях)',
+            'showCaptcha' => 'Отображать капчу',//
         ];
     }
 
@@ -108,15 +108,15 @@ class Module extends ParentModule
     public function getParamsDropdown()
     {
         return [
-            'autoRecoveryPassword'=>$this->choiseList(),
-            'emailAccountVerification'=>$this->choiseList(),
-            'enableConfirmation'=>$this->choiseList(),
-            'enableUnconfirmedLogin'=>$this->choiseList(),
-            'fromAuthorization'=>$this->fromAuthorizationList(),
-            'generateUserName'=>$this->choiseList(),
-            'recoveryDisabled'=>$this->choiseList(),
-            'registrationDisabled'=>$this->choiseList(),
-            'showCaptcha'=>$this->choiseList(),
+            'autoRecoveryPassword' => $this->choiseList(),
+            'emailAccountVerification' => $this->choiseList(),
+            'enableConfirmation' => $this->choiseList(),
+            'enableUnconfirmedLogin' => $this->choiseList(),
+            'fromAuthorization' => $this->fromAuthorizationList(),
+            'generateUserName' => $this->choiseList(),
+            'recoveryDisabled' => $this->choiseList(),
+            'registrationDisabled' => $this->choiseList(),
+            'showCaptcha' => $this->choiseList(),
         ];
     }
 
@@ -125,8 +125,8 @@ class Module extends ParentModule
     {
         return [
             [
-                'title'=>'Регистрация',
-                'items'=>[
+                'title' => 'Регистрация',
+                'items' => [
                     'emailAccountVerification',
                     'fromAuthorization',
                     'generateUserName',
@@ -137,8 +137,8 @@ class Module extends ParentModule
                 ]
             ],
             [
-                'title'=>'Сроки хранения состояний',
-                'items'=>[
+                'title' => 'Сроки хранения состояний',
+                'items' => [
                     'expireTokenActivationLifeHours',
                     'expireTokenPasswordLifeHours',
                     'sessionLifeTimeDate',
@@ -155,8 +155,8 @@ class Module extends ParentModule
     public function choiseList()
     {
         return [
-            0=>'Нет',
-            1=>'Да',
+            0 => 'Нет',
+            1 => 'Да',
         ];
     }
 
@@ -167,8 +167,8 @@ class Module extends ParentModule
     public function fromAuthorizationList()
     {
         return [
-            '0'=>'Форма регистрации',
-            '1'=>'LDAP регистрация',
+            '0' => 'Форма регистрации',
+            '1' => 'LDAP регистрация',
         ];
     }
 
@@ -281,51 +281,51 @@ class Module extends ParentModule
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getLoginPage()
     {
 
-        return '/user/account/login';
+        return ['/user/account/login'];
     }
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getRegisterPage()
     {
 
-        return '/user/account/registration';
+        return ['/user/account/registration'];
     }
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getProfilePage()
     {
 
-        return '/user/profile/index';
+        return ['/user/profile/index'];
     }
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getLogoutPage()
     {
 
-        return '/user/account/logout';
+        return ['/user/account/logout'];
     }
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getRecoveryPage()
     {
 
-        return '/user/account/recovery';
+        return ['/user/account/recovery'];
     }
 }

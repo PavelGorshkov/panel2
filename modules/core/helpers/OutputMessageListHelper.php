@@ -17,6 +17,7 @@ class OutputMessageListHelper extends ListHelper
 
     const ERROR = 1;
 
+
     /**
      * @return array
      */
@@ -29,6 +30,7 @@ class OutputMessageListHelper extends ListHelper
             self::SUCCESS => Console::FG_GREEN,
         ];
     }
+
 
     /**
      * @return array

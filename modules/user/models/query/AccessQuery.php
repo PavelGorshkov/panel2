@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models\query;
 
 use app\modules\user\models\Access;
@@ -11,11 +12,6 @@ use yii\db\ActiveQuery;
  */
 class AccessQuery extends ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
-
     /**
      * @inheritdoc
      * @return \app\modules\user\models\Access[]|array
@@ -24,6 +20,7 @@ class AccessQuery extends ActiveQuery
     {
         return parent::all($db);
     }
+
 
     /**
      * @inheritdoc
@@ -40,11 +37,11 @@ class AccessQuery extends ActiveQuery
      * @param $type
      * @return array|null
      */
-    public function getData($id, $type) {
-
+    public function getData($id, $type)
+    {
         $data = $this
             ->select('access')
-            ->where('id = :id AND type = :type', [':id'=>(int) $id, ':type'=>(int) $type])
+            ->where('id = :id AND type = :type', [':id' => (int)$id, ':type' => (int)$type])
             ->asArray()
             ->all();
 
@@ -56,8 +53,8 @@ class AccessQuery extends ActiveQuery
      * @param $id
      * @return array|null
      */
-    public function getDataForUser($id) {
-
+    public function getDataForUser($id)
+    {
         return $this->getData($id, Access::TYPE_USER);
     }
 
@@ -66,8 +63,8 @@ class AccessQuery extends ActiveQuery
      * @param $id
      * @return array|null
      */
-    public function getDataForRole($id) {
-
+    public function getDataForRole($id)
+    {
         return $this->getData($id, Access::TYPE_ROLE);
     }
 }

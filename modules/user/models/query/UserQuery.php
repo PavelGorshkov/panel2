@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models\query;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
@@ -25,6 +26,7 @@ class UserQuery extends ActiveQuery
         return parent::all($db);
     }
 
+
     /**
      * @inheritdoc
      * @return User|ActiveRecord|array|null
@@ -40,8 +42,8 @@ class UserQuery extends ActiveQuery
      * @param array $params
      * @return $this
      */
-    public function findUser($condition, $params = []) {
-
+    public function findUser($condition, $params = [])
+    {
         return $this->where($condition, $params);
     }
 
@@ -49,24 +51,21 @@ class UserQuery extends ActiveQuery
     /**
      * @return int
      */
-    public function findCountAdmin() {
-
-        $data = $this
-                ->select('COUNT(*) as cnt')
-                ->active()
-                ->andWhere(['access_level'=>UserAccessLevelHelper::LEVEL_ADMIN])
-                ->asArray()
-                ->one();
-
-        return isset($data['cnt'])?(int) $data['cnt']:0;
+    public function findCountAdmin()
+    {
+        return $this
+            ->active()
+            ->andWhere(['access_level' => UserAccessLevelHelper::LEVEL_ADMIN])
+            ->count();
     }
+
 
     /**
      * @return $this
      */
-    public function active() {
-
-        return $this->andWhere(['status'=>UserStatusHelper::STATUS_ACTIVE]);
+    public function active()
+    {
+        return $this->andWhere(['status' => UserStatusHelper::STATUS_ACTIVE]);
     }
 
 
@@ -74,8 +73,8 @@ class UserQuery extends ActiveQuery
      * @param $email
      * @return User|array|null|ActiveRecord
      */
-    public function email($email) {
-
-        return $this->where('email = :email', [':email'=>$email])->active()->one();
+    public function email($email)
+    {
+        return $this->where('email = :email', [':email' => $email])->active()->one();
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\LoggerTrait;
@@ -101,6 +100,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
     /**
      * Создает таблицу историй миграций
+     * @throws \yii\base\InvalidConfigException
      */
     protected function createMigrationHistoryTable()
     {
@@ -258,7 +258,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
      * @param int $type
      * @throws \yii\base\InvalidConfigException
      */
-    protected function message($message, $type = null) {
+    protected function message($message, $type = null)
+    {
 
         $this->addMessage($message, $type);
 
@@ -383,7 +384,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
 
             $this->message(
-                "Миграция \"{$className}\" применена за ".sprintf("%.3f", $time). "сек...",
+                "Миграция \"{$className}\" применена за " . sprintf("%.3f", $time) . "сек...",
                 OutputMessageListHelper::SUCCESS
             );
 
@@ -394,7 +395,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 OutputMessageListHelper::ERROR
             );
 
-            (new Migration())->delete($this->migrationTable,[
+            (new Migration())->delete($this->migrationTable, [
                 'version' => $className,
                 'module' => $module,
                 'apply_time' => 0,
@@ -409,7 +410,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
      * Set configTargets
      * @return mixed
      */
-    public function setTargets(){
+    public function setTargets()
+    {
 
         return [
             [

@@ -4,21 +4,20 @@ namespace app\modules\core\assets;
 use yii\web\AssetBundle;
 
 /**
- * Class fastclickAssets
+ * Class slimScrollAssets
  * @package app\modules\core\assets
  */
-class fastclickAssets extends AssetBundle
-{
-    public $sourcePath = '@bower/fastclick';
+class SlimScrollAssets extends AssetBundle {
+
+    public $sourcePath = '@bower/slimscroll';
 
     public $css = [];
 
     public $js = [
-        'lib/fastclick.js',
+        'jquery.slimscroll.min.js'
     ];
 
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
     ];
 }

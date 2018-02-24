@@ -60,9 +60,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->redirect(Url::to(app()->getModule('user')->profilePage));
-
-        app()->end();
+        return $this->redirect(Url::to(app()->getModule('user')->profilePage));
     }
 
 

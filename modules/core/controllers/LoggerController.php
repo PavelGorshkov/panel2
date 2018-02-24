@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\controllers;
 
 use app\modules\core\auth\LoggerTask;
@@ -24,7 +23,7 @@ class LoggerController extends WebController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => LoggerTask::createRulesController(),
             ],
         ];
@@ -83,6 +82,4 @@ class LoggerController extends WebController
             }
         }
     }
-
-
 }

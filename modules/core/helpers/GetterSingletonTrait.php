@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 /**
@@ -7,8 +8,8 @@ namespace app\modules\core\helpers;
  * Class GetterSingletonTrait
  * @package app\modules\core\helpers
  */
-trait GetterSingletonTrait {
-
+trait GetterSingletonTrait
+{
     use SingletonTrait;
 
     /**
@@ -16,24 +17,24 @@ trait GetterSingletonTrait {
      *
      * @return mixed|null
      */
-    public function __get($name) {
-
-        if(isset($this->_data[$name]))
+    public function __get($name)
+    {
+        if (isset($this->_data[$name]))
 
             return $this->_data[$name];
         else
             return null;
     }
 
+
     /**
      * @param string $name
      *
      * @return bool
      */
-    public function __isset($name) {
-
+    public function __isset($name)
+    {
         return isset($this->_data[$name]);
-
     }
 
 
@@ -42,9 +43,8 @@ trait GetterSingletonTrait {
      *
      * @return array
      */
-    public function getList() {
-
+    public function getList()
+    {
         return $this->_data;
     }
-
 }

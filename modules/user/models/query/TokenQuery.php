@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models\query;
 
 use yii\db\ActiveQuery;
@@ -10,11 +11,6 @@ use yii\db\ActiveQuery;
  */
 class TokenQuery extends ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
-
     /**
      * @inheritdoc
      * @return \app\modules\user\models\Token[]|array
@@ -23,6 +19,7 @@ class TokenQuery extends ActiveQuery
     {
         return parent::all($db);
     }
+
 
     /**
      * @inheritdoc

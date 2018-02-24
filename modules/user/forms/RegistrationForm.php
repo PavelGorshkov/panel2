@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\forms;
 
 use app\modules\user\helpers\ModuleTrait;
@@ -43,8 +44,8 @@ class RegistrationForm extends Model
     /**
      * @return string
      */
-    public function formName() {
-
+    public function formName()
+    {
         return 'registration-form';
     }
 
@@ -55,7 +56,6 @@ class RegistrationForm extends Model
      */
     public function rules()
     {
-
         return [
             [['username'], 'filter', 'filter' => 'trim',],
             [
@@ -68,7 +68,7 @@ class RegistrationForm extends Model
                 }
             ],
             [['username', 'email', 'password', 'r_password'], 'required'],
-            ['username', 'unique', 'targetClass' => User::className(), 'message' => 'Имя пользователя уже занято'],
+            ['username', 'unique', 'targetClass' => User::class, 'message' => 'Имя пользователя уже занято'],
             [
                 'username',
                 'match',
@@ -76,7 +76,7 @@ class RegistrationForm extends Model
                 'message' => 'Неверный формат поля "{attribute}" допустимы только буквы и цифры, от 2 до 20 символов'
             ],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => User::className(), 'message' => 'Email уже занят'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => 'Email уже занят'],
             [['password', 'r_password'], 'string', 'min' => $this->module->minPasswordLength],
             ['r_password', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
             ['verifyCode', 'captcha', 'skipOnEmpty' => !$this->isCaptchaEnabled()],
@@ -116,9 +116,8 @@ class RegistrationForm extends Model
 
     /**
      * @param string|mixed $attribute
-     * @param array $params
      */
-    public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */  $params)
+    public function emptyOnInvalid($attribute)
     {
         if ($this->hasErrors()) {
 

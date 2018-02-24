@@ -1,13 +1,11 @@
 <?php
-
-
 namespace app\modules\core\models;
-
 
 use app\modules\core\components\FormModel;
 use app\modules\core\helpers\LoggerHelper;
 use app\modules\core\interfaces\SearchModelInterface;
 use yii\data\ArrayDataProvider;
+
 
 /**
  * Class LogSourceFormModel
@@ -15,7 +13,6 @@ use yii\data\ArrayDataProvider;
  */
 class LogSourceFormModel extends FormModel implements SearchModelInterface
 {
-
     const SCENARIO_SEARCH = 'search';
 
     public $name;
@@ -26,6 +23,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
 
     public $fpath;
 
+
     /**
      * @inheritdoc
      * @return array
@@ -33,7 +31,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_SEARCH]= ['name','source'];
+        $scenarios[self::SCENARIO_SEARCH] = ['name', 'source'];
         return $scenarios;
     }
 
@@ -46,7 +44,6 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
         return [
             ['source', 'in', 'range' => array_keys(self::getSourceType())],
             [['name', 'source', 'mtime', 'fpath'], 'safe'],
-
         ];
     }
 
@@ -64,6 +61,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
         ];
     }
 
+
     /**
      * @param string|null $param
      * @return mixed
@@ -75,6 +73,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
             return $types[$param];
         else return $types;
     }
+
 
     /**
      * @param array $params
@@ -97,10 +96,11 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
             'pagination' => [
                 'pageSize' => 20,
             ],
-            'modelClass' => self::className(),
+            'modelClass' => self::class,
         ]);
 
     }
+
 
     /**
      * @return array LogSourceFormModel objects
@@ -120,8 +120,8 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
             }
         }
         return $list;
-
     }
+
 
     /**
      * @return array LogSourceFormModel objects
@@ -134,7 +134,7 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
         foreach ($logs as $source => $info) {
             foreach ($info as $log) {
                 $objArray[] = \Yii::createObject([
-                    'class' => LogSourceFormModel::className(),
+                    'class' => LogSourceFormModel::class,
                     'name' => $log['name'],
                     'fpath' => $log['filePath'],
                     'mtime' => $log['modTime'],
@@ -144,6 +144,4 @@ class LogSourceFormModel extends FormModel implements SearchModelInterface
         }
         return $objArray;
     }
-
-
 }

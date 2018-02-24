@@ -77,23 +77,24 @@ class WebService extends Component implements LoggerInterface
      * @throws ServerErrorHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public function initProvider($provider) {
+    public function initProvider($provider)
+    {
 
         if (!isset($this->options[$provider])) {
 
-            throw new ServerErrorHttpException('Not found options for provider "'.$provider.'"');
+            throw new ServerErrorHttpException('Not found options for provider "' . $provider . '"');
         }
 
         /** @var $instance WebService */
         $this->_providers[$provider] = Yii::createObject(
             ArrayHelper::merge(
-            [
-                'class'=>WebServiceInstance::className(),
-                'logger' => $this->logger,
-                'category' => $provider
-            ],
-            $this->options[$provider]
-        ));
+                [
+                    'class' => WebServiceInstance::class,
+                    'logger' => $this->logger,
+                    'category' => $provider
+                ],
+                $this->options[$provider]
+            ));
     }
 
 
@@ -105,10 +106,10 @@ class WebService extends Component implements LoggerInterface
     {
         return [
             [
-            'class' => FileTarget::className(),
-            'categories' => array_keys($this->options),
-            'logFile' => '@runtime/logs/webservice.log',
-            'logVars' => [],
+                'class' => FileTarget::class,
+                'categories' => array_keys($this->options),
+                'logFile' => '@runtime/logs/webservice.log',
+                'logVars' => [],
             ]
         ];
     }

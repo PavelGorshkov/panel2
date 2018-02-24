@@ -1,8 +1,8 @@
 <?php
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\RouterUrlHelper;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 
 /**
@@ -13,7 +13,6 @@ use yii\web\HttpException;
  */
 class RedactorController extends WebController
 {
-
     protected $actionMenu = null;
 
     public $layout = '@app/modules/core/views/layouts/redactor_menu';
@@ -26,10 +25,10 @@ class RedactorController extends WebController
      * @throws HttpException
      *
      * @throws \yii\web\BadRequestHttpException
+     * @throws InvalidConfigException
      */
     public function beforeAction($action)
     {
-
         parent::beforeAction($action);
 
         if (empty($this->actionMenu) || !is_array($this->actionMenu)) {
@@ -53,10 +52,10 @@ class RedactorController extends WebController
 
     /**
      * @return array
+     * @throws InvalidConfigException
      */
     public function getActionsMenu()
     {
-
         $menu = [];
 
         foreach ($this->actionMenu as $url => $label) {

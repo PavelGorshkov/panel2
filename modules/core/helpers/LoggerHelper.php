@@ -1,15 +1,13 @@
 <?php
-
-
 namespace app\modules\core\helpers;
 
 /**
  * Class LoggerHelper
  * @package app\modules\core\helpers
+ * @method static LoggerHelper model()
  */
 class LoggerHelper
 {
-
     use SingletonTrait;
 
     /**
@@ -51,6 +49,7 @@ class LoggerHelper
         return $array;
     }
 
+
     /**
      * @return array
      */
@@ -60,6 +59,7 @@ class LoggerHelper
             self::SOURCE_FILE => "Файл",
         ];
     }
+
 
     /**
      * @param string $name
@@ -79,6 +79,4 @@ class LoggerHelper
         }
         return null;
     }
-
-
 }

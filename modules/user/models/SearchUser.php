@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models;
 
 use app\modules\core\interfaces\SearchModelInterface;
@@ -30,9 +31,9 @@ class SearchUser extends Model implements SearchModelInterface
     public function rules()
     {
         return [
-           [['username', 'info', 'access_level', 'status'], 'safe'],
-            ['access_level', 'in', 'range'=>array_keys(User::getAccessLevelList())],
-            ['status', 'in', 'range'=>array_keys(UserStatusHelper::getList())],
+            [['username', 'info', 'access_level', 'status'], 'safe'],
+            ['access_level', 'in', 'range' => array_keys(User::getAccessLevelList())],
+            ['status', 'in', 'range' => array_keys(UserStatusHelper::getList())],
         ];
     }
 
@@ -54,7 +55,6 @@ class SearchUser extends Model implements SearchModelInterface
      */
     public function search($params)
     {
-
         /* @var $query UserQuery */
         $query = ManagerUser::find();
 
@@ -71,8 +71,8 @@ class SearchUser extends Model implements SearchModelInterface
             ->orFilterWhere(['like', 'email', $this->info])
             ->orFilterWhere(['like', 'full_name', $this->info])
             ->orFilterWhere(['like', 'phone', $this->info])
-            ->andFilterWhere(['access_level'=>$this->access_level])
-            ->andFilterWhere(['status'=>$this->status]);
+            ->andFilterWhere(['access_level' => $this->access_level])
+            ->andFilterWhere(['status' => $this->status]);
 
         return $dataProvider;
     }

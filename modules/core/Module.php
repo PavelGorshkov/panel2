@@ -24,6 +24,9 @@ class Module extends ParentModule
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
 
 
+    /**
+     * @return array
+     */
     public function getParamLabels()
     {
         return  [

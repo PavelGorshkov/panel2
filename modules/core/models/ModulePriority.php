@@ -1,9 +1,7 @@
 <?php
 namespace app\modules\core\models;
 
-
 use yii\helpers\ArrayHelper;
-
 
 /**
  * Class ModulePriority
@@ -87,7 +85,7 @@ class ModulePriority extends Settings
             } else {
 
                 $model = \Yii::createObject([
-                    'class'=>self::className(),
+                    'class'=>self::class,
                     'module' => $m,
                     'param_name' => self::PARAM,
                     'user_id' => 0

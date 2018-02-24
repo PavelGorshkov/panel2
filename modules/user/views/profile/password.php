@@ -2,6 +2,7 @@
 
 /* @var $this View */
 /* @var $model PasswordForm */
+
 /* @var $module Module */
 
 use app\modules\core\components\View;
@@ -14,7 +15,7 @@ use yii\widgets\ActiveForm;
 $this->setBreadcrumbs([
     [
         'label' => $this->getTitle(),
-        'url'=>['view'],
+        'url' => ['view'],
         'encode' => false,
     ],
     [
@@ -25,48 +26,48 @@ $this->setBreadcrumbs([
 
 
 $form = ActiveForm::begin([
-    'id'=>'profile-password-form',
+    'id' => 'profile-password-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => false,
     'validateOnBlur' => false,
     'validateOnType' => false,
     'validateOnChange' => false,
-    'options'=> [
-        'class'=>'well',
+    'options' => [
+        'class' => 'well',
     ]
 ]);
 echo $form->errorSummary($model);
 ?>
-<div class="row">
-    <div class="col-xs-6">
-        <?= $form->field($model, 'password', [
-            'inputOptions'=>[
-                'placeholder'=>$model->getAttributeLabel('password'),
-                'class'=>'form-control',
-            ],
-        ])->passwordInput(); ?>
+    <div class="row">
+        <div class="col-xs-6">
+            <?= $form->field($model, 'password', [
+                'inputOptions' => [
+                    'placeholder' => $model->getAttributeLabel('password'),
+                    'class' => 'form-control',
+                ],
+            ])->passwordInput(); ?>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-6">
-        <?= $form->field($model, 'r_password', [
-            'inputOptions'=>[
-                'placeholder'=>$model->getAttributeLabel('r_password'),
-                'class'=>'form-control',
-            ],
-        ])->passwordInput(); ?>
+    <div class="row">
+        <div class="col-xs-6">
+            <?= $form->field($model, 'r_password', [
+                'inputOptions' => [
+                    'placeholder' => $model->getAttributeLabel('r_password'),
+                    'class' => 'form-control',
+                ],
+            ])->passwordInput(); ?>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <?=Html::submitButton('Изменить пароль',
-            [
-                'class' => 'btn btn-success btn-sm',
-            ]
-        ); ?>
-        <?= Html::a('Oтмена', Url::to(['view']), ['class' => 'btn btn-sm btn-default']); ?>
+    <div class="row">
+        <div class="col-xs-12">
+            <?= Html::submitButton('Изменить пароль',
+                [
+                    'class' => 'btn btn-success btn-sm',
+                ]
+            ); ?>
+            <?= Html::a('Oтмена', Url::to(['view']), ['class' => 'btn btn-sm btn-default']); ?>
+        </div>
     </div>
-</div>
-<br/>
+    <br/>
 <?php
 $form->end();

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
@@ -7,8 +8,8 @@ use app\modules\core\helpers\ListHelper;
  * Class TokenStatusHelper
  * @package app\modules\user\helpers
  */
-class TokenStatusHelper extends ListHelper{
-
+class TokenStatusHelper extends ListHelper
+{
     const STATUS_NEW = 0;
 
     const STATUS_ACTIVATE = 1;
@@ -33,8 +34,8 @@ class TokenStatusHelper extends ListHelper{
     /**
      * @return array
      */
-    public static function getHtmlList() {
-
+    public static function getHtmlList()
+    {
         return [
             self::STATUS_NEW => '<span class="label label-new">Новый</span>',
             self::STATUS_ACTIVATE => '<span class="label label-info">Активирован</span>',

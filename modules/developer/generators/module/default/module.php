@@ -3,7 +3,7 @@
  * This is the template for generating a module class file.
  */
 
-use app\modules\core\generators\module\Generator;
+use app\modules\developer\generators\module\Generator;
 
 /* @var $this yii\web\View */
 /* @var $generator Generator */

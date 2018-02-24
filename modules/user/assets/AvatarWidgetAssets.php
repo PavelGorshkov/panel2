@@ -7,7 +7,8 @@ use yii\web\AssetBundle;
  * Class AvatarWidgetAssets
  * @package app\modules\user\assets
  */
-class AvatarWidgetAssets extends AssetBundle {
+class AvatarWidgetAssets extends AssetBundle
+{
 
     public $sourcePath = '@app/modules/user/assets/avatar-widget';
 

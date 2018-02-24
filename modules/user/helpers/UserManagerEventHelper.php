@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\user\components\UserManager;
@@ -15,13 +16,13 @@ use Yii;
  *
  * @method on(string $name, callable $handler, mixed $data = null, bool $append = true)
  */
-trait UserManagerEventHelper {
-
+trait UserManagerEventHelper
+{
     /**
      * Установка наблюдателей
      */
-    protected function setListener() {
-
+    protected function setListener()
+    {
         $this->on(
             UserManager::EVENT_SUCCESS_REGISTRATION,
             ['app\modules\user\listeners\UserManagerListener', 'onUserRegistration']
@@ -62,11 +63,11 @@ trait UserManagerEventHelper {
      *
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserTokenEvent(User $user, Token $token) {
-
+    protected function getUserTokenEvent(User $user, Token $token)
+    {
         /* @var $event TokenEvent */
-        $event =  Yii::createObject([
-            'class' => TokenEvent::className(),
+        $event = Yii::createObject([
+            'class' => TokenEvent::class,
             'user' => $user,
             'token' => $token,
         ]);
@@ -82,11 +83,11 @@ trait UserManagerEventHelper {
      * @return PasswordEvent
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserPasswordEvent(User $user, $password) {
-
+    protected function getUserPasswordEvent(User $user, $password)
+    {
         /* @var $event PasswordEvent */
-        $event =  Yii::createObject([
-            'class' => PasswordEvent::className(),
+        $event = Yii::createObject([
+            'class' => PasswordEvent::class,
             'user' => $user,
             'password' => $password,
         ]);
@@ -101,10 +102,10 @@ trait UserManagerEventHelper {
      * @return UserEvent|object
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserEvent(User $user) {
-
+    protected function getUserEvent(User $user)
+    {
         return Yii::createObject([
-            'class' => UserEvent::className(),
+            'class' => UserEvent::class,
             'user' => $user,
         ]);
     }

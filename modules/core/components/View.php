@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use yii\web\View as BaseView;
@@ -19,8 +20,8 @@ class View extends BaseView
      *
      * @param string $title
      */
-    public function setSmallTitle($title) {
-
+    public function setSmallTitle($title)
+    {
         $this->smallTitle = $title;
     }
 
@@ -28,8 +29,8 @@ class View extends BaseView
      * Установить заголовок 1го уровня
      * @param $title
      */
-    public function setTitle($title) {
-
+    public function setTitle($title)
+    {
         $this->title = $title;
     }
 
@@ -39,8 +40,8 @@ class View extends BaseView
      *
      * @return string
      */
-    public function getSmallTitle() {
-
+    public function getSmallTitle()
+    {
         return $this->smallTitle;
     }
 
@@ -50,8 +51,8 @@ class View extends BaseView
      *
      * @return string
      */
-    public function getTitle() {
-
+    public function getTitle()
+    {
         return $this->title;
     }
 
@@ -61,21 +62,21 @@ class View extends BaseView
      *
      * @param array $breadcrumbs
      */
-    public function setBreadcrumbs(array $breadcrumbs) {
-
+    public function setBreadcrumbs(array $breadcrumbs)
+    {
         $this->params['breadcrumbs'] = $breadcrumbs;
     }
 
     /**
      * @return array
      */
-    public function getBreadcrumbs() {
-
+    public function getBreadcrumbs()
+    {
         return empty($this->params['breadcrumbs'])
-            ?[
+            ? [
                 [
                     'label' => $this->getTitle(),
-                    'url'=>['index'],
+                    'url' => ['index'],
                     'encode' => false,
                 ],
                 [
@@ -83,6 +84,6 @@ class View extends BaseView
                     'encode' => false,
                 ]
             ]
-            :$this->params['breadcrumbs'];
+            : $this->params['breadcrumbs'];
     }
 }

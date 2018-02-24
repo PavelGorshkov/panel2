@@ -33,7 +33,7 @@ class ManagerController extends WebController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => ArrayHelper::merge(
                     ManagerTask::createRulesController(),
                     [
@@ -58,45 +58,44 @@ class ManagerController extends WebController
      */
     public function actions()
     {
-
         return [
             'index' => [
-                'class' => GridViewAction::className(),
-                'searchModel' => SearchUser::className(),
+                'class' => GridViewAction::class,
+                'searchModel' => SearchUser::class,
                 'smallTitle' => 'Список',
             ],
             'create' => [
-                'class' => SaveModelAction::className(),
-                'modelForm' => UserFormModel::className(),
-                'model' => ManagerUser::className(),
+                'class' => SaveModelAction::class,
+                'modelForm' => UserFormModel::class,
+                'model' => ManagerUser::class,
                 'isNewRecord' => true,
             ],
             'update' => [
-                'class' => SaveModelAction::className(),
-                'modelForm' => UserFormModel::className(),
-                'model' => ManagerUser::className(),
+                'class' => SaveModelAction::class,
+                'modelForm' => UserFormModel::class,
+                'model' => ManagerUser::class,
                 'isNewRecord' => false,
             ],
             'access-level' => [
-                'class' => EditableColumnAction::className(),
-                'modelClass' => ManagerUser::className(),
+                'class' => EditableColumnAction::class,
+                'modelClass' => ManagerUser::class,
                 'outputValue' => function (ManagerUser $model) {
 
                     return $model->getAccessGroup();
                 },
             ],
             'status' => [
-                'class' => EditableColumnAction::className(),
-                'modelClass' => ManagerUser::className(),
+                'class' => EditableColumnAction::class,
+                'modelClass' => ManagerUser::class,
                 'outputValue' => function ($model, $attribute) {
 
                     return UserStatusHelper::getValue($model->$attribute, true);
                 },
             ],
             'password' => [
-                'class' => SaveModelAction::className(),
-                'modelForm' => PasswordForm::className(),
-                'model' => ManagerUser::className(),
+                'class' => SaveModelAction::class,
+                'modelForm' => PasswordForm::class,
+                'model' => ManagerUser::class,
                 'isNewRecord' => false,
                 'view' => 'password',
                 'successFlashMessage' => 'Пароль успешно изменен!',
@@ -125,6 +124,7 @@ class ManagerController extends WebController
      * @return string
      * @throws NotFoundHttpException
      * @throws ServerErrorHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionAccess($id)
     {
@@ -139,7 +139,7 @@ class ManagerController extends WebController
 
         if ($model->isUFAccessLevel()) {
 
-            $role =  Role::findOne($model->access_level);
+            $role = Role::findOne($model->access_level);
             $dataRoles = RoleAccess::getData($role->id);
 
         } else {
@@ -171,7 +171,7 @@ class ManagerController extends WebController
 
             app()->authManager->flush();
 
-            return $this->redirect((array) app()->request->post(
+            return $this->redirect((array)app()->request->post(
                 'submit-type',
                 ['access', 'id' => $model->id]
             ));
@@ -182,7 +182,7 @@ class ManagerController extends WebController
             'operations' => $operations,
             'data' => $data,
             'role' => $role,
-            'dataRoles'=>$dataRoles
+            'dataRoles' => $dataRoles
         ]);
     }
 

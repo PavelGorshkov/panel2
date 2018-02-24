@@ -16,13 +16,13 @@ trait ConfigCacheTrait
      *
      * @throws ServerErrorHttpException
      */
-    public function createCache(array $data) {
-
+    public function createCache(array $data)
+    {
         // Если выключена опция кеширования настроек - не выполняем его:
         if ($this->isDebug()) return true;
 
         if (!@file_put_contents($this->getCacheFile(), $this->getFileTemplateJSON($data), LOCK_EX)) {
-            throw new ServerErrorHttpException('Ошибка записи кеша в файл '.$this->getCacheFile().' в классе "'.__CLASS__.'"');
+            throw new ServerErrorHttpException('Ошибка записи кеша в файл ' . $this->getCacheFile() . ' в классе "' . __CLASS__ . '"');
         }
 
         return true;
@@ -34,8 +34,8 @@ trait ConfigCacheTrait
      *
      * @return bool
      */
-    private function isDebug() {
-
+    private function isDebug()
+    {
         return (defined('\YII_DEBUG') && \YII_DEBUG === true)
             || (defined('YII_ENV') && YII_ENV === 'dev');
     }
@@ -46,11 +46,11 @@ trait ConfigCacheTrait
      *
      * @throws ServerErrorHttpException
      */
-    private function getCacheFile() {
-
+    private function getCacheFile()
+    {
         if (!File::checkPath($this->getCachePath())) {
 
-            throw new ServerErrorHttpException('Check rights path: '.$this->getCachePath());
+            throw new ServerErrorHttpException('Check rights path: ' . $this->getCachePath());
         };
 
         return Yii::getAlias(sprintf("%s/%s.json", $this->getCachePath(), $this->env));
@@ -62,8 +62,8 @@ trait ConfigCacheTrait
      *
      * @return bool|string
      */
-    private function getCachePath() {
-
+    private function getCachePath()
+    {
         return Yii::getAlias('@app/runtime/config');
     }
 
@@ -74,8 +74,8 @@ trait ConfigCacheTrait
      * @param array $data
      * @return string
      */
-    private function getFileTemplateJSON(array $data) {
-
+    private function getFileTemplateJSON(array $data)
+    {
         return json_encode($data);
     }
 
@@ -84,7 +84,8 @@ trait ConfigCacheTrait
      * @return bool
      * @throws ServerErrorHttpException
      */
-    private function isCached() {
+    private function isCached()
+    {
 
         if ($this->isDebug()) return false;
 
@@ -95,11 +96,12 @@ trait ConfigCacheTrait
     /**
      * Очистка cache конфига
      */
-    public function flushCache() {
+    public function flushCache()
+    {
 
         if (is_dir($this->getCachePath())) {
 
-            File::rmDir($this->getCachePath().DIRECTORY_SEPARATOR.'*');
+            File::rmDir($this->getCachePath() . DIRECTORY_SEPARATOR . '*');
         }
     }
 
@@ -110,9 +112,10 @@ trait ConfigCacheTrait
      * @return array|null
      * @throws ServerErrorHttpException
      */
-    public function getCacheSettings() {
+    public function getCacheSettings()
+    {
 
-        return $this->isCached()?$this->loadCache():null;
+        return $this->isCached() ? $this->loadCache() : null;
     }
 
 
@@ -126,7 +129,9 @@ trait ConfigCacheTrait
     {
         $data = @json_decode(file_get_contents($this->getCacheFile()), 1);
 
-        if (is_array($data) === false) {$data = null;}
+        if (is_array($data) === false) {
+            $data = null;
+        }
 
         return $data;
     }

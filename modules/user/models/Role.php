@@ -24,8 +24,8 @@ class Role extends ActiveRecord
     /**
      * @return array
      */
-    public function behaviors() {
-
+    public function behaviors()
+    {
         return [
             [
                 'class' => TimestampBehavior::className(),
@@ -35,10 +35,11 @@ class Role extends ActiveRecord
             ],
             [
                 'class' => ModelWebUserBehavior::className(),
-                'value' => user()->id?user()->id:0,
+                'value' => user()->id ? user()->id : 0,
             ],
         ];
     }
+
 
     /**
      * @inheritdoc

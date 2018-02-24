@@ -70,20 +70,24 @@ use yii\web\View;
                                 <div class="col-sm-3">
                                     <?php
                                     $operator = str_replace('/', '_', $action);
-                                    echo SwitchBox::widget([
-                                        'name' => 'Access[' . $action . ']',
-                                        'checked' => isset($data[$action]),
-                                        'clientOptions' => [
-                                            'size' => 'small',
-                                            'onColor' => 'success',
-                                            'offColor' => 'danger',
-                                            'onText' => 'Вкл',
-                                            'offText' => 'Выкл',
-                                        ],
-                                        'options' => [
-                                            'id' => $operator,
-                                        ]
-                                    ]);
+                                    try {
+                                        echo SwitchBox::widget([
+                                            'name' => 'Access[' . $action . ']',
+                                            'checked' => isset($data[$action]),
+                                            'clientOptions' => [
+                                                'size' => 'small',
+                                                'onColor' => 'success',
+                                                'offColor' => 'danger',
+                                                'onText' => 'Вкл',
+                                                'offText' => 'Выкл',
+                                            ],
+                                            'options' => [
+                                                'id' => $operator,
+                                            ]
+                                        ]);
+                                    } catch (Exception $e) {
+                                        echo $e->getMessage();
+                                    }
                                     ?>
                                 </div>
                                 <div class="col-sm-9">

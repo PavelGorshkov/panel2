@@ -9,8 +9,8 @@ use app\modules\core\components\Module;
  *
  * @property string $id
  */
-trait ModuleMenuTrait {
-
+trait ModuleMenuTrait
+{
     /**
      * @return array
      */
@@ -42,10 +42,11 @@ trait ModuleMenuTrait {
      * @param string $url
      * @return array
      */
-    public function getMenuUrl($url = Module::OBSERVER_URL) {
+    public function getMenuUrl($url = Module::OBSERVER_URL)
+    {
 
         return [
-            '/'.$this->id.'/'.trim($url, '/')
+            '/' . $this->id . '/' . trim($url, '/')
         ];
     }
 }

@@ -10,7 +10,6 @@ use app\modules\core\helpers\ListHelper;
  */
 class TokenTypeHelper extends ListHelper
 {
-
     const ACTIVATE = 1;
 
     const CHANGE_PASSWORD = 2;
@@ -36,7 +35,6 @@ class TokenTypeHelper extends ListHelper
      */
     public static function getHtmlList()
     {
-
         return [
             self::ACTIVATE => '<span class="label label-info">Активация пользователя</span>',
             self::CHANGE_PASSWORD => '<span class="label label-warning">Изменение/сброс пароля</span>',

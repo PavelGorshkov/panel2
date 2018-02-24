@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\user\Module;
@@ -11,13 +12,13 @@ use app\modules\user\Module;
  *
  * @property-read Module $module
  */
-trait ModuleTrait {
-
+trait ModuleTrait
+{
     /**
      * @return Module $module
      */
-    public function getModule() {
-
+    public function getModule()
+    {
         return app()->getModule('user');
     }
 }

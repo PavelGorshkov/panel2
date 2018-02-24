@@ -7,7 +7,7 @@ use yii\web\AssetBundle;
  * Class sparklineAssets
  * @package app\modules\core\assets
  */
-class sparklineAssets extends AssetBundle {
+class SparklineAssets extends AssetBundle {
 
     public $sourcePath = '@bower/';
 

@@ -78,9 +78,6 @@ abstract class Module
             $this->controllerNamespace = 'app\\modules\\'.$module.'\\controllers';
         }
 
-        // app()->migrator->updateToLatestSystem();
-        // app()->migrator->updateToLatest($this->id);
-
         $settings = ModuleSettings::model()->$module;
 
         if (count($settings)) {

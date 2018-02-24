@@ -1,6 +1,7 @@
 <?php
 /* @var $this app\modules\core\components\View */
 /* @var $model ProfileForm */
+
 /* @var $module Module */
 
 use app\modules\user\forms\ProfileForm;
@@ -9,11 +10,12 @@ use app\modules\user\widgets\AvatarWidget;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\MaskedInput;
 
 $this->setBreadcrumbs([
     [
         'label' => $this->getTitle(),
-        'url'=>['view'],
+        'url' => ['view'],
         'encode' => false,
     ],
     [
@@ -23,14 +25,14 @@ $this->setBreadcrumbs([
 ]);
 
 $form = ActiveForm::begin([
-   'id'=>'profile-form',
+    'id' => 'profile-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => false,
     'validateOnBlur' => false,
     'validateOnType' => false,
     'validateOnChange' => false,
-    'options'=> [
-        'class'=>'well',
+    'options' => [
+        'class' => 'well',
         'enctype' => 'multipart/form-data',
     ]
 ]);
@@ -38,10 +40,14 @@ echo $form->errorSummary($model);
 ?>
 <div class="row">
     <div class="col-sm-4">
-        <?=AvatarWidget::widget()?>
+        <?php try {
+            echo AvatarWidget::widget();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } ?>
     </div>
     <div class="col-sm-8">
-        <?=$form->field($model, 'avatar_file')->fileInput()?>
+        <?= $form->field($model, 'avatar_file')->fileInput() ?>
     </div>
 </div>
 <div class="row">
@@ -55,13 +61,13 @@ echo $form->errorSummary($model);
             'inputTemplate' =>
                 '<div class="input-group">{input}
                     <span class="input-group-addon">
-                        '.Html::a('Сменить', Url::to(['email'])).'
+                        ' . Html::a('Сменить', Url::to(['email'])) . '
                     </span>
                 </div>',
-            'inputOptions'=>[
+            'inputOptions' => [
                 'disabled' => true,
-                'placeholder'=>'Email',
-                'class'=>user()->info->isConfirmedEmail()?'text-success form-control':'form-control',
+                'placeholder' => 'Email',
+                'class' => user()->info->isConfirmedEmail() ? 'text-success form-control' : 'form-control',
             ],
         ]) ?>
         <?php if (user()->info->isConfirmedEmail()): { ?>
@@ -72,35 +78,35 @@ echo $form->errorSummary($model);
     </div>
     <div class="col-sm-6">
         <?= $form->field($model, 'phone')->widget(
-            \yii\widgets\MaskedInput::className(),
+            MaskedInput::class,
             [
                 'mask' => $module->phoneMask,
-                'options'=>[
-                    'placeholder'=>$model->getAttributeLabel('phone'),
-                    'class'=>'form-control',
+                'options' => [
+                    'placeholder' => $model->getAttributeLabel('phone'),
+                    'class' => 'form-control',
                 ]
-            ])?>
+            ]) ?>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <?= $form->field($model, 'about')->textarea(['rows' => 7, 'placeholder'=>$model->getAttributeLabel('about')]); ?>
+        <?= $form->field($model, 'about')->textarea(['rows' => 7, 'placeholder' => $model->getAttributeLabel('about')]); ?>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <?=Html::submitButton('Сохранить профиль',
+        <?= Html::submitButton('Сохранить профиль',
             [
                 'class' => 'btn btn-success btn-sm',
-                'tabindex'=>'9',
+                'tabindex' => '9',
             ]
         ); ?>
         <?= Html::a('Oтмена', Url::to(['view']), ['class' => 'btn btn-sm btn-default']); ?>
-        <?php if (!app()->user->identity->isLdap()) :?>
-        <?= Html::a('<i class="fa fa-lock"></i> Сменить пароль', ['change-password'], ['class' => 'btn btn-sm btn-info']); ?>
+        <?php if (!app()->user->identity->isLdap()) : ?>
+            <?= Html::a('<i class="fa fa-lock"></i> Сменить пароль', ['change-password'], ['class' => 'btn btn-sm btn-info']); ?>
         <?php endif; ?>
     </div>
 </div>
 <br/>
-<?php ActiveForm::end();?>
+<?php ActiveForm::end(); ?>
 

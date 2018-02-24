@@ -29,11 +29,11 @@ class RolesController extends WebController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => RolesTask::createRulesController(),
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -62,20 +62,20 @@ class RolesController extends WebController
     {
         return [
             'index' => [
-                'class' => GridViewAction::className(),
-                'searchModel' => SearchRole::className(),
+                'class' => GridViewAction::class,
+                'searchModel' => SearchRole::class,
                 'smallTitle' => 'Список',
             ],
             'create' => [
-                'class' => SaveModelAction::className(),
-                'modelForm' => RoleFormModel::className(),
-                'model' => Role::className(),
+                'class' => SaveModelAction::class,
+                'modelForm' => RoleFormModel::class,
+                'model' => Role::class,
                 'isNewRecord' => true,
             ],
             'update' => [
-                'class' => SaveModelAction::className(),
-                'modelForm' => RoleFormModel::className(),
-                'model' => Role::className(),
+                'class' => SaveModelAction::class,
+                'modelForm' => RoleFormModel::class,
+                'model' => Role::class,
                 'isNewRecord' => false,
             ],
         ];
@@ -102,6 +102,7 @@ class RolesController extends WebController
      * @param $id
      * @return string
      * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionAccess($id)
     {
@@ -132,7 +133,7 @@ class RolesController extends WebController
 
             app()->authManager->flush();
 
-            return $this->redirect((array) app()->request->post(
+            return $this->redirect((array)app()->request->post(
                 'submit-type',
                 ['access', 'id' => $model->id]
             ));

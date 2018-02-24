@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\core\auth;
 
-use app\modules\user\components\RBACItem;
+use app\modules\user\components\RbacItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
@@ -11,7 +11,7 @@ use yii\rbac\Item;
  * Class ModuleTask
  * @package app\modules\core\auth
  */
-class ModuleTask extends RBACItem {
+class ModuleTask extends RbacItem {
 
     const TASK = '/core/module';
 
@@ -22,6 +22,7 @@ class ModuleTask extends RBACItem {
     const OPERATION_FLUSH = '/core/module/flush';
 
     const OPERATION_SETTINGS = '/core/module/settings';
+
 
     public $types = [
         self::TASK => Item::TYPE_ROLE,

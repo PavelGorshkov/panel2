@@ -28,8 +28,8 @@ class AdminLteAssets extends  AssetBundle {
         'app\modules\core\assets\AppAssets',
         'app\modules\core\assets\IonAssets',
         'app\modules\core\assets\FontAwesomeAssets',
-        'app\modules\core\assets\fastclickAssets',
-        'app\modules\core\assets\slimScrollAssets',
+        'app\modules\core\assets\FastClickAssets',
+        'app\modules\core\assets\SlimScrollAssets',
 
     ];
 

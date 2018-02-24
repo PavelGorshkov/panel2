@@ -7,7 +7,8 @@ namespace app\modules\core\interfaces;
  * Interface ModuleParamsInterface
  * @package app\modules\core\components
  */
-interface ModuleParamsInterface {
+interface ModuleParamsInterface
+{
 
     /**
      * Возвращает список параметров, хранимых в системе

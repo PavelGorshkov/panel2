@@ -16,6 +16,4 @@ namespace app\modules\user\models;
 class RoleAccess extends Access
 {
     const TYPE = self::TYPE_ROLE;
-
-
 }

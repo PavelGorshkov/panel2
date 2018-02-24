@@ -1,7 +1,6 @@
 <?php
 namespace app\modules\core\interfaces;
 
-
 use yii\data\DataProviderInterface;
 
 /**

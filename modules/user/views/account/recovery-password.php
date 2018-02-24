@@ -1,6 +1,7 @@
 <?php
 /* @var $this app\modules\core\components\View */
 /* @var $model app\modules\user\forms\RecoveryPasswordForm */
+
 /* @var $module app\modules\user\Module */
 
 use app\modules\core\components\View;
@@ -14,14 +15,14 @@ $this->setTitle('Восстановление пароля');
     <p class="login-box-msg">Восстановление пароля</p>
 <?php
 $form = ActiveForm::begin([
-    'id'=>'recovery_password-form',
+    'id' => 'recovery_password-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => false,
     'validateOnBlur' => false,
     'validateOnType' => false,
     'validateOnChange' => false,
-    'options'=> [
-        'class'=>'form-signin form'
+    'options' => [
+        'class' => 'form-signin form'
     ]
 ]);
 $form->errorSummary($model);
@@ -56,17 +57,17 @@ $(function() {
 })
 }(window.jQuery)
 JS
-    , View::POS_END );
+    , View::POS_END);
 ?>
     <div class='row'>
         <div class="col-sm-12">
             <?= $form->field($model, 'password', [
                 'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-lock form-control-feedback"></span></span></div>',
-                'enableLabel'=>false,
-                'inputOptions'=>[
+                'enableLabel' => false,
+                'inputOptions' => [
                     'autofocus' => 'autofocus',
-                    'placeholder'=>$model->getAttributeLabel('password'),
-                    'tabindex'=>'6',
+                    'placeholder' => $model->getAttributeLabel('password'),
+                    'tabindex' => '6',
                 ],
             ])->passwordInput(); ?>
         </div>
@@ -75,39 +76,44 @@ JS
         <div class="col-sm-12">
             <?= $form->field($model, 'r_password', [
                 'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-lock form-control-feedback"></span></span></div>',
-                'enableLabel'=>false,
-                'inputOptions'=>[
+                'enableLabel' => false,
+                'inputOptions' => [
                     'autofocus' => 'autofocus',
-                    'placeholder'=>$model->getAttributeLabel('r_password'),
-                    'tabindex'=>'7',
+                    'placeholder' => $model->getAttributeLabel('r_password'),
+                    'tabindex' => '7',
                 ],
             ])->passwordInput(); ?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 form-group">
-            <?=Button::widget(
-                [
-                    'label' => 'Сгенерировать пароль',
-                    'options' => [
-                        'id' => 'generate_password',
-                        'data-minlength' => $module->minPasswordLength,
-                        'class'=>'btn btn-block btn-sm'
-                    ],
-                ]
-            ); ?>
+            <?php try {
+                echo Button::widget(
+                    [
+                        'label' => 'Сгенерировать пароль',
+                        'options' => [
+                            'id' => 'generate_password',
+                            'data-minlength' => $module->minPasswordLength,
+                            'class' => 'btn btn-block btn-sm'
+                        ],
+                    ]
+                );
+            } catch (Exception $e) {
+
+                $e->getMessage();
+            } ?>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <?=Html::submitButton('Изменить пароль',
+            <?= Html::submitButton('Изменить пароль',
                 [
                     'class' => 'btn btn-primary btn-block btn-lg',
-                    'tabindex'=>'9',
+                    'tabindex' => '9',
                 ]
             ); ?>
         </div>
     </div>
     <br/>
-<?php ActiveForm::end();?>
-<?=Html::a('Вернуться', ['/login'])?>
+<?php ActiveForm::end(); ?>
+<?= Html::a('Вернуться', ['/login']) ?>

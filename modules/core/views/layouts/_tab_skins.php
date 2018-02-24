@@ -92,5 +92,5 @@ use yii\helpers\Url;
     </li>
 </ul>
 <?php
-$skin_url =  app()->assetManager->getAssetUrl(app()->assetManager->getBundle(AdminLteAssets::className()), '/js/skins.js');
-//$this->registerJsFile($skin_url, ['position'=>POS_END]);
+$skin_url = app()->assetManager->getAssetUrl(app()->assetManager->getBundle(AdminLteAssets::class), '/js/skins.js');
+$this->registerJsFile($skin_url, ['position'=>POS_END]);

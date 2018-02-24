@@ -3,29 +3,39 @@
 namespace app\modules\cron\models\query;
 
 use yii\db\ActiveQuery;
+use app\modules\cron\models\Job;
 
 /**
- * This is the ActiveQuery class for [[\app\modules\cron\models\Job]].
+ * This is the ActiveQuery class for [[Job]].
  *
- * @see \app\modules\cron\models\Job
+ * @see Job
  */
 class JobQuery extends ActiveQuery{
 
     /**
      * @inheritdoc
-     * @return \app\modules\cron\models\Job[]|array
+     * @return Job[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null){
         return parent::all($db);
     }
 
+
     /**
      * @inheritdoc
-     * @return \app\modules\cron\models\Job|array|null
+     * @return Job|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null){
         return parent::one($db);
+    }
+
+
+    /**
+     * Получение списка актуальных расписаний
+     * @param null $db
+     * @return Job[]|array
+     */
+    public function active($db = null){
+        return $this->where('is_active = 1')->all($db);
     }
 }

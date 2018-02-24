@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\forms;
 
 use app\modules\core\interfaces\SaveModelInterface;
@@ -43,8 +44,8 @@ class UserFormModel extends Model implements SaveModelInterface
     /**
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
             [
                 [
@@ -67,7 +68,7 @@ class UserFormModel extends Model implements SaveModelInterface
                     'phone'
                 ], 'trim',],
             [
-                ['username', 'email', 'full_name', 'about', 'phone' ], 'filter',
+                ['username', 'email', 'full_name', 'about', 'phone'], 'filter',
                 'filter' => function ($html) {
                     return HtmlPurifier::process(
                         $html,
@@ -78,13 +79,13 @@ class UserFormModel extends Model implements SaveModelInterface
             [
                 'username',
                 'unique',
-                'targetClass' => User::className(),
+                'targetClass' => User::class,
                 'message' => 'Имя пользователя уже занято',
                 'filter' => function (Query $query) {
 
                     if ($this->id !== null) {
 
-                        $query->andWhere('id != :id', [':id'=>(int) $this->id]);
+                        $query->andWhere('id != :id', [':id' => (int)$this->id]);
                     }
 
                     return $query;
@@ -97,29 +98,29 @@ class UserFormModel extends Model implements SaveModelInterface
                 'message' => 'Неверный формат поля "{attribute}" допустимы только буквы и цифры, от 2 до 20 символов'
             ],
             ['email', 'email'],
-            ['status', 'in', 'range'=>array_keys(UserStatusHelper::getList())],
+            ['status', 'in', 'range' => array_keys(UserStatusHelper::getList())],
 
-            ['email_confirm', 'in', 'range'=>array_keys(EmailConfirmStatusHelper::getList())],
-            ['access_level', 'in', 'range'=>array_keys(User::getAccessLevelList())],
+            ['email_confirm', 'in', 'range' => array_keys(EmailConfirmStatusHelper::getList())],
+            ['access_level', 'in', 'range' => array_keys(User::getAccessLevelList())],
 
             [
                 'access_level',
                 'isUpdatedAdmin',
                 'params' => [
-                    'message'=>'Нельзя отредактировать данные администратора',
-                    'defaultValue'=>UserAccessLevelHelper::LEVEL_ADMIN
+                    'message' => 'Нельзя отредактировать данные администратора',
+                    'defaultValue' => UserAccessLevelHelper::LEVEL_ADMIN
                 ]
             ],
             [
                 'status',
                 'isUpdatedAdmin',
-                'params'=>[
-                    'message'=>'Нельзя отредактировать данные администратора',
-                    'defaultValue'=>UserStatusHelper::STATUS_ACTIVE
+                'params' => [
+                    'message' => 'Нельзя отредактировать данные администратора',
+                    'defaultValue' => UserStatusHelper::STATUS_ACTIVE
                 ],
             ],
 
-            ['phone','match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}', ],
+            ['phone', 'match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}',],
 
             ['id', 'safe'],
         ];
@@ -132,15 +133,16 @@ class UserFormModel extends Model implements SaveModelInterface
      *
      * @return bool
      */
-    public function isUpdatedAdmin($attribute, $params) {
+    public function isUpdatedAdmin($attribute, $params)
+    {
 
         if ($this->id === null) return true;
 
         $user = User::findByPk($this->id);
 
         $message = isset($params['message'])
-            ?$params['message']
-            :'Ошибка валидации данных администратора!';
+            ? $params['message']
+            : 'Ошибка валидации данных администратора!';
 
         if ($user->isAdmin() && User::findCountAdmin() < 2) {
 
@@ -159,7 +161,8 @@ class UserFormModel extends Model implements SaveModelInterface
      * @param Model|ManagerUser $model
      * @return bool
      */
-    public function processingData(Model $model) {
+    public function processingData(Model $model)
+    {
 
         $model->setAttributes($this->getAttributes());
 

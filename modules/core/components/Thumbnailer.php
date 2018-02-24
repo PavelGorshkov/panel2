@@ -90,6 +90,6 @@ class Thumbnailer extends Component{
 
         $base_path = realpath(app()->basePath).'/web';
 
-        return str_replace($base_path, '', $path);
+        return app()->request->baseUrl.str_replace($base_path, '', $path);
     }
 }

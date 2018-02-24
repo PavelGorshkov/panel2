@@ -33,12 +33,9 @@ use yii\web\ServerErrorHttpException;
  *
  * Class UserManager
  * @package app\modules\user\components
- *
- *
  */
 class UserManager extends Component
 {
-
     const EVENT_CHANGE_EMAIL = 'user.change.email';
 
     const EVENT_SUCCESS_REGISTRATION = 'user.success.registration';
@@ -121,7 +118,6 @@ class UserManager extends Component
      */
     public function changePassword(User $user, Token $token, $password)
     {
-
         $transaction = app()->db->beginTransaction();
 
         if (!$this->updateUserHashPassword($user, $password)) return $this->failureTransaction($transaction);
@@ -162,7 +158,6 @@ class UserManager extends Component
      */
     protected function createUserForRegistration(RegistrationForm $model)
     {
-
         $user = new RegisterUser();
 
         $user->setScenario(RegisterUser::SCENARIO_REGISTER);
@@ -223,16 +218,16 @@ class UserManager extends Component
 
             $user = new User();
             $user->setAttributes([
-                'username'=>$ldapData->getAccountName(),
-                'email'=>$ldapData->getEmail(),
-                'email_confirm'=>EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
-                'hash'=>Password::hash($password),
-                'status'=>UserStatusHelper::STATUS_ACTIVE,
-                'registered_from'=>RegisterFromHelper::LDAP,
-                'access_level'=>UserAccessLevelHelper::LEVEL_LDAP,
-                'full_name'=>$ldapData->getCommonName(),
-                'about'=>$ldapData->getDepartment(),
-                'phone'=>$ldapData->getTelephoneNumber()!==null?$ldapData->getTelephoneNumber():null,
+                'username' => $ldapData->getAccountName(),
+                'email' => $ldapData->getEmail(),
+                'email_confirm' => EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
+                'hash' => Password::hash($password),
+                'status' => UserStatusHelper::STATUS_ACTIVE,
+                'registered_from' => RegisterFromHelper::LDAP,
+                'access_level' => UserAccessLevelHelper::LEVEL_LDAP,
+                'full_name' => $ldapData->getCommonName(),
+                'about' => $ldapData->getDepartment(),
+                'phone' => $ldapData->getTelephoneNumber() !== null ? $ldapData->getTelephoneNumber() : null,
             ]);
 
             if (!$user->validate()) {
@@ -273,7 +268,6 @@ class UserManager extends Component
      */
     public function generatePassword(User $user, Token $token)
     {
-
         $password = Password::generate(8);
 
         $transaction = app()->db->beginTransaction();
@@ -295,7 +289,6 @@ class UserManager extends Component
      */
     public function getAccessForUser(User $user)
     {
-
         if ($user === null) return [];
 
         $data = $this->accessQuery->getDataForUser($user->id);
@@ -316,7 +309,6 @@ class UserManager extends Component
      */
     public function getTokenUserList($token, $tokenType)
     {
-
         $tokenModel = $this->tokenStorage->getToken($token, $tokenType);
 
         if ($tokenModel === null) return [null, null];
@@ -330,7 +322,6 @@ class UserManager extends Component
      */
     public function init()
     {
-
         parent::init();
 
         $this->userQuery = User::find();
@@ -338,7 +329,7 @@ class UserManager extends Component
         $this->accessQuery = Access::find();
 
         /** @var $tokenStorage TokenStorage */
-        $tokenStorage = Yii::createObject(['class' => TokenStorage::className()]);
+        $tokenStorage = Yii::createObject(['class' => TokenStorage::class]);
 
         $this->setTokenStorage($tokenStorage);
 
@@ -372,7 +363,6 @@ class UserManager extends Component
      */
     public function recoverySendMail(User $user)
     {
-
         if (null === $user) return false;
 
         $transaction = app()->getDb()->beginTransaction();
@@ -399,7 +389,6 @@ class UserManager extends Component
      */
     public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile)
     {
-
         $user = $this->createUserForRegistration($model);
 
         $user->setAttributes($profile->getAttributes());
@@ -434,7 +423,6 @@ class UserManager extends Component
      */
     public function saveProfile(ProfileForm $model)
     {
-
         $data = $model->getAttributes();
 
         $data['avatar'] = $data['avatar_file'];
@@ -462,7 +450,6 @@ class UserManager extends Component
      */
     protected function setUserStatusTypeAndEmailConfirm(User $user)
     {
-
         if (!$this->module->emailAccountVerification) {
 
             $user->status = UserStatusHelper::STATUS_ACTIVE;
@@ -485,7 +472,6 @@ class UserManager extends Component
      */
     protected function successTransaction(Transaction $transaction)
     {
-
         $transaction->commit();
 
         return true;
@@ -500,7 +486,6 @@ class UserManager extends Component
      */
     public function updateUserHashPassword(User $user, $password)
     {
-
         return (bool)$user->updateAttributes(['hash' => Password::hash($password)]);
     }
 
@@ -512,7 +497,6 @@ class UserManager extends Component
      */
     protected function updateUserSuccessStatus(User $user)
     {
-
         return (bool)$user->updateAttributes([
             'status' => UserStatusHelper::STATUS_ACTIVE,
             'status_change_at' => new Expression('NOW()'),
@@ -535,7 +519,6 @@ class UserManager extends Component
      */
     public function verifyEmail($token, $tokenType)
     {
-
         /* @var User $user */
         /* @var Token $tokenModel */
         list($tokenModel, $user) = $this->getTokenUserList($token, $tokenType);

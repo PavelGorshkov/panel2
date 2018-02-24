@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\helpers;
 
 use app\modules\core\components\LogDispatcher;
@@ -37,7 +38,7 @@ trait LoggerTrait
             $id = uniqid("log_");
 
             $locator->set($id, [
-                'class' => LogDispatcher::className(),
+                'class' => LogDispatcher::class,
                 'traceLevel' => 0,
                 'targets' => $targets,
             ]);

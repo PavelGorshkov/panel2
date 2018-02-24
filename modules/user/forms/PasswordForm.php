@@ -23,7 +23,6 @@ class PasswordForm extends FormModel implements SaveModelInterface
     public $email;
 
 
-
     /**
      * @return array
      */
@@ -56,7 +55,6 @@ class PasswordForm extends FormModel implements SaveModelInterface
      */
     public function formName()
     {
-
         return 'password-form';
     }
 

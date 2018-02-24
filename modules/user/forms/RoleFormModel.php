@@ -39,11 +39,11 @@ class RoleFormModel extends FormModel implements SaveModelInterface
     }
 
 
-    public function attributeLabels() {
-
+    public function attributeLabels()
+    {
         return [
-            'title'=>'Название',
-            'description'=>'Описание',
+            'title' => 'Название',
+            'description' => 'Описание',
         ];
     }
 
@@ -52,17 +52,9 @@ class RoleFormModel extends FormModel implements SaveModelInterface
      * @param Model|Role $model
      * @return bool
      */
-    public function processingData(Model $model) {
-
-        //TODO реализвать метод сохранения данных
-
+    public function processingData(Model $model)
+    {
         $model->setAttributes($this->getAttributes());
-
-        /*
-        // Проверка валидации перед сохранением
-        $model->validate();
-        printr($model->getErrors(), 1);
-        */
 
         return $model->save();
     }

@@ -1,9 +1,7 @@
 <?php
-
 namespace app\modules\core\models;
 
 use yii\helpers\ArrayHelper;
-
 
 /**
  * Class UserSettings
@@ -50,7 +48,6 @@ class UserSettings extends Settings
      */
     public static function saveData($name, $value)
     {
-
         $model = self::findOne([
             'module' => self::USER_DATA,
             'param_name' => $name,
@@ -77,8 +74,8 @@ class UserSettings extends Settings
     public static function deleteAllData()
     {
         return self::deleteAll([
-            'module'=>self::USER_DATA,
-            'user_id'=>app()->user->identity->id
+            'module' => self::USER_DATA,
+            'user_id' => app()->user->identity->id
         ]);
     }
 }

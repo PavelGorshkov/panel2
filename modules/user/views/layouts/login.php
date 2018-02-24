@@ -1,7 +1,8 @@
 <?php
-/* @var $this \app\modules\core\components\View */
+/* @var $this View */
 /* @var $content string */
 
+use app\modules\core\components\View;
 use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
 
@@ -14,11 +15,17 @@ $this->beginContent('@app/modules/core/views/layouts/login.php');
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <?=FlashMessages::widget()?>
+            <?php
+            try {
+                echo FlashMessages::widget();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            } ?>
             <?= $content;?>
         </div>
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
 </body>
-<?php $this->endContent(); ?>
+<?php
+    $this->endContent();

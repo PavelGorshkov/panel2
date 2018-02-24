@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models;
 
 use yii\helpers\ArrayHelper;
@@ -14,11 +15,11 @@ class RegisterUser extends User
     /**
      * @return array
      */
-    public function scenarios() {
-
+    public function scenarios()
+    {
         return ArrayHelper::merge(parent::scenarios(),
             [
-                self::SCENARIO_REGISTER =>[
+                self::SCENARIO_REGISTER => [
                     'username', 'email', '!hash', 'full_name', 'about', 'phone'
                 ]
             ]);
@@ -28,8 +29,8 @@ class RegisterUser extends User
     /**
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
             [['username', 'email', 'hash', 'full_name'], 'required'],
 

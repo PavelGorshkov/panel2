@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\components;
 
 use linslin\yii2\curl\Curl;

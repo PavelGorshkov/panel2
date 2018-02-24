@@ -1,7 +1,5 @@
 <?php
-
 namespace app\modules\core\components;
-
 
 use yii\db\Exception;
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 use app\modules\core\models\ModuleSettings as ARModuleSettings;
@@ -15,8 +14,8 @@ use app\modules\core\models\ModuleSettings as ARModuleSettings;
  */
 class ModuleSettings
 {
-
     use SingletonTrait;
+
 
     /**
      * @param $module
@@ -24,9 +23,7 @@ class ModuleSettings
      */
     public function __get($module)
     {
-
         return isset($this->_data[$module]) ? $this->_data[$module] : [];
-
     }
 
 

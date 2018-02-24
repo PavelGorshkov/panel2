@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components\actions;
 
 use yii\base\Action;
@@ -9,7 +10,8 @@ use yii\base\Action;
  *
  * @property \app\modules\core\components\WebController $controller
  */
-class WebAction extends Action {
+class WebAction extends Action
+{
 
     public $view = null;
 
@@ -19,11 +21,12 @@ class WebAction extends Action {
 
     public $smallTitle = null;
 
+
     /**
      * @inheritdoc
      */
-    public function init() {
-
+    public function init()
+    {
         if ($this->layout !== null) $this->controller->layout = $this->layout;
 
         if ($this->view === null) $this->view = $this->id;
@@ -37,8 +40,8 @@ class WebAction extends Action {
     /**
      * @param string $title
      */
-    public function setTitle($title) {
-
+    public function setTitle($title)
+    {
         if (method_exists($this->controller, 'setTitle')) {
 
             $this->controller->setTitle($title);
@@ -52,8 +55,8 @@ class WebAction extends Action {
     /**
      * @param string $small_title
      */
-    public function setSmallTitle($small_title) {
-
+    public function setSmallTitle($small_title)
+    {
         if (method_exists($this->controller, 'setSmallTitle')) {
 
             $this->controller->setSmallTitle($small_title);
@@ -64,8 +67,8 @@ class WebAction extends Action {
      * @param array $params
      * @return string
      */
-    public function render(array $params) {
-
+    public function render(array $params)
+    {
         return $this->controller->render($this->view, $params);
     }
 

@@ -64,6 +64,7 @@ class ModuleManager extends Component
 
     /**
      * Определение неактивных (неустановленных) модулей в системе
+     * @throws \yii\base\InvalidConfigException
      */
     private function _initDisabledModules()
     {
@@ -98,6 +99,8 @@ class ModuleManager extends Component
 
     /**
      * Определение установленных модулей, зависимых от приложения
+     *
+     * @throws \yii\base\InvalidConfigException
      */
     private function _initEnabledModules()
     {
@@ -291,6 +294,7 @@ class ModuleManager extends Component
      * @param []|string $access
      *
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function can($module, $access)
     {
@@ -318,6 +322,7 @@ class ModuleManager extends Component
      * Получение массива отключенных модулей приложения
      *
      * @return array|null
+     * @throws \yii\base\InvalidConfigException
      */
     public function getDisabledModules()
     {
@@ -331,6 +336,7 @@ class ModuleManager extends Component
      * Получение массива подключенных модулей приложения
      *
      * @return array|null
+     * @throws \yii\base\InvalidConfigException
      */
     public function getEnabledModules()
     {
@@ -355,6 +361,7 @@ class ModuleManager extends Component
      * Получение списка всех активных модулей приложения
      *
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public function getListEnabledModules()
     {
@@ -367,6 +374,7 @@ class ModuleManager extends Component
      *
      * @param array $types
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public function getMenu(array $types)
     {
@@ -397,6 +405,7 @@ class ModuleManager extends Component
     /**
      * @param string $module
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public function getSettings($module)
     {
@@ -420,6 +429,7 @@ class ModuleManager extends Component
     /**
      * @param string $module
      * @return null|string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTitle($module)
     {
@@ -452,6 +462,7 @@ class ModuleManager extends Component
      * @param string $module
      *
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function isInstallModule($module)
     {
@@ -491,6 +502,7 @@ class ModuleManager extends Component
     /**
      * @param string $module
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function onModule($module)
     {
@@ -519,7 +531,7 @@ class ModuleManager extends Component
      * @param array $data
      * @return bool
      */
-    public function saveSettings($module, $data=[])
+    public function saveSettings($module, $data = [])
     {
         if (empty($data)) return false;
 

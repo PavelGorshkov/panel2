@@ -80,7 +80,13 @@ class Access extends ActiveRecord
     }
 
 
-    public static function setData($id,array $post = [])
+    /**
+     * @param $id
+     * @param array $post
+     * @return bool|int
+     * @throws \yii\db\Exception
+     */
+    public static function setData($id, array $post = [])
     {
         if (empty($post)) return false;
 
@@ -102,11 +108,15 @@ class Access extends ActiveRecord
     }
 
 
+    /**
+     * @param $id
+     * @return int
+     */
     public static function deleteData($id)
     {
         return self::deleteAll([
-            'id'=>$id,
-            'type'=>self::TYPE
+            'id' => $id,
+            'type' => self::TYPE
         ]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\ModuleTrait;
@@ -23,8 +24,8 @@ class IdentityUser extends User implements IdentityInterface
      * @param int|string $id
      * @return null|IdentityInterface|static
      */
-    public static function findIdentity($id) {
-
+    public static function findIdentity($id)
+    {
         return static::findOne($id);
     }
 
@@ -33,16 +34,16 @@ class IdentityUser extends User implements IdentityInterface
      * @param null $type
      * @return void|IdentityInterface
      */
-    public static function findIdentityByAccessToken($token, $type = null) {
-
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
 
     }
 
     /**
      * @return int|mixed|string
      */
-    public function getId() {
-
+    public function getId()
+    {
         return $this->getAttribute('id');
     }
 
@@ -50,8 +51,8 @@ class IdentityUser extends User implements IdentityInterface
     /**
      * @return mixed|string
      */
-    public function getAuthKey() {
-
+    public function getAuthKey()
+    {
         return $this->getAttribute('auth_key');
     }
 
@@ -60,8 +61,8 @@ class IdentityUser extends User implements IdentityInterface
      * @param string $authKey
      * @return bool
      */
-    public function validateAuthKey($authKey) {
-
+    public function validateAuthKey($authKey)
+    {
         return $this->getAuthKey() === $authKey;
     }
 
@@ -73,7 +74,7 @@ class IdentityUser extends User implements IdentityInterface
      */
     public function getIsBlocked()
     {
-        return (int) $this->status === UserStatusHelper::STATUS_BLOCK;
+        return (int)$this->status === UserStatusHelper::STATUS_BLOCK;
     }
 
 
@@ -83,11 +84,11 @@ class IdentityUser extends User implements IdentityInterface
      * @throws \yii\base\Exception
      * @throws \yii\web\HttpException
      */
-    public function getAvatarSrc($size = 64) {
+    public function getAvatarSrc($size = 64)
+    {
+        $avatar = $this->avatar ? $this->avatar : $this->module->defaultAvatar;
 
-        $avatar = $this->avatar?$this->avatar:$this->module->defaultAvatar;
-
-        return app()->thumbNailer->thumbnail($this->module->avatarDirs. $avatar,
+        return app()->thumbNailer->thumbnail($this->module->avatarDirs . $avatar,
             $this->module->avatarDirs,
             $size, $size
         );

@@ -7,7 +7,6 @@ use yii\helpers\Html;
 use yii\web\View;
 
 /** @var $this View */
-/** @var $model ManagerUser */
 /** @var $tasks array */
 /** @var $module array */
 /** @var $active bool */
@@ -80,19 +79,24 @@ use yii\web\View;
                                         $options['disabled'] = 'disabled';
                                     }
 
-                                    echo SwitchBox::widget([
-                                        'name' => isset($dataRoles[$action]) ? $action : 'Access[' . $action . ']',
-                                        'checked' => isset($data[$action]) || isset($dataRoles[$action]),
-                                        'clientOptions' => [
-                                            'size' => 'small',
-                                            'onColor' => 'success',
-                                            'offColor' => 'danger',
-                                            'onText' => 'Вкл',
-                                            'offText' => 'Выкл',
-                                        ],
-                                        'options' => $options,
+                                    try {
+                                        echo SwitchBox::widget([
+                                            'name' => isset($dataRoles[$action]) ? $action : 'Access[' . $action . ']',
+                                            'checked' => isset($data[$action]) || isset($dataRoles[$action]),
+                                            'clientOptions' => [
+                                                'size' => 'small',
+                                                'onColor' => 'success',
+                                                'offColor' => 'danger',
+                                                'onText' => 'Вкл',
+                                                'offText' => 'Выкл',
+                                            ],
+                                            'options' => $options,
 
-                                    ]);
+                                        ]);
+                                    } catch (Exception $e) {
+
+                                        echo $e->getMessage();
+                                    }
                                     ?>
                                 </div>
                                 <div class="col-sm-9">

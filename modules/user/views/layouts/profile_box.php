@@ -10,16 +10,19 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
 ?>
 <div class="row">
     <div class="col-md-3">
-        <?=InfoProfileWidget::widget();?>
+        <?php try {
+            echo InfoProfileWidget::widget();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } ?>
     </div>
     <div class="col-md-9">
         <? BoxWidget::begin([
-            'type'=>'warning',
-            'title'=>$this->getSmallTitle()
-        ])?>
-            <?=$content?>
-        <? BoxWidget::end()?>
+            'type' => 'warning',
+            'title' => $this->getSmallTitle()
+        ]) ?>
+        <?= $content ?>
+        <? BoxWidget::end() ?>
     </div>
 </div>
-<?php $this->endContent(); ?>
-
+<?php $this->endContent();

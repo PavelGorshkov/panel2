@@ -9,8 +9,8 @@ use yii\helpers\FileHelper;
  * Class File
  * @package app\modules\core\helpers
  */
-class File extends FileHelper {
-
+class File extends FileHelper
+{
     /**
      * Проверка пути к директории. Если дириктории нет, создает директорию
      *
@@ -22,7 +22,9 @@ class File extends FileHelper {
      */
     public static function checkPath($path, $rights = 0777, $recursive = true)
     {
-        if(empty($path)) {return false;}
+        if (empty($path)) {
+            return false;
+        }
 
         if (!is_dir($path)) { // проверка на существование директории
 
@@ -89,7 +91,7 @@ class File extends FileHelper {
             $dirHandle = opendir($path);
             while (false !== ($file = readdir($dirHandle))) {
                 if ($file != '.' && $file != '..') {
-                    $tmpPath = $path.'/'.$file;
+                    $tmpPath = $path . '/' . $file;
 
                     if (is_dir($tmpPath)) {
                         self::rmDir($tmpPath);
@@ -140,7 +142,8 @@ class File extends FileHelper {
      * @param string $file
      * @return array|mixed
      */
-    public static function includePhpFile($file) {
+    public static function includePhpFile($file)
+    {
 
         /** @noinspection PhpIncludeInspection */
         return file_exists($file)
@@ -154,7 +157,8 @@ class File extends FileHelper {
      *
      * @return bool
      */
-    public static function savePhpFile($file, $data) {
+    public static function savePhpFile($file, $data)
+    {
 
         $content = '<?php return ' . var_export($data, true) . ';';
 

@@ -47,6 +47,7 @@ class Token extends ActiveRecord
         ];
     }
 
+
     /**
      * @inheritdoc
      */
@@ -54,6 +55,7 @@ class Token extends ActiveRecord
     {
         return '{{%user_token}}';
     }
+
 
     /**
      * @inheritdoc
@@ -68,6 +70,7 @@ class Token extends ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -89,6 +92,7 @@ class Token extends ActiveRecord
         ];
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -96,6 +100,7 @@ class Token extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
 
     /**
      * @inheritdoc

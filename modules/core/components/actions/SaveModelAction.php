@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components\actions;
 
 use app\modules\core\interfaces\SaveModelInterface;
@@ -61,38 +62,38 @@ class SaveModelAction extends WebAction
      * @throws ServerErrorHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public function init() {
+    public function init()
+    {
 
         parent::init();
 
         if ($this->modelForm === null)
-            throw new ServerErrorHttpException('In action '.$this->id.' in controller '.$this->controller->id.' not found param modelForm');
+            throw new ServerErrorHttpException('In action ' . $this->id . ' in controller ' . $this->controller->id . ' not found param modelForm');
 
         $this->modelFormInstance = Yii::createObject([
-
-            'class'=>$this->modelForm,
+            'class' => $this->modelForm,
         ]);
 
         if ($this->modelFormInstance === null)
-            throw new ServerErrorHttpException('In action '.$this->id.' in controller  '.$this->controller->id.' not found instance class modelForm');
+            throw new ServerErrorHttpException('In action ' . $this->id . ' in controller  ' . $this->controller->id . ' not found instance class modelForm');
 
 
         if (!($this->modelFormInstance instanceof SaveModelInterface))
-            throw new ServerErrorHttpException('In action '.$this->id.' form model '.$this->modelForm.' not implements interface \\app\\modules\\core\\interfaces\\SaveModelInterface');
+            throw new ServerErrorHttpException('In action ' . $this->id . ' form model ' . $this->modelForm . ' not implements interface \\app\\modules\\core\\interfaces\\SaveModelInterface');
 
         $this->modelInstance = Yii::createObject([
 
-            'class'=>$this->model,
+            'class' => $this->model,
         ]);
 
         if (!($this->modelInstance instanceof Model)) {
 
-            throw new ServerErrorHttpException('In action '.$this->id.' model '.$this->model.' not instance class \\yii\\base\\Model');
+            throw new ServerErrorHttpException('In action ' . $this->id . ' model ' . $this->model . ' not instance class \\yii\\base\\Model');
         }
 
         if (!($this->modelInstance instanceof ActiveRecordInterface)) {
 
-            throw new ServerErrorHttpException('In action '.$this->id.' model '.$this->model.' not instance interface \\yii\\db\\ActiveRecordInterface');
+            throw new ServerErrorHttpException('In action ' . $this->id . ' model ' . $this->model . ' not instance interface \\yii\\db\\ActiveRecordInterface');
         }
     }
 
@@ -104,7 +105,8 @@ class SaveModelAction extends WebAction
      * @throws NotFoundHttpException
      * @throws \yii\base\ExitException
      */
-    public function run($id = 0) {
+    public function run($id = 0)
+    {
 
         if (!$this->isNewRecord) {
 
@@ -117,7 +119,7 @@ class SaveModelAction extends WebAction
 
         if (
             $this->modelFormInstance->load(app()->request->post())
-         && $this->modelFormInstance->validate()
+            && $this->modelFormInstance->validate()
         ) {
 
             if ($this->modelFormInstance->processingData($this->modelInstance)) {
@@ -135,8 +137,8 @@ class SaveModelAction extends WebAction
         }
 
         return $this->render([
-            'model'=>$this->modelFormInstance,
-            'module'=>app()->controller->module,
+            'model' => $this->modelFormInstance,
+            'module' => app()->controller->module,
         ]);
     }
 
@@ -195,7 +197,8 @@ class SaveModelAction extends WebAction
     /**
      * @return Response
      */
-    protected function redirectPage() {
+    protected function redirectPage()
+    {
 
         if ($this->isRefresh) return $this->controller->refresh();
 

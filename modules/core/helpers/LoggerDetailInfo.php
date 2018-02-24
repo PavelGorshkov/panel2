@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 use yii\base\Exception;
@@ -10,23 +9,23 @@ use yii\base\Exception;
  */
 class LoggerDetailInfo
 {
-
     const SOURCE_FILE = "files";
     const SOURCE_DB = "db";
 
     private $class;
+
 
     /**
      * @return array
      */
     private function getSourceTypeClass()
     {
-
         return [
-            self::SOURCE_FILE => LoggerFileParser::className(),
+            self::SOURCE_FILE => LoggerFileParser::class,
         ];
 
     }
+
 
     /**
      * LoggerDetailInfo constructor.
@@ -41,6 +40,7 @@ class LoggerDetailInfo
         else
             $this->class = new $types[$source];
     }
+
 
     /**
      * @param array $log

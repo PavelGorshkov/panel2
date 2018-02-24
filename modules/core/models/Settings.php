@@ -33,11 +33,11 @@ class Settings extends ActiveRecord
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
-
+    public function beforeSave($insert)
+    {
         if ($this->module === self::USER_DATA) {
 
-            $this->user_id  = user()->id;
+            $this->user_id = user()->id;
         }
 
         if (user()->isGuest) return false;
@@ -65,8 +65,8 @@ class Settings extends ActiveRecord
     /**
      * @return SettingsQuery
      */
-    public static function find() {
-
+    public static function find()
+    {
         return new SettingsQuery(get_called_class());
     }
 }

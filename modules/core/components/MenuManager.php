@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\components;
 
 use Yii;
@@ -64,6 +65,7 @@ class MenuManager extends Component
 
     /**
      * @return array|null
+     * @throws \yii\base\InvalidConfigException
      */
     public function getData()
     {
@@ -75,6 +77,7 @@ class MenuManager extends Component
 
     /**
      * Установка меню
+     * @throws \yii\base\InvalidConfigException
      */
     public function setMenu()
     {
@@ -107,6 +110,7 @@ class MenuManager extends Component
 
     /**
      * Сборка меню
+     * @throws \yii\base\InvalidConfigException
      */
     protected function prepareMenu()
     {
@@ -158,6 +162,7 @@ class MenuManager extends Component
      * @param string $name
      * @return mixed|null
      * @throws UnknownPropertyException
+     * @throws \yii\base\InvalidConfigException
      */
     public function __get($name)
     {
@@ -177,6 +182,7 @@ class MenuManager extends Component
     /**
      * @param string $name
      * @return bool
+     * @throws \yii\base\InvalidConfigException
      */
     public function __isset($name)
     {
@@ -192,6 +198,7 @@ class MenuManager extends Component
     /**
      * @param $name
      * @return mixed|null
+     * @throws \yii\base\InvalidConfigException
      */
     public function getSubMenu($name)
     {

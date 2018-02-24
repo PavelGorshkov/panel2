@@ -18,12 +18,13 @@ trait OutputMessageTrait
      * @param integer|null $type
      * @throws \yii\base\InvalidConfigException
      */
-    public function addMessage($message, $type = null) {
+    public function addMessage($message, $type = null)
+    {
 
         $this->_messages[] = Yii::createObject([
-            'class'=>OutputMessage::className(),
-            'message'=>$message,
-            'type'=>$type,
+            'class' => OutputMessage::class,
+            'message' => $message,
+            'type' => $type,
         ]);
     }
 
@@ -31,14 +32,15 @@ trait OutputMessageTrait
     /**
      * @return string
      */
-    public function getHtml() {
+    public function getHtml()
+    {
 
         $html = '';
 
         /* @var OutputMessage $message */
         foreach ($this->_messages as $message) {
 
-            $html .= Html::tag('p', $message->getMessage(), ['style'=>'color: '.$message->getType()]);
+            $html .= Html::tag('p', $message->getMessage(), ['style' => 'color: ' . $message->getType()]);
         }
 
         return $html;
@@ -48,7 +50,8 @@ trait OutputMessageTrait
     /**
      * @return array
      */
-    public function getConsole() {
+    public function getConsole()
+    {
 
         return $this->_messages;
     }

@@ -1,11 +1,9 @@
 <?php
-
 namespace app\modules\core\auth;
 
 use app\modules\user\components\RBACItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
-
 
 /**
  * Задача Просмотр лог-файлов
@@ -13,7 +11,7 @@ use yii\rbac\Item;
  * Class LoggerTask
  * @package app\modules\core\auth
  */
-class LoggerTask extends RBACItem
+class LoggerTask extends RbacItem
 {
     const TASK = '/core/logger';
 
@@ -23,6 +21,7 @@ class LoggerTask extends RBACItem
 
     const OPERATION_DELETE = '/core/logger/delete';
 
+    
     public $types = [
         self::TASK => Item::TYPE_ROLE,
         self::OPERATION_VIEW => Item::TYPE_PERMISSION,

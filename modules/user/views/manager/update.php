@@ -1,6 +1,8 @@
 <?php
+
 /* @var $this  View */
 /* @var $model UserFormModel */
+
 /* @var $module Module */
 
 use app\modules\core\components\View;
@@ -11,11 +13,11 @@ use app\modules\user\Module;
 $this->setSmallTitle($model->email);
 
 BoxWidget::begin([
-    'type'=>BoxWidget::TYPE_WARNING,
-    'title'=>'Редактирование пользователя'
+    'type' => BoxWidget::TYPE_WARNING,
+    'title' => 'Редактирование пользователя'
 ]);
 echo $this->render('_form', [
-    'model'=>$model,
-    'module'=>$module,
+    'model' => $model,
+    'module' => $module,
 ]);
 BoxWidget::end();

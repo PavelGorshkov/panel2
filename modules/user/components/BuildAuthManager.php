@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
@@ -230,10 +229,10 @@ class BuildAuthManager extends Component
 
     /**
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public static function getListOperations()
     {
-
         $task = [];
 
         foreach (app()->moduleManager->getListEnabledModules() as $module) {

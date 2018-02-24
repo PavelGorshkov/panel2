@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\models;
 
 use app\modules\core\components\FormModel;
@@ -22,7 +21,6 @@ class LogDataFormModel extends FormModel
     public $message;
 
     public $name;
-
 
     const SCENARIO_SEARCH = 'search';
     const LEVEL_INFO = "info";
@@ -80,7 +78,7 @@ class LogDataFormModel extends FormModel
      */
     public function search($params)
     {
-        if (empty($params['name'])){
+        if (empty($params['name'])) {
             throw new Exception('Параметр лог-файла недействительный');
         }
         $this->name = $params['name'];
@@ -98,7 +96,7 @@ class LogDataFormModel extends FormModel
             'pagination' => [
                 'pageSize' => 20,
             ],
-            'modelClass' => self::className(),
+            'modelClass' => self::class,
         ]);
     }
 
@@ -115,7 +113,7 @@ class LogDataFormModel extends FormModel
         if (!empty($data)) {
             foreach ($data as $item) {
                 $objArray[] = \Yii::createObject([
-                    'class' => self::className(),
+                    'class' => self::class,
                     'date' => $item['date'],
                     'ip' => $item['ip'],
                     'level' => $item['level'],
@@ -143,6 +141,7 @@ class LogDataFormModel extends FormModel
         ];
     }
 
+
     /**
      * @return array
      * @throws Exception
@@ -162,7 +161,5 @@ class LogDataFormModel extends FormModel
             }
         }
         return $list;
-
     }
-
 }

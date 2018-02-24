@@ -19,7 +19,6 @@ trait ModuleSettingsTrait
      */
     public static function dependsOnModules()
     {
-
         return [];
     }
 }

@@ -10,7 +10,6 @@ use yii\base\BaseObject;
  */
 class LoggerFileParser extends BaseObject
 {
-
     /**
      * @param $log
      * @return array|null

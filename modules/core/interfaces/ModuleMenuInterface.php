@@ -7,7 +7,8 @@ namespace app\modules\core\interfaces;
  * Interface ModuleMenuInterface
  * @package app\modules\core\components
  */
-interface ModuleMenuInterface {
+interface ModuleMenuInterface
+{
 
     /**
      * @return array

@@ -2,6 +2,7 @@
 
 /* @var $this \app\modules\core\components\View */
 /* @var $content string */
+/* @var Module $core */
 
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
@@ -12,7 +13,6 @@ use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
-/** @var Module $core */
 $core = app()->getModule('core');
 $icon = Html::img(implode('/', [
     app()->getRequest()->getBaseUrl(),
@@ -25,8 +25,8 @@ AdminLteAssets::register($this);
 ICheckAssets::register($this);
 
 include __DIR__ . '/_blocks.php';
-?>
-<?php $this->beginPage() ?>
+
+$this->beginPage() ?>
     <!DOCTYPE html>
     <html>
     <head>
@@ -42,9 +42,9 @@ include __DIR__ . '/_blocks.php';
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
         <!--suppress JSUnresolvedLibraryURL -->
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <?= Html::jsFile('@web/js/html5shiv.min.js');?>
         <!--suppress JSUnresolvedLibraryURL -->
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <?= Html::jsFile('@web/js/html5shiv.min.js');?>
         <![endif]-->
         <!--suppress JSUnusedLocalSymbols -->
         <script type="text/javascript">
@@ -52,12 +52,10 @@ include __DIR__ . '/_blocks.php';
             var panelToken = '<?= app()->getRequest()->csrfToken;?>';
         </script>
     </head>
-    <body class="
-    hold-transition
-    sidebar-mini
-    <?=(isset(UserSettings::model()->skinTemplate)?UserSettings::model()->skinTemplate:'skin-green-light')?>
-    <?=(isset(UserSettings::model()->sideBar)?UserSettings::model()->sideBar:'')?>"
-        >
+    <body class="hold-transition sidebar-mini
+    <?= (isset(UserSettings::model()->skinTemplate) ? UserSettings::model()->skinTemplate : 'skin-green-light') ?>
+    <?= (isset(UserSettings::model()->sideBar) ? UserSettings::model()->sideBar : '') ?>"
+    >
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
@@ -99,13 +97,13 @@ include __DIR__ . '/_blocks.php';
                 </h1>
                 <?= Breadcrumbs::widget([
                     'links' => $this->getBreadcrumbs(),
-                    'homeLink' => ['label'=>'<i class="fa fa-fw fa-home"></i> Главная', 'url'=>'/', 'encode'=>false],
+                    'homeLink' => ['label' => '<i class="fa fa-fw fa-home"></i> Главная', 'url' => '/', 'encode' => false],
                 ]) ?>
             </section>
 
             <!-- Main content -->
             <section class="content">
-                <?=FlashMessages::widget()?>
+                <?= FlashMessages::widget() ?>
                 <?= $content ?>
             </section>
             <!-- /.content -->

@@ -19,6 +19,7 @@ class ErrorAction extends \yii\web\ErrorAction {
         $this->view = '@app/modules/core/views/errorHandler/error';
     }
 
+
     /**
      * @return string
      */

@@ -18,7 +18,6 @@ use yii\widgets\ActiveForm;
  */
 class WebController extends Controller
 {
-
     /**
      * Установить заголовок 1 уровня
      *
@@ -26,7 +25,6 @@ class WebController extends Controller
      */
     public function setTitle($title)
     {
-
         $this->view->title = $title;
     }
 
@@ -37,7 +35,6 @@ class WebController extends Controller
      */
     public function setSmallTitle($title)
     {
-
         $this->view->smallTitle = $title;
     }
 
@@ -46,7 +43,6 @@ class WebController extends Controller
      * Проверить ajax валидность данных модели формы
      *
      * @param Model $model
-     * @throws \yii\base\ExitException
      */
     public function performAjaxValidation(Model $model)
     {
@@ -55,7 +51,6 @@ class WebController extends Controller
             app()->response->format = Response::FORMAT_JSON;
             app()->response->data = ActiveForm::validate($model);
             app()->response->send();
-            app()->end();
         }
     }
 

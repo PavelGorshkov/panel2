@@ -8,9 +8,11 @@ use yii\db\BaseActiveRecord;
  * Class ModelWebUserBehavior
  * @package app\modules\core\components\behaviors
  */
-class ModelWebUserBehavior extends AttributeBehavior {
+class ModelWebUserBehavior extends AttributeBehavior
+{
 
     public $createdAtAttribute = 'created_by';
+
     /**
      * @var string the attribute that will receive timestamp value.
      * Set this property to false if you do not want to record the update time.

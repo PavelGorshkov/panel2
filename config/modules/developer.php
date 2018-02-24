@@ -38,6 +38,12 @@ if (YII_ENV_DEV) {
                     'default' => '@app/modules/developer/generators/crud/default',
                 ]
             ],
+            'jqplagin'=>[
+                'class' => 'app\modules\developer\generators\jqplugin\Generator',
+                'templates' => [
+                    'default' => '@app/modules/developer/generators/jqplugin/default',
+                ]
+            ]
         ],
     ];
 

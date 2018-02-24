@@ -2,13 +2,14 @@
 namespace app\modules\core\widgets;
 
 use app\modules\core\helpers\RouterUrlHelper;
-use yii\widgets\Menu;
+use yii\widgets\Widget;
+use yii\widgets\enu;
 
 /**
  * Class AdminMenu
  * @package app\modules\core\widgets
  */
-class AdminMenu extends \yii\bootstrap\Widget {
+class AdminMenu extends Widget {
 
     public $menu;
 

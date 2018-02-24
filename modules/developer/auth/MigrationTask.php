@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\developer\auth;
 
-use app\modules\user\components\RBACItem;
+use app\modules\user\components\RbacItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
@@ -11,7 +11,7 @@ use yii\rbac\Item;
  * Class MigrationTask
  * @package app\modules\developer\auth
  */
-class MigrationTask extends RBACItem {
+class MigrationTask extends RbacItem {
 
     const TASK = '/developer/migration';
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
@@ -10,7 +11,6 @@ use app\modules\user\helpers\UserStatusHelper;
  */
 class ManagerUser extends User
 {
-
     /**
      * @param bool $insert
      * @return bool
@@ -30,7 +30,8 @@ class ManagerUser extends User
     /**
      * @return bool
      */
-    protected function isSaveUpdate() {
+    protected function isSaveUpdate()
+    {
 
         if ($this->isNewRecord) return true;
 
@@ -41,8 +42,8 @@ class ManagerUser extends User
 
         if (
             $this->getOldAttribute('access_level') === UserAccessLevelHelper::LEVEL_ADMIN
-         && $this->getAttribute('access_level') !== UserAccessLevelHelper::LEVEL_ADMIN
-         && $this->id === user()->info->id
+            && $this->getAttribute('access_level') !== UserAccessLevelHelper::LEVEL_ADMIN
+            && $this->id === user()->info->id
         ) {
 
             return false;

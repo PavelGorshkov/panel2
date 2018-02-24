@@ -1,9 +1,11 @@
 <?php
+
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\IdentityUser;
 use app\modules\user\models\User;
+use yii\web\User as ParentWebUser;
 
 /**
  * Class WebUser
@@ -12,7 +14,7 @@ use app\modules\user\models\User;
  * @property IdentityUser $identity
  * @property-read IdentityUser $info
  */
-class WebUser extends \yii\web\User
+class WebUser extends ParentWebUser
 {
     const SUCCESS_MESSAGE = 'success';
 
@@ -38,7 +40,6 @@ class WebUser extends \yii\web\User
      */
     public function can($permissionName, $params = [], $allowCaching = true)
     {
-
         if (is_array($permissionName)) {
 
             foreach ($permissionName as $p) {
@@ -60,7 +61,8 @@ class WebUser extends \yii\web\User
      * @param string $key
      * @param string $value
      */
-    public function setFlash($key,$value) {
+    public function setFlash($key, $value)
+    {
 
         app()->session->set($key, $value);
     }
@@ -72,7 +74,8 @@ class WebUser extends \yii\web\User
      * @param string $key
      * @return bool
      */
-    public function hasFlash($key) {
+    public function hasFlash($key)
+    {
 
         if (app()->request->isAjax) return false;
 
@@ -89,7 +92,8 @@ class WebUser extends \yii\web\User
      *
      * @return string|null
      */
-    public function getFlash($key, $defaultValue=null, $delete=true) {
+    public function getFlash($key, $defaultValue = null, $delete = true)
+    {
 
         if (app()->request->isAjax) return null;
 
@@ -106,7 +110,8 @@ class WebUser extends \yii\web\User
      *
      * @param string $message
      */
-    public function setWarningFlash($message) {
+    public function setWarningFlash($message)
+    {
 
         $this->setFlash(self::WARNING_MESSAGE, $message);
     }
@@ -117,7 +122,8 @@ class WebUser extends \yii\web\User
      *
      * @param $message
      */
-    public function setSuccessFlash($message) {
+    public function setSuccessFlash($message)
+    {
 
         $this->setFlash(self::SUCCESS_MESSAGE, $message);
     }
@@ -127,7 +133,8 @@ class WebUser extends \yii\web\User
      * Установка сообщения об ошибке
      * @param $message
      */
-    public function setErrorFlash($message) {
+    public function setErrorFlash($message)
+    {
 
         $this->setFlash(self::ERROR_MESSAGE, $message);
     }
@@ -137,7 +144,8 @@ class WebUser extends \yii\web\User
      * Установка успешного сообщения
      * @param $message
      */
-    public function setInfoFlash($message) {
+    public function setInfoFlash($message)
+    {
 
         $this->setFlash(self::INFO_MESSAGE, $message);
     }
@@ -147,7 +155,8 @@ class WebUser extends \yii\web\User
      * Получение информации об авторизованном пользователе
      * @return User
      */
-    public function getInfo() {
+    public function getInfo()
+    {
 
         if ($this->isGuest) return null;
 
@@ -161,7 +170,8 @@ class WebUser extends \yii\web\User
      *
      * @return null|string
      */
-    public function getRole() {
+    public function getRole()
+    {
 
         if ($this->isGuest) return Roles::GUEST;
 
@@ -179,7 +189,8 @@ class WebUser extends \yii\web\User
     /**
      * @return array|null
      */
-    public function getAccessData() {
+    public function getAccessData()
+    {
 
         if ($this->isGuest) return [];
 

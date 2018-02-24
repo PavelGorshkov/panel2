@@ -1,19 +1,18 @@
 <?php
-
 namespace app\modules\user\auth;
 
-use app\modules\user\components\RBACItem;
+use app\modules\user\components\RbacItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
 
 /**
-* Задача Управление ролями
-*
-* Class RolesTask
-* @package app\modules\user\auth
-*/
-class RolesTask extends RBACItem
+ * Задача Управление ролями
+ *
+ * Class RolesTask
+ * @package app\modules\user\auth
+ */
+class RolesTask extends RbacItem
 {
     const TASK = '/user/roles';
 
@@ -38,8 +37,8 @@ class RolesTask extends RBACItem
 
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function titleList()
     {
         return [

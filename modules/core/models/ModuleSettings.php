@@ -3,7 +3,6 @@ namespace app\modules\core\models;
 
 use Yii;
 
-
 /**
  * Class ModuleSettings
  * @package app\modules\core\models
@@ -15,8 +14,8 @@ class ModuleSettings extends Settings
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
-
+    public function beforeSave($insert)
+    {
         if (user()->isGuest) return false;
 
         return parent::beforeSave($insert);
@@ -26,15 +25,15 @@ class ModuleSettings extends Settings
     /**
      * @return array|bool|mixed
      */
-    public static function findAllData() {
-
+    public static function findAllData()
+    {
         $data = cache()->get('find_all_module_data');
 
         if ($data === false) {
 
             $temp = self::find()
                 ->select(['module', 'param_name', 'param_value'])
-                ->where('module != :module',[':module' => self::USER_DATA])
+                ->where('module != :module', [':module' => self::USER_DATA])
                 ->asArray()
                 ->all();
 
@@ -57,11 +56,11 @@ class ModuleSettings extends Settings
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    public static function saveData($module, $data=[]) {
-
+    public static function saveData($module, $data = [])
+    {
         if (!count($data)) return true;
 
-        $models = self::findAll(['module'=>$module]);
+        $models = self::findAll(['module' => $module]);
 
         foreach ($models as $model) {
 
@@ -78,13 +77,12 @@ class ModuleSettings extends Settings
             }
         }
 
-
         if (count($data)) {
 
             foreach ($data as $param => $value) {
 
                 $model = Yii::createObject([
-                    'class'=>self::className(),
+                    'class' => self::class,
                     'module' => $module,
                     'param_name' => $param,
                     'param_value' => $value,
@@ -107,6 +105,6 @@ class ModuleSettings extends Settings
      */
     public static function deleteData($module)
     {
-        return self::deleteAll(['module'=>$module]);
+        return self::deleteAll(['module' => $module]);
     }
 }

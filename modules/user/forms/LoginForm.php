@@ -82,10 +82,10 @@ class LoginForm extends Model
 
                     if (
                         $this->module->isFromLDAP()
-                    && app()->userManager->isAuthLDAP($this->login, $this->password)
+                        && app()->userManager->isAuthLDAP($this->login, $this->password)
                     ) {
 
-                         app()->userManager->updateUserHashPassword($this->user, $this->password);
+                        app()->userManager->updateUserHashPassword($this->user, $this->password);
                     } else {
 
                         $this->addError($attribute, 'Неверный логин или пароль');

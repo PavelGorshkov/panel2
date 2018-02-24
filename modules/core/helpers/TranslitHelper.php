@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 use yii\base\Exception;
@@ -69,6 +68,5 @@ class TranslitHelper
         }
 
         return $string;
-
     }
 }

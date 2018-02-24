@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\RouterUrlHelper;
@@ -13,7 +12,7 @@ use yii\web\ServerErrorHttpException;
  * @package app\modules\user\components
  *
  */
-abstract class RBACItem extends BaseObject implements RBACItemInterface
+abstract class RbacItem extends BaseObject implements RBACItemInterface
 {
     const TASK = '';
 

@@ -14,8 +14,8 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
 <div class="row">
     <div class="col-md-12">
         <div class="nav-tabs-custom">
-            <?php
-            echo Menu::widget([
+            <?= /** @noinspection PhpUnhandledExceptionInspection */
+            Menu::widget([
                 'items'=>$menuLink,
                 'options'=>[
                     'class'=>'nav nav-tabs'
@@ -31,5 +31,4 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
         </div>
     </div>
 </div>
-<?php $this->endContent(); ?>
-
+<?php $this->endContent();

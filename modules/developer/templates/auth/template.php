@@ -2,7 +2,7 @@
 
 namespace app\modules\{module}\auth;
 
-use app\modules\user\components\RBACItem;
+use app\modules\user\components\RbacItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
@@ -13,7 +13,7 @@ use yii\rbac\Item;
 * Class {ClassName}
 * @package app\modules\{module}\auth
 */
-class {ClassName} extends RBACItem
+class {ClassName} extends RbacItem
 {
     const TASK = '/{module}/{url}';
 

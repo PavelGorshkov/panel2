@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
@@ -9,8 +10,8 @@ use app\modules\core\helpers\ListHelper;
  * Class EmailConfirmHelper
  * @package app\modules\user\helpers
  */
-class EmailConfirmStatusHelper extends ListHelper {
-
+class EmailConfirmStatusHelper extends ListHelper
+{
     const EMAIL_CONFIRM_NO = 0;
 
     const EMAIL_CONFIRM_YES = 1;

@@ -11,7 +11,6 @@ use yii\base\Model;
  */
 class RecoveryPasswordForm extends Model
 {
-
     use ModuleTrait;
 
     public $password;
@@ -26,12 +25,12 @@ class RecoveryPasswordForm extends Model
         return 'recovery-password-form';
     }
 
+
     /**
      * @return array
      */
     public function rules()
     {
-
         return [
             [['password', 'r_password'], 'required'],
             [['password', 'r_password'], 'string', 'min' => $this->module->minPasswordLength],
@@ -41,17 +40,18 @@ class RecoveryPasswordForm extends Model
         ];
     }
 
+
     /**
      * @param string $attribute
-     * @param array $params
      */
-    public function emptyOnInvalid($attribute, /** @noinspection PhpUnusedParameterInspection */ $params = null)
+    public function emptyOnInvalid($attribute)
     {
         if ($this->hasErrors()) {
 
             $this->$attribute = null;
         }
     }
+
 
     /**
      * @return array

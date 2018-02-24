@@ -1,14 +1,16 @@
 <?php
+
 namespace app\modules\user\components;
 
 use yii\rbac\Item;
+
 
 /**
  * Class Roles
  * @package app\modules\user\components
  */
-class Roles extends RBACItem {
-
+class Roles extends RbacItem
+{
     const ADMIN = 'admin';
 
     const USER = 'user';
@@ -29,7 +31,8 @@ class Roles extends RBACItem {
     /**
      * @return array
      */
-    public function titleList() {
+    public function titleList()
+    {
 
         return [
             self::ADMIN => 'Администратор',
@@ -43,7 +46,8 @@ class Roles extends RBACItem {
     /**
      * @return array
      */
-    public function getTree() {
+    public function getTree()
+    {
 
         return [
             self::GUEST => [],
@@ -65,7 +69,8 @@ class Roles extends RBACItem {
     /**
      * @return null
      */
-    public function getTitleTask() {
+    public function getTitleTask()
+    {
 
         return null;
     }

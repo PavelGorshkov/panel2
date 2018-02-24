@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 /**
@@ -11,7 +10,6 @@ namespace app\modules\core\helpers;
  */
 class RouterUrlHelper
 {
-
     /**
      * @param string $url
      * @return array
@@ -27,6 +25,7 @@ class RouterUrlHelper
         return explode('/', ltrim($url, '/'));
     }
 
+    
     /**
      * Получение роутинга из URL
      * @param array|string|mixed $url
@@ -35,7 +34,6 @@ class RouterUrlHelper
      */
     public static function to($url)
     {
-
         $route = self::parseUrl($url);
 
         $controller = app()->controller;
@@ -86,7 +84,6 @@ class RouterUrlHelper
      */
     public static function isActiveRoute($url)
     {
-
         $route = self::parseUrl($url);
 
         if (empty($route)) return true;
@@ -123,7 +120,6 @@ class RouterUrlHelper
      */
     public static function getAction($url)
     {
-
         $url = self::parseUrl($url);
 
         return !empty($url) ? $url[count($url) - 1] : null;

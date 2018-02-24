@@ -41,7 +41,7 @@ class PhpManager extends AuthPhpManager
 
                 $this->assign(
                     Yii::createObject([
-                        'class' => Role::className(),
+                        'class' => Role::class,
                         'name'=>$role
                     ]),
                     user()->id
@@ -54,7 +54,7 @@ class PhpManager extends AuthPhpManager
 
                         $this->assign(
                             Yii::createObject([
-                                Item::className(),
+                                Item::class,
                                 'name' => $access
                             ]),
                             user()->id

@@ -17,6 +17,5 @@ BoxWidget::begin([
 ]);
     echo $this->render('_form', [
         'model'=>$model,
-        'module'=>$module,
 ]);
 BoxWidget::end();

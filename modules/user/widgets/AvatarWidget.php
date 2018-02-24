@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\widgets;
 
 use app\modules\core\widgets\Widget;
@@ -12,8 +13,8 @@ use yii\helpers\Url;
  * Class AvatarWidget
  * @package app\modules\user\widgets
  */
-class AvatarWidget extends Widget {
-
+class AvatarWidget extends Widget
+{
     /**
      * @var string
      */
@@ -68,38 +69,38 @@ class AvatarWidget extends Widget {
      * @throws \yii\base\Exception
      * @throws \yii\web\HttpException
      */
-    public function run() {
-
+    public function run()
+    {
         if ($this->user === null) $this->user = user()->info;
 
         $this->imageSrc = $this->user->getAvatarSrc($this->size);
 
         if ($this->noCache) {
 
-            $this->imageSrc .= '?'.microtime(true);
+            $this->imageSrc .= '?' . microtime(true);
         }
 
-        $this->imageAlt = empty($this->imageAlt)?$this->user->full_name:$this->imageAlt;
-        $this->width = $this->size.'px';
-        $this->options = ['class' => 'avatar avatar-'.$this->user->id];
+        $this->imageAlt = empty($this->imageAlt) ? $this->user->full_name : $this->imageAlt;
+        $this->width = $this->size . 'px';
+        $this->options = ['class' => 'avatar avatar-' . $this->user->id];
 
         if (!$this->height) {
             $this->height = $this->width;
         }
 
-        ArrayHelper::merge($this->imageOptions, ['alt'=>$this->imageAlt]);
+        ArrayHelper::merge($this->imageOptions, ['alt' => $this->imageAlt]);
 
         AvatarWidgetAssets::register($this->view);
 
         $options = [
             'class' => 'img-wrapper-tocenter',
-            'style' => 'width: '.$this->width.'; height: '.$this->height.'; background-color: '.$this->backgroundColor.';',
+            'style' => 'width: ' . $this->width . '; height: ' . $this->height . '; background-color: ' . $this->backgroundColor . ';',
         ];
 
         Html::addCssClass($this->options, $options['class']);
 
         Html::addCssStyle($this->options, $options['style']);
 
-        return Html::tag('div', Html::img(Url::to($this->imageSrc), $this->imageOptions),$this->options);
+        return Html::tag('div', Html::img(Url::to($this->imageSrc), $this->imageOptions), $this->options);
     }
 }

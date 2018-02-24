@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this \app\modules\core\components\View */
 /* @var $content string */
 
@@ -6,7 +7,6 @@ use app\modules\core\assets\AdminLteAssets;
 use yii\helpers\Html;
 
 AdminLteAssets::register($this);
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,14 +21,14 @@ AdminLteAssets::register($this);
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
+        <!--suppress JSUnresolvedLibraryURL -->
+    <?=Html::jsFile('@web/js/html5shiv.min.js');?>
     <!--suppress JSUnresolvedLibraryURL -->
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <!--suppress JSUnresolvedLibraryURL -->
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <?=Html::jsFile('@web/js/html5shiv.min.js');?>
     <![endif]-->
 </head>
 <?php $this->beginBody() ?>
-<?=$content?>
+<?= $content ?>
 <?php $this->endBody() ?>
 </html>
 <?php $this->endPage();

@@ -9,8 +9,8 @@ use yii\helpers\HtmlPurifier;
  * Class ProfileRegistrationForm
  * @package app\modules\user\forms
  */
-class ProfileRegistrationForm extends Model {
-
+class ProfileRegistrationForm extends Model
+{
     use ModuleTrait;
 
     public $full_name;
@@ -19,11 +19,12 @@ class ProfileRegistrationForm extends Model {
 
     public $about;
 
+
     /**
      * @return array
      */
-    public function rules() {
-
+    public function rules()
+    {
         return [
             [['full_name'], 'filter', 'filter' => 'trim',],
             [
@@ -37,7 +38,7 @@ class ProfileRegistrationForm extends Model {
             ],
             [['about', 'phone', 'full_name'], 'required'],
             ['about', 'string', 'max' => 300],
-            ['phone','match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}'],
+            ['phone', 'match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}'],
         ];
     }
 
@@ -58,8 +59,8 @@ class ProfileRegistrationForm extends Model {
     /**
      * @return string
      */
-    public function formName() {
-
+    public function formName()
+    {
         return 'profile-registration-form';
     }
 }

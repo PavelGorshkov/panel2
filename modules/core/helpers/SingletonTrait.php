@@ -7,7 +7,6 @@ namespace app\modules\core\helpers;
  */
 trait SingletonTrait
 {
-
     /**
      * @var mixed
      */
@@ -25,6 +24,7 @@ trait SingletonTrait
     private function __clone()
     {
     }
+
 
     /**
      * SingletonTrait constructor.

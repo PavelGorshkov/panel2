@@ -20,9 +20,7 @@ class SearchRole extends Model implements SearchModelInterface
      */
     public function rules()
     {
-        return [
-
-        ];
+        return [];
     }
 
 
@@ -47,11 +45,6 @@ class SearchRole extends Model implements SearchModelInterface
 
             return $dataProvider;
         }
-
-        /*
-        $query
-            ->andFilterWhere(['like', 'field', $this->field]);
-        */
 
         return $dataProvider;
     }

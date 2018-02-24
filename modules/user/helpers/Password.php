@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pastet
- * Date: 13.12.2017
- * Time: 9:46
- */
 
 namespace app\modules\user\helpers;
 
@@ -14,8 +8,8 @@ namespace app\modules\user\helpers;
  * Class Password
  * @package app\modules\user\helpers
  */
-class Password {
-
+class Password
+{
     /**
      * @param $password
      * @return string
@@ -65,5 +59,4 @@ class Password {
 
         return $password;
     }
-
 }

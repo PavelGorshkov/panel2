@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\actions\SaveModelAction;
@@ -22,8 +23,8 @@ use yii\web\NotFoundHttpException;
 class ProfileController extends RedactorController
 {
     protected $actionMenu = [
-        '@index'=>'Панель управления',
-        '@view'=>'Профиль',
+        '@index' => 'Панель управления',
+        '@view' => 'Профиль',
     ];
 
     public $layout = '@app/modules/user/views/layouts/profile';
@@ -34,11 +35,12 @@ class ProfileController extends RedactorController
     /**
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -63,18 +65,19 @@ class ProfileController extends RedactorController
      * @inheritdoc
      * @return array
      */
-    public function actions() {
+    public function actions()
+    {
 
         return [
-            'change-password'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=>PasswordForm::className(),
-                'model'=>ManagerUser::className(),
-                'isNewRecord'=>true,
-                'view'=>'password',
-                'successFlashMessage'=>'Ваш пароль успешно изменен!',
-                'errorFlashMessage'=>'Не удалось изменить пароль',
-                'successRedirect'=>['view'],
+            'change-password' => [
+                'class' => SaveModelAction::class,
+                'modelForm' => PasswordForm::class,
+                'model' => ManagerUser::class,
+                'isNewRecord' => true,
+                'view' => 'password',
+                'successFlashMessage' => 'Ваш пароль успешно изменен!',
+                'errorFlashMessage' => 'Не удалось изменить пароль',
+                'successRedirect' => ['view'],
             ]
         ];
     }
@@ -82,14 +85,16 @@ class ProfileController extends RedactorController
 
     /**
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
 
         return $this->render('index', [
-            'admin'=>app()->menuManager->admin,
-            'main'=>app()->menuManager->main,
-            'redactor'=>app()->menuManager->redactor,
-            'dictionary'=>app()->moduleManager->isInstallModule('dictionary') ? app()->dictionary->getMenu():[],
+            'admin' => app()->menuManager->admin,
+            'main' => app()->menuManager->main,
+            'redactor' => app()->menuManager->redactor,
+            'dictionary' => app()->moduleManager->isInstallModule('dictionary') ? app()->dictionary->getMenu() : [],
         ]);
     }
 
@@ -100,8 +105,8 @@ class ProfileController extends RedactorController
     public function actionView()
     {
         return $this->render('view', [
-            'info'=>user()->info,
-            'module'=>$this->module,
+            'info' => user()->info,
+            'module' => $this->module,
         ]);
     }
 
@@ -140,7 +145,7 @@ class ProfileController extends RedactorController
             }
         }
 
-        return $this->render('email', ['model'=>$model]);
+        return $this->render('email', ['model' => $model]);
     }
 
 
@@ -161,9 +166,9 @@ class ProfileController extends RedactorController
         $this->performAjaxValidation($model);
 
         if (
-             $model->load(app()->request->post())
-          && $model->validate()
-          && $model->upload()
+            $model->load(app()->request->post())
+            && $model->validate()
+            && $model->upload()
         ) {
 
             if (app()->userManager->saveProfile($model)) {
@@ -175,20 +180,22 @@ class ProfileController extends RedactorController
             app()->end();
         }
 
-        return $this->render($this->action->id, ['model'=>$model, 'module'=>$this->module]);
+        return $this->render($this->action->id, ['model' => $model, 'module' => $this->module]);
     }
 
 
     /**
      * @param string $token
+     * @return \yii\web\Response
+     *
      * @throws NotFoundHttpException
      * @throws \Exception
      * @throws \Throwable
-     * @throws \yii\base\ExitException
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function actionConfirm($token) {
+    public function actionConfirm($token)
+    {
 
         if (!$this->module->emailAccountVerification) {
 
@@ -203,8 +210,7 @@ class ProfileController extends RedactorController
             user()->setErrorFlash('Не удалось подтвердить email');
         }
 
-        $this->redirect(Url::to(['view']));
-        app()->end();
+        return $this->redirect(Url::to(['view']));
     }
 
 }

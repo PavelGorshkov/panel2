@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\components;
 
 use app\modules\core\helpers\LoggerTrait;
@@ -9,13 +8,11 @@ use yii\log\Logger;
 use yii\web\HttpException;
 
 /**
- *
- *
  * Class ConsoleRunner
  * @package app\modules\core\components
  */
-class ConsoleRunner extends Component implements LoggerInterface{
-
+class ConsoleRunner extends Component implements LoggerInterface
+{
     use LoggerTrait;
 
     const LOG_CATEGORY = 'console_runner';
@@ -33,6 +30,9 @@ class ConsoleRunner extends Component implements LoggerInterface{
 
     /**
      * Инициализация и добавление пути до yii
+     *
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {
@@ -49,15 +49,16 @@ class ConsoleRunner extends Component implements LoggerInterface{
 
     /**
      * Запуск на выполнение команды
-     * 
+     *
      * @param string $command команда запуска (module/controller/action или controller/action)
      * @param array $params массив параметров
      * @param bool $isParallel флаг передачи выполнения в другой поток
      * @return array возвращает статус завершения потока и вевод запускаемой команды
      */
-    public function run($command, $params = [], $isParallel = false){
+    public function run($command, $params = [], $isParallel = false)
+    {
         try {
-            if(!$this->yiiPath){
+            if (!$this->yiiPath) {
                 throw new HttpException('500', 'Path of yii or php not found.');
             }
 
@@ -113,7 +114,8 @@ class ConsoleRunner extends Component implements LoggerInterface{
      * Set configTargets
      * @return mixed
      */
-    public function setTargets(){
+    public function setTargets()
+    {
         return [
             [
                 'class' => 'yii\log\FileTarget',

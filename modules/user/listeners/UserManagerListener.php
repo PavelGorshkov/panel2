@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\listeners;
 
 use app\modules\user\events\PasswordEvent;
@@ -10,69 +11,66 @@ use DateTime;
  * Class UserManagerListener
  * @package app\modules\user\listeners
  */
-class UserManagerListener {
-
-
+class UserManagerListener
+{
     /**
      * @param UserEvent $event
      */
-    public static function onUserRegistration(UserEvent $event) {
-
+    public static function onUserRegistration(UserEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
             $user->email,
-            'Регистрация на сайте "'.app()->name.'"',
+            'Регистрация на сайте "' . app()->name . '"',
             'welcome',
             [
-                'email'=>$user->email,
-                'fullName'=>$user->full_name,
-                'login'=>$user->username
+                'email' => $user->email,
+                'fullName' => $user->full_name,
+                'login' => $user->username
             ]
         );
-
     }
 
 
     /**
      * @param TokenEvent $event
      */
-    public static function onUserRegistrationNeedActivation(TokenEvent $event) {
-
+    public static function onUserRegistrationNeedActivation(TokenEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
             $user->email,
-            'Регистрация на сайте "'.app()->name.'"',
+            'Регистрация на сайте "' . app()->name . '"',
             'activation',
             [
-                'email'=>$user->email,
-                'fullName'=>$user->full_name,
-                'login'=>$user->username,
-                'token'=>$event->getToken(),
-                'expire'=>self::setExpireDateTime(app()->getModule('user')->expireTokenActivationLifeHours*3600),
+                'email' => $user->email,
+                'fullName' => $user->full_name,
+                'login' => $user->username,
+                'token' => $event->getToken(),
+                'expire' => self::setExpireDateTime(app()->getModule('user')->expireTokenActivationLifeHours * 3600),
             ]
         );
-
     }
 
 
     /**
      * @param TokenEvent $event
      */
-    public static function onUserRecoveryPassword(TokenEvent $event) {
-
+    public static function onUserRecoveryPassword(TokenEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
             $user->email,
-            'Восстановление пароля на сайте "'.app()->name.'"',
+            'Восстановление пароля на сайте "' . app()->name . '"',
             'recovery',
             [
-                'email'=>$user->email,
-                'fullName'=>$user->full_name,
-                'token'=>$event->getToken(),
-                'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenPasswordLifeHours*3600)),
+                'email' => $user->email,
+                'fullName' => $user->full_name,
+                'token' => $event->getToken(),
+                'expire' => self::setExpireDateTime((app()->getModule('user')->expireTokenPasswordLifeHours * 3600)),
             ]
         );
     }
@@ -81,18 +79,18 @@ class UserManagerListener {
     /**
      * @param PasswordEvent $event
      */
-    public static function onUserGeneratePassword(PasswordEvent $event) {
-
+    public static function onUserGeneratePassword(PasswordEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
             $user->email,
-            'Восстановление пароля на сайте "'.app()->name.'"',
+            'Восстановление пароля на сайте "' . app()->name . '"',
             'generatePassword',
             [
-                'email'=>$user->email,
-                'fullName'=>$user->full_name,
-                'password'=>$event->getPassword(),
+                'email' => $user->email,
+                'fullName' => $user->full_name,
+                'password' => $event->getPassword(),
             ]
         );
     }
@@ -101,17 +99,17 @@ class UserManagerListener {
     /**
      * @param UserEvent $event
      */
-    public static function onUserChangePassword(UserEvent $event) {
-
+    public static function onUserChangePassword(UserEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
             $user->email,
-            'Восстановление пароля на сайте "'.app()->name.'"',
+            'Восстановление пароля на сайте "' . app()->name . '"',
             'changePassword',
             [
-                'email'=>$user->email,
-                'fullName'=>$user->full_name,
+                'email' => $user->email,
+                'fullName' => $user->full_name,
             ]
         );
     }
@@ -120,8 +118,8 @@ class UserManagerListener {
     /**
      * @param TokenEvent $event
      */
-    public static function onUserChangeEmail(TokenEvent $event) {
-
+    public static function onUserChangeEmail(TokenEvent $event)
+    {
         $user = $event->getUser();
 
         self::sendMessage(
@@ -129,9 +127,9 @@ class UserManagerListener {
             'Активация электронной почты',
             'changeEmail',
             [
-                'fullName'=>$user->full_name,
-                'token'=>$event->getToken(),
-                'expire'=>self::setExpireDateTime((app()->getModule('user')->expireTokenActivationLifeHours*3600)),
+                'fullName' => $user->full_name,
+                'token' => $event->getToken(),
+                'expire' => self::setExpireDateTime((app()->getModule('user')->expireTokenActivationLifeHours * 3600)),
             ]
         );
     }
@@ -154,7 +152,7 @@ class UserManagerListener {
         $mailer->getView()->theme = app()->view->theme;
         $mailer->getView()->title = $subject;
 
-        return $mailer->compose(['html'=>$view,'text'=>'text/'.$view], $params)
+        return $mailer->compose(['html' => $view, 'text' => 'text/' . $view], $params)
             ->setTo($to)
             ->setFrom(app()->params['email'])
             ->setSubject($mailer->getView()->title)
@@ -167,10 +165,10 @@ class UserManagerListener {
      *
      * @return string
      */
-    protected static function setExpireDateTime($expire) {
-
+    protected static function setExpireDateTime($expire)
+    {
         $datetime = new DateTime();
-        $interval = new \DateInterval('PT'.$expire.'S');
+        $interval = new \DateInterval('PT' . $expire . 'S');
 
         return $datetime->add($interval)->format('d.m.Y H:i:s');
     }

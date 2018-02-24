@@ -48,10 +48,9 @@ class User extends ActiveRecord
      */
     public function behaviors()
     {
-
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
@@ -94,7 +93,6 @@ class User extends ActiveRecord
      */
     public function afterSafe($insert, $changedAttributes)
     {
-
         parent::afterSave($insert, $changedAttributes);
 
         if ($this->isNewRecord) {
@@ -173,7 +171,6 @@ class User extends ActiveRecord
      */
     public function isLdap()
     {
-
         return $this->registered_from === RegisterFromHelper::LDAP;
     }
 
@@ -182,7 +179,7 @@ class User extends ActiveRecord
      */
     public function getToken()
     {
-        return $this->hasOne(Token::className(), ['user_id' => 'id']);
+        return $this->hasOne(Token::class, ['user_id' => 'id']);
     }
 
 
@@ -202,7 +199,6 @@ class User extends ActiveRecord
      */
     public static function findByPk($id)
     {
-
         return self::find()->findUser('id = :id', [':id' => $id])->one();
     }
 
@@ -223,7 +219,6 @@ class User extends ActiveRecord
      */
     public function isConfirmedEmail()
     {
-
         return (int)$this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
     }
 
@@ -237,8 +232,8 @@ class User extends ActiveRecord
         return $this->access_level >= 100;
     }
 
-    public function isAccessRoles() {
-
+    public function isAccessRoles()
+    {
         return $this->access_level == Roles::USER || $this->isUFAccessLevel();
     }
 
@@ -265,7 +260,6 @@ class User extends ActiveRecord
      */
     public function isAdmin()
     {
-
         return $this->access_level === UserAccessLevelHelper::LEVEL_ADMIN;
     }
 
@@ -275,7 +269,6 @@ class User extends ActiveRecord
      */
     public function getAccessGroup()
     {
-
         $data = self::getAccessLevelList();
 
         return isset($data[$this->access_level]) ? $data[$this->access_level] : '*не известна*';
@@ -287,7 +280,6 @@ class User extends ActiveRecord
      */
     public function getContact()
     {
-
         $text = [
             $this->full_name,
             Html::a($this->email, "mailto:" . $this->email),
@@ -307,18 +299,18 @@ class User extends ActiveRecord
      * @param string $password
      * @return User|null
      */
-    public static function findApi($username, $password) {
-
+    public static function findApi($username, $password)
+    {
         $model = self::find()
             ->andWhere([
                 'or',
-                ['username'=>$username],
-                ['email'=>$username]
-            ])->andWhere(['access_level'=>UserAccessLevelHelper::LEVEL_API])->one();
+                ['username' => $username],
+                ['email' => $username]
+            ])->andWhere(['access_level' => UserAccessLevelHelper::LEVEL_API])->one();
 
         if ($model !== null) {
 
-            return Password::validate($password, $model->hash)?$model:null;
+            return Password::validate($password, $model->hash) ? $model : null;
         }
 
         return null;

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\events;
 
 use app\modules\user\models\User;

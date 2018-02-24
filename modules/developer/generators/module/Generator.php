@@ -197,6 +197,8 @@ EOD;
 
     /**
      * Создание директорий
+     *
+     * @return bool
      */
     protected function createDirectory()
     {
@@ -208,6 +210,8 @@ EOD;
 
             File::checkPath($modulePath.'/'.$directory);
         }
+
+        return true;
     }
 }
 

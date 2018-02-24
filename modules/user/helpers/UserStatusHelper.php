@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
@@ -9,8 +10,8 @@ use app\modules\core\helpers\ListHelper;
  * Class UserStatusHelper
  * @package app\modules\user\helpers
  */
-class UserStatusHelper extends ListHelper {
-
+class UserStatusHelper extends ListHelper
+{
     const STATUS_BLOCK = 0;
 
     const STATUS_ACTIVE = 1;

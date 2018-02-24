@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\forms;
 
 use app\modules\user\models\User;
@@ -30,7 +31,6 @@ class RecoveryForm extends Model
      */
     public function rules()
     {
-
         return [
             ['email', 'required'],
             ['email', 'email'],
@@ -41,9 +41,8 @@ class RecoveryForm extends Model
 
     /**
      * @param string $attribute
-     * @param null $params
      */
-    public function checkEmail($attribute, /** @noinspection PhpUnusedParameterInspection */ $params = null)
+    public function checkEmail($attribute)
     {
         if ($this->hasErrors() === false) {
 
@@ -60,8 +59,8 @@ class RecoveryForm extends Model
     /**
      * @return User
      */
-    public function getUser() {
-
+    public function getUser()
+    {
         return $this->_user;
     }
 }

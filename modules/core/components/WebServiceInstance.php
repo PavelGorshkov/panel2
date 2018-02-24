@@ -65,6 +65,7 @@ class WebServiceInstance extends BaseObject
      */
     protected $instance;
 
+
     /**
      * @inheritdoc
      * @throws Exception
@@ -74,6 +75,7 @@ class WebServiceInstance extends BaseObject
         $this->setConnectionInstance();
         $this->wsFunctionList = $this->initAvalibleWsFunction();
     }
+
 
     /**
      * Add logg method

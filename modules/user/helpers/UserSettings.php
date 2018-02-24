@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\GetterSingletonTrait;
@@ -14,15 +15,15 @@ use app\modules\core\models\UserSettings as ARUserSettings;
  * @property string $skinTemplate
  * @property string $sideBar
  */
-class UserSettings {
-
+class UserSettings
+{
     use GetterSingletonTrait;
 
     /**
      * Инициализация данных
      */
-    public function initData() {
-
+    public function initData()
+    {
         $this->_data = ARUserSettings::findAllData();
     }
 
@@ -30,8 +31,8 @@ class UserSettings {
      * @param string $name
      * @param string $value
      */
-    public function __set($name, $value) {
-
+    public function __set($name, $value)
+    {
         $this->_data[$name] = $value;
 
         ARUserSettings::saveData($name, $value);
@@ -41,8 +42,8 @@ class UserSettings {
     /**
      *
      */
-    public function deleteAll() {
-
+    public function deleteAll()
+    {
         ARUserSettings::deleteAllData();
     }
 }

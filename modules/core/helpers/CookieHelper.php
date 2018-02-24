@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\core\helpers;
 
 use Yii;
@@ -26,7 +25,8 @@ class CookieHelper extends BaseObject
      * Получение всех кук
      * @return \yii\web\CookieCollection
      */
-    public static function getAll() {
+    public static function getAll()
+    {
 
         return Yii::$app->getRequest()->getCookies();
     }
@@ -58,14 +58,14 @@ class CookieHelper extends BaseObject
     public static function set($cookie, $value, $expire = 0, $httpOnly = true, $domain = '', $secure = false, $path = '/')
     {
         $cookieObject = Yii::createObject([
-            'class'=>Cookie::className(),
+            'class' => Cookie::class,
             'name' => $cookie,
             'value' => $value,
             'expire' => $expire,
             'httpOnly' => $httpOnly,
             'domain' => $domain,
             'secure' => $secure,
-			'path' => $path,
+            'path' => $path,
         ]);
 
         /** @var Cookie $cookieObject */
