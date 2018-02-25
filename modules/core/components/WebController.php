@@ -43,14 +43,19 @@ class WebController extends Controller
      * Проверить ajax валидность данных модели формы
      *
      * @param Model $model
+     * @throws \yii\base\ExitException
      */
     public function performAjaxValidation(Model $model)
     {
-        if (app()->request->isAjax && $model->load(app()->request->post())) {
+         if (
+            app()->request->isAjax && $model->load(app()->request->post())
+         ) {
 
             app()->response->format = Response::FORMAT_JSON;
             app()->response->data = ActiveForm::validate($model);
             app()->response->send();
+
+            app()->end();
         }
     }
 

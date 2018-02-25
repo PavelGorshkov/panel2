@@ -2,8 +2,7 @@
 namespace app\modules\core\widgets;
 
 use app\modules\core\helpers\RouterUrlHelper;
-use yii\widgets\Widget;
-use yii\widgets\enu;
+use yii\widgets\Menu;
 
 /**
  * Class AdminMenu

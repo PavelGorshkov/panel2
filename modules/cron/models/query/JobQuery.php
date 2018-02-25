@@ -10,13 +10,15 @@ use app\modules\cron\models\Job;
  *
  * @see Job
  */
-class JobQuery extends ActiveQuery{
+class JobQuery extends ActiveQuery
+{
 
     /**
      * @inheritdoc
      * @return Job[]|array
      */
-    public function all($db = null){
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -25,7 +27,8 @@ class JobQuery extends ActiveQuery{
      * @inheritdoc
      * @return Job|array|null
      */
-    public function one($db = null){
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 
@@ -35,7 +38,8 @@ class JobQuery extends ActiveQuery{
      * @param null $db
      * @return Job[]|array
      */
-    public function active($db = null){
+    public function active($db = null)
+    {
         return $this->where('is_active = 1')->all($db);
     }
 }

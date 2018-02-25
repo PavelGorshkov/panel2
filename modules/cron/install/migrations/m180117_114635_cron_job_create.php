@@ -4,10 +4,17 @@ namespace app\modules\cron\install\migrations;
 
 use app\modules\core\components\Migration;
 
+/**
+ * Class m180117_114635_cron_job_create
+ * @package app\modules\cron\install\migrations
+ */
 class m180117_114635_cron_job_create extends Migration
 {
     protected $table = '{{%cron_job}}';
 
+    /**
+     * @return bool|void
+     */
 	public function safeUp()
 	{
         $this->createTable(
@@ -24,6 +31,9 @@ class m180117_114635_cron_job_create extends Migration
         $this->createDateColumns();
 	}
 
+    /**
+     * @return bool|void
+     */
 	public function safeDown()
 	{
         $this->dropTable($this->table);

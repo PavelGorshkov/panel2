@@ -6,7 +6,6 @@ use app\modules\core\helpers\OutputMessageListHelper;
 use app\modules\core\helpers\OutputMessageTrait;
 use app\modules\core\interfaces\LoggerInterface;
 use app\modules\core\interfaces\OutputMessageInterface;
-use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\db\Query;
@@ -81,7 +80,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
                     } else {
 
-                        Yii::warning('Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
+                        \Yii::warning('Не удалось выполнить откат миграции ' . $migration['version'] . ' для модуля ' . $module . '.', __METHOD__);
 
                         return false;
                     }
@@ -215,7 +214,7 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
     public static function getPathMigration($module)
     {
 
-        return Yii::getAlias(sprintf("@app/modules/%s/install/migrations", $module));
+        return \Yii::getAlias(sprintf("@app/modules/%s/install/migrations", $module));
     }
 
 

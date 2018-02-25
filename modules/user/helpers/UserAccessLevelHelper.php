@@ -45,6 +45,9 @@ class UserAccessLevelHelper extends ListHelper
     }
 
 
+    /**
+     * @return array
+     */
     public static function listRoles()
     {
         return [

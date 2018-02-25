@@ -35,13 +35,13 @@ class Token extends ActiveRecord
 
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
             ],
             [
-                'class' => ModelWebUserBehavior::className(),
+                'class' => ModelWebUserBehavior::class,
                 'value' => user()->id ? user()->id : 0,
             ],
         ];
@@ -67,7 +67,7 @@ class Token extends ActiveRecord
             [['user_id', 'type', 'status', 'ip', 'created_by', 'updated_by'], 'integer'],
             [['expire', 'created_at', 'updated_at'], 'safe'],
             [['token'], 'string', 'max' => 32],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -98,7 +98,7 @@ class Token extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
 

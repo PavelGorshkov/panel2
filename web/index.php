@@ -12,9 +12,10 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
 
-Yii::setAlias('@app', dirname(__DIR__));
+\Yii::setAlias('@app', dirname(__DIR__));
 
 $configManager = new ConfigManager(ConfigManager::ENV_WEB);
 
-(new yii\web\Application($configManager->merge($config)))->run();
+$config = $configManager->merge($config);
 
+return (new yii\web\Application($config))->run();

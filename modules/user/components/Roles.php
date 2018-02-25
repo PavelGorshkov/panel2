@@ -71,7 +71,6 @@ class Roles extends RbacItem
      */
     public function getTitleTask()
     {
-
         return null;
     }
 }

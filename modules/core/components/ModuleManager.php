@@ -7,7 +7,6 @@ use app\modules\core\helpers\ModulePriority;
 use app\modules\core\helpers\ModuleSettings;
 use FilesystemIterator;
 use iiifx\cache\dependency\FolderDependency;
-use Yii;
 use yii\base\Component;
 use yii\caching\ChainedDependency;
 use yii\caching\FileDependency;
@@ -47,10 +46,10 @@ class ModuleManager extends Component
 
             $chain->dependencies = [
 
-                new FileDependency(['fileName' => Yii::getAlias('@app/config/web.php')]),
-                new FileDependency(['fileName' => Yii::getAlias('@app/config/console.php')]),
-                new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
-                new FolderDependency(['folder' => Yii::getAlias('@app/modules')]),
+                new FileDependency(['fileName' => \Yii::getAlias('@app/config/web.php')]),
+                new FileDependency(['fileName' => \Yii::getAlias('@app/config/console.php')]),
+                new FolderDependency(['folder' => \Yii::getAlias('@app/config/modules')]),
+                new FolderDependency(['folder' => \Yii::getAlias('@app/modules')]),
             ];
 
             cache()->set('all_modules', $modules, 3600, $chain);
@@ -114,7 +113,7 @@ class ModuleManager extends Component
 
             $chain->dependencies = [
                 new TagDependency(['tags' => ['all_modules']]),
-                new FolderDependency(['folder' => Yii::getAlias('@app/config/modules')]),
+                new FolderDependency(['folder' => \Yii::getAlias('@app/config/modules')]),
             ];
 
             app()->cache->set('enabled_modules', $modules, 3600, $chain);
@@ -131,8 +130,8 @@ class ModuleManager extends Component
     private function _installConfig($module)
     {
         return File::cpFile(
-            Yii::getAlias('@app/modules/' . $module . '/install') . '/config.php',
-            Yii::getAlias('@app/config/modules') . '/' . $module . '.php'
+            \Yii::getAlias('@app/modules/' . $module . '/install') . '/config.php',
+            \Yii::getAlias('@app/config/modules') . '/' . $module . '.php'
         );
     }
 
@@ -147,7 +146,7 @@ class ModuleManager extends Component
         ModulePriority::model()->unsetModule($module, true);
         ModuleSettings::model()->delete($module);
 
-        return @unlink(Yii::getAlias('@app/config/modules') . '/' . $module . '.php');
+        return @unlink(\Yii::getAlias('@app/config/modules') . '/' . $module . '.php');
     }
 
 
@@ -207,10 +206,10 @@ class ModuleManager extends Component
         $modules = [];
         $dependentModules = [];
 
-        $modulesPath = Yii::getAlias('@app/modules');
+        $modulesPath = \Yii::getAlias('@app/modules');
 
         /* @var \SplFileInfo $item */
-        foreach (new FilesystemIterator(Yii::getAlias('@app/modules')) as $item) {
+        foreach (new FilesystemIterator(\Yii::getAlias('@app/modules')) as $item) {
 
             $moduleName = $item->getBasename();
 

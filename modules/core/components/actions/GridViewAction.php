@@ -2,7 +2,6 @@
 namespace app\modules\core\components\actions;
 
 use app\modules\core\interfaces\SearchModelInterface;
-use Yii;
 use yii\base\Model;
 use yii\web\ServerErrorHttpException;
 
@@ -31,7 +30,7 @@ class GridViewAction extends WebAction
         if ($this->searchModel === null)
             throw new ServerErrorHttpException('In action '.$this->id.' in controller '.$this->controller->id.' not found param searchModel');
 
-        $this->model = Yii::createObject([
+        $this->model = \Yii::createObject([
             'class'=>$this->searchModel,
         ]);
 

@@ -2,7 +2,6 @@
 namespace app\modules\core\helpers;
 
 use app\modules\core\components\OutputMessage;
-use Yii;
 use yii\helpers\Html;
 
 /**
@@ -21,7 +20,7 @@ trait OutputMessageTrait
     public function addMessage($message, $type = null)
     {
 
-        $this->_messages[] = Yii::createObject([
+        $this->_messages[] = \Yii::createObject([
             'class' => OutputMessage::class,
             'message' => $message,
             'type' => $type,

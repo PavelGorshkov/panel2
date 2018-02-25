@@ -8,24 +8,18 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 $this->setTitle('Аутентификация');
-
 ?>
 <p class="login-box-msg">Для входа в систему<br/>введите логин и пароль</p>
 <?php
 $form = ActiveForm::begin([
     'id' => 'login-form',
-    'enableAjaxValidation' => false,
-    'enableClientValidation' => false,
-    'validateOnBlur' => false,
-    'validateOnType' => false,
-    'validateOnChange' => false,
     'options' => [
         'class' => 'form-signin form'
     ]
 ]);
 echo $form->errorSummary($model);
 ?>
-<div class='row'>
+<div class="row">
     <div class="col-xs-12">
         <?= $form->field($model, 'login', [
             'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-user form-control-feedback"></span></span></div>',
@@ -62,7 +56,7 @@ echo $form->errorSummary($model);
     </div>
 </div>
 <br/>
-<?php ActiveForm::end(); ?>
+<?php $form::end(); ?>
 <p>
     <?php if (!$module->registrationDisabled): ?>
         <span class="pull-left"><?= Html::a('Регистрация', ['/user/account/registration']) ?></span>

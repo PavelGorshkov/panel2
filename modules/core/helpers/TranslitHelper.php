@@ -44,12 +44,12 @@ class TranslitHelper
 
     /**
      * @param $str
-     * @param bool $nonspace
+     * @param bool $no_space
      * @param string $route
      * @return mixed
      * @throws Exception
      */
-    public static function translit($str, $nonspace = true, $route = '')
+    public static function translit($str, $no_space = true, $route = '')
     {
         if (empty($route)) {
 
@@ -63,7 +63,7 @@ class TranslitHelper
         } else {
             throw new Exception('Неизвестное направление транслитерации');
         }
-        if ($nonspace === true) {
+        if ($no_space === true) {
             $string = str_replace(' ', '_', $string);
         }
 

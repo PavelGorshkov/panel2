@@ -14,6 +14,7 @@ class RunnerJob extends Job{
     /**
      * Запуск задания
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public function runJob(){
         $streamStatus = ConsoleRunner::STREAM_STATUS_SUCCESS;

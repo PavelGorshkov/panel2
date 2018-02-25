@@ -119,6 +119,7 @@ class CronHelper{
     /**
      * Получение списка команд
      * @return array
+     * @throws \yii\base\InvalidConfigException
      */
     public static function getCommandActionList(){
         if(self::$_actionList === null){
@@ -158,6 +159,7 @@ class CronHelper{
      * Получение названия экшена команды
      * @param string $command
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public static function getCommandActionTitle($command){
         $list = self::getCommandActionList();

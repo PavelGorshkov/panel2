@@ -24,7 +24,7 @@ class Job extends ActiveRecord
     public function behaviors(){
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
@@ -72,6 +72,7 @@ class Job extends ActiveRecord
      * @return JobQuery the active query used by this AR class.
      */
     public static function find(){
+        
         return new JobQuery(get_called_class());
     }
 }

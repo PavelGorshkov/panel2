@@ -3,7 +3,6 @@
 namespace app\modules\core\widgets;
 
 use kartik\grid\ActionColumn;
-use Yii;
 use yii\helpers\Html;
 
 /**
@@ -26,7 +25,7 @@ class CustomActionColumn extends ActionColumn
         $this->initDefaultButton('view', 'eye');
         $this->initDefaultButton('update', 'pencil', ['class'=>'btn btn-warning btn-xs']);
         $this->initDefaultButton('delete', 'trash', [
-            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+            'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
             'data-method' => 'post',
             'class'=>'btn btn-danger btn-xs'
         ]);
@@ -46,13 +45,13 @@ class CustomActionColumn extends ActionColumn
             $this->buttons[$name] = function ($url) use ($name, $iconName, $additionalOptions) {//$model, $key
                 switch ($name) {
                     case 'view':
-                        $title = Yii::t('yii', 'View');
+                        $title = \Yii::t('yii', 'View');
                         break;
                     case 'update':
-                        $title = Yii::t('yii', 'Update');
+                        $title = \Yii::t('yii', 'Update');
                         break;
                     case 'delete':
-                        $title = Yii::t('yii', 'Delete');
+                        $title = \Yii::t('yii', 'Delete');
                         break;
                     default:
                         $title = ucfirst($name);

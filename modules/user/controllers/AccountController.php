@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
  */
 class AccountController extends WebController
 {
-    public $layout = "@app/modules/user/views/layouts/login";
+    public $layout = "login";
 
     /**
      * @inheritdoc
@@ -67,6 +67,7 @@ class AccountController extends WebController
 
     /**
      * @return string|\yii\web\Response
+     * @throws \yii\base\ExitException
      */
     public function actionLogin()
     {
@@ -112,7 +113,6 @@ class AccountController extends WebController
      */
     public function actionRegistration()
     {
-
         if ($this->module->registrationDisabled) {
             throw new NotFoundHttpException();
         }
@@ -178,6 +178,7 @@ class AccountController extends WebController
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
+     * @throws \yii\base\ExitException
      */
     public function actionRecovery()
     {

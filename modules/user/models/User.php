@@ -232,6 +232,10 @@ class User extends ActiveRecord
         return $this->access_level >= 100;
     }
 
+
+    /**
+     * @return bool
+     */
     public function isAccessRoles()
     {
         return $this->access_level == Roles::USER || $this->isUFAccessLevel();

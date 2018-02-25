@@ -2,8 +2,6 @@
 
 namespace app\modules\developer\models;
 
-use Yii;
-
 
 /**
  * Class SearchMigration
@@ -17,7 +15,7 @@ class SearchMigration extends SearchClassesModule
      */
     protected function pathForModule($module) {
 
-        $migrationPath = Yii::getAlias("@app/modules/".$module."/install/migrations");
+        $migrationPath = \Yii::getAlias("@app/modules/".$module."/install/migrations");
 
         return is_dir($migrationPath)?$migrationPath:null;
     }
@@ -59,7 +57,7 @@ class SearchMigration extends SearchClassesModule
 
             foreach ($m as $k => $temp) {
 
-                $data[$k] = Yii::createObject([
+                $data[$k] = \Yii::createObject([
                     'class'=>$this->getModelClassName(),
                     'module'=>$module,
                     'className'=>$list[$k][1],
@@ -77,7 +75,7 @@ class SearchMigration extends SearchClassesModule
      */
     public function getModelClassName() {
 
-        return Migration::className();
+        return Migration::class;
     }
 
 

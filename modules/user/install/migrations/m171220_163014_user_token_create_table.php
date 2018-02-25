@@ -4,10 +4,17 @@ namespace app\modules\user\install\migrations;
 
 use app\modules\core\components\Migration;
 
+/**
+ * Class m171220_163014_user_token_create_table
+ * @package app\modules\user\install\migrations
+ */
 class m171220_163014_user_token_create_table extends Migration
 {
     protected $table = '{{%user_token}}';
 
+    /**
+     * @return bool|void
+     */
 	public function safeUp()
 	{
         $this->createTable($this->table, [
@@ -36,6 +43,10 @@ class m171220_163014_user_token_create_table extends Migration
         );
 	}
 
+
+    /**
+     * @return bool|void
+     */
 	public function safeDown()
 	{
         $this->dropTable($this->table);

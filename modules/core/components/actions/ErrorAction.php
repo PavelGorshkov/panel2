@@ -2,12 +2,14 @@
 namespace app\modules\core\components\actions;
 
 use yii\base\Exception;
+use yii\web\ErrorAction as BaseErrorAction;
 
 /**
  * Class ErrorAction
  * @package app\modules\core\components\actions
  */
-class ErrorAction extends \yii\web\ErrorAction {
+class ErrorAction extends BaseErrorAction
+{
 
     /**
      * @inheritdoc

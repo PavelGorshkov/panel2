@@ -28,4 +28,4 @@ $this->beginContent('@app/modules/core/views/layouts/login.php');
     <!-- /.login-box -->
 </body>
 <?php
-    $this->endContent();
+$this->endContent();

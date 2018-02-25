@@ -2,7 +2,9 @@
 namespace app\controllers;
 
 use Adldap\Models\User;
+use app\modules\core\components\actions\ErrorAction;
 use app\modules\user\helpers\UserSettings;
+use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -20,7 +22,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'except'=>['migrate'],
                 'rules' => [
                     [
@@ -45,18 +47,18 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'app\modules\core\components\actions\ErrorAction',
+                'class' => ErrorAction::class,
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
 
+
     /**
-     *
-     * @throws \yii\base\ExitException
+     * @return \yii\web\Response
      */
     public function actionIndex()
     {
@@ -107,9 +109,6 @@ class SiteController extends Controller
      */
     public function actionTest() {
 
-        $path = \Yii::getAlias('@app').'/yii';
-
-        printr(system($path.' cron/test/test'), 1);
         printr($_SERVER, 1);
 
        // Yii::trace('Test message', 'bitrix');
@@ -121,11 +120,6 @@ class SiteController extends Controller
         /* @var $user User*/
         $user = app()->ldap->getProvider('user')->search()->users()->in('OU=staff,OU=MarSU,DC=ad,DC=marsu,DC=ru')->find('gorshkov_pv');
 
-        printr($user->getDepartment());
-        printr($user->getCommonName());
-        printr($user->getAccountName());
-        printr($user->getTelephoneNumber());
-        printr($user->getEmail());
         printr($user, 1);
     }
 }

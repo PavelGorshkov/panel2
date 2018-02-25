@@ -2,7 +2,6 @@
 namespace app\modules\core\components;
 
 use linslin\yii2\curl\Curl;
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\log\Logger;
 use yii\log\Target;
@@ -96,7 +95,7 @@ class BitrixTarget extends Target
             $data .= $url;
 
             file_put_contents(
-                Yii::getAlias('@app/runtime/logs').'/bitrix.log',
+                \Yii::getAlias('@app/runtime/logs').'/bitrix.log',
                 print_r($data, 1),
                 FILE_APPEND
             );

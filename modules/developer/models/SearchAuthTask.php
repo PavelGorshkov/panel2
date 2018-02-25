@@ -2,8 +2,8 @@
 namespace app\modules\developer\models;
 
 use app\modules\user\components\RBACItem;
-use Symfony\Component\Finder\SplFileInfo;
-use Yii;
+use \SplFileInfo;
+use \Yii;
 
 /**
  * Class SearchAuthTask
@@ -28,7 +28,7 @@ class SearchAuthTask extends SearchClassesModule
      */
     protected function getModelClassName()
     {
-        return AuthTask::className();
+        return AuthTask::class;
     }
 
 

@@ -28,13 +28,13 @@ class Role extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
             ],
             [
-                'class' => ModelWebUserBehavior::className(),
+                'class' => ModelWebUserBehavior::class,
                 'value' => user()->id ? user()->id : 0,
             ],
         ];

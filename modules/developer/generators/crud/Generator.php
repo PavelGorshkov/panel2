@@ -5,7 +5,6 @@ namespace app\modules\developer\generators\crud;
 use app\modules\core\helpers\File;
 use app\modules\user\components\RBACItem;
 use SplFileInfo;
-use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\ActiveRecordInterface;
@@ -122,14 +121,14 @@ class Generator extends \yii\gii\Generator
                     'modelClass',
                 ],
                 'validateClass',
-                'params' => ['extends' => Model::className()]
+                'params' => ['extends' => Model::class]
             ],
             [
                 [
                     'taskClass',
                 ],
                 'validateClass',
-                'params' => ['extends' => RBACItem::className()]
+                'params' => ['extends' => RBACItem::class]
             ],
             [
                 [
@@ -138,7 +137,7 @@ class Generator extends \yii\gii\Generator
                 'validateClass',
                 'params' => [
                     'create' => true,
-                    'extends' => Model::className(),
+                    'extends' => Model::class,
                     'implements' => self::SEARCH_INTERFACE
                 ]
             ],
@@ -149,7 +148,7 @@ class Generator extends \yii\gii\Generator
                 'validateClass',
                 'params' => [
                     'create' => true,
-                    'extends' => Model::className(),
+                    'extends' => Model::class,
                     'implements' => self::SAVE_INTERFACE
                 ]
             ],
@@ -157,7 +156,7 @@ class Generator extends \yii\gii\Generator
                 [
                     'baseControllerClass'
                 ],
-                'validateClass', 'params' => ['extends' => Controller::className()],
+                'validateClass', 'params' => ['extends' => Controller::class],
             ],
             [
                 [
@@ -207,7 +206,7 @@ class Generator extends \yii\gii\Generator
             $this->addError($attribute, "The class name must contain fully qualified namespace name.");
         } else {
             $ns = substr($class, 0, $pos);
-            $path = Yii::getAlias('@' . str_replace('\\', '/', $ns), false);
+            $path = \Yii::getAlias('@' . str_replace('\\', '/', $ns), false);
             if ($path === false) {
                 $this->addError($attribute, "The class namespace is invalid: $ns");
             } elseif (!File::checkPath($path)) {
@@ -279,7 +278,7 @@ class Generator extends \yii\gii\Generator
                     $path = '@app/modules/' . $module . '/models/';
 
                     /* @var $item SplFileInfo */
-                    foreach (new \GlobIterator(Yii::getAlias($path . '*.php')) as $item) {
+                    foreach (new \GlobIterator(\Yii::getAlias($path . '*.php')) as $item) {
 
                         $classes[] = $ns . $item->getBasename('.php');
                     }
@@ -304,7 +303,7 @@ class Generator extends \yii\gii\Generator
                     $path = '@app/modules/' . $module . '/models/';
 
                     /* @var $item SplFileInfo */
-                    foreach (new \GlobIterator(Yii::getAlias($path . '*.php')) as $item) {
+                    foreach (new \GlobIterator(\Yii::getAlias($path . '*.php')) as $item) {
 
                         $class = $ns . $item->getBasename('.php');
                         $reflection = new \ReflectionClass($class);
@@ -335,12 +334,12 @@ class Generator extends \yii\gii\Generator
                     $path = '@app/modules/' . $module . '/auth/';
 
                     /* @var $item SplFileInfo */
-                    foreach (new \GlobIterator(Yii::getAlias($path . '*Task.php')) as $item) {
+                    foreach (new \GlobIterator(\Yii::getAlias($path . '*Task.php')) as $item) {
 
                         $class = $ns . $item->getBasename('.php');
                         $reflection = new \ReflectionClass($class);
 
-                        if ($reflection->isSubclassOf(RBACItem::className())) {
+                        if ($reflection->isSubclassOf(RBACItem::class)) {
 
                             $classes[] = $class;
                         }
@@ -463,7 +462,7 @@ class Generator extends \yii\gii\Generator
             $this->searchModelClass = $this->getModelNamespace().'\\'.$this->formModelClass;
         }
 
-        $controllerFile = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->controllerClass, '\\')) . '.php');
+        $controllerFile = \Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->controllerClass, '\\')) . '.php');
 
         $files = [
             new CodeFile($controllerFile, $this->render('controller.php')),
@@ -471,7 +470,7 @@ class Generator extends \yii\gii\Generator
 
         if (!empty($this->searchModelClass)) {
 
-            $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+            $searchModel = \Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
 
             if (!file_exists($searchModel)) {
 
@@ -479,15 +478,15 @@ class Generator extends \yii\gii\Generator
             }
         }
 
-        $formModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->formModelClass, '\\') . '.php'));
+        $formModel = \Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->formModelClass, '\\') . '.php'));
 
         if (!file_exists($formModel)) {
 
             $files[] = new CodeFile($formModel, $this->render('form.php'));
         }
 
-        File::checkPath(Yii::getAlias('@app/modules/'.$this->module.'/helpers'));
-        $traitFile = Yii::getAlias('@app/modules/'.$this->module.'/helpers').'/ModuleTrait.php';
+        File::checkPath(\Yii::getAlias('@app/modules/'.$this->module.'/helpers'));
+        $traitFile = \Yii::getAlias('@app/modules/'.$this->module.'/helpers').'/ModuleTrait.php';
         if (!file_exists($traitFile)) {
 
             $files[] = new CodeFile($traitFile, $this->render('trait.php'));
@@ -526,10 +525,10 @@ class Generator extends \yii\gii\Generator
     public function getViewPath()
     {
         if (empty($this->viewPath)) {
-            return Yii::getAlias('@app/modules/'.$this->module.'/views/' . $this->getControllerID());
+            return \Yii::getAlias('@app/modules/'.$this->module.'/views/' . $this->getControllerID());
         }
 
-        return Yii::getAlias(str_replace('\\', '/', $this->viewPath));
+        return \Yii::getAlias(str_replace('\\', '/', $this->viewPath));
     }
 
 

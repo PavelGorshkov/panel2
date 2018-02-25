@@ -1,8 +1,6 @@
 <?php
 namespace app\modules\core\models;
 
-use Yii;
-
 /**
  * Class ModuleSettings
  * @package app\modules\core\models
@@ -81,7 +79,7 @@ class ModuleSettings extends Settings
 
             foreach ($data as $param => $value) {
 
-                $model = Yii::createObject([
+                $model = \Yii::createObject([
                     'class' => self::class,
                     'module' => $module,
                     'param_name' => $param,

@@ -3,10 +3,17 @@ namespace app\modules\core\install\migrations;
 
 use app\modules\core\components\Migration;
 
+/**
+ * Class m170122_202817_create_core_setting
+ * @package app\modules\core\install\migrations
+ */
 class m170122_202817_create_core_setting extends Migration
 {
     protected $table = '{{%core_settings}}';
 
+    /**
+     * @return bool|void
+     */
 	public function safeUp()
 	{
 		$this->createTable(
@@ -29,6 +36,9 @@ class m170122_202817_create_core_setting extends Migration
 	}
 
 
+    /**
+     * @return bool|void
+     */
 	public function safeDown()
 	{
 		$this->dropIndex("ix_{$this->tableName}_module", $this->table);

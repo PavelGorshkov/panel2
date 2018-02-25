@@ -25,15 +25,13 @@ class FlashMessages extends Widget{
      */
     public function run() {
 
-        $webUser = app()->user;
-
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
 
         foreach ($this->alertTypes as $type => $alert) {
 
-            if (!$webUser->hasFlash($type)) continue;
+            if (!app()->user->hasFlash($type)) continue;
 
-            $alertText = $webUser->getFlash($type);
+            $alertText = app()->user->getFlash($type);
 
             if (empty($alertText)) continue;
 

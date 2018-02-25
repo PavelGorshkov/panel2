@@ -6,7 +6,6 @@ use app\modules\core\helpers\ConfigCacheTrait;
 use app\modules\core\helpers\File;
 use GlobIterator;
 use \SplFileInfo;
-use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 
@@ -71,7 +70,7 @@ class ConfigManager
      */
     protected function checkUpdateModuleConfig(\SplFileInfo $moduleConfigFile)
     {
-        $moduleFile = Yii::getAlias(
+        $moduleFile = \Yii::getAlias(
             sprintf(
                 '@app/modules/%s/install/config.php',
                 $moduleConfigFile->getBasename('.php')
@@ -79,7 +78,7 @@ class ConfigManager
 
         if (!file_exists($moduleFile)) {
 
-            unlink(Yii::getAlias('@app/config/modules/' . $moduleConfigFile->getBasename()));
+            unlink(\Yii::getAlias('@app/config/modules/' . $moduleConfigFile->getBasename()));
             return true;
         }
 
@@ -113,7 +112,7 @@ class ConfigManager
      */
     protected function getConfigEnv()
     {
-        return Yii::getAlias('@app/config/') . $this->env . '.php';
+        return \Yii::getAlias('@app/config/') . $this->env . '.php';
     }
 
 
@@ -126,11 +125,11 @@ class ConfigManager
     {
         $status = false;
 
-        foreach (new GlobIterator(Yii::getAlias('@app/config/modules/*.php')) as $item) {
+        foreach (new GlobIterator(\Yii::getAlias('@app/config/modules/*.php')) as $item) {
 
             /* @var \SplFileInfo $item */
             // Если нет такого модуля, нет необходимости в обработке:
-            if (!is_dir(Yii::getAlias(sprintf('@app/modules/%s', $item->getBasename('.php'))))) {
+            if (!is_dir(\Yii::getAlias(sprintf('@app/modules/%s', $item->getBasename('.php'))))) {
 
                 unlink($item->getPathname());
                 continue;
@@ -183,11 +182,11 @@ class ConfigManager
         $settings = [];
 
         /** @var SplFileInfo $item */
-        foreach (new GlobIterator(Yii::getAlias('@app/config/modules/*.php')) as $item) {
+        foreach (new GlobIterator(\Yii::getAlias('@app/config/modules/*.php')) as $item) {
 
             if (
                 is_dir(
-                    Yii::getAlias(
+                    \Yii::getAlias(
                         sprintf('@app/modules/%s', $item->getBasename('.php')))
                 ) === false) {
                 continue;

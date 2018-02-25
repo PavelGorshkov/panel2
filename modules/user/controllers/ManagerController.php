@@ -125,6 +125,7 @@ class ManagerController extends WebController
      * @throws NotFoundHttpException
      * @throws ServerErrorHttpException
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
      */
     public function actionAccess($id)
     {

@@ -2,8 +2,8 @@
 namespace app\modules\developer\generators\controller;
 
 use app\modules\developer\components\Generator as DevGenerator;
-use Symfony\Component\Finder\SplFileInfo;
-use Yii;
+use \SplFileInfo;
+use \Yii;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
 use yii\helpers\Inflector;

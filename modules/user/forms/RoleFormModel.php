@@ -39,6 +39,9 @@ class RoleFormModel extends FormModel implements SaveModelInterface
     }
 
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [

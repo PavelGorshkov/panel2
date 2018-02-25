@@ -25,7 +25,7 @@ class RbacController extends WebController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => CreateAuthTask::createRulesController()
             ],
         ];
@@ -53,12 +53,12 @@ class RbacController extends WebController
 
         return [
             'index'=>[
-                'class'=>viewItemsModuleAction::className(),
-                'searchModel'=>SearchAuthTask::className(),
+                'class'=>viewItemsModuleAction::class,
+                'searchModel'=>SearchAuthTask::class,
             ],
             'create'=>[
-                'class'=>createItemModuleAction::className(),
-                'model'=>AuthTaskFormModel::className(),
+                'class'=>createItemModuleAction::class,
+                'model'=>AuthTaskFormModel::class,
             ],
         ];
     }

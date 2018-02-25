@@ -1,7 +1,6 @@
 <?php
 namespace app\modules\core\helpers;
 
-use Yii;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -53,7 +52,7 @@ trait ConfigCacheTrait
             throw new ServerErrorHttpException('Check rights path: ' . $this->getCachePath());
         };
 
-        return Yii::getAlias(sprintf("%s/%s.json", $this->getCachePath(), $this->env));
+        return \Yii::getAlias(sprintf("%s/%s.json", $this->getCachePath(), $this->env));
     }
 
 
@@ -64,7 +63,7 @@ trait ConfigCacheTrait
      */
     private function getCachePath()
     {
-        return Yii::getAlias('@app/runtime/config');
+        return \Yii::getAlias('@app/runtime/config');
     }
 
 

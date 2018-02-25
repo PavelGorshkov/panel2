@@ -14,7 +14,7 @@ $config = [
 
     'layout' => '@app/modules/core/views/layouts/admin.php',
 
-    'homeUrl' => '/user/profile/index',
+    'homeUrl' => ['/user/profile/index'],
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -23,6 +23,7 @@ $config = [
     ],
 
     'modules'=>[
+
         'core'=> [
             'class' => 'app\modules\core\Module',
         ],
@@ -81,7 +82,7 @@ $config = [
         'ldap' => [
             'class' => '\app\modules\core\components\AdLdapComponent',
             'options' => [
-                'user'=>[
+                'user_ldap'=>[
                     'domain_controllers' => ['ad.marsu.ru'],
                     'base_dn' => 'DC=ad,DC=marsu,DC=ru',
                     'admin_username' => 'yii',
@@ -101,7 +102,7 @@ $config = [
             ],
         ],
         'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'traceLevel' => YII_DEBUG ? 3: 0,
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
@@ -177,8 +178,6 @@ $config = [
 
         'consoleRunner'=>[
             'class' => 'app\modules\core\components\ConsoleRunner',
-            'phpPath' => 'E:\OSPanel\modules\php\PHP-7.2-x64\php.exe',
-            //'phpPath' => '/usr/local/bin/php',
         ],
     ],
 
@@ -186,6 +185,7 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
+
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
@@ -194,6 +194,5 @@ if (YII_ENV_DEV) {
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
-
 
 return $config;

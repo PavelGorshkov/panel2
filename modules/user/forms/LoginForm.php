@@ -14,7 +14,6 @@ use yii\db\Expression;
  */
 class LoginForm extends Model
 {
-
     use ModuleTrait;
 
     public $login;

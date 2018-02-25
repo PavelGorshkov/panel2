@@ -167,7 +167,7 @@ echo CustomGridView::widget([
             },
         ],
         [
-            'class' => CustomActionColumn::className(),
+            'class' => CustomActionColumn::class,
             'template' => '{run} {update} {delete}',
             'buttons' => [
                 'run' => function ($url){

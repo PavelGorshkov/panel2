@@ -1,6 +1,5 @@
 <?php
 
-use app\modules\user\models\ManagerUser;
 use app\modules\user\models\Role;
 use dosamigos\switchinput\SwitchBox;
 use yii\helpers\Html;

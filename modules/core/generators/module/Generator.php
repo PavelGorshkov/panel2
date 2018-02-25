@@ -1,9 +1,6 @@
 <?php
+namespace app\modules\core\generators\module;
 
-namespace app\modules\developer\generators\module;
-
-use app\modules\core\helpers\File;
-use app\modules\core\Module;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
@@ -22,19 +19,6 @@ class Generator extends \yii\gii\Generator
     public $moduleClass;
     public $moduleID;
     public $moduleTitle;
-
-    /**
-     * @var bool
-     */
-    public $moduleDirectories = true;
-
-
-    protected $directories = [
-        'auth',
-        'controllers',
-        'models',
-        'views'
-    ];
 
 
     /**
@@ -64,7 +48,6 @@ class Generator extends \yii\gii\Generator
             [['moduleID'], 'match', 'pattern' => '/^[\w\\-]+$/', 'message' => 'Only word characters and dashes are allowed.'],
             [['moduleClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['moduleClass'], 'validateModuleClass'],
-            [['moduleDirectories'], 'boolean'],
         ]);
     }
 
@@ -77,7 +60,6 @@ class Generator extends \yii\gii\Generator
             'moduleID' => 'Module ID',
             'moduleClass' => 'Module Class',
             'moduleTitle' => 'Module Title',
-            'moduleDirectories' => 'Create directories in this module?',
         ];
     }
 
@@ -89,7 +71,7 @@ class Generator extends \yii\gii\Generator
         return [
             'moduleID' => 'This refers to the ID of the module, e.g., <code>admin</code>.',
             'moduleClass' => 'This is the fully qualified class name of the module, e.g., <code>app\modules\admin\Module</code>.',
-            'moduleTitle' => 'This refers to the Title name of the module, e.g., <code>Module Title</code>.',
+            'moduleTitle' => 'This refers to the title of the module, e.g., <code>Admin module</code>.',
         ];
     }
 
@@ -106,9 +88,20 @@ class Generator extends \yii\gii\Generator
 
         $output = <<<EOD
 <p>The module has been generated successfully.</p>
+<p>To access the module, you need to add this to your application configuration:</p>
+EOD;
+        $code = <<<EOD
+<?php
+    ......
+    'modules' => [
+        '{$this->moduleID}' => [
+            'class' => '{$this->moduleClass}',
+        ],
+    ],
+    ......
 EOD;
 
-        return $output;
+        return $output . '<pre>' . highlight_string($code, true) . '</pre>';
     }
 
     /**
@@ -118,7 +111,6 @@ EOD;
     {
         return ['module.php', 'config.php'];
     }
-
 
     /**
      * @inheritdoc
@@ -132,13 +124,16 @@ EOD;
             $this->render("module.php")
         );
         $files[] = new CodeFile(
-            $modulePath . '/install/config.php',
-            $this->render("config.php")
+            $modulePath . '/controllers/DefaultController.php',
+            $this->render("controller.php")
+        );
+        $files[] = new CodeFile(
+            $modulePath . '/views/default/index.php',
+            $this->render("view.php")
         );
 
         return $files;
     }
-
 
     /**
      * Validates [[moduleClass]] to make sure it is a fully qualified class name.
@@ -168,49 +163,4 @@ EOD;
     {
         return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\controllers';
     }
-
-
-    /**
-     * @inheritdoc
-     * @param CodeFile[] $files
-     * @param array $answers
-     * @param string $results
-     * @return bool
-     */
-    public function save($files, $answers, &$results)
-    {
-        $notError = parent::save($files, $answers, $results);
-
-        if ($notError) {
-
-            $this->createDirectory();
-        }
-
-        /**@var $module Module */
-        $module = app()->getModule('core');
-        $module->allFlush();
-
-        return $notError;
-    }
-
-
-    /**
-     * Создание директорий
-     *
-     * @return bool
-     */
-    protected function createDirectory()
-    {
-        if (!$this->moduleDirectories) return false;
-
-        $modulePath = $this->getModulePath();
-
-        foreach ($this->directories as $directory) {
-
-            File::checkPath($modulePath.'/'.$directory);
-        }
-
-        return true;
-    }
 }
-

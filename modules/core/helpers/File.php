@@ -97,7 +97,7 @@ class File extends FileHelper
                         self::rmDir($tmpPath);
                     } else {
                         if (file_exists($tmpPath)) {
-                            unlink($tmpPath);
+                            @unlink($tmpPath);
                         }
                     }
                 }

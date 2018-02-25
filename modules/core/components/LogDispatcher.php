@@ -15,6 +15,9 @@ class LogDispatcher extends Dispatcher
      */
     private $_logger;
 
+    /**
+     * @return Logger
+     */
     public function getLogger()
     {
         if ($this->_logger === null) {

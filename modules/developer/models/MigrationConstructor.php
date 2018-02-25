@@ -3,7 +3,6 @@ namespace app\modules\developer\models;
 
 use app\modules\core\components\Migrator;
 use app\modules\core\helpers\File;
-use Yii;
 
 /**
  * Class MigrationConstructor
@@ -30,7 +29,8 @@ class MigrationConstructor extends FileConstructor
     protected function getFileContent()
     {
         ob_start();
-        include Yii::getAlias('@app/modules/developer/templates/migration/template.php');
+        /** @noinspection PhpIncludeInspection */
+        include \Yii::getAlias('@app/modules/developer/templates/migration/template.php');
         $buffer = ob_get_contents();
         ob_end_clean();
 

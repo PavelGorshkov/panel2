@@ -1,7 +1,6 @@
 <?php
 namespace app\modules\core\helpers;
 
-use Yii;
 use yii\base\BaseObject;
 use yii\web\Cookie;
 
@@ -17,7 +16,7 @@ class CookieHelper extends BaseObject
      */
     public static function has($cookie)
     {
-        return Yii::$app->getRequest()->getCookies()->has($cookie);
+        return \Yii::$app->getRequest()->getCookies()->has($cookie);
     }
 
 
@@ -28,7 +27,7 @@ class CookieHelper extends BaseObject
     public static function getAll()
     {
 
-        return Yii::$app->getRequest()->getCookies();
+        return \Yii::$app->getRequest()->getCookies();
     }
 
 
@@ -40,7 +39,7 @@ class CookieHelper extends BaseObject
     {
         if (self::has($cookie)) {
 
-            Yii::$app->getResponse()->getCookies()->remove($cookie, $removeFromBrowser);
+            \Yii::$app->getResponse()->getCookies()->remove($cookie, $removeFromBrowser);
         }
     }
 
@@ -57,7 +56,7 @@ class CookieHelper extends BaseObject
      */
     public static function set($cookie, $value, $expire = 0, $httpOnly = true, $domain = '', $secure = false, $path = '/')
     {
-        $cookieObject = Yii::createObject([
+        $cookieObject = \Yii::createObject([
             'class' => Cookie::class,
             'name' => $cookie,
             'value' => $value,
@@ -69,7 +68,7 @@ class CookieHelper extends BaseObject
         ]);
 
         /** @var Cookie $cookieObject */
-        Yii::$app->getResponse()->getCookies()->add($cookieObject);
+        \Yii::$app->getResponse()->getCookies()->add($cookieObject);
     }
 
 

@@ -3,9 +3,9 @@ namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
 use app\modules\user\interfaces\RBACItemInterface;
-use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Item;
 use yii\rbac\Rule;
@@ -52,8 +52,8 @@ class BuildAuthManager extends Component
 
         parent::init();
 
-        $this->itemFile = Yii::getAlias('@app/runtime/rbac/items.php');
-        $this->ruleFile = Yii::getAlias('@app/runtime/rbac/rules.php');
+        $this->itemFile = \Yii::getAlias('@app/runtime/rbac/items.php');
+        $this->ruleFile = \Yii::getAlias('@app/runtime/rbac/rules.php');
     }
 
 
@@ -63,7 +63,7 @@ class BuildAuthManager extends Component
      */
     public static function getPathAuthTask($module)
     {
-        return Yii::getAlias('@app/modules/' . $module . '/auth');
+        return \Yii::getAlias('@app/modules/' . $module . '/auth');
 
     }
 
@@ -73,7 +73,6 @@ class BuildAuthManager extends Component
      */
     public function createAuthFiles()
     {
-
         $settings = $this->generateAuth(new Roles);
         $this->_instances = [];
 
@@ -229,7 +228,7 @@ class BuildAuthManager extends Component
 
     /**
      * @return array
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function getListOperations()
     {

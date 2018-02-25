@@ -36,6 +36,9 @@ abstract class SearchClassesModule extends Model implements SearchModelInterface
     abstract protected function getListClass($module);
 
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -45,6 +48,9 @@ abstract class SearchClassesModule extends Model implements SearchModelInterface
     }
 
 
+    /**
+     * @return mixed
+     */
     abstract protected function setFilterData();
 
 
@@ -116,7 +122,7 @@ abstract class SearchClassesModule extends Model implements SearchModelInterface
             'pagination'=>[
                 'pageSize'=> 20
             ],
-            'modelClass'=>Migration::className(),
+            'modelClass'=>Migration::class(),
         ]);
     }
 }

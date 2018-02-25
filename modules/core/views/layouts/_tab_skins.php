@@ -1,7 +1,8 @@
 <?php
-/* @var $this \app\modules\core\components\View */
+/* @var $this View */
 
 use app\modules\core\assets\AdminLteAssets;
+use app\modules\core\components\View;
 use yii\helpers\Url;
 ?>
 <h4 class='control-sidebar-heading'>Скины</h4>
@@ -93,4 +94,4 @@ use yii\helpers\Url;
 </ul>
 <?php
 $skin_url = app()->assetManager->getAssetUrl(app()->assetManager->getBundle(AdminLteAssets::class), '/js/skins.js');
-$this->registerJsFile($skin_url, ['position'=>POS_END]);
+$this->registerJsFile($skin_url, ['position'=> View::POS_END]);

@@ -2,7 +2,6 @@
 
 namespace app\modules\developer\generators\jqplugin;
 
-use Yii;
 use yii\gii\CodeFile;
 
 /**
@@ -91,7 +90,7 @@ class Generator extends \yii\gii\Generator
 
 
         $files[] = new CodeFile(
-            Yii::getAlias($this->pluginPath).'/'.$this->pluginFileName.'.js',
+            \Yii::getAlias($this->pluginPath).'/'.$this->pluginFileName.'.js',
             $this->render("plugin.php")
         );
 

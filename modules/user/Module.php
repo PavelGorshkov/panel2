@@ -6,7 +6,6 @@ use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\Module as ParentModule;
 use app\modules\core\helpers\File;
 use app\modules\user\components\Roles;
-use Yii;
 
 /**
  * Class Module
@@ -121,6 +120,9 @@ class Module extends ParentModule
     }
 
 
+    /**
+     * @return array
+     */
     public function getParamGroups()
     {
         return [
@@ -178,12 +180,10 @@ class Module extends ParentModule
      */
     public function init()
     {
-
         parent::init();
 
-        $this->avatarDirs = Yii::getAlias($this->avatarDirs);
+        $this->avatarDirs = \Yii::getAlias($this->avatarDirs);
         File::checkPath($this->avatarDirs);
-
     }
 
 
@@ -192,7 +192,6 @@ class Module extends ParentModule
      */
     public static function Title()
     {
-
         return 'Модуль пользователей';
     }
 
@@ -211,7 +210,6 @@ class Module extends ParentModule
      */
     public function getMenuAdmin()
     {
-
         return [
             [
                 'label' => '<span class="hidden-xs">Пользователи</span>',
@@ -285,7 +283,6 @@ class Module extends ParentModule
      */
     public function getLoginPage()
     {
-
         return ['/user/account/login'];
     }
 
@@ -295,7 +292,6 @@ class Module extends ParentModule
      */
     public function getRegisterPage()
     {
-
         return ['/user/account/registration'];
     }
 
@@ -305,7 +301,6 @@ class Module extends ParentModule
      */
     public function getProfilePage()
     {
-
         return ['/user/profile/index'];
     }
 
@@ -315,7 +310,6 @@ class Module extends ParentModule
      */
     public function getLogoutPage()
     {
-
         return ['/user/account/logout'];
     }
 
@@ -325,7 +319,6 @@ class Module extends ParentModule
      */
     public function getRecoveryPage()
     {
-
         return ['/user/account/recovery'];
     }
 }

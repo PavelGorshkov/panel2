@@ -3,8 +3,8 @@ namespace app\modules\developer\generators\console;
 
 use app\modules\core\helpers\File;
 use app\modules\developer\components\Generator as DevGenerator;
-use Symfony\Component\Finder\SplFileInfo;
-use Yii;
+use \SplFileInfo;
+use \Yii;
 use yii\gii\CodeFile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;

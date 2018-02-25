@@ -2,7 +2,6 @@
 
 namespace app\modules\core\components;
 
-use Yii;
 use yii\base\Component;
 use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
@@ -95,7 +94,7 @@ class MenuManager extends Component
      */
     public function getMenuConfigFile($type)
     {
-        return Yii::getAlias('@app/config/menu/' . $type . '.php');
+        return \Yii::getAlias('@app/config/menu/' . $type . '.php');
     }
 
 

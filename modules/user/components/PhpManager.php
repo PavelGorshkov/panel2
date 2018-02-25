@@ -2,7 +2,6 @@
 namespace app\modules\user\components;
 
 use app\modules\core\helpers\File;
-use Yii;
 use yii\rbac\Item;
 use yii\rbac\PhpManager as AuthPhpManager;
 use yii\rbac\Role;
@@ -24,9 +23,9 @@ class PhpManager extends AuthPhpManager
      */
     public function init()
     {
-        File::checkPath(Yii::getAlias('@app/runtime/rbac/'));
+        File::checkPath(\Yii::getAlias('@app/runtime/rbac/'));
 
-        if (!file_exists(Yii::getAlias($this->itemFile))) {
+        if (!file_exists(\Yii::getAlias($this->itemFile))) {
 
             app()->buildAuthManager->createAuthFiles();
         }
@@ -40,7 +39,7 @@ class PhpManager extends AuthPhpManager
             if (($role = user()->getRole())!== null) {
 
                 $this->assign(
-                    Yii::createObject([
+                    \Yii::createObject([
                         'class' => Role::class,
                         'name'=>$role
                     ]),
@@ -53,7 +52,7 @@ class PhpManager extends AuthPhpManager
                     if ($this->getItem($access)!== null) {
 
                         $this->assign(
-                            Yii::createObject([
+                            \Yii::createObject([
                                 Item::class,
                                 'name' => $access
                             ]),
@@ -72,6 +71,6 @@ class PhpManager extends AuthPhpManager
      */
     public function flush() {
 
-        File::rmDir(Yii::getAlias('@app/runtime/rbac/*'));
+        File::rmDir(\Yii::getAlias('@app/runtime/rbac/*'));
     }
 }

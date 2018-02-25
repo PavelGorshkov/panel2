@@ -1,8 +1,8 @@
 <?php
 namespace app\modules\developer\models;
+
 use app\modules\core\helpers\File;
 use app\modules\user\components\BuildAuthManager;
-use Yii;
 
 
 /**
@@ -55,7 +55,8 @@ class AuthTaskConstructor extends FileConstructor
     protected function getFileContent()
     {
         ob_start();
-        include Yii::getAlias('@app/modules/developer/templates/auth/template.php');
+        /** @noinspection PhpIncludeInspection */
+        include \Yii::getAlias('@app/modules/developer/templates/auth/template.php');
         $buffer = ob_get_contents();
         ob_end_clean();
 

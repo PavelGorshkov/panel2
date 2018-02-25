@@ -103,6 +103,7 @@ class RolesController extends WebController
      * @return string
      * @throws NotFoundHttpException
      * @throws \yii\base\InvalidConfigException
+     * @throws \yii\db\Exception
      */
     public function actionAccess($id)
     {

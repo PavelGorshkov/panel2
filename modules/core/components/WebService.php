@@ -5,7 +5,6 @@ namespace app\modules\core\components;
 use app\modules\core\helpers\LoggerTrait;
 use app\modules\core\interfaces\LoggerInterface;
 use SoapClient;
-use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
@@ -86,7 +85,7 @@ class WebService extends Component implements LoggerInterface
         }
 
         /** @var $instance WebService */
-        $this->_providers[$provider] = Yii::createObject(
+        $this->_providers[$provider] = \Yii::createObject(
             ArrayHelper::merge(
                 [
                     'class' => WebServiceInstance::class,

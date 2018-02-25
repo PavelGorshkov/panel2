@@ -28,7 +28,7 @@ class JobController extends WebController {
     public function behaviors(){
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => ArrayHelper::merge(
                     JobTask::createRulesController(),
                     [
@@ -49,27 +49,27 @@ class JobController extends WebController {
     public function actions(){
         return [
             'index' =>[
-                'class'=>GridViewAction::className(),
-                'searchModel'=>SearchJob::className(),
+                'class'=>GridViewAction::class,
+                'searchModel'=>SearchJob::class,
                 'smallTitle'=>'Список',
             ],
             'create'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=>JobScheduleFormModel::className(),
-                'model'=>Job::className(),
+                'class'=>SaveModelAction::class,
+                'modelForm'=>JobScheduleFormModel::class,
+                'model'=>Job::class,
                 'view'=>'edit',
                 'isNewRecord'=>true,
             ],
             'update'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=>JobScheduleFormModel::className(),
-                'model'=>Job::className(),
+                'class'=>SaveModelAction::class,
+                'modelForm'=>JobScheduleFormModel::class,
+                'model'=>Job::class,
                 'view'=>'edit',
                 'isNewRecord'=>false,
             ],
             'is_active' => [
-                'class' => EditableColumnAction::className(),
-                'modelClass' => Job::className(),
+                'class' => EditableColumnAction::class,
+                'modelClass' => Job::class,
                 'outputValue' => function($model) {
                     return JobStatusListHelper::getList()[$model->is_active];
                 },

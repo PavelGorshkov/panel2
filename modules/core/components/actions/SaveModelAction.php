@@ -3,7 +3,6 @@
 namespace app\modules\core\components\actions;
 
 use app\modules\core\interfaces\SaveModelInterface;
-use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecordInterface;
 use yii\helpers\ArrayHelper;
@@ -70,7 +69,7 @@ class SaveModelAction extends WebAction
         if ($this->modelForm === null)
             throw new ServerErrorHttpException('In action ' . $this->id . ' in controller ' . $this->controller->id . ' not found param modelForm');
 
-        $this->modelFormInstance = Yii::createObject([
+        $this->modelFormInstance = \Yii::createObject([
             'class' => $this->modelForm,
         ]);
 
@@ -81,7 +80,7 @@ class SaveModelAction extends WebAction
         if (!($this->modelFormInstance instanceof SaveModelInterface))
             throw new ServerErrorHttpException('In action ' . $this->id . ' form model ' . $this->modelForm . ' not implements interface \\app\\modules\\core\\interfaces\\SaveModelInterface');
 
-        $this->modelInstance = Yii::createObject([
+        $this->modelInstance = \Yii::createObject([
 
             'class' => $this->model,
         ]);

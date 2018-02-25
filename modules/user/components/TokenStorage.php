@@ -9,7 +9,6 @@ use app\modules\user\models\query\TokenQuery;
 use app\modules\user\models\User;
 use app\modules\user\models\Token;
 use \Throwable;
-use Yii;
 use yii\base\Component;
 use yii\db\Expression;
 use yii\web\ServerErrorHttpException;
@@ -81,7 +80,7 @@ class TokenStorage extends Component
     {
         $deleted = Token::deleteAll('expire < NOW()');
 
-        Yii::info(sprintf('Удалено %d токенов', $deleted));
+        \Yii::info(sprintf('Удалено %d токенов', $deleted));
 
         return $deleted;
     }

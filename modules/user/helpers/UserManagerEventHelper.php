@@ -8,7 +8,6 @@ use app\modules\user\events\TokenEvent;
 use app\modules\user\events\UserEvent;
 use app\modules\user\models\User;
 use app\modules\user\models\Token;
-use Yii;
 
 /**
  * Class UserManagerEventHelper
@@ -66,7 +65,7 @@ trait UserManagerEventHelper
     protected function getUserTokenEvent(User $user, Token $token)
     {
         /* @var $event TokenEvent */
-        $event = Yii::createObject([
+        $event = \Yii::createObject([
             'class' => TokenEvent::class,
             'user' => $user,
             'token' => $token,
@@ -86,7 +85,7 @@ trait UserManagerEventHelper
     protected function getUserPasswordEvent(User $user, $password)
     {
         /* @var $event PasswordEvent */
-        $event = Yii::createObject([
+        $event = \Yii::createObject([
             'class' => PasswordEvent::class,
             'user' => $user,
             'password' => $password,
@@ -104,7 +103,7 @@ trait UserManagerEventHelper
      */
     protected function getUserEvent(User $user)
     {
-        return Yii::createObject([
+        return \Yii::createObject([
             'class' => UserEvent::class,
             'user' => $user,
         ]);

@@ -30,7 +30,5 @@ class AdminLteAssets extends  AssetBundle {
         'app\modules\core\assets\FontAwesomeAssets',
         'app\modules\core\assets\FastClickAssets',
         'app\modules\core\assets\SlimScrollAssets',
-
     ];
-
 }

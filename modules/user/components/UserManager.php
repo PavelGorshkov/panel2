@@ -20,7 +20,6 @@ use app\modules\user\models\RegisterUser;
 use app\modules\user\models\User;
 use app\modules\user\models\Access;
 use app\modules\user\models\Token;
-use Yii;
 use yii\base\Component;
 use yii\db\Expression;
 use yii\db\Transaction;
@@ -212,7 +211,7 @@ class UserManager extends Component
     public function findUserByLdap($accountName, $password)
     {
         /* @var $ldapData LdapUser */
-        $ldapData = app()->ldap->getProvider('user')->search()->users()->find($accountName);
+        $ldapData = app()->ldap->getProvider('user_ldap')->search()->users()->find($accountName);
 
         if ($ldapData !== null) {
 
@@ -329,7 +328,7 @@ class UserManager extends Component
         $this->accessQuery = Access::find();
 
         /** @var $tokenStorage TokenStorage */
-        $tokenStorage = Yii::createObject(['class' => TokenStorage::class]);
+        $tokenStorage = \Yii::createObject(['class' => TokenStorage::class]);
 
         $this->setTokenStorage($tokenStorage);
 
@@ -347,7 +346,7 @@ class UserManager extends Component
      */
     public function isAuthLDAP($login, $password)
     {
-        return app()->ldap->getProvider('user')->auth()->attempt($login, $password);
+        return app()->ldap->getProvider('user_ldap')->auth()->attempt($login, $password);
     }
 
 

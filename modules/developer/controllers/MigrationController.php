@@ -24,7 +24,7 @@ class MigrationController extends WebController {
 
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => MigrationTask::createRulesController()
             ],
         ];
@@ -52,12 +52,12 @@ class MigrationController extends WebController {
 
         return [
             'index'=>[
-                'class'=>viewItemsModuleAction::className(),
-                'searchModel'=>SearchMigration::className(),
+                'class'=>viewItemsModuleAction::class,
+                'searchModel'=>SearchMigration::class,
             ],
             'create'=>[
-                'class'=>createItemModuleAction::className(),
-                'model'=>MigrationFormModel::className(),
+                'class'=>createItemModuleAction::class,
+                'model'=>MigrationFormModel::class,
             ],
         ];
     }

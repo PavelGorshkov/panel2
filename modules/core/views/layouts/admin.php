@@ -2,6 +2,7 @@
 
 /* @var $this \app\modules\core\components\View */
 /* @var $content string */
+
 /* @var Module $core */
 
 use app\modules\core\assets\AdminLteAssets;
@@ -11,6 +12,7 @@ use app\modules\core\widgets\MenuWidget;
 use app\modules\user\helpers\UserSettings;
 use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 $core = app()->getModule('core');
@@ -37,20 +39,6 @@ $this->beginPage() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <?php $this->head() ?>
-        <!-- Theme style -->
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <!--suppress JSUnresolvedLibraryURL -->
-        <?= Html::jsFile('@web/js/html5shiv.min.js');?>
-        <!--suppress JSUnresolvedLibraryURL -->
-        <?= Html::jsFile('@web/js/html5shiv.min.js');?>
-        <![endif]-->
-        <!--suppress JSUnusedLocalSymbols -->
-        <script type="text/javascript">
-            var panelTokenName = '<?= app()->getRequest()->csrfParam;?>';
-            var panelToken = '<?= app()->getRequest()->csrfToken;?>';
-        </script>
     </head>
     <body class="hold-transition sidebar-mini
     <?= (isset(UserSettings::model()->skinTemplate) ? UserSettings::model()->skinTemplate : 'skin-green-light') ?>
@@ -60,7 +48,7 @@ $this->beginPage() ?>
     <div class="wrapper">
 
         <header class="main-header">
-            <a href="<?= app()->homeUrl ?>" class="logo">
+            <a href="<?= Url::to(app()->homeUrl) ?>" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><?= $icon ?></span>
                 <!-- logo for regular state and mobile devices -->
