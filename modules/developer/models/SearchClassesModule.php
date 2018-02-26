@@ -122,7 +122,7 @@ abstract class SearchClassesModule extends Model implements SearchModelInterface
             'pagination'=>[
                 'pageSize'=> 20
             ],
-            'modelClass'=>Migration::class(),
+            'modelClass'=>Migration::class,
         ]);
     }
 }

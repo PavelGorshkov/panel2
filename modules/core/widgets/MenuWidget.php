@@ -3,6 +3,7 @@ namespace app\modules\core\widgets;
 
 
 use app\modules\core\helpers\RouterUrlHelper;
+use yii\base\Widget;
 
 /**
  * Class MenuWidget

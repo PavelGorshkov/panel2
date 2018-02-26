@@ -8,11 +8,7 @@ use yii\widgets\Block;
 Block::begin(['id' => 'navbarTopMenu']);
 if (!user()->isGuest):?>
     <div class="navbar-custom-menu" style="float: left;">
-        <? try {
-          echo AdminMenu::widget(['menu' => 'admin']);
-        } catch (Exception $e) {
-
-        } ?>
+        <?= AdminMenu::widget(['menu' => 'admin']); ?>
     </div>
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

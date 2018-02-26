@@ -202,7 +202,7 @@ class UserManager extends Component
     /**
      * @param string $accountName
      * @param string $password
-     * @return User|null
+     * @return IdentityUser|null
      * @throws ServerErrorHttpException
      * @throws \Adldap\AdldapException
      * @throws \yii\base\Exception
@@ -211,14 +211,14 @@ class UserManager extends Component
     public function findUserByLdap($accountName, $password)
     {
         /* @var $ldapData LdapUser */
-        $ldapData = app()->ldap->getProvider('user_ldap')->search()->users()->find($accountName);
+        $ldapData = app()->ldap->getProvider('user_ldap')->search()->users()->where('samaccountname', '=', $accountName)->find($accountName);
 
         if ($ldapData !== null) {
 
-            $user = new User();
+            $user = new IdentityUser();
             $user->setAttributes([
                 'username' => $ldapData->getAccountName(),
-                'email' => $ldapData->getEmail(),
+                'email' => $ldapData->getEmail()?$ldapData->getEmail():$ldapData->getAccountName().'@marsu.ru',
                 'email_confirm' => EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
                 'hash' => Password::hash($password),
                 'status' => UserStatusHelper::STATUS_ACTIVE,
@@ -245,7 +245,7 @@ class UserManager extends Component
 
     /**
      * @param $usernameOrEmail
-     * @return User|IdentityUser|null|\yii\db\ActiveRecord
+     * @return IdentityUser|null|\yii\db\ActiveRecord
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
     {

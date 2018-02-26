@@ -4,8 +4,10 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $webservice = require __DIR__.'/webservice.php';
 
+$id = 'panel2';
+
 $config = [
-    'id' => 'panel2',
+    'id' => $id,
     'name'=>'Панель',
     'language'=>'ru',
     'basePath' => dirname(__DIR__),
@@ -141,6 +143,10 @@ $config = [
             'cookieValidationKey' => 'qjnYa_W_yuARSOqWA2_Kx1uDVySXWoAp',
         ],
 
+        'session'=>[
+            'name'=>'_'.$id,
+        ],
+
         'thumbNailer'=> [
             'class'=>'\app\modules\core\components\Thumbnailer',
         ],
@@ -166,6 +172,10 @@ $config = [
             'identityClass' => '\app\modules\user\models\IdentityUser',
             'enableAutoLogin' => true,
             'loginUrl' => ['/user/account/login'],
+            'identityCookie' => [
+                'name' => '_identity_'.$id,
+                'httpOnly' => true,
+            ],
         ],
 
         'userManager'=> [

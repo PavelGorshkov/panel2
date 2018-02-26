@@ -2,7 +2,7 @@
 
 namespace app\modules\cron\auth;
 
-use app\modules\user\components\RBACItem;
+use app\modules\user\components\RbacItem;
 use app\modules\user\components\Roles;
 use yii\rbac\Item;
 
@@ -10,7 +10,7 @@ use yii\rbac\Item;
  * Class JobTask
  * @package app\modules\cron\auth
  */
-class JobTask extends RBACItem {
+class JobTask extends RbacItem {
 
     const TASK = '/cron/job';
 

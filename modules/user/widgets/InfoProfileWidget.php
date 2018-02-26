@@ -2,8 +2,9 @@
 
 namespace app\modules\user\widgets;
 
-use app\modules\core\widgets\Widget;
+
 use app\modules\user\helpers\ModuleTrait;
+use yii\base\Widget;
 
 /**
  * Class InfoProfileWidget

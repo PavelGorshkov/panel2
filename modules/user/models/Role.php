@@ -79,6 +79,19 @@ class Role extends ActiveRecord
 
     /**
      * @inheritdoc
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        app()->cache->flush();
+    }
+
+
+    /**
+     * @inheritdoc
      * @return RoleQuery the active query used by this AR class.
      */
     public static function find()

@@ -3,6 +3,7 @@
 namespace app\modules\user\controllers;
 
 use app\modules\core\components\WebController;
+use app\modules\core\helpers\CookieHelper;
 use app\modules\user\forms\LoginForm;
 use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RecoveryForm;
@@ -83,6 +84,12 @@ class AccountController extends WebController
         ) {
 
             if ($model->login()) return $this->goBack();
+        }
+
+        if (!app()->request->isPost) {
+
+            app()->response->cookies->removeAll();
+            app()->session->destroy();
         }
 
         return $this->render('login', [

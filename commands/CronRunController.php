@@ -10,22 +10,26 @@ use yii\console\Controller;
  * Class CronController
  * @package app\commands
  */
-class CronController extends Controller{
+class CronRunController extends Controller
+{
 
     /**
      * Запуск всех активных команд по крону
      */
-    public function actionIndex(){
+    public function actionIndex()
+    {
         /** @var ConsoleRunner $runner */
         /** @var RunnerJob $job */
+        
 
         $jobs = RunnerJob::find()->active();
 
-        if($jobs){
+        if ($jobs) {
             $runner = app()->consoleRunner;
-            foreach($jobs as $job){
-                if($job->checkTime()){
+            foreach ($jobs as $job) {
+                if ($job->checkTime()) {
                     $runner->run($job->command, [], true);
+					file_put_contents(\Yii::getAlias('@app/runtime/logs').'/console.php', date('Y-m-d H:i:s'));
                 }
             }
         }

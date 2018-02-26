@@ -138,7 +138,7 @@ class UserFormModel extends Model implements SaveModelInterface
 
         if ($this->id === null) return true;
 
-        $user = User::findByPk($this->id);
+        $user = User::findOne($this->id);
 
         $message = isset($params['message'])
             ? $params['message']

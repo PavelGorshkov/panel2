@@ -40,10 +40,10 @@ class AccessQuery extends ActiveQuery
     public function getData($id, $type)
     {
         $data = $this
-            ->select('access')
-            ->where('id = :id AND type = :type', [':id' => (int)$id, ':type' => (int)$type])
+            ->select(['access'])
+            ->where(['id' => (int)$id, 'type' => (int)$type])
             ->asArray()
-            ->all();
+            ->column();
 
         return array_flip($data);
     }

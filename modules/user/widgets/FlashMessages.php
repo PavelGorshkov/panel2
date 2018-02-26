@@ -1,7 +1,7 @@
 <?php
 namespace app\modules\user\widgets;
 
-use app\modules\core\widgets\Widget;
+use yii\bootstrap\Widget;
 use yii\bootstrap\Alert;
 
 /**

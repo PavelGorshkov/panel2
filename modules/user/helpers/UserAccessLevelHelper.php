@@ -39,7 +39,7 @@ class UserAccessLevelHelper extends ListHelper
         return [
             self::LEVEL_ADMIN => 'Aдминистраторы',
             self::LEVEL_USER => 'Пользователи',
-            self::LEVEL_LDAP => 'LDAP пользоаватель',
+            self::LEVEL_LDAP => 'LDAP пользователь',
             self::LEVEL_API => 'REST пользователь',
         ];
     }

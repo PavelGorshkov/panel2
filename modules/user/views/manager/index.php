@@ -91,7 +91,17 @@ try {
                 'value' => function ($model) {
 
                     /** @var $model ManagerUser */
-                    return $model->getContact();
+                    $text = [
+                        $model->full_name,
+                        Html::a($model->email, "mailto:" . $model->email),
+                    ];
+
+                    if ($model->phone) {
+
+                        $text[] = $model->phone;
+                    }
+
+                    return implode('<br />', $text);
                 }
             ],
             [

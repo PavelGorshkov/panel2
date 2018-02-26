@@ -53,7 +53,7 @@ class PhpManager extends AuthPhpManager
 
                         $this->assign(
                             \Yii::createObject([
-                                Item::class,
+                                'class'=>Item::class,
                                 'name' => $access
                             ]),
                             user()->id
@@ -72,5 +72,11 @@ class PhpManager extends AuthPhpManager
     public function flush() {
 
         File::rmDir(\Yii::getAlias('@app/runtime/rbac/*'));
+    }
+
+
+    public function removeAssigment() {
+
+        File::unlink(\Yii::getAlias('@app/runtime/rbac/assignments.php'));
     }
 }

@@ -34,14 +34,12 @@ class BuildAuthManager extends Component
     /**
      * @var array|null
      */
-    protected $rules = null;
+    private $rules = null;
 
     /**
      * @var null
      */
-    protected $_instances = null;
-
-    protected $listTalk;
+    private $_instances = null;
 
 
     /**
@@ -49,7 +47,6 @@ class BuildAuthManager extends Component
      */
     public function init()
     {
-
         parent::init();
 
         $this->itemFile = \Yii::getAlias('@app/runtime/rbac/items.php');
@@ -64,7 +61,6 @@ class BuildAuthManager extends Component
     public static function getPathAuthTask($module)
     {
         return \Yii::getAlias('@app/modules/' . $module . '/auth');
-
     }
 
     /**
@@ -73,7 +69,7 @@ class BuildAuthManager extends Component
      */
     public function createAuthFiles()
     {
-        $settings = $this->generateAuth(new Roles);
+        $settings = $this->_generateAuth(new Roles);
         $this->_instances = [];
 
         foreach (app()->moduleManager->getListAllModules() as $module) {
@@ -93,7 +89,7 @@ class BuildAuthManager extends Component
 
                 $this->_instances[$module][get_class($instance)] = $instance;
 
-                $settings = ArrayHelper::merge($settings, $this->generateAuth($instance));
+                $settings = ArrayHelper::merge($settings, $this->_generateAuth($instance));
             }
         }
 
@@ -107,7 +103,7 @@ class BuildAuthManager extends Component
      *
      * @return array
      */
-    protected function generateAuth($instance)
+    private function _generateAuth($instance)
     {
         $data = [];
 
@@ -127,7 +123,7 @@ class BuildAuthManager extends Component
 
             if (isset($ruleList[$type])) {
 
-                $t['ruleName'] = $this->searchRule($ruleList[$type]);
+                $t['ruleName'] = $this->_searchRule($ruleList[$type]);
             }
 
             if (isset($tree[$type])) {
@@ -155,7 +151,7 @@ class BuildAuthManager extends Component
      *
      * @return string
      */
-    protected function searchRule($rule)
+    private function _searchRule($rule)
     {
         if (!class_exists($rule)) return '';
 
@@ -167,7 +163,7 @@ class BuildAuthManager extends Component
 
         if (!$name) return '';
 
-        $rules = $this->getRules();
+        $rules = $this->_getRules();
 
         if (!isset($rules[$name])) {
 
@@ -181,7 +177,7 @@ class BuildAuthManager extends Component
     /**
      * @return array|null
      */
-    protected function getRules()
+    private function _getRules()
     {
         if ($this->rules === null) {
 
@@ -206,7 +202,7 @@ class BuildAuthManager extends Component
      */
     protected function saveRules()
     {
-        if (!File::savePhpFile($this->ruleFile, $this->getRules())) {
+        if (!File::savePhpFile($this->ruleFile, $this->_getRules())) {
 
             throw new ServerErrorHttpException('Error write rbac rules in ' . $this->ruleFile . '...');
         }

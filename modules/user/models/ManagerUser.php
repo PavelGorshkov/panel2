@@ -32,7 +32,6 @@ class ManagerUser extends User
      */
     protected function isSaveUpdate()
     {
-
         if ($this->isNewRecord) return true;
 
         if (UserStatusHelper::STATUS_ACTIVE !== $this->getAttribute('status')) {

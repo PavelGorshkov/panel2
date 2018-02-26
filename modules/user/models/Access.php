@@ -70,9 +70,12 @@ class Access extends ActiveRecord
      */
     public static function getData($id)
     {
+        $class = get_called_class();
+
+
         $data = self::find()
             ->select(['access'])
-            ->andWhere(['id' => (int)$id, 'type' => self::TYPE])
+            ->andWhere(['id' => (int)$id, 'type' => $class::TYPE])
             ->asArray()
             ->column();
 
@@ -90,6 +93,8 @@ class Access extends ActiveRecord
     {
         if (empty($post)) return false;
 
+        $class = get_called_class();
+
         self::deleteData($id);
 
         $field = ['access', 'type', 'id'];
@@ -97,7 +102,7 @@ class Access extends ActiveRecord
 
         foreach ($post as $access => $temp) {
 
-            $data[] = [$access, self::TYPE, $id];
+            $data[] = [$access, $class::TYPE, $id];
         }
 
         return app()->db->createCommand()->batchInsert(
@@ -114,9 +119,11 @@ class Access extends ActiveRecord
      */
     public static function deleteData($id)
     {
+        $class = get_called_class();
+
         return self::deleteAll([
             'id' => $id,
-            'type' => self::TYPE
+            'type' => $class::TYPE
         ]);
     }
 }

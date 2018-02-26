@@ -13,7 +13,6 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%user_user}}".
@@ -38,6 +37,9 @@ use yii\helpers\Html;
  * @property string $avatar
  * @property string $about
  * @property string $phone
+ *
+ * @property-read Access $access
+ * @property-read Token $token
  */
 class User extends ActiveRecord
 {
@@ -68,6 +70,7 @@ class User extends ActiveRecord
     }
 
     /**
+     * @inheritdoc
      * @param bool $insert
      * @return bool
      * @throws \yii\base\Exception
@@ -88,18 +91,33 @@ class User extends ActiveRecord
 
 
     /**
-     * @param $insert
-     * @param $changedAttributes
+     * @inheritdoc
+     * @param boolean $insert
+     * @param array $changedAttributes
      */
-    public function afterSafe($insert, $changedAttributes)
+    public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->isNewRecord) {
+        if ($insert) {
 
             $this->id = app()->db->lastInsertID;
         }
+
+        app()->cache->flush();
     }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        $this->access->deleteAll();
+
+        parent::afterDelete();
+    }
+
 
     /**
      * @inheritdoc
@@ -184,22 +202,21 @@ class User extends ActiveRecord
 
 
     /**
+     * @return ActiveQuery
+     */
+    public function getAccess()
+    {
+        return $this->hasMany(Access::class, ['id'=>'id', 'type'=>Access::TYPE_USER]);
+    }
+
+
+    /**
      * @inheritdoc
      * @return UserQuery the active query used by this AR class.
      */
     public static function find()
     {
         return new UserQuery(get_called_class());
-    }
-
-
-    /**
-     * @param mixed $id
-     * @return User|array|null|ActiveRecord
-     */
-    public static function findByPk($id)
-    {
-        return self::find()->findUser('id = :id', [':id' => $id])->one();
     }
 
 
@@ -228,7 +245,6 @@ class User extends ActiveRecord
      */
     public function isUFAccessLevel()
     {
-
         return $this->access_level >= 100;
     }
 
@@ -276,25 +292,6 @@ class User extends ActiveRecord
         $data = self::getAccessLevelList();
 
         return isset($data[$this->access_level]) ? $data[$this->access_level] : '*не известна*';
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getContact()
-    {
-        $text = [
-            $this->full_name,
-            Html::a($this->email, "mailto:" . $this->email),
-        ];
-
-        if ($this->phone) {
-
-            $text[] = $this->phone;
-        }
-
-        return implode('<br>', $text);
     }
 
 
