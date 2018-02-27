@@ -1,7 +1,6 @@
 <?php
 namespace app\controllers;
 
-use Adldap\Models\User;
 use app\modules\core\components\actions\ErrorAction;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\Password;
@@ -132,17 +131,6 @@ class SiteController extends Controller
             'about' => $ldapData->getDepartment(),
             'phone' => $ldapData->getTelephoneNumber() !== null ? $ldapData->getTelephoneNumber() : null,
         ]);
-
-        printr($user, 1);
-
-
-        printr(app()->userManager->findUserByLdap('gorshkov_pv', '..,djnb)'), 1);
-        printr(app()->userManager->findUserByLdap('mukhin_ks', 'MukhinKS1990'), 1);
-
-        var_dump(app()->ldap->getProvider('user')->auth()->attempt('gorshkov_pv', '..,djnb)'));
-
-        /* @var $user User*/
-        $user = app()->ldap->getProvider('user')->search()->users()->in('OU=staff,OU=MarSU,DC=ad,DC=marsu,DC=ru')->find('gorshkov_pv');
 
         printr($user, 1);
     }

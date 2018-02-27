@@ -1,5 +1,6 @@
 <?php
 namespace app\modules\core\widgets;
+use yii\base\Widget;
 use yii\web\ServerErrorHttpException;
 
 /**

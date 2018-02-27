@@ -2,6 +2,7 @@
 
 namespace app\modules\user\controllers;
 
+use app\modules\core\components\actions\DeleteAction;
 use app\modules\core\components\actions\GridViewAction;
 use app\modules\core\components\actions\SaveModelAction;
 use app\modules\core\components\WebController;
@@ -75,6 +76,11 @@ class ManagerController extends WebController
                 'modelForm' => UserFormModel::class,
                 'model' => ManagerUser::class,
                 'isNewRecord' => false,
+            ],
+            'delete' => [
+                'class' => DeleteAction::class,
+                'modelClass' => ManagerUser::class,
+                'successMessage' => 'Пользователь успешно удален!',
             ],
             'access-level' => [
                 'class' => EditableColumnAction::class,

@@ -3,6 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\core\components\behaviors\ModelWebUserBehavior;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\models\query\RoleQuery;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -18,6 +19,9 @@ use yii\db\Expression;
  * @property string $updated_at
  * @property integer $created_by
  * @property integer $updated_by
+ *
+ * @property-read User $users
+ * @property-read Access $access
  */
 class Role extends ActiveRecord
 {
@@ -48,6 +52,25 @@ class Role extends ActiveRecord
     {
         return '{{%user_role}}';
     }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers() {
+
+        return $this->hasMany(User::class, ['access_level'=>'id']);
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccess() {
+
+        return $this->hasMany(Access::class, ['id'=>'id', 'type'=>Access::TYPE_ROLE]);
+    }
+
 
     /**
      * @inheritdoc
@@ -87,6 +110,34 @@ class Role extends ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         app()->cache->flush();
+    }
+
+
+    /**
+     * @inheritdoc
+     * @return bool
+     */
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+
+            User::updateAll(['access_level'=>UserAccessLevelHelper::LEVEL_USER], ['access_level'=>$this->id]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        Access::deleteAll(['id'=>$this->id, 'type'=>Access::TYPE_ROLE]);
+
+        parent::afterDelete();
     }
 
 

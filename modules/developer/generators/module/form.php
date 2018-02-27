@@ -12,6 +12,6 @@
     echo $form->field($generator, 'moduleClass');
     echo $form->field($generator, 'moduleID');
     echo $form->field($generator, 'moduleTitle');
-    echo $form->field($generator, 'moduleDirectories');
+    echo $form->field($generator, 'moduleDirectories')->checkbox();;
 ?>
 </div>

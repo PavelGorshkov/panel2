@@ -198,7 +198,6 @@ class SaveModelAction extends WebAction
      */
     protected function redirectPage()
     {
-
         if ($this->isRefresh) return $this->controller->refresh();
 
         if ($this->successRedirect !== null) return $this->controller->redirect(Url::to($this->successRedirect));

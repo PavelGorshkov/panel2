@@ -113,7 +113,9 @@ class User extends ActiveRecord
      */
     public function afterDelete()
     {
-        $this->access->deleteAll();
+        Access::deleteAll(['id'=>$this->id, 'type'=>Access::TYPE_USER]);
+
+        Token::deleteAll(['user_id'=>$this->id]);
 
         parent::afterDelete();
     }

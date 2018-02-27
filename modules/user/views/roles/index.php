@@ -95,7 +95,7 @@ try {
             [
                 'class' => CustomActionColumn::class,
                 'template' => '{access}&nbsp;{update}&nbsp;{delete}',
-                'headerOptions' => ['class' => 'col-sm-1'],
+                'width' => '150px',
                 'contentOptions' => ['class' => 'text-right'], // only set when $responsive = false
                 'buttons' => [
                     'access' => function ($url) {

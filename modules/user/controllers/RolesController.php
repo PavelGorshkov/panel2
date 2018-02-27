@@ -2,6 +2,7 @@
 
 namespace app\modules\user\controllers;
 
+use app\modules\core\components\actions\DeleteAction;
 use app\modules\core\components\actions\GridViewAction;
 use app\modules\core\components\actions\SaveModelAction;
 use app\modules\user\models\RoleAccess;
@@ -78,24 +79,13 @@ class RolesController extends WebController
                 'model' => Role::class,
                 'isNewRecord' => false,
             ],
+            'delete'=>[
+                'class' => DeleteAction::class,
+                'modelClass' => Role::class,
+                'successMessage' => 'Роль успешно удалена'
+            ]
         ];
     }
-
-
-    /**
-     * Deletes an existing Role model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     *
-     * public function actionDelete()
-     * {
-     * //TODO реализуйте метод удаления данных
-     * //$this->findModel()->delete();
-     *
-     * //return $this->redirect(['index']);
-     * }
-     **/
 
 
     /**
