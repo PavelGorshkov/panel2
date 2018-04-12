@@ -37,7 +37,12 @@
         "Adldap2/Adldap2": "^8.0",
         "linslin/yii2-curl": "*",
         "2amigos/yii2-switch-widget": "~1.0",
-        "omgdef/yii2-multilingual-behavior": "^2.1"
+        "omgdef/yii2-multilingual-behavior": "^2.1",
+        "bower-asset/hightcharts": "^6.0",
+        "kartik-v/yii2-date-range": "^1.6",
+        "nicolaskruchten/pivottable": "^2.20",
+        "bower-asset/bootstrap-daterangepicker": "^2.1",
+        "bower-asset/domurl": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

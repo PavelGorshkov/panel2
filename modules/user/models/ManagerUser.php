@@ -36,7 +36,7 @@ class ManagerUser extends User
 
         if (UserStatusHelper::STATUS_ACTIVE !== $this->getAttribute('status')) {
 
-            return !$this->isAdmin();
+            return !UserAccessLevelHelper::isAdmin($this);
         }
 
         if (

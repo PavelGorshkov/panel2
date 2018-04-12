@@ -57,11 +57,11 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => <?= $taskClass ?>::createRulesController(),
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -91,20 +91,20 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         return [
             'index' =>[
-                'class'=>GridViewAction::className(),
-                'searchModel'=><?= isset($searchModelAlias)?$searchModelAlias:$searchModelClass ?>::className(),
+                'class'=>GridViewAction::class,
+                'searchModel'=><?= isset($searchModelAlias)?$searchModelAlias:$searchModelClass ?>::class,
                 //'smallTitle'=>'Список',
             ],
             'create'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=><?= isset($formModelAlias)?$formModelAlias:$formModelClass ?>::className(),
-                'model'=><?= $modelClass ?>::className(),
+                'class'=>SaveModelAction::class,
+                'modelForm'=><?= isset($formModelAlias)?$formModelAlias:$formModelClass ?>::class,
+                'model'=><?= $modelClass ?>::class,
                 'isNewRecord'=>true,
             ],
             'update'=>[
-                'class'=>SaveModelAction::className(),
-                'modelForm'=><?= isset($formModelAlias)?$formModelAlias:$formModelClass ?>::className(),
-                'model'=><?= $modelClass ?>::className(),
+                'class'=>SaveModelAction::class,
+                'modelForm'=><?= isset($formModelAlias)?$formModelAlias:$formModelClass ?>::class,
+                'model'=><?= $modelClass ?>::class,
                 'isNewRecord'=>false,
             ],
         ];

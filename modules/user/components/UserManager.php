@@ -4,26 +4,22 @@ namespace app\modules\user\components;
 
 use Adldap\Models\User as LdapUser;
 use app\modules\user\forms\ProfileForm;
-use app\modules\user\forms\ProfileRegistrationForm;
 use app\modules\user\forms\RegistrationForm;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
 use app\modules\user\helpers\RegisterFromHelper;
-use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserManagerEventHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\IdentityUser;
-use app\modules\user\models\query\AccessQuery;
+use app\modules\user\models\Profile;
 use app\modules\user\models\query\UserQuery;
 use app\modules\user\models\RegisterUser;
 use app\modules\user\models\User;
-use app\modules\user\models\Access;
 use app\modules\user\models\Token;
 use yii\base\Component;
 use yii\db\Expression;
 use yii\db\Transaction;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\ServerErrorHttpException;
 
@@ -52,12 +48,6 @@ class UserManager extends Component
     use UserManagerEventHelper;
 
     /**
-     * @var AccessQuery
-     */
-    protected $accessQuery;
-
-
-    /**
      * @var TokenStorage
      */
     protected $tokenStorage;
@@ -67,6 +57,7 @@ class UserManager extends Component
      * @var UserQuery
      */
     protected $userQuery;
+
 
 
     /**
@@ -80,8 +71,7 @@ class UserManager extends Component
      */
     public function changeEmail(User $user, $email)
     {
-
-        if ($email == $user->email && $user->isConfirmedEmail()) return true;
+        if ($email == $user->email && EmailConfirmStatusHelper::isConfirmedEmail($user)) return true;
 
         $transaction = app()->db->beginTransaction();
 
@@ -90,13 +80,18 @@ class UserManager extends Component
 
         if (!$user->save()) return $this->failureTransaction($transaction);
 
-        if (!$this->module->emailAccountVerification) return $this->successTransaction($transaction);
+        if (!$this->module->emailAccountVerification) {
+
+            user()->setWarningFlash('Вам необходимо продтвердить новый e-mail, проверьте почту!');
+            return $this->successTransaction($transaction);
+        }
 
         $token = $this->tokenStorage->createEmailActivationToken($user);
 
         if ($token === false) return $this->failureTransaction($transaction);
 
         $this->trigger(self::EVENT_CHANGE_EMAIL, $this->getUserTokenEvent($user, $token));
+        user()->setSuccessFlash('Ваш email был изменен');
 
         return $this->successTransaction($transaction);
     }
@@ -142,7 +137,7 @@ class UserManager extends Component
     {
         if ($model === null) {
 
-            $model = app()->user->info;
+            $model = app()->user->identity;
         }
 
         return $this->updateUserHashPassword($model, $password);
@@ -188,18 +183,6 @@ class UserManager extends Component
 
 
     /**
-     * @param $id
-     * @return User|array|null
-     */
-    public function findUserById($id)
-    {
-        return $this->userQuery
-            ->findUser('id = :id', [':id' => (int)$id])
-            ->one();
-    }
-
-
-    /**
      * @param string $accountName
      * @param string $password
      * @return IdentityUser|null
@@ -215,43 +198,50 @@ class UserManager extends Component
 
         if ($ldapData !== null) {
 
+            $transaction = app()->getDb()->beginTransaction();
+
             $user = new IdentityUser();
             $user->setAttributes([
                 'username' => $ldapData->getAccountName(),
-                'email' => $ldapData->getEmail()?$ldapData->getEmail():$ldapData->getAccountName().'@marsu.ru',
+                'email' => $ldapData->getEmail() ? $ldapData->getEmail() : $ldapData->getAccountName() . '@marsu.ru',
                 'email_confirm' => EmailConfirmStatusHelper::EMAIL_CONFIRM_YES,
                 'hash' => Password::hash($password),
                 'status' => UserStatusHelper::STATUS_ACTIVE,
                 'registered_from' => RegisterFromHelper::LDAP,
-                'access_level' => UserAccessLevelHelper::LEVEL_LDAP,
-                'full_name' => $ldapData->getCommonName(),
-                'about' => $ldapData->getDepartment(),
-                'phone' => $ldapData->getTelephoneNumber() !== null ? $ldapData->getTelephoneNumber() : null,
+                'access_level' => $this->module->ldapRole,
             ]);
 
             if (!$user->validate()) {
 
+                $this->failureTransaction($transaction);
                 throw new ServerErrorHttpException(Html::errorSummary($user));
             }
 
-            $user->save();
+            if ($user->save()) {
+
+                $profile = new Profile();
+                $profile->setAttributes([
+                    'user_id' => $user->getPrimaryKey(),
+                    'full_name' => $ldapData->getCommonName(),
+                    'department' => $ldapData->getDepartment(),
+                    'phone' => $ldapData->getTelephoneNumber(),
+                ]);
+
+                if (!$profile->validate()) {
+
+                    $this->failureTransaction($transaction);
+                    throw new ServerErrorHttpException(Html::errorSummary($profile));
+                }
+
+                $profile->save();
+
+                $this->successTransaction($transaction);
+            }
 
             return $user;
         }
 
         return null;
-    }
-
-
-    /**
-     * @param $usernameOrEmail
-     * @return IdentityUser|null|\yii\db\ActiveRecord
-     */
-    public function findUserByUsernameOrEmail($usernameOrEmail)
-    {
-        return IdentityUser::find()
-            ->findUser('username = :user OR email = :user', [':user' => $usernameOrEmail])
-            ->one();
     }
 
 
@@ -282,26 +272,6 @@ class UserManager extends Component
 
 
     /**
-     * @param User $user
-     *
-     * @return array
-     */
-    public function getAccessForUser(User $user)
-    {
-        if ($user === null) return [];
-
-        $data = $this->accessQuery->getDataForUser($user->id);
-
-        if ($user->isUFAccessLevel()) {
-
-            $data = ArrayHelper::merge($data, $this->accessQuery->getDataForRole($user->access_level));
-        }
-
-        return $data;
-    }
-
-
-    /**
      * @param $token
      * @param $tokenType
      * @return array list(UserToken, User)
@@ -312,7 +282,7 @@ class UserManager extends Component
 
         if ($tokenModel === null) return [null, null];
 
-        return [$tokenModel, $this->findUserById($tokenModel->user_id)];
+        return [$tokenModel, user()->identity->findIdentity($tokenModel->user_id)];
     }
 
 
@@ -324,8 +294,6 @@ class UserManager extends Component
         parent::init();
 
         $this->userQuery = User::find();
-
-        $this->accessQuery = Access::find();
 
         /** @var $tokenStorage TokenStorage */
         $tokenStorage = \Yii::createObject(['class' => TokenStorage::class]);
@@ -380,21 +348,30 @@ class UserManager extends Component
      * Регистрация нового пользователя через Форму
      *
      * @param RegistrationForm $model
-     * @param ProfileRegistrationForm $profile
      * @return bool
      * @throws \yii\db\Exception
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\Exception
      */
-    public function registerForm(RegistrationForm $model, ProfileRegistrationForm $profile)
+    public function registerForm(RegistrationForm $model)
     {
         $user = $this->createUserForRegistration($model);
 
-        $user->setAttributes($profile->getAttributes());
-
         $transaction = app()->db->beginTransaction();
 
-        if (!$user->save()) $this->failureTransaction($transaction);
+        if (!$user->save()) {
+
+            return $this->failureTransaction($transaction);
+        } else {
+
+            $profile = new Profile();
+            $profile->setAttributes($profile->getAttributes());
+            $profile->user_id = $user->getPrimaryKey();
+
+            if (!$profile->save()) return $this->failureTransaction($transaction);
+        }
+
+        $user = User::findOne($user->getPrimaryKey());
 
         if (!$this->module->emailAccountVerification) {
 
@@ -419,6 +396,7 @@ class UserManager extends Component
      * @param ProfileForm $model
      *
      * @return bool
+     * @throws \yii\db\Exception
      */
     public function saveProfile(ProfileForm $model)
     {
@@ -429,7 +407,20 @@ class UserManager extends Component
         unset($data['avatar_file']);
         unset($data['email']);
 
-        return user()->info->updateAttributes($data);
+        $transaction = app()->db->beginTransaction();
+
+        user()->identity->setAttributes($data);
+        user()->profile->setAttributes($data);
+
+        if (user()->identity->save() && user()->profile->save()) {
+
+            $this->successTransaction($transaction);
+            return true;
+        } else {
+
+            $this->failureTransaction($transaction);
+            return false;
+        }
     }
 
 

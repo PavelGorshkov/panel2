@@ -3,6 +3,7 @@
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
+use app\modules\user\models\User;
 
 /**
  * Класс helper для работы со списком статусов подтверждения email пользователя
@@ -42,5 +43,16 @@ class EmailConfirmStatusHelper extends ListHelper
             self::EMAIL_CONFIRM_YES => '<span class="label label-success">Подтвержден</span>',
             self::EMAIL_CONFIRM_NO => '<span class="label label-danger">Не подтвержден</span>',
         ];
+    }
+
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public static function isConfirmedEmail(User $user)
+    {
+        return $user->email_confirm === self::EMAIL_CONFIRM_YES;
+
     }
 }

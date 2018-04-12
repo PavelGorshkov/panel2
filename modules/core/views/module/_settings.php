@@ -27,7 +27,7 @@ foreach ($module->getParamLabels() as $item => $label) :
     <?php if (isset($dropdown[$item])):?>
         <?=Html::dropDownList(
             'Settings['.$item.']',
-            isset($data[$item])&&$data[$item],
+            isset($data[$item])?$data[$item]:null,
             $dropdown[$item],
             ['class'=>'form-control', 'id'=>$item]
         )?>

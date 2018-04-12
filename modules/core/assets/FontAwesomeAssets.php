@@ -20,6 +20,6 @@ class FontAwesomeAssets extends  AssetBundle {
     ];
 
     public $depends = [
-
+        'yii\web\YiiAsset',
     ];
 }

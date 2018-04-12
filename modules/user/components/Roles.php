@@ -48,7 +48,6 @@ class Roles extends RbacItem
      */
     public function getTree()
     {
-
         return [
             self::GUEST => [],
             self::LDAP => [

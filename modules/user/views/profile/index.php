@@ -23,7 +23,7 @@ use app\modules\core\widgets\ShortCutMenuWidget;
         <div class="col-sm-12">
             <?php
             try {
-                echo ShortCutMenuWidget::widget(['menu' => $main, 'title' => 'Основное меню']);
+                echo ShortCutMenuWidget::widget(['menu' => $main, 'title' => 'Основное меню',]);
             } catch (Exception $e) {
                 $e->getMessage();
             } ?>

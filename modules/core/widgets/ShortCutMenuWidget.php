@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\core\widgets;
 
 use app\modules\core\helpers\RouterUrlHelper;
@@ -9,8 +10,8 @@ use yii\helpers\ArrayHelper;
  * Class ShortCutMenuWidget
  * @package app\modules\core\widgets
  */
-class ShortCutMenuWidget extends Widget {
-
+class ShortCutMenuWidget extends Widget
+{
     public $menu;
 
     public $title;
@@ -21,8 +22,8 @@ class ShortCutMenuWidget extends Widget {
     /**
      * @param array $menu
      */
-    protected function addPermission(&$menu) {
-
+    protected function addPermission(&$menu)
+    {
         foreach ($menu as &$item) {
 
             if (!isset($item['visible'])) {
@@ -47,8 +48,8 @@ class ShortCutMenuWidget extends Widget {
      * @param array $menu
      * @return array
      */
-    protected function scanMenu($menu) {
-
+    protected function scanMenu($menu)
+    {
         $newMenu = [];
 
         foreach ($menu as $m) {
@@ -59,18 +60,20 @@ class ShortCutMenuWidget extends Widget {
 
             if (!isset($m['url'])) continue;
 
+            if (!isset($m['icon'])) $m['icon']= 'fa fa-circle-o';
+
             preg_match('/(<i.*?>.*?<\/i.*?>)(.*)/si', $m['label'], $label);
 
-            $icon = isset($label[1])?$label[1]:$m['icon'];
-            $label = isset($label[2])&&trim($label[2])?$label[2]:$m['label'];
+            $icon = isset($label[1]) ? $label[1] : $m['icon'];
+            $label = isset($label[2]) && trim($label[2]) ? $label[2] : $m['label'];
 
             preg_match('/(<div.*?>(.*)?<\/div.*?>)/si', $label, $label1);
 
-            $label = isset($label1[2])?trim($label1[2]):$label;
+            $label = isset($label1[2]) ? trim($label1[2]) : $label;
 
             preg_match('/(<h.*?>.*?<\/h.*?>)/si', $label, $label1);
 
-            $label = isset($label1[0])?trim($label1[0]):$label;
+            $label = isset($label1[0]) ? trim($label1[0]) : $label;
 
             $m['label'] = $this->setLabel($icon, $label);
             $newMenu[] = $m;
@@ -84,15 +87,15 @@ class ShortCutMenuWidget extends Widget {
      * @param string $label
      * @return string
      */
-    protected function setLabel($icon, $label) {
-
+    protected function setLabel($icon, $label)
+    {
         if (strpos($icon, 'icon') === false && strpos($icon, 'fa') === false) {
 
             $icon = 'glyphicon glyphicon-' . implode(' glyphicon-', explode(' ', $icon));
-            $label = "<span class='" . $icon . "'></span>" . '<span>'.$label.'</span>';
+            $label = "<span class='" . $icon . "'></span>" . '<span>' . $label . '</span>';
 
         } else {
-            $label = "<i class='" . $icon . "'></i>" . '<span>'.$label.'</span>';
+            $label = "<i class='" . $icon . "'></i>" . '<span>' . $label . '</span>';
         }
 
         return $label;
@@ -102,15 +105,16 @@ class ShortCutMenuWidget extends Widget {
     /**
      * @return string
      */
-    public function run() {
+    public function run()
+    {
 
         $this->addPermission($this->menu);
 
         $menu = $this->scanMenu($this->menu);
 
         return $this->render($this->view, [
-            'menu'=>$menu,
-            'title'=>$this->title,
+            'menu' => $menu,
+            'title' => $this->title,
         ]);
     }
 }

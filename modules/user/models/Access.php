@@ -25,7 +25,7 @@ class Access extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_access}}';
+        return '{{%user__access}}';
     }
 
     /**
@@ -55,23 +55,12 @@ class Access extends ActiveRecord
 
 
     /**
-     * @inheritdoc
-     * @return AccessQuery
-     */
-    public static function find()
-    {
-        return new AccessQuery(get_called_class());
-    }
-
-
-    /**
      * @param int $id
      * @return array|null
      */
     public static function getData($id)
     {
         $class = get_called_class();
-
 
         $data = self::find()
             ->select(['access'])

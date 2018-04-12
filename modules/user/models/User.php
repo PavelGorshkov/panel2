@@ -2,17 +2,17 @@
 
 namespace app\modules\user\models;
 
-use app\modules\user\components\Roles;
-use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\AccessLevelTrait;
 use app\modules\user\helpers\Password;
-use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\helpers\UserAccessLevelHelper;
+use app\modules\user\helpers\UserStatusHelper;
+use app\modules\user\interfaces\UserInterface;
 use app\modules\user\models\query\UserQuery;
+use app\modules\user\Module;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%user_user}}".
@@ -40,34 +40,62 @@ use yii\helpers\ArrayHelper;
  *
  * @property-read Access $access
  * @property-read Token $token
+ * @property-read Module $module
+ * @property-read Profile $profile
  */
-class User extends ActiveRecord
+class User extends ActiveRecord implements UserInterface
 {
-    protected static $_accessList = null;
+    use AccessLevelTrait;
 
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function behaviors()
+    public function afterDelete()
     {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
-                'value' => new Expression('NOW()'),
-            ],
-        ];
+        Access::deleteAll(['id' => $this->id, 'type' => Access::TYPE_USER]);
+
+        Token::deleteAll(['user_id' => $this->id]);
+
+        parent::afterDelete();
+    }
+
+
+    /**
+     * @inheritdoc
+     * @param boolean $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        app()->cache->flush();
     }
 
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public function attributeLabels()
     {
-        return '{{%user_user}}';
+        return [
+            'id' => 'ID',
+            'username' => 'Логин',
+            'email' => 'Email',
+            'email_confirm' => 'Подтверждение email',
+            'hash' => 'Hash',
+            'auth_key' => 'Auth Key',
+            'user_ip' => 'IP пользователя',
+            'status' => 'Статус',
+            'status_change_at' => 'Время изменения статуса',
+            'visited_at' => 'Последний визит',
+            'registered_from' => 'Тип регистрации',
+            'access_level' => 'Группа',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+        ];
     }
+
 
     /**
      * @inheritdoc
@@ -92,123 +120,18 @@ class User extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @param boolean $insert
-     * @param array $changedAttributes
+     * @return array
      */
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        if ($insert) {
-
-            $this->id = app()->db->lastInsertID;
-        }
-
-        app()->cache->flush();
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function afterDelete()
-    {
-        Access::deleteAll(['id'=>$this->id, 'type'=>Access::TYPE_USER]);
-
-        Token::deleteAll(['user_id'=>$this->id]);
-
-        parent::afterDelete();
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function behaviors()
     {
         return [
-
-            [['username', 'email', 'full_name'], 'required'],
-
-            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
-
-            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level', 'logged_in_from'], 'integer'],
-
-            [['status_change_at', 'visited_at', 'created_at', 'updated_at'], 'safe'],
-
-            [['username'], 'string', 'max' => 25],
-            [['username'], 'unique'],
-
-            [['email'], 'string', 'max' => 150],
-            [['email'], 'unique'],
-
-            [['hash'], 'string', 'max' => 60],
-
-            [['auth_key'], 'string', 'max' => 32],
-
-            ['access_level', 'in', 'range' => array_keys(self::getAccessLevelList())],
-
-            [['about'], 'string'],
-
-            [['full_name', 'avatar'], 'string', 'max' => 150],
-
-            [['phone'], 'string', 'max' => 30],
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
         ];
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'username' => 'Логин',
-            'email' => 'Email',
-            'email_confirm' => 'Подтверждение email',
-            'hash' => 'Hash',
-            'auth_key' => 'Auth Key',
-            'user_ip' => 'IP пользователя',
-            'status' => 'Статус',
-            'status_change_at' => 'Время изменения статуса',
-            'visited_at' => 'Последний визит',
-            'registered_from' => 'Тип регистрации',
-            'access_level' => 'Группа',
-            'logged_in_from' => 'Logged In From',
-            'logged_at' => 'Logged At',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'full_name' => 'ФИО',
-            'avatar' => 'Аватар',
-            'about' => 'Должность, место работы',
-            'phone' => 'Телефон',
-        ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLdap()
-    {
-        return $this->registered_from === RegisterFromHelper::LDAP;
-    }
-
-    /**
-     * @return ActiveQuery|Token
-     */
-    public function getToken()
-    {
-        return $this->hasOne(Token::class, ['user_id' => 'id']);
-    }
-
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getAccess()
-    {
-        return $this->hasMany(Access::class, ['id'=>'id', 'type'=>Access::TYPE_USER]);
     }
 
 
@@ -219,81 +142,6 @@ class User extends ActiveRecord
     public static function find()
     {
         return new UserQuery(get_called_class());
-    }
-
-
-    /**
-     * @return int
-     */
-    public static function findCountAdmin()
-    {
-        return self::find()->findCountAdmin();
-    }
-
-
-    /**
-     * Проверка подтверждения статуса
-     *
-     * @return bool
-     */
-    public function isConfirmedEmail()
-    {
-        return (int)$this->email_confirm === EmailConfirmStatusHelper::EMAIL_CONFIRM_YES;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isUFAccessLevel()
-    {
-        return $this->access_level >= 100;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isAccessRoles()
-    {
-        return $this->access_level == Roles::USER || $this->isUFAccessLevel();
-    }
-
-
-    /**
-     * @return array|null
-     */
-    public static function getAccessLevelList()
-    {
-        if (self::$_accessList === null) {
-
-            self::$_accessList = ArrayHelper::merge(
-                UserAccessLevelHelper::getList(),
-                Role::find()->allListRoles()
-            );
-        }
-
-        return self::$_accessList;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return $this->access_level === UserAccessLevelHelper::LEVEL_ADMIN;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getAccessGroup()
-    {
-        $data = self::getAccessLevelList();
-
-        return isset($data[$this->access_level]) ? $data[$this->access_level] : '*не известна*';
     }
 
 
@@ -309,7 +157,10 @@ class User extends ActiveRecord
                 'or',
                 ['username' => $username],
                 ['email' => $username]
-            ])->andWhere(['access_level' => UserAccessLevelHelper::LEVEL_API])->one();
+            ])->andWhere([
+                'access_level' => UserAccessLevelHelper::LEVEL_API,
+                'status' => UserStatusHelper::STATUS_ACTIVE
+            ])->one();
 
         if ($model !== null) {
 
@@ -317,5 +168,110 @@ class User extends ActiveRecord
         }
 
         return null;
+    }
+
+
+    /**
+     * @return int
+     */
+    public static function findCountAdmin()
+    {
+        return self::find()
+            ->active()
+            ->andWhere(['access_level' => UserAccessLevelHelper::LEVEL_ADMIN])
+            ->count();
+    }
+
+
+    /**
+     * @return ActiveQuery|Access
+     */
+    public function getAccess()
+    {
+        return $this->hasMany(Access::class, ['id' => 'id', 'type' => Access::TYPE_USER]);
+    }
+
+
+    /**
+     * @param int $size
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\web\HttpException
+     */
+    public function getAvatar($size = 64)
+    {
+        $avatar = $this->avatar ? $this->avatar : $this->module->defaultAvatar;
+
+        return app()->thumbNailer->thumbnail($avatar,
+            $this->module->avatarDirs,
+            $size, $size
+        );
+    }
+
+
+    /**
+     * @return ActiveQuery|Profile
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRegisterFrom()
+    {
+        return $this->registered_from;
+    }
+
+
+    /**
+     * @return ActiveQuery|Token
+     */
+    public function getToken()
+    {
+        return $this->hasOne(Token::class, ['user_id' => 'id']);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+
+            [['username', 'email'], 'required'],
+
+            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level'], 'integer'],
+
+            [['email_confirm', 'user_ip', 'status', 'registered_from', 'access_level'], 'integer'],
+
+            [['status_change_at', 'visited_at', 'created_at', 'updated_at'], 'safe'],
+
+            [['username'], 'string', 'max' => 25],
+            [['username'], 'unique'],
+
+            [['email'], 'string', 'max' => 150],
+            [['email'], 'unique'],
+
+            [['hash'], 'string', 'max' => 60],
+
+            [['auth_key'], 'string', 'max' => 32],
+
+            ['access_level', 'in', 'range' => array_keys(UserAccessLevelHelper::getListUFRole())],
+
+        ];
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%user__info}}';
     }
 }

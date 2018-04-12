@@ -60,7 +60,6 @@ echo $form->errorSummary($model);
         <?=Html::submitButton('Применить',
             [
                 'class' => 'btn btn-info btn-sm',
-                'name' => 'submit-type',
             ]
         ); ?>
         <?=Html::a('Отмена', Url::to('index'),

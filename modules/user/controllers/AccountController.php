@@ -88,7 +88,7 @@ class AccountController extends WebController
 
         if (!app()->request->isPost) {
 
-            app()->response->cookies->removeAll();
+            CookieHelper::removeAll();
             app()->session->destroy();
         }
 
@@ -140,7 +140,7 @@ class AccountController extends WebController
 
                 user()->setSuccessFlash('Учетная запись создана! Проверьте вашу электронную почту');
 
-                return $this->redirect(Url::to([$this->module->loginPage]));
+                return $this->redirect($this->module->loginPage);
             }
         }
 
@@ -162,7 +162,6 @@ class AccountController extends WebController
      */
     public function actionActivation($token)
     {
-
         if (app()->userManager->verifyEmail($token, TokenTypeHelper::ACTIVATE)) {
 
             app()->user->setSuccessFlash('Вы успешно активировали учетную запись!');
@@ -173,8 +172,8 @@ class AccountController extends WebController
 
         return $this->redirect(
             !app()->user->isGuest
-                ? Url::to(['/user/profile/index'])
-                : Url::to($this->module->loginPage)
+                ? $this->module->startPage
+                : $this->module->loginPage
         );
     }
 
@@ -189,7 +188,6 @@ class AccountController extends WebController
      */
     public function actionRecovery()
     {
-
         if ($this->module->recoveryDisabled) {
             throw new NotFoundHttpException();
         }
@@ -208,7 +206,7 @@ class AccountController extends WebController
                 user()->setErrorFlash('При восстановлении пароля произошла ошибка!');
             }
 
-            return $this->redirect(Url::to($this->module->loginPage));
+            return $this->redirect($this->module->loginPage);
         }
 
         return $this->render($this->action->id, ['model' => $model]);
@@ -228,7 +226,6 @@ class AccountController extends WebController
      */
     public function actionRecoveryPassword($token)
     {
-
         if ($this->module->recoveryDisabled) throw new NotFoundHttpException();
 
         list($tokenModel, $user) = app()->userManager->getTokenUserList($token, TokenTypeHelper::CHANGE_PASSWORD);
@@ -245,7 +242,7 @@ class AccountController extends WebController
             } else {
 
                 user()->setErrorFlash('Ошибка при смене пароля!');
-                $this->redirect(Url::to($this->module->recoveryPage));
+                $this->redirect($this->module->recoveryPage);
             }
 
             app()->end();
@@ -264,7 +261,7 @@ class AccountController extends WebController
                 user()->setErrorFlash('При изменении пароля произошла ошибка!');
             }
 
-            return $this->redirect(Url::to($this->module->loginPage));
+            return $this->redirect($this->module->loginPage);
         }
 
         return $this->render($this->action->id, ['model' => $model, 'module' => $this->module]);

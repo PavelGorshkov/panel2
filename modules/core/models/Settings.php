@@ -5,7 +5,7 @@ use app\modules\core\models\query\SettingsQuery;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%core_settings}}".
+ * This is the model class for table "{{%core__settings}}".
  *
  * @property integer $id
  * @property string $module
@@ -24,7 +24,7 @@ class Settings extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%core_settings}}';
+        return '{{%core__settings}}';
     }
 
 

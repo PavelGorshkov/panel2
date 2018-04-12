@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\developer\controllers;
 
 use app\modules\core\components\WebController;
@@ -8,24 +9,33 @@ use app\modules\developer\controllers\actions\viewItemsModuleAction;
 use app\modules\developer\forms\MigrationFormModel;
 use app\modules\developer\models\SearchMigration;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
 
 /**
  * Class MigrationController
  * @package app\modules\developer\controllers
  */
-class MigrationController extends WebController {
+class MigrationController extends WebController
+{
 
     /**
      * @inheritdoc
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'rules' => MigrationTask::createRulesController()
+                'rules' => ArrayHelper::merge(MigrationTask::createRulesController(), [
+                    [
+                        'allow' => true,
+                        'actions' => ['refresh-all'],
+                        'roles' => [MigrationTask::OPERATION_REFRESH],
+                    ],
+                ]),
             ],
         ];
     }
@@ -36,7 +46,8 @@ class MigrationController extends WebController {
      * @return bool
      * @throws \yii\web\BadRequestHttpException
      */
-    public function beforeAction($action) {
+    public function beforeAction($action)
+    {
 
         $this->setTitle('Миграции');
 
@@ -48,16 +59,17 @@ class MigrationController extends WebController {
      * @inheritdoc
      * @return array
      */
-    public function actions() {
+    public function actions()
+    {
 
         return [
-            'index'=>[
-                'class'=>viewItemsModuleAction::class,
-                'searchModel'=>SearchMigration::class,
+            'index' => [
+                'class' => viewItemsModuleAction::class,
+                'searchModel' => SearchMigration::class,
             ],
-            'create'=>[
-                'class'=>createItemModuleAction::class,
-                'model'=>MigrationFormModel::class,
+            'create' => [
+                'class' => createItemModuleAction::class,
+                'model' => MigrationFormModel::class,
             ],
         ];
     }
@@ -69,7 +81,8 @@ class MigrationController extends WebController {
      * @throws ServerErrorHttpException
      * @throws \yii\base\Exception
      */
-    public function actionRefresh($module) {
+    public function actionRefresh($module)
+    {
 
         $modules = app()->moduleManager->getListEnabledModules();
 
@@ -80,8 +93,26 @@ class MigrationController extends WebController {
 
         app()->migrator->updateToLatestModule($module);
 
-        return $this->render($this->action->id, [
-           'module'=>$module,
+        return $this->render('refresh', [
+            'module' => $module,
         ]);
+    }
+
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionRefreshAll()
+    {
+        $modules = app()->moduleManager->getListEnabledModules();
+
+        foreach ($modules as $module) {
+
+            app()->migrator->updateToLatestModule($module);
+        }
+
+        return $this->render('refresh-all');
     }
 }

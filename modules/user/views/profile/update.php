@@ -5,6 +5,8 @@
 /* @var $module Module */
 
 use app\modules\user\forms\ProfileForm;
+use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\RegisterFromHelper;
 use app\modules\user\Module;
 use app\modules\user\widgets\AvatarWidget;
 use yii\bootstrap\ActiveForm;
@@ -67,10 +69,10 @@ echo $form->errorSummary($model);
             'inputOptions' => [
                 'disabled' => true,
                 'placeholder' => 'Email',
-                'class' => user()->info->isConfirmedEmail() ? 'text-success form-control' : 'form-control',
+                'class' => EmailConfirmStatusHelper::isConfirmedEmail(user()->identity) ? 'text-success form-control' : 'form-control',
             ],
         ]) ?>
-        <?php if (user()->info->isConfirmedEmail()): { ?>
+        <?php if (EmailConfirmStatusHelper::isConfirmedEmail(user()->identity)): { ?>
             <p class="email-status-confirmed text-success">E-Mail проверен</p>
         <?php } else: { ?>
             <p class="email-status-not-confirmed text-error">E-mail не подтвержден, проверьте почту!</p>
@@ -90,7 +92,7 @@ echo $form->errorSummary($model);
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <?= $form->field($model, 'about')->textarea(['rows' => 7, 'placeholder' => $model->getAttributeLabel('about')]); ?>
+        <?= $form->field($model, 'department')->textarea(['rows' => 7, 'placeholder' => $model->getAttributeLabel('department')]); ?>
     </div>
 </div>
 <div class="row">
@@ -102,7 +104,7 @@ echo $form->errorSummary($model);
             ]
         ); ?>
         <?= Html::a('Oтмена', Url::to(['view']), ['class' => 'btn btn-sm btn-default']); ?>
-        <?php if (!app()->user->identity->isLdap()) : ?>
+        <?php if (!RegisterFromHelper::isLdap(app()->user->identity)) : ?>
             <?= Html::a('<i class="fa fa-lock"></i> Сменить пароль', ['change-password'], ['class' => 'btn btn-sm btn-info']); ?>
         <?php endif; ?>
     </div>

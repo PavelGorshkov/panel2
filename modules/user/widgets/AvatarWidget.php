@@ -2,9 +2,9 @@
 
 namespace app\modules\user\widgets;
 
-use app\modules\core\widgets\Widget;
 use app\modules\user\assets\AvatarWidgetAssets;
 use app\modules\user\models\IdentityUser;
+use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -71,16 +71,16 @@ class AvatarWidget extends Widget
      */
     public function run()
     {
-        if ($this->user === null) $this->user = user()->info;
+        if ($this->user === null) $this->user = user()->identity;
 
-        $this->imageSrc = $this->user->getAvatarSrc($this->size);
+        $this->imageSrc = $this->user->getAvatar($this->size);
 
         if ($this->noCache) {
 
             $this->imageSrc .= '?' . microtime(true);
         }
 
-        $this->imageAlt = empty($this->imageAlt) ? $this->user->full_name : $this->imageAlt;
+        $this->imageAlt = empty($this->imageAlt) ? user()->profile->full_name : $this->imageAlt;
         $this->width = $this->size . 'px';
         $this->options = ['class' => 'avatar avatar-' . $this->user->id];
 

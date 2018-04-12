@@ -1,6 +1,8 @@
 <?php
 namespace app\modules\core\helpers;
 
+use app\modules\core\components\Module;
+
 /**
  * Класс helper для получения из url
  * текущий роутинг module/controller/action
@@ -16,7 +18,6 @@ class RouterUrlHelper
      */
     protected static function parseUrl($url)
     {
-
         if (is_array($url)) {
 
             $url = array_shift($url);
@@ -37,6 +38,7 @@ class RouterUrlHelper
         $route = self::parseUrl($url);
 
         $controller = app()->controller;
+
         $m = $controller->module->id;
         $c = $controller->id;
         $a = $controller->action->id;
@@ -53,7 +55,7 @@ class RouterUrlHelper
 
             case 2:
 
-                if ($m !== app()->id) {
+                if ($controller->module instanceof Module) {
 
                     array_unshift($route, $m);
                 }
@@ -62,7 +64,7 @@ class RouterUrlHelper
             case 1:
 
                 array_unshift($route, $c);
-                if ($m !== app()->id) {
+                if ($controller->module instanceof Module) {
 
                     array_unshift($route, $m);
                 }

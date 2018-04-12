@@ -8,12 +8,12 @@
 use app\modules\core\assets\AdminLteAssets;
 use app\modules\core\assets\iCheckAssets;
 use app\modules\core\Module;
+use app\modules\core\widgets\Breadcrumbs;
 use app\modules\core\widgets\MenuWidget;
 use app\modules\user\helpers\UserSettings;
 use app\modules\user\widgets\FlashMessages;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
 
 $core = app()->getModule('core');
 $icon = Html::img(implode('/', [
@@ -57,9 +57,13 @@ $this->beginPage() ?>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" data-href="/site/sidebar">
-                    <span class="sr-only">Toggle navigation</span>
-                </a>
+                <?= Html::a('<span class="sr-only">Toggle navigation</span>', '#', [
+                    'class' => 'sidebar-toggle',
+                    'data' => [
+                        'toggle' => 'offcanvas',
+                        'href' => Url::to(['/core/settings/sidebar'])
+                    ]
+                ]) ?>
                 <!-- Navbar Top Menu -->
                 <?= $this->blocks['navbarTopMenu']; ?>
             </nav>
@@ -69,10 +73,15 @@ $this->beginPage() ?>
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
-                <?= MenuWidget::widget([
-                    'menu' => 'main',
-                    'view' => 'left_menu'
-                ]); ?>
+                <?php try {
+                    echo MenuWidget::widget([
+                        'menu' => 'main',
+                        'view' => 'left_menu'
+                    ]);
+                } catch (Exception $e) {
+
+                    echo $e->getMessage();
+                } ?>
             </section>
             <!-- /.sidebar -->
         </aside>
@@ -83,15 +92,26 @@ $this->beginPage() ?>
                 <h1><?= $this->getTitle() ?>
                     <small><?= $this->getSmallTitle() ?></small>
                 </h1>
-                <?= Breadcrumbs::widget([
-                    'links' => $this->getBreadcrumbs(),
-                    'homeLink' => ['label' => '<i class="fa fa-fw fa-home"></i> Главная', 'url' => '/', 'encode' => false],
-                ]) ?>
+                <?php
+                try {
+                    echo Breadcrumbs::widget([
+                        'links' => $this->getBreadcrumbs(),
+                        'homeLink' => ['label' => '<i class="fa fa-fw fa-home"></i> Главная', 'url' => '/', 'encode' => false],
+                    ]);
+                } catch (Exception $e) {
+
+                    echo $e->getMessage();
+                } ?>
             </section>
 
             <!-- Main content -->
             <section class="content">
-                <?= FlashMessages::widget() ?>
+                <?php
+                try {
+                    echo FlashMessages::widget();
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                } ?>
                 <?= $content ?>
             </section>
             <!-- /.content -->

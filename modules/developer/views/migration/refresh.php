@@ -1,10 +1,12 @@
 <?php
-/* @var $this app\modules\core\components\View */
+
 use app\modules\core\widgets\BoxWidget;
 use yii\helpers\Html;
 
+/* @var $this app\modules\core\components\View */
 /* @var $logs string */
 /* @var $module string */
+
 $this->setSmallTitle('Обновление БД');
 $this->setTitle($module);
 
@@ -26,9 +28,10 @@ BoxWidget::begin([
     'title'=>$this->getSmallTitle()
 ]);
 ?>
-    <?=$logs?$logs:Html::tag('p', 'БД модуля актуальна на текущий момент!', ['class'=>'text text-success'])?>
+<?=$logs?$logs:Html::tag('p', 'БД модуля актуальна на текущий момент!', ['class'=>'text text-success'])?>
     <div><?=Html::a('<i class="fa fa-reply"></i> Вернуться', ['index', 'module'=>$module], ['class'=>'btn btn-sm btn-success'])?></div>
 <?php
 BoxWidget::end();
+
 
 

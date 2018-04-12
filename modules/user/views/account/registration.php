@@ -85,62 +85,15 @@ JS
 <?php endif; ?>
     <div class='row'>
         <div class="col-sm-12">
-            <?= $form->field($profile, 'full_name', [
-                'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-user form-control-feedback"></span></span></div>',
-                'enableLabel' => false,
-                'inputOptions' => [
-                    'autofocus' => 'autofocus',
-                    'placeholder' => $profile->getAttributeLabel('full_name'),
-                    'tabindex' => '2',
-                ],
-            ]); ?>
-        </div>
-    </div>
-    <div class='row'>
-        <div class="col-sm-12">
             <?= $form->field($model, 'email', [
                 'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-envelope form-control-feedback"></span></span></div>',
                 'enableLabel' => false,
                 'inputOptions' => [
                     'autofocus' => 'autofocus',
                     'placeholder' => $model->getAttributeLabel('email'),
-                    'tabindex' => '3',
+                    'tabindex' => '2',
                 ],
             ])->input('email'); ?>
-        </div>
-    </div>
-    <div class='row'>
-        <div class="col-sm-12">
-            <?= $form->field($profile, 'about', [
-                'enableLabel' => false,
-                'inputOptions' => [
-                    'autofocus' => 'autofocus',
-                    'placeholder' => $profile->getAttributeLabel('about'),
-                    'tabindex' => '4',
-                ],
-            ])->textarea(['rows' => 2]); ?>
-        </div>
-    </div>
-    <div class='row'>
-        <div class="col-sm-12">
-            <?= $form->field($profile, 'phone', [
-                'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-phone form-control-feedback"></span></span></div>',
-                'enableLabel' => false,
-                'inputOptions' => [
-                    'autofocus' => 'autofocus',
-                    'placeholder' => $profile->getAttributeLabel('phone'),
-                    'tabindex' => '5',
-                ],
-            ])->widget(
-                MaskedInput::class,
-                [
-                    'mask' => $module->phoneMask,
-                    'options' => [
-                        'placeholder' => $profile->getAttributeLabel('phone'),
-                        'class' => 'form-control',
-                        'tabindex' => '5',
-                    ]
-                ]) ?>
         </div>
     </div>
     <div class='row'>
@@ -151,7 +104,7 @@ JS
                 'inputOptions' => [
                     'autofocus' => 'autofocus',
                     'placeholder' => $model->getAttributeLabel('password'),
-                    'tabindex' => '6',
+                    'tabindex' => '3',
                 ],
             ])->passwordInput(); ?>
         </div>
@@ -164,7 +117,7 @@ JS
                 'inputOptions' => [
                     'autofocus' => 'autofocus',
                     'placeholder' => $model->getAttributeLabel('r_password'),
-                    'tabindex' => '7',
+                    'tabindex' => '4',
                 ],
             ])->passwordInput(); ?>
         </div>
@@ -189,6 +142,53 @@ JS
             } ?>
         </div>
     </div>
+    <div class='row'>
+        <div class="col-sm-12">
+            <?= $form->field($profile, 'full_name', [
+                'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-user form-control-feedback"></span></span></div>',
+                'enableLabel' => false,
+                'inputOptions' => [
+                    'autofocus' => 'autofocus',
+                    'placeholder' => $profile->getAttributeLabel('full_name'),
+                    'tabindex' => '5',
+                ],
+            ]); ?>
+        </div>
+    </div>
+    <div class='row'>
+        <div class="col-sm-12">
+            <?= $form->field($profile, 'department', [
+                'enableLabel' => false,
+                'inputOptions' => [
+                    'autofocus' => 'autofocus',
+                    'placeholder' => $profile->getAttributeLabel('department'),
+                    'tabindex' => '6',
+                ],
+            ])->textarea(['rows' => 2]); ?>
+        </div>
+    </div>
+    <div class='row'>
+        <div class="col-sm-12">
+            <?= $form->field($profile, 'phone', [
+                'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-phone form-control-feedback"></span></span></div>',
+                'enableLabel' => false,
+                'inputOptions' => [
+                    'autofocus' => 'autofocus',
+                    'placeholder' => $profile->getAttributeLabel('phone'),
+                    'tabindex' => '7',
+                ],
+            ])->widget(
+                MaskedInput::class,
+                [
+                    'mask' => $module->phoneMask,
+                    'options' => [
+                        'placeholder' => $profile->getAttributeLabel('phone'),
+                        'class' => 'form-control',
+                        'tabindex' => '8',
+                    ]
+                ]) ?>
+        </div>
+    </div>
 <?php
 try {
     if ($module->showCaptcha && Captcha::checkRequirements()): { ?>
@@ -200,7 +200,7 @@ try {
                         'inputOptions' => [
                             'autofocus' => 'autofocus',
                             'placeholder' => $model->getAttributeLabel('verifyCode'),
-                            'tabindex' => '8',
+                            'tabindex' => '9',
                         ],
                     ]
                 )->widget(Captcha::class, [
@@ -222,7 +222,7 @@ try {
             <?= Html::submitButton('Зарегистрироваться',
                 [
                     'class' => 'btn btn-primary btn-block btn-lg',
-                    'tabindex' => '9',
+                    'tabindex' => '10',
                 ]
             ); ?>
         </div>

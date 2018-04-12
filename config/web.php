@@ -16,8 +16,6 @@ $config = [
 
     'layout' => '@app/modules/core/views/layouts/admin.php',
 
-    'homeUrl' => ['/user/profile/index'],
-
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -184,10 +182,6 @@ $config = [
 
         'view'=>[
             'class' => 'app\modules\core\components\View',
-        ],
-
-        'consoleRunner'=>[
-            'class' => 'app\modules\core\components\ConsoleRunner',
         ],
     ],
 

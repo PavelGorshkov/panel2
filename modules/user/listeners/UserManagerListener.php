@@ -5,6 +5,7 @@ namespace app\modules\user\listeners;
 use app\modules\user\events\PasswordEvent;
 use app\modules\user\events\TokenEvent;
 use app\modules\user\events\UserEvent;
+use app\modules\user\Module;
 use DateTime;
 
 /**
@@ -13,6 +14,14 @@ use DateTime;
  */
 class UserManagerListener
 {
+    /**
+     * @return Module
+     */
+    public static function module() {
+
+        return app()->getModule('user');
+    }
+
     /**
      * @param UserEvent $event
      */
@@ -26,7 +35,7 @@ class UserManagerListener
             'welcome',
             [
                 'email' => $user->email,
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
                 'login' => $user->username
             ]
         );
@@ -46,10 +55,10 @@ class UserManagerListener
             'activation',
             [
                 'email' => $user->email,
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
                 'login' => $user->username,
                 'token' => $event->getToken(),
-                'expire' => self::setExpireDateTime(app()->getModule('user')->expireTokenActivationLifeHours * 3600),
+                'expire' => self::setExpireDateTime(self::module()->expireTokenActivationLifeHours * 3600),
             ]
         );
     }
@@ -68,9 +77,9 @@ class UserManagerListener
             'recovery',
             [
                 'email' => $user->email,
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
                 'token' => $event->getToken(),
-                'expire' => self::setExpireDateTime((app()->getModule('user')->expireTokenPasswordLifeHours * 3600)),
+                'expire' => self::setExpireDateTime((self::module()->expireTokenPasswordLifeHours * 3600)),
             ]
         );
     }
@@ -89,7 +98,7 @@ class UserManagerListener
             'generatePassword',
             [
                 'email' => $user->email,
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
                 'password' => $event->getPassword(),
             ]
         );
@@ -109,7 +118,7 @@ class UserManagerListener
             'changePassword',
             [
                 'email' => $user->email,
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
             ]
         );
     }
@@ -127,9 +136,9 @@ class UserManagerListener
             'Активация электронной почты',
             'changeEmail',
             [
-                'fullName' => $user->full_name,
+                'fullName' => $user->profile->full_name,
                 'token' => $event->getToken(),
-                'expire' => self::setExpireDateTime((app()->getModule('user')->expireTokenActivationLifeHours * 3600)),
+                'expire' => self::setExpireDateTime((self::module()->expireTokenActivationLifeHours * 3600)),
             ]
         );
     }

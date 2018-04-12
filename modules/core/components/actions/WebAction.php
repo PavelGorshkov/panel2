@@ -12,7 +12,6 @@ use yii\base\Action;
  */
 class WebAction extends Action
 {
-
     public $view = null;
 
     public $layout = null;

@@ -2,8 +2,10 @@
 
 namespace app\modules\user\forms;
 
+use app\modules\user\helpers\EmailConfirmStatusHelper;
 use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\Password;
+use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\IdentityUser;
 use yii\base\Model;
 use yii\db\Expression;
@@ -52,12 +54,12 @@ class LoginForm extends Model
                     $confirmationRequired = $this->module->enableConfirmation
                         && !$this->module->enableUnconfirmedLogin;
 
-                    if ($confirmationRequired && !$this->user->isConfirmedEmail()) {
+                    if ($confirmationRequired && !EmailConfirmStatusHelper::isConfirmedEmail($this->user)) {
 
                         $this->addError($attribute, 'Вам необходимо подтвердить E-mail адрес');
                     }
 
-                    if ($this->user->getIsBlocked()) {
+                    if (UserStatusHelper::isBlocked($this->user)) {
 
                         $this->addError($attribute, 'Ваш аккаунт заблокирован');
                     }
@@ -103,7 +105,7 @@ class LoginForm extends Model
 
         if (parent::beforeValidate()) {
 
-            $this->user = app()->userManager->findUserByUsernameOrEmail(trim($this->login));
+            $this->user = IdentityUser::findByUsernameOrEmail(trim($this->login));
             return true;
         }
 

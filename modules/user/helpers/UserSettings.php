@@ -14,6 +14,7 @@ use app\modules\core\models\UserSettings as ARUserSettings;
  * @method static UserSettings model
  * @property string $skinTemplate
  * @property string $sideBar
+ * @property string $startPage
  */
 class UserSettings
 {

@@ -1,4 +1,6 @@
 <?php
+
+use yii\helpers\Html;
 use yii\widgets\Menu;
 
 /* @var $content string */
@@ -25,14 +27,24 @@ $this->beginContent('@app/modules/core/views/layouts/admin.php');
                 ];
             }
 
-            echo Menu::widget([
-                'items'=>$menu,
-                'options'=>[
-                    'class'=>'nav nav-pills nav-stacked'
-                ],
-                'encodeLabels'=>false,
-            ]);
+            try {
+                echo Menu::widget([
+                    'items' => $menu,
+                    'options' => [
+                        'class' => 'nav nav-pills nav-stacked'
+                    ],
+                    'encodeLabels' => false,
+                ]);
+            } catch (Exception $e) {
+
+                echo $e->getMessage();
+            }
 ?>
+        </div>
+        <div style="padding: 5px; text-align: center;">
+            <?=Html::a('Обновить все модули', ['migration/refresh-all'], [
+                'class'=>'btn btn-info'
+            ])?>
         </div>
     </div>
     <div class="col-md-9">

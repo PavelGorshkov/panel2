@@ -23,12 +23,11 @@ class AdminLteAssets extends  AssetBundle {
     ];
 
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'app\modules\core\assets\FontAwesomeAssets',
         'app\modules\core\assets\AppAssets',
         'app\modules\core\assets\IonAssets',
-        'app\modules\core\assets\FontAwesomeAssets',
         'app\modules\core\assets\FastClickAssets',
         'app\modules\core\assets\SlimScrollAssets',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

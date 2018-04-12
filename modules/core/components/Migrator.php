@@ -371,6 +371,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
 
         if ($result !== false) {
 
+            ob_start();
+            ob_implicit_flush(false);
             // Проставляем "установлено"
             (new Migration())->update(
                 $this->migrationTable,
@@ -380,6 +382,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                     ':mod' => $module,
                 ]
             );
+
+            $this->message($msg = ob_get_clean());
 
 
             $this->message(
@@ -393,6 +397,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 "Во время установки возникла ошибка: {$msg}",
                 OutputMessageListHelper::ERROR
             );
+            ob_start();
+            ob_implicit_flush(false);
 
             (new Migration())->delete($this->migrationTable, [
                 'version' => $className,
@@ -400,7 +406,8 @@ class Migrator extends Component implements OutputMessageInterface, LoggerInterf
                 'apply_time' => 0,
             ]);
 
-            throw new Exception($msg);
+
+            throw new Exception(ob_get_clean());
         }
     }
 

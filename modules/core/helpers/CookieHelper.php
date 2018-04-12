@@ -45,6 +45,15 @@ class CookieHelper extends BaseObject
 
 
     /**
+     * delete all cookies
+     */
+    public static function removeAll() {
+
+        app()->response->getCookies()->removeAll();
+    }
+
+
+    /**
      * @param string $cookie
      * @param string|int $value
      * @param int $expire

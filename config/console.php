@@ -33,11 +33,6 @@ $config = [
                 ],
             ],
         ],
-        'consoleRunner'=>[
-            'class' => 'app\modules\core\components\ConsoleRunner',
-            'phpPath' => 'E:\OSPanel\modules\php\PHP-7.2-x64\php.exe',
-            //'phpPath' => '/usr/local/bin/php',
-        ],
         'ws'=>$webservice,
     ],
     'params' => $params,

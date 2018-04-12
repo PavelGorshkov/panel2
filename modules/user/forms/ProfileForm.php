@@ -16,7 +16,7 @@ class ProfileForm extends FormModel
 
     public $full_name;
 
-    public $about;
+    public $department;
 
     public $avatar_file;
 
@@ -34,7 +34,7 @@ class ProfileForm extends FormModel
         return [
             self::SCENARIO_DEFAULT => [
                 'full_name',
-                'about',
+                'department',
                 'phone',
                 'avatar_file',
                 '!email'
@@ -52,7 +52,7 @@ class ProfileForm extends FormModel
             [['full_name'], 'required'],
             [['full_name'], 'string', 'max' => 150],
 
-            [['about'], 'string'],
+            [['department'], 'string'],
 
             [['phone'], 'string', 'max' => 30],
 
@@ -115,7 +115,7 @@ class ProfileForm extends FormModel
     {
         return [
             'full_name' => 'ФИО',
-            'about' => 'Должность, место работы',
+            'department' => 'Должность, место работы',
             'avatar_file' => 'Аватар',
             'phone' => 'Телефон',
         ];

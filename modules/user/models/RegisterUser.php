@@ -20,7 +20,7 @@ class RegisterUser extends User
         return ArrayHelper::merge(parent::scenarios(),
             [
                 self::SCENARIO_REGISTER => [
-                    'username', 'email', '!hash', 'full_name', 'about', 'phone'
+                    'username', 'email', '!hash',
                 ]
             ]);
     }
@@ -32,7 +32,7 @@ class RegisterUser extends User
     public function rules()
     {
         return [
-            [['username', 'email', 'hash', 'full_name'], 'required'],
+            [['username', 'email', 'hash'], 'required'],
 
             [['username'], 'string', 'max' => 25],
             [['username'], 'unique'],
@@ -41,11 +41,7 @@ class RegisterUser extends User
 
             [['hash'], 'string', 'max' => 60],
 
-            [['about'], 'string'],
-
-            [['full_name', 'avatar'], 'string', 'max' => 150],
-
-            [['phone'], 'string', 'max' => 30],
+            [['avatar'], 'string', 'max' => 150],
         ];
     }
 }

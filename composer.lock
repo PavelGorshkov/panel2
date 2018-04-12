@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2a119cc47fa038685c689157c96f985",
+    "content-hash": "eb5ec4259a9b7d37ebb28bea2ffd8f10",
     "packages": [
         {
             "name": "2amigos/yii2-switch-widget",
@@ -139,6 +139,26 @@
             ]
         },
         {
+            "name": "bower-asset/bootstrap-daterangepicker",
+            "version": "v2.1.27",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dangrossman/bootstrap-daterangepicker.git",
+                "reference": "d4aabfbceaf57117e1af33f3f82e92162719eee9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dangrossman/bootstrap-daterangepicker/zipball/d4aabfbceaf57117e1af33f3f82e92162719eee9",
+                "reference": "d4aabfbceaf57117e1af33f3f82e92162719eee9",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.9.1,<4.0",
+                "bower-asset/moment": ">=2.9.0"
+            },
+            "type": "bower-asset"
+        },
+        {
             "name": "bower-asset/bootstrap-switch",
             "version": "v3.3.3",
             "source": {
@@ -185,6 +205,25 @@
             ]
         },
         {
+            "name": "bower-asset/domurl",
+            "version": "v2.1.7",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Mikhus/domurl.git",
+                "reference": "a6a320f61d82b44e31df8f64c7c91c7e9e2b97d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mikhus/domurl/zipball/a6a320f61d82b44e31df8f64c7c91c7e9e2b97d7",
+                "reference": "a6a320f61d82b44e31df8f64c7c91c7e9e2b97d7",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "bower-asset/fastclick",
             "version": "v1.0.6",
             "source": {
@@ -219,6 +258,25 @@
                 "OFL-1.1",
                 "MIT",
                 "CC-BY-3.0"
+            ]
+        },
+        {
+            "name": "bower-asset/hightcharts",
+            "version": "v6.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/highcharts/highcharts-dist.git",
+                "reference": "242a129c6ba743e9be707b4ec6ee942e685e0bfc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/highcharts/highcharts-dist/zipball/242a129c6ba743e9be707b4ec6ee942e685e0bfc",
+                "reference": "242a129c6ba743e9be707b4ec6ee942e685e0bfc",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "https://www.highcharts.com/license"
             ]
         },
         {
@@ -304,6 +362,25 @@
             ]
         },
         {
+            "name": "bower-asset/moment",
+            "version": "2.22.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moment/moment.git",
+                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moment/moment/zipball/db71a655fc51fe58009675608a400d0d4cd0ca87",
+                "reference": "db71a655fc51fe58009675608a400d0d4cd0ca87",
+                "shasum": null
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "bower-asset/punycode",
             "version": "v1.3.2",
             "source": {
@@ -324,7 +401,7 @@
             "version": "v1.3.8",
             "source": {
                 "type": "git",
-                "url": "git@github.com:rochal/jQuery-slimScroll.git",
+                "url": "https://github.com/rochal/jQuery-slimScroll.git",
                 "reference": "cf39d364e777ef95574c30c42d3b85cb2bf325d3"
             },
             "dist": {
@@ -432,6 +509,48 @@
                 "markdown-extra"
             ],
             "time": "2017-07-16T21:13:23+00:00"
+        },
+        {
+            "name": "components/jquery",
+            "version": "3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/components/jquery.git",
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "shasum": ""
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.js"
+                    ],
+                    "files": [
+                        "jquery.min.js",
+                        "jquery.min.map",
+                        "jquery.slim.js",
+                        "jquery.slim.min.js",
+                        "jquery.slim.min.map"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JS Foundation and other contributors"
+                }
+            ],
+            "description": "jQuery JavaScript Library",
+            "homepage": "http://jquery.com",
+            "time": "2018-03-04T13:23:48+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -939,6 +1058,60 @@
                 "select"
             ],
             "time": "2017-08-01T11:43:55+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-date-range",
+            "version": "v1.6.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-date-range.git",
+                "reference": "ed12260339f4699c363360465a22a46c714eb6be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-date-range/zipball/ed12260339f4699c363360465a22a46c714eb6be",
+                "reference": "ed12260339f4699c363360465a22a46c714eb6be",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\daterange\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An advanced Yii 2 date range picker input for based on bootstrap-daterangepicker plugin.",
+            "homepage": "https://github.com/kartik-v/yii2-date-range",
+            "keywords": [
+                "bootstrap",
+                "bootstrap 3",
+                "date",
+                "date-range",
+                "extension",
+                "range",
+                "time",
+                "widget",
+                "yii2"
+            ],
+            "time": "2018-03-15T08:22:53+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -2285,6 +2458,49 @@
                 "time"
             ],
             "time": "2017-01-16T07:55:07+00:00"
+        },
+        {
+            "name": "nicolaskruchten/pivottable",
+            "version": "v2.20.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nicolaskruchten/pivottable.git",
+                "reference": "4a9badf2eefd5afa5c8ade879c2c390bf8a21fff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nicolaskruchten/pivottable/zipball/4a9badf2eefd5afa5c8ade879c2c390bf8a21fff",
+                "reference": "4a9badf2eefd5afa5c8ade879c2c390bf8a21fff",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.9"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Kruchten",
+                    "email": "nicolas@kruchten.com"
+                }
+            ],
+            "description": "Javascript Pivot Table (aka Pivot Grid, Pivot Chart, Cross-Tab) implementation with drag'n'drop.",
+            "homepage": "https://pivottable.js.org/",
+            "keywords": [
+                "crosstab",
+                "grid",
+                "jquery",
+                "jquery-plugin",
+                "pivot",
+                "pivotchart",
+                "pivotgrid",
+                "pivottable",
+                "table"
+            ],
+            "time": "2018-03-21T14:30:58+00:00"
         },
         {
             "name": "omgdef/yii2-multilingual-behavior",

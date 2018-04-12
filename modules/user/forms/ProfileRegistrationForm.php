@@ -17,7 +17,7 @@ class ProfileRegistrationForm extends Model
 
     public $phone;
 
-    public $about;
+    public $department;
 
 
     /**
@@ -26,7 +26,7 @@ class ProfileRegistrationForm extends Model
     public function rules()
     {
         return [
-            [['full_name'], 'filter', 'filter' => 'trim',],
+            [['full_name', 'department',], 'filter', 'filter' => 'trim',],
             [
                 ['full_name'], 'filter',
                 'filter' => function ($html) {
@@ -36,8 +36,8 @@ class ProfileRegistrationForm extends Model
                     );
                 }
             ],
-            [['about', 'phone', 'full_name'], 'required'],
-            ['about', 'string', 'max' => 300],
+            [['department', 'phone', 'full_name'], 'required'],
+            ['department', 'string', 'max' => 300],
             ['phone', 'match', 'pattern' => $this->module->phonePattern, 'message' => 'Некорректный формат поля {attribute}'],
         ];
     }
@@ -50,7 +50,7 @@ class ProfileRegistrationForm extends Model
     {
         return [
             'full_name' => 'ФИО',
-            'about' => 'Должность, место работы',
+            'department' => 'Должность, место работы',
             'phone' => 'Телефон',
         ];
     }

@@ -4,6 +4,7 @@ namespace app\modules\core\components;
 use app\modules\core\helpers\File;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
+use Yii;
 use yii\base\Component;
 use yii\web\ServerErrorHttpException;
 
@@ -49,7 +50,9 @@ class Thumbnailer extends Component{
             throw new ServerErrorHttpException("Incorrect width/height");
         }
 
-        $name = $width . 'x' . $height . '_' . basename($file);
+        $name = $width . 'x' . $height . '_' . $file;
+
+        $uploadDir = Yii::getAlias($uploadDir);
 
         File::checkPath($uploadDir . $this->thumbDir);
         $thumbFile = $uploadDir . $this->thumbDir. DIRECTORY_SEPARATOR . $name;
@@ -62,7 +65,7 @@ class Thumbnailer extends Component{
                 throw new ServerErrorHttpException('Директория "'.$uploadDir.'не доступна для записи!');
             }
 
-            $img = Imagine::getImagine()->open($file);
+            $img = Imagine::getImagine()->open($uploadDir . $file);
 
             $originalWidth = $img->getSize()->getWidth();
             $originalHeight = $img->getSize()->getHeight();

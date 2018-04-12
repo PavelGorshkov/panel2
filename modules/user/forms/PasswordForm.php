@@ -80,6 +80,6 @@ class PasswordForm extends FormModel implements SaveModelInterface
      */
     public function processingData(Model $model)
     {
-        return app()->userManager->changePasswordProfile($this->password, !$model->isNewRecord ? $model : app()->user->info);
+        return app()->userManager->changePasswordProfile($this->password, !$model->isNewRecord ? $model : app()->user->identity);
     }
 }

@@ -17,29 +17,13 @@ class InfoNavMenu extends Widget
 
     /**
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \yii\web\HttpException
      */
     public function run()
     {
-        $user = user()->info;
-
-        $avatar = $user->avatar ? $user->avatar : $this->module->defaultAvatar;
-
         return $this->render($this->view, [
-            'mini_icon' => app()->thumbNailer->thumbnail($this->module->avatarDirs . $avatar,
-                $this->module->avatarDirs,
-                24,
-                24
-            ),
-            'icon' => app()->thumbNailer->thumbnail($this->module->avatarDirs . $avatar,
-                $this->module->avatarDirs,
-                160,
-                160
-            ),
-            'email' => $user->email,
-            'full_name' => $user->full_name,
-            'about' => $user->about,
+            'user'=>user()->identity,
+            'profile'=>user()->profile,
+            'module'=>$this->module,
         ]);
     }
 

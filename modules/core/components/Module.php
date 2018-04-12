@@ -50,6 +50,7 @@ abstract class Module
     public $newFileMode = 0777;
 
 
+
     /**
      * @return mixed
      */

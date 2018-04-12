@@ -3,8 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\user\helpers\ModuleTrait;
-use app\modules\user\helpers\UserStatusHelper;
-use yii\web\IdentityInterface;
+use app\modules\user\interfaces\IdentityInterface;
 
 /**
  * Class IdentityUser
@@ -68,29 +67,13 @@ class IdentityUser extends User implements IdentityInterface
 
 
     /**
-     * Проверка заблокированности пользователя
-     *
-     * @return bool
+     * @param string $usernameOrEmail
+     * @return IdentityInterface
      */
-    public function getIsBlocked()
+    public static function findByUsernameOrEmail($usernameOrEmail)
     {
-        return (int)$this->status === UserStatusHelper::STATUS_BLOCK;
-    }
-
-
-    /**
-     * @param int $size
-     * @return string
-     * @throws \yii\base\Exception
-     * @throws \yii\web\HttpException
-     */
-    public function getAvatarSrc($size = 64)
-    {
-        $avatar = $this->avatar ? $this->avatar : $this->module->defaultAvatar;
-
-        return app()->thumbNailer->thumbnail($this->module->avatarDirs . $avatar,
-            $this->module->avatarDirs,
-            $size, $size
-        );
+        return self::find()->active()->where(
+            'username = :user OR email = :user', [':user' => $usernameOrEmail]
+        )->one();
     }
 }

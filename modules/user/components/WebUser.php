@@ -3,8 +3,13 @@
 namespace app\modules\user\components;
 
 use app\modules\user\helpers\UserAccessLevelHelper;
+use app\modules\user\helpers\UserFlashTrait;
+use app\modules\user\interfaces\IdentityInterface;
+use app\modules\user\interfaces\UserInterface;
 use app\modules\user\models\IdentityUser;
+use app\modules\user\models\Profile;
 use app\modules\user\models\User;
+use yii\base\InvalidConfigException;
 use yii\web\User as ParentWebUser;
 
 /**
@@ -12,7 +17,7 @@ use yii\web\User as ParentWebUser;
  * @package app\modules\user\components
  *
  * @property IdentityUser $identity
- * @property-read IdentityUser $info
+ * @property-read Profile $profile
  */
 class WebUser extends ParentWebUser
 {
@@ -26,10 +31,31 @@ class WebUser extends ParentWebUser
 
     protected $_access = null;
 
+    use UserFlashTrait;
+
     /**
      * @var User
      */
-    protected $_info = null;
+    protected $_profile = null;
+
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (!($this->isGuest || $this->identity instanceof UserInterface)) {
+
+            throw new InvalidConfigException('Identity User must implements \\app\\modules\\user\\interface\\UserInterface');
+        }
+
+        if (!($this->isGuest || $this->identity instanceof IdentityInterface)) {
+
+            throw new InvalidConfigException('Identity User must implements \\app\\modules\\user\\interface\\IdentityInterface');
+        }
+    }
 
 
     /**
@@ -40,114 +66,14 @@ class WebUser extends ParentWebUser
      */
     public function can($permissionName, $params = [], $allowCaching = true)
     {
-        if (is_array($permissionName)) {
+        $permissionName = (array)$permissionName;
 
-            foreach ($permissionName as $p) {
+        foreach ($permissionName as $p) {
 
-                if (parent::can($p, $params, $allowCaching)) return true;
-            }
-
-            return false;
-        } else {
-
-            return parent::can($permissionName, $params, $allowCaching);
+            if (parent::can($p, $params, $allowCaching)) return true;
         }
-    }
 
-
-    /**
-     * Установка FLASH сообщения
-     *
-     * @param string $key
-     * @param string $value
-     */
-    public function setFlash($key, $value)
-    {
-
-        app()->session->set($key, $value);
-    }
-
-
-    /**
-     * Проверка на наличие FLASH сообщения
-     *
-     * @param string $key
-     * @return bool
-     */
-    public function hasFlash($key)
-    {
-
-        if (app()->request->isAjax) return false;
-
-        return app()->session->has($key);
-    }
-
-
-    /**
-     * Получение FLASH сообщения
-     *
-     * @param string $key
-     * @param string $defaultValue
-     * @param bool $delete
-     *
-     * @return string|null
-     */
-    public function getFlash($key, $defaultValue = null, $delete = true)
-    {
-
-        if (app()->request->isAjax) return null;
-
-        $message = app()->session->get($key, $defaultValue);
-
-        if ($delete) app()->session->remove($key);
-
-        return $message;
-    }
-
-
-    /**
-     * Установка сообщения предупреждения
-     *
-     * @param string $message
-     */
-    public function setWarningFlash($message)
-    {
-
-        $this->setFlash(self::WARNING_MESSAGE, $message);
-    }
-
-
-    /**
-     * Установка успешного сообщения
-     *
-     * @param $message
-     */
-    public function setSuccessFlash($message)
-    {
-
-        $this->setFlash(self::SUCCESS_MESSAGE, $message);
-    }
-
-
-    /**
-     * Установка сообщения об ошибке
-     * @param $message
-     */
-    public function setErrorFlash($message)
-    {
-
-        $this->setFlash(self::ERROR_MESSAGE, $message);
-    }
-
-
-    /**
-     * Установка успешного сообщения
-     * @param $message
-     */
-    public function setInfoFlash($message)
-    {
-
-        $this->setFlash(self::INFO_MESSAGE, $message);
+        return false;
     }
 
 
@@ -155,15 +81,15 @@ class WebUser extends ParentWebUser
      * Получение информации об авторизованном пользователе
      * @return User
      */
-    public function getInfo()
+    public function getProfile()
     {
-
         if ($this->isGuest) return null;
 
-        if ($this->_info === null) $this->_info = $this->identity;
+        if ($this->_profile === null) $this->_profile = $this->identity->profile;
 
-        return $this->_info;
+        return $this->_profile;
     }
+
 
     /**
      * Получение роли авторизованного пользователя
@@ -172,14 +98,13 @@ class WebUser extends ParentWebUser
      */
     public function getRole()
     {
-
         if ($this->isGuest) return Roles::GUEST;
 
         $roles = UserAccessLevelHelper::listRoles();
 
-        if (isset($roles[$this->identity->access_level])) {
+        if (isset($roles[$this->identity->getAccessLevel()])) {
 
-            return $roles[$this->identity->access_level];
+            return $roles[$this->identity->getAccessLevel()];
         }
 
         return null;
@@ -191,12 +116,11 @@ class WebUser extends ParentWebUser
      */
     public function getAccessData()
     {
-
         if ($this->isGuest) return [];
 
         if ($this->_access === null) {
 
-            $this->_access = app()->userManager->getAccessForUser($this->identity);
+            $this->_access = $this->identity->getAccessPermissions();
         }
 
         return $this->_access;

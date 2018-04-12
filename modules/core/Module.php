@@ -23,6 +23,16 @@ class Module extends ParentModule
 
     public $copyright = 'ФГБОУ ВО "Марийский государственный универитет"';
 
+    /**
+     * @inheritdoc
+     */
+    public function init() {
+
+        parent::init();
+
+        $this->setVersion('1.0.0');
+    }
+
 
     /**
      * @return array

@@ -2,7 +2,6 @@
 
 namespace app\modules\user\models\query;
 
-use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\User;
 use yii\db\ActiveQuery;
@@ -38,29 +37,6 @@ class UserQuery extends ActiveQuery
 
 
     /**
-     * @param $condition
-     * @param array $params
-     * @return $this
-     */
-    public function findUser($condition, $params = [])
-    {
-        return $this->where($condition, $params);
-    }
-
-
-    /**
-     * @return int
-     */
-    public function findCountAdmin()
-    {
-        return $this
-            ->active()
-            ->andWhere(['access_level' => UserAccessLevelHelper::LEVEL_ADMIN])
-            ->count();
-    }
-
-
-    /**
      * @return $this
      */
     public function active()
@@ -72,9 +48,10 @@ class UserQuery extends ActiveQuery
     /**
      * @param $email
      * @return User|array|null|ActiveRecord
-     */
+     *
     public function email($email)
     {
         return $this->where('email = :email', [':email' => $email])->active()->one();
     }
+     * */
 }

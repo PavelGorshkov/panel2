@@ -13,6 +13,17 @@ use app\modules\user\components\Roles;
 class Module extends ParentModule
 {
     /**
+     * @inheritdoc
+     */
+    public function init() {
+
+        parent::init();
+
+        $this->setVersion('1.0.0');
+    }
+
+
+    /**
      * @return string
      */
     public static function Title() {

@@ -3,6 +3,7 @@ use app\modules\core\components\View;
 use app\modules\core\widgets\ActiveForm;
 use app\modules\user\forms\UserFormModel;
 use app\modules\user\helpers\EmailConfirmStatusHelper;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\User;
 use app\modules\user\Module;
@@ -49,7 +50,7 @@ echo $form->errorSummary($model);
     <div class="row">
         <div class="col-sm-6">
             <?=$form->field($model, 'access_level')
-                ->dropDownList(User::getAccessLevelList())?>
+                ->dropDownList(UserAccessLevelHelper::getListUFRole())?>
         </div>
         <div class="col-sm-6">
             <?=$form->field($model, 'status')
@@ -59,7 +60,7 @@ echo $form->errorSummary($model);
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <?=$form->field($model, 'about')?>
+            <?=$form->field($model, 'department')?>
         </div>
         <div class="col-sm-6">
             <?=$form->field($model, 'phone')

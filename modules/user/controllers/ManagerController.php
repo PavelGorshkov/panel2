@@ -9,6 +9,7 @@ use app\modules\core\components\WebController;
 use app\modules\user\auth\ManagerTask;
 use app\modules\user\forms\PasswordForm;
 use app\modules\user\forms\UserFormModel;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\Access;
 use app\modules\user\models\Role;
@@ -18,6 +19,7 @@ use app\modules\user\models\ManagerUser;
 use kartik\grid\EditableColumnAction;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
 
@@ -71,12 +73,12 @@ class ManagerController extends WebController
                 'model' => ManagerUser::class,
                 'isNewRecord' => true,
             ],
-            'update' => [
-                'class' => SaveModelAction::class,
-                'modelForm' => UserFormModel::class,
-                'model' => ManagerUser::class,
-                'isNewRecord' => false,
-            ],
+            /*  'update' => [
+                  'class' => SaveModelAction::class,
+                  'modelForm' => UserFormModel::class,
+                  'model' => ManagerUser::class,
+                  'isNewRecord' => false,
+              ],*/
             'delete' => [
                 'class' => DeleteAction::class,
                 'modelClass' => ManagerUser::class,
@@ -87,7 +89,7 @@ class ManagerController extends WebController
                 'modelClass' => ManagerUser::class,
                 'outputValue' => function (ManagerUser $model) {
 
-                    return $model->getAccessGroup();
+                    return UserAccessLevelHelper::getUFRole($model);
                 },
             ],
             'status' => [
@@ -109,6 +111,49 @@ class ManagerController extends WebController
                 'successRedirect' => ['index'],
             ]
         ];
+    }
+
+
+    /**
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\ExitException
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        $modelForm = new UserFormModel();
+        $modelForm->setAttributes($model->getAttributes());
+
+        if (!empty($model->profile)) {
+
+            $data = $model->profile->getAttributes();
+            if (isset($data['id'])) unset($data['id']);
+
+            $modelForm->setAttributes($data);
+        }
+
+        $this->performAjaxValidation($modelForm);
+
+        if ($modelForm->load(app()->request->post()) && $modelForm->validate()){
+
+            if ($modelForm->processingData($model)) {
+
+                user()->setSuccessFlash('Данные пользователя успешно сохранены!');
+            } else {
+
+                user()->setWarningFlash('Данные пользователя не удалось сохранить!');
+            }
+
+            return $this->redirectSuccess($model);
+        }
+
+        return $this->render('update', [
+            'model' => $modelForm,
+            'module' => $this->module,
+        ]);
     }
 
 
@@ -137,7 +182,7 @@ class ManagerController extends WebController
     {
         $model = $this->findModel($id);
 
-        if (!$model->isAccessRoles()) {
+        if (!UserAccessLevelHelper::isUFRole($model)) {
 
             throw new ServerErrorHttpException('500', 'Нельзя редактировать системную роль!');
         }
@@ -201,7 +246,7 @@ class ManagerController extends WebController
      */
     protected function findModel($id)
     {
-        $model = ManagerUser::findOne($id);
+        $model = ManagerUser::find()->with('profile')->andWhere(['id' => $id])->one();
 
         if ($model === null) {
 
@@ -209,5 +254,25 @@ class ManagerController extends WebController
         }
 
         return $model;
+    }
+
+
+    /**
+     * @param ManagerUser $model
+     * @return \yii\web\Response
+     */
+    protected function redirectSuccess(ManagerUser $model) {
+
+        $key = $model->primaryKey();
+        $query = [];
+
+        foreach ($key as $v) {
+
+            $query[$v] = $model->$v;
+        }
+
+        $request = app()->request->post('submit-type', ArrayHelper::merge(['update'], $query));
+
+        return $this->redirect(Url::to($request));
     }
 }

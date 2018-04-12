@@ -10,6 +10,7 @@ use app\modules\core\widgets\CustomActionColumn;
 use app\modules\core\widgets\CustomGridView;
 use app\modules\user\auth\ManagerTask;
 use app\modules\user\helpers\RegisterFromHelper;
+use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\SearchUser;
 use app\modules\user\models\ManagerUser;
@@ -92,13 +93,13 @@ try {
 
                     /** @var $model ManagerUser */
                     $text = [
-                        $model->full_name,
+                        $model->profile->full_name ?? null,
                         Html::a($model->email, "mailto:" . $model->email),
                     ];
 
-                    if ($model->phone) {
+                    if (!empty($model->profile->phone)) {
 
-                        $text[] = $model->phone;
+                        $text[] = $model->profile->phone;
                     }
 
                     return implode('<br />', $text);
@@ -119,7 +120,7 @@ try {
                         'size' => PopoverX::SIZE_MEDIUM,
                         'inputType' => Editable::INPUT_DROPDOWN_LIST,
                         'placement' => PopoverX::ALIGN_TOP,
-                        'data' => ManagerUser::getAccessLevelList(),
+                        'data' => UserAccessLevelHelper::getListUFRole(),
                         'submitButton' => [
                             'icon' => '<i class="fa fa-fw fa-check"></i>',
                             'label' => 'Применить',
@@ -131,9 +132,9 @@ try {
                 'value' => function ($model) {
 
                     /** @var $model ManagerUser */
-                    return $model->getAccessGroup();
+                    return UserAccessLevelHelper::getUFRole($model);
                 },
-                'filter' => ManagerUser::getAccessLevelList(),
+                'filter' => UserAccessLevelHelper::getListUFRole(),
             ],
             [
                 'class' => 'kartik\grid\EditableColumn',
@@ -143,7 +144,7 @@ try {
                 'format' => 'raw',
                 'readonly' => function (ManagerUser $model) {
 
-                    return $model->isAdmin();
+                    return UserAccessLevelHelper::isAdmin($model);
                 },
                 'editableOptions' => function () { //$model, $key, $index
                     return [
@@ -177,7 +178,7 @@ try {
 
                         /* @var $model ManagerUser */
                         if (
-                            $model->isAccessRoles()
+                            UserAccessLevelHelper::isUFRole($model)
                             && user()->can(ManagerTask::OPERATION_ACCESS)
                         ) {
 
@@ -222,10 +223,10 @@ try {
                     }
                 ],
             ]
-
-        ]
+            ]
     ]);
 } catch (Exception $e) {
 
+    printr($e);
     echo $e->getMessage();
 }

@@ -6,6 +6,9 @@ use app\modules\core\auth\ModuleTask;
 use app\modules\core\components\Module as ParentModule;
 use app\modules\core\helpers\File;
 use app\modules\user\components\Roles;
+use app\modules\user\helpers\UserAccessLevelHelper;
+use app\modules\user\helpers\UserSettings;
+use yii\web\Request;
 
 /**
  * Class Module
@@ -13,9 +16,9 @@ use app\modules\user\components\Roles;
  *
  * @property-read array $loginPage /user/account/login
  * @property-read array $registerPage /user/account/registration
- * @property-read array $profilePage user/profile/index
  * @property-read array $logoutPage /user/account/logout
  * @property-read array $recoveryPage /user/account/recovery
+ * @property-read string $startPage
  */
 class Module extends ParentModule
 {
@@ -56,6 +59,15 @@ class Module extends ParentModule
     /** @var int Автогенерация логина */
     public $generateUserName = 0;
 
+    public $startWebPage = 'user/profile/index';
+
+    private $_startPage;
+
+    /**
+     * @var int
+     */
+    public $ldapRole = UserAccessLevelHelper::LEVEL_USER;
+
     /** @var int Минимальная длина пароля */
     public $minPasswordLength = 6;
 
@@ -76,6 +88,7 @@ class Module extends ParentModule
     public $showCaptcha = 0;
 
 
+
     /**
      * @return array
      */
@@ -90,6 +103,7 @@ class Module extends ParentModule
             'expireTokenPasswordLifeHours' => 'Срок действия токена восстановления пароля (в часах)',//
             'fromAuthorization' => 'Метод авторизации',//
             'generateUserName' => 'Автогенерация логина',//
+            'ldapRole' => 'Роль при LDAP авторизации',//
             'minPasswordLength' => 'Минимальная длина пароля',//
             'phoneMask' => 'Маска телефона',//
             'phonePattern' => 'Регулярное выражение телефона',//
@@ -97,6 +111,7 @@ class Module extends ParentModule
             'registrationDisabled' => 'Отключение регистрации',
             'sessionLifeTimeDate' => 'Срок хранения сессии (в днях)',
             'showCaptcha' => 'Отображать капчу',//
+            'startWebPage' => 'Стартовая страница',//
         ];
     }
 
@@ -113,6 +128,7 @@ class Module extends ParentModule
             'enableUnconfirmedLogin' => $this->choiseList(),
             'fromAuthorization' => $this->fromAuthorizationList(),
             'generateUserName' => $this->choiseList(),
+            'ldapRole' => UserAccessLevelHelper::getListUFRole(),
             'recoveryDisabled' => $this->choiseList(),
             'registrationDisabled' => $this->choiseList(),
             'showCaptcha' => $this->choiseList(),
@@ -127,6 +143,12 @@ class Module extends ParentModule
     {
         return [
             [
+                'title' => 'Основные данные',
+                'items' => [
+                    'startWebPage',
+                ]
+            ],
+            [
                 'title' => 'Регистрация',
                 'items' => [
                     'emailAccountVerification',
@@ -136,6 +158,7 @@ class Module extends ParentModule
                     'phoneMask',
                     'phonePattern',
                     'showCaptcha',
+                    'ldapRole',
                 ]
             ],
             [
@@ -184,6 +207,17 @@ class Module extends ParentModule
 
         $this->avatarDirs = \Yii::getAlias($this->avatarDirs);
         File::checkPath($this->avatarDirs);
+
+        $this->setVersion('1.0.0');
+
+
+        $this->_startPage = $this->startWebPage;
+        $startPage = UserSettings::model()->startPage;
+
+        if (!empty($startPage)) {
+
+            $this->_startPage = $startPage;
+        }
     }
 
 
@@ -297,11 +331,30 @@ class Module extends ParentModule
 
 
     /**
-     * @return array
+     * @return string
      */
-    public function getProfilePage()
+    public function getStartPage()
     {
-        return ['/user/profile/index'];
+        if (!is_array($this->_startPage)) {
+
+            if (!empty(app()->request->baseUrl)) {
+
+                $baseUrl = app()->request->baseUrl;
+
+                $this->_startPage = $baseUrl . '/'. ltrim($this->_startPage, $baseUrl);
+            }
+
+            $request = new Request();
+            $request->setUrl($this->_startPage);
+
+            $startPage = app()->urlManager->parseRequest($request);
+
+        } else {
+
+            $startPage = $this->_startPage;
+        }
+
+        return $startPage;
     }
 
 

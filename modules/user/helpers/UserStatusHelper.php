@@ -3,6 +3,7 @@
 namespace app\modules\user\helpers;
 
 use app\modules\core\helpers\ListHelper;
+use app\modules\user\models\User;
 
 /**
  * Класс helper для работы со статусами активности пользователя
@@ -42,5 +43,15 @@ class UserStatusHelper extends ListHelper
             self::STATUS_NOT_ACTIVE => '<i class="fa fa-fw fa-user text-warning" title="Не активированный"></i>',
             self::STATUS_BLOCK => '<i class="fa fa-fw fa-ban text-danger" title="Заблокированный"></i>',
         ];
+    }
+
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public static function isBlocked(User $user)
+    {
+        return $user->status === self::STATUS_BLOCK;
     }
 }

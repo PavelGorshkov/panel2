@@ -8,6 +8,7 @@ use app\modules\user\models\query\RoleQuery;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%user_role}}".
@@ -50,7 +51,7 @@ class Role extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_role}}';
+        return '{{%user__role}}';
     }
 
 
@@ -142,11 +143,17 @@ class Role extends ActiveRecord
 
 
     /**
-     * @inheritdoc
-     * @return RoleQuery the active query used by this AR class.
-     */
-    public static function find()
+    * @return array
+    */
+    public static function getList()
     {
-        return new RoleQuery(get_called_class());
+        return ArrayHelper::map(
+            self::find()
+                ->select('id, title')
+                ->asArray()
+                ->all(),
+            'id',
+            'title'
+        );
     }
 }

@@ -8,6 +8,7 @@ use app\modules\user\helpers\ModuleTrait;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserStatusHelper;
 use app\modules\user\models\ManagerUser;
+use app\modules\user\models\Profile;
 use app\modules\user\models\User;
 use yii\base\Model;
 use yii\db\Query;
@@ -35,7 +36,7 @@ class UserFormModel extends Model implements SaveModelInterface
 
     public $status;
 
-    public $about;
+    public $department;
 
     public $phone;
 
@@ -55,7 +56,6 @@ class UserFormModel extends Model implements SaveModelInterface
                     'full_name',
                     'access_level',
                     'status',
-                    'about',
                 ],
                 'required'
             ],
@@ -64,11 +64,11 @@ class UserFormModel extends Model implements SaveModelInterface
                     'username',
                     'email',
                     'full_name',
-                    'about',
+                    'department',
                     'phone'
                 ], 'trim',],
             [
-                ['username', 'email', 'full_name', 'about', 'phone'], 'filter',
+                ['username', 'email', 'full_name', 'department', 'phone'], 'filter',
                 'filter' => function ($html) {
                     return HtmlPurifier::process(
                         $html,
@@ -101,7 +101,7 @@ class UserFormModel extends Model implements SaveModelInterface
             ['status', 'in', 'range' => array_keys(UserStatusHelper::getList())],
 
             ['email_confirm', 'in', 'range' => array_keys(EmailConfirmStatusHelper::getList())],
-            ['access_level', 'in', 'range' => array_keys(User::getAccessLevelList())],
+            ['access_level', 'in', 'range' => array_keys(UserAccessLevelHelper::getListUFRole())],
 
             [
                 'access_level',
@@ -135,16 +135,15 @@ class UserFormModel extends Model implements SaveModelInterface
      */
     public function isUpdatedAdmin($attribute, $params)
     {
-
         if ($this->id === null) return true;
 
-        $user = User::findOne($this->id);
+        $user = ManagerUser::findOne($this->id);
 
         $message = isset($params['message'])
             ? $params['message']
             : 'Ошибка валидации данных администратора!';
 
-        if ($user->isAdmin() && User::findCountAdmin() < 2) {
+        if (UserAccessLevelHelper::isAdmin($user) && User::findCountAdmin() < 2) {
 
             if ($this->$attribute != $params['defaultValue']) {
 
@@ -163,10 +162,26 @@ class UserFormModel extends Model implements SaveModelInterface
      */
     public function processingData(Model $model)
     {
-
+        /** @var $model ManagerUser*/
         $model->setAttributes($this->getAttributes());
 
-        return $model->save();
+        if ($model->save()) {
+
+            if ($model->profile === null) {
+
+                $profile = new Profile();
+                $profile->user_id = $model->getPrimaryKey();
+            } else {
+
+                $profile = $model->profile;
+            }
+
+            $profile->setAttributes($this->getAttributes());
+
+            return $profile->save();
+        }
+
+        return false;
     }
 
 
@@ -188,13 +203,11 @@ class UserFormModel extends Model implements SaveModelInterface
             'visited_at' => 'Последний визит',
             'registered_from' => 'Тип регистрации',
             'access_level' => 'Группа',
-            'logged_in_from' => 'Logged In From',
-            'logged_at' => 'Logged At',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => 'Дата создания',
+            'updated_at' => 'Дата изменения',
             'full_name' => 'ФИО',
             'avatar' => 'Аватар',
-            'about' => 'Должность, место работы',
+            'department' => 'Должность, место работы',
             'phone' => 'Телефон',
         ];
     }

@@ -57,6 +57,9 @@ class SaveModelAction extends WebAction
     protected $modelInstance = null;
 
 
+    public $createParams = 'params';
+
+
     /**
      * @throws ServerErrorHttpException
      * @throws \yii\base\InvalidConfigException
@@ -106,12 +109,19 @@ class SaveModelAction extends WebAction
      */
     public function run($id = 0)
     {
-
         if (!$this->isNewRecord) {
 
             $this->modelInstance = $this->findModel($id);
 
             $this->modelFormInstance->setAttributes($this->modelInstance->getAttributes());
+        } else {
+
+            $params = app()->request->get($this->createParams);
+
+            if (!empty($params) && is_array($params)) {
+
+                $this->modelFormInstance->setAttributes($params);
+            }
         }
 
         $this->performAjaxValidation();
@@ -211,6 +221,11 @@ class SaveModelAction extends WebAction
         }
 
         $request = app()->request->post('submit-type', ArrayHelper::merge(['update'], $query));
+
+        if ($request == 'this') {
+
+            return $this->controller->refresh();
+        }
 
         return $this->controller->redirect(Url::to($request));
     }

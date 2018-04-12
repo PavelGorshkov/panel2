@@ -23,7 +23,7 @@ class Migration extends \yii\db\Migration
      * @param string|null $table
      * @return mixed
      */
-    protected function gettableName($table = null)
+    protected function getTableName($table = null)
     {
         if ($table === null) $table = $this->table;
 

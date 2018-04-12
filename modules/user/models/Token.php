@@ -53,7 +53,7 @@ class Token extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_token}}';
+        return '{{%user__token}}';
     }
 
 
@@ -99,15 +99,5 @@ class Token extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
-
-
-    /**
-     * @inheritdoc
-     * @return TokenQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new TokenQuery(get_called_class());
     }
 }

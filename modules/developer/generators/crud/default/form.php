@@ -23,6 +23,7 @@ use app\modules\core\components\FormModel;
 use app\modules\core\interfaces\SaveModelInterface;
 use <?= $generator->modelClass ?>;
 use app\modules\<?= $generator->module ?>\helpers\ModuleTrait;
+use yii\web\ServerErrorHttpException;
 use yii\base\Model;
 
 /**
@@ -58,11 +59,10 @@ class <?= $formModelClass ?> extends FormModel implements SaveModelInterface
 
         $model->setAttributes($this->getAttributes());
 
-        /*
-        // Проверка валидации перед сохранением
-        $model->validate();
-        printr($model->getErrors(), 1);
-        */
+        if (!$model->validate()) {
+
+            throw new ServerErrorHttpException($model->getErrors());
+        }
 
         return $model->save();
     }

@@ -2,6 +2,7 @@
 
 namespace app\modules\core\widgets;
 
+use app\modules\core\helpers\RouterUrlHelper;
 use kartik\grid\ActionColumn;
 use yii\helpers\Html;
 
@@ -22,13 +23,24 @@ class CustomActionColumn extends ActionColumn
      */
     protected function initDefaultButtons()
     {
-        $this->initDefaultButton('view', 'eye');
-        $this->initDefaultButton('update', 'pencil', ['class'=>'btn btn-warning btn-xs']);
-        $this->initDefaultButton('delete', 'trash', [
-            'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
-            'data-method' => 'post',
-            'class'=>'btn btn-danger btn-xs'
-        ]);
+        if (user()->can(RouterUrlHelper::to('view'))) {
+
+            $this->initDefaultButton('view', 'eye');
+        }
+
+        if (user()->can(RouterUrlHelper::to('update'))) {
+
+            $this->initDefaultButton('update', 'pencil', ['class' => 'btn btn-warning btn-xs']);
+        }
+
+        if (user()->can(RouterUrlHelper::to('delete'))) {
+
+            $this->initDefaultButton('delete', 'trash', [
+                'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
+                'data-method' => 'post',
+                'class' => 'btn btn-danger btn-xs'
+            ]);
+        }
     }
 
 

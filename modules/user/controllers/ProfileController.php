@@ -89,7 +89,6 @@ class ProfileController extends RedactorController
      */
     public function actionIndex()
     {
-
         return $this->render('index', [
             'admin' => app()->menuManager->admin,
             'main' => app()->menuManager->main,
@@ -105,7 +104,8 @@ class ProfileController extends RedactorController
     public function actionView()
     {
         return $this->render('view', [
-            'info' => user()->info,
+            'info' => user()->identity,
+            'profile'=>user()->profile,
             'module' => $this->module,
         ]);
     }
@@ -125,23 +125,15 @@ class ProfileController extends RedactorController
         $this->setSmallTitle('Изменение E-mail');
 
         $model = new EmailProfileForm();
+        $model->setAttributes(user()->identity->getAttributes());
 
         $this->performAjaxValidation($model);
 
         if ($model->load(app()->request->post()) && $model->validate()) {
 
-            if (app()->userManager->changeEmail(user()->info, $model->email)) {
+            if (app()->userManager->changeEmail(user()->identity, $model->email)) {
 
-                if ($this->module->emailAccountVerification) {
-
-                    user()->setWarningFlash('Вам необходимо продтвердить новый e-mail, проверьте почту!');
-                } else {
-
-                    user()->setSuccessFlash('Ваш email был изменен');
-                }
-
-                $this->redirect(Url::to(['update']));
-                app()->end();
+                return $this->redirect(Url::to(['update']));
             }
         }
 
@@ -152,6 +144,7 @@ class ProfileController extends RedactorController
     /**
      * @return string
      * @throws \yii\base\ExitException
+     * @throws \yii\db\Exception
      */
     public function actionUpdate()
     {
@@ -159,19 +152,20 @@ class ProfileController extends RedactorController
 
         $this->setSmallTitle('Изменение профиля');
 
-        $model = new ProfileForm();
-        $model->setAttributes(user()->info->getAttributes());
-        $model->email = user()->info->email;
+        $modelForm = new ProfileForm();
+        $modelForm->setAttributes(user()->identity->getAttributes());
+        $modelForm->setAttributes(user()->profile->getAttributes());
+        $modelForm->email = user()->identity->email;
 
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation($modelForm);
 
         if (
-            $model->load(app()->request->post())
-            && $model->validate()
-            && $model->upload()
+            $modelForm->load(app()->request->post())
+            && $modelForm->validate()
+            && $modelForm->upload()
         ) {
 
-            if (app()->userManager->saveProfile($model)) {
+            if (app()->userManager->saveProfile($modelForm)) {
 
                 user()->setSuccessFlash('Ваши данные обновлены');
             }
@@ -180,7 +174,7 @@ class ProfileController extends RedactorController
             app()->end();
         }
 
-        return $this->render($this->action->id, ['model' => $model, 'module' => $this->module]);
+        return $this->render($this->action->id, ['model' => $modelForm, 'module' => $this->module]);
     }
 
 

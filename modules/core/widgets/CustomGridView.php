@@ -14,7 +14,7 @@ class CustomGridView extends GridView {
     public $panelPrefix = 'box box-';
 
     public $panelTemplate = <<<HTML
-    <div class="{prefix}{type}">
+    <div class="{prefix}{type} {solid}">
         {panelHeading}
         <div class="box-body">
             {panelBefore}
@@ -63,6 +63,8 @@ HTML;
         $footer = ArrayHelper::getValue($this->panel, 'footer', '');
         $before = ArrayHelper::getValue($this->panel, 'before', '');
         $after = ArrayHelper::getValue($this->panel, 'after', '');
+        $solid = ArrayHelper::getValue($this->panel, 'solid', false);
+
         $headingOptions = ArrayHelper::getValue($this->panel, 'headingOptions', []);
         $footerOptions = ArrayHelper::getValue($this->panel, 'footerOptions', []);
         $beforeOptions = ArrayHelper::getValue($this->panel, 'beforeOptions', []);
@@ -92,6 +94,12 @@ HTML;
             $content = strtr($this->panelAfterTemplate, ['{after}' => $after]);
             $panelAfter = Html::tag('div', $content, $afterOptions);
         }
+
+        $classSolid = $solid?'box-solid':'';
+
+        $this->panelTemplate = strtr($this->panelTemplate, ['{solid}'=>$classSolid]);
+
+
         $this->layout = strtr(
             $this->panelTemplate,
             [

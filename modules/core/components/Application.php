@@ -5,6 +5,7 @@ use app\modules\user\components\BuildAuthManager;
 use app\modules\user\components\PhpManager;
 use app\modules\user\components\UserManager;
 use app\modules\user\components\WebUser;
+use yii\db\Connection;
 
 /**
  * Класс пустышка app(), для указания IDE вируальных
@@ -24,6 +25,7 @@ use app\modules\user\components\WebUser;
  * @property Thumbnailer $thumbNailer
  * @property WebService $ws
  * @property AdLdapComponent $ldap
+ * @property Connection $dbUis
  *
  */
 class Application extends \yii\web\Application {}
