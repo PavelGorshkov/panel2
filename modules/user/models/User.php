@@ -56,6 +56,7 @@ class User extends ActiveRecord implements UserInterface
 
         Token::deleteAll(['user_id' => $this->id]);
 
+        Profile::deleteAll(['user_id' => $this->id]);
         parent::afterDelete();
     }
 
@@ -259,6 +260,7 @@ class User extends ActiveRecord implements UserInterface
 
             [['hash'], 'string', 'max' => 60],
 
+            [['avatar'],'safe'],
             [['auth_key'], 'string', 'max' => 32],
 
             ['access_level', 'in', 'range' => array_keys(UserAccessLevelHelper::getListUFRole())],

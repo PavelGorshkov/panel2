@@ -65,6 +65,10 @@ $config = [
             'errorView'=>'@app/modules/core/views/errorHandler/error.php'
         ],
 
+        'formatter'=>[
+            'currencyCode'=>'RUB',
+        ],
+
         'i18n'=>[
             'translations' => [
                 'kvgrid' => [

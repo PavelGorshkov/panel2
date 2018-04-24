@@ -159,7 +159,6 @@ class File extends FileHelper
      */
     public static function savePhpFile($file, $data)
     {
-
         $content = '<?php return ' . var_export($data, true) . ';';
 
         if (crc32($content) != file_crc32($file)) {

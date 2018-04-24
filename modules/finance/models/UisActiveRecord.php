@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\core\components;
+namespace app\modules\finance\models;
 
 use yii\db\ActiveRecord;
 use yii\web\ServerErrorHttpException;

@@ -8,15 +8,15 @@ use yii\web\AssetBundle;
  * Class HightchartsRusAssets
  * @package app\modules\finance\widgets\hightcharts\assets
  */
-class HightchartsRusAssets extends AssetBundle {
-
-    public $sourcePath = "@app/modules/finance/widgets/hightcharts";
+class HightchartsRusAsset extends AssetBundle
+{
+    public $sourcePath = "@app/modules/finance/widgets/hightcharts/assets/js";
 
     public $js = [
-        'js/lang.js'
+        'lang.js'
     ];
 
     public $depends = [
-        'app\modules\finance\widgets\hightcharts\assets\HightchartsAssets'
+        HightchartsAsset::class,
     ];
 }

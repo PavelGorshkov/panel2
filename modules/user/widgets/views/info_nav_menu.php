@@ -21,7 +21,7 @@ use yii\web\HttpException;
     } catch (Exception $e) {
         echo $e->getMessage();
     } ?>
-    <span class="hidden-xs"><?=$user->email??'Пользователь'?></span>
+    <span class="hidden-xs"><?=$user->email??$user->username;?></span>
 </a>
 <ul class="dropdown-menu">
     <!-- User image -->

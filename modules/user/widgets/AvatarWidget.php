@@ -75,14 +75,25 @@ class AvatarWidget extends Widget
 
         $this->imageSrc = $this->user->getAvatar($this->size);
 
+        $this->imageAlt = empty($this->imageAlt) ? user()->profile->full_name : $this->imageAlt;
+
+        $this->options = ['class' => 'avatar avatar-' . $this->user->id];
+
+        return $this->renderImage();
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function renderImage()
+    {
         if ($this->noCache) {
 
             $this->imageSrc .= '?' . microtime(true);
         }
 
-        $this->imageAlt = empty($this->imageAlt) ? user()->profile->full_name : $this->imageAlt;
         $this->width = $this->size . 'px';
-        $this->options = ['class' => 'avatar avatar-' . $this->user->id];
 
         if (!$this->height) {
             $this->height = $this->width;

@@ -21,7 +21,6 @@ class Thumbnailer extends Component{
      */
     public $options = [];
 
-
     /**
      * @var string
      */
@@ -34,7 +33,8 @@ class Thumbnailer extends Component{
      * @param float $width Ширина изображения. Если не указана - будет вычислена из высоты
      * @param float $height Высота изображения. Если не указана - будет вычислена из ширины
      * @param boolean $crop Обрезка миниатюры по размеру
-     *
+     * @param bool $replace
+     * 
      * @return string
      * @throws ServerErrorHttpException
      * @throws \yii\base\Exception
@@ -44,13 +44,25 @@ class Thumbnailer extends Component{
         $uploadDir,
         $width = 0.0,
         $height = 0.0,
-        $crop = true
+        $crop = true,
+        $replace = false
     ) {
         if (!$width && !$height) {
             throw new ServerErrorHttpException("Incorrect width/height");
         }
 
-        $name = $width . 'x' . $height . '_' . $file;
+        $filename = explode('.', $file);
+
+        if (count($filename)>1) {
+
+            $ext = array_pop($filename);
+
+            $name = implode('.', $filename) . '_' . $width .'x' . $height . '.'. $ext;
+
+        } else {
+
+            $name = $width . 'x' . $height . '_' . $file;
+        }
 
         $uploadDir = Yii::getAlias($uploadDir);
 
@@ -59,7 +71,7 @@ class Thumbnailer extends Component{
 
         $thumbMode = $crop ? ImageInterface::THUMBNAIL_OUTBOUND : ImageInterface::THUMBNAIL_INSET;
 
-        if (!file_exists($thumbFile)) {
+        if (!file_exists($thumbFile) || $replace) {
 
             if (false === File::checkPath($uploadDir)) {
                 throw new ServerErrorHttpException('Директория "'.$uploadDir.'не доступна для записи!');
@@ -78,6 +90,8 @@ class Thumbnailer extends Component{
                 $height = $width / $originalWidth * $originalHeight;
             }
 
+            File::checkPath(dirname($thumbFile));
+
             $img->thumbnail(new Box($width, $height), $thumbMode)->save($thumbFile, $this->options);
         }
 
@@ -87,12 +101,20 @@ class Thumbnailer extends Component{
 
     /**
      * @param string $path
+     * @param bool $is_full
      * @return string
      */
-    protected function path2Url($path) {
+    protected function path2Url($path, $is_full = false) {
 
         $base_path = realpath(app()->basePath).'/web';
 
-        return app()->request->baseUrl.str_replace($base_path, '', $path);
+        if ($is_full) {
+
+            return app()->request->absoluteUrl. str_replace($base_path, '', $path);
+        } else {
+            return app()->request->baseUrl . str_replace($base_path, '', $path);
+        }
     }
+
+
 }

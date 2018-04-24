@@ -1,27 +1,31 @@
 <?php
-    use app\modules\finance\widgets\hightcharts\assets\{DrilldownAssets, HightchartsRusAssets};
-    use app\modules\core\components\View;
-    use app\modules\finance\interfaces\FinanceChartInterface;
 
-    /* @var View $this */
-    /* @var FinanceChartInterface $model */
-    /* @var string $series */
-    /* @var string $drilldown */
-    /* @var string $tooltip */
-    /* @var string $xAxis */
-    /* @var string $yAxis */
-    /* @var string $id */
+use app\modules\finance\widgets\hightcharts\assets\{
+    DrilldownAsset, HightchartsRusAsset
+};
+use app\modules\core\components\View;
+use app\modules\finance\interfaces\FinanceChartInterface;
+use yii\helpers\Html;
 
-    HightchartsRusAssets::register($this);
+/* @var View $this */
+/* @var FinanceChartInterface $model */
+/* @var string $series */
+/* @var string $drilldown */
+/* @var string $tooltip */
+/* @var string $xAxis */
+/* @var string $yAxis */
+/* @var string $id */
 
-    if($drilldown){
-        DrilldownAssets::register($this);
-    }
-?>
+HightchartsRusAsset::register($this);
 
-<div id="<?=$id?>" style="min-width: 310px; width: 100%; height: 400px; margin: 0 auto"></div>
+if ($drilldown) {
+    DrilldownAsset::register($this);
+}
 
-<?php
+echo Html::tag('div', '', [
+    'id' => $id,
+    'style' => 'min-width: 310px; width: 100%; height: 400px; margin: 0 auto'
+]);
 
 $this->registerJs(/** @lang text */
     <<<JS

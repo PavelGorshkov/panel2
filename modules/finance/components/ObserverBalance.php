@@ -498,4 +498,13 @@ class ObserverBalance implements FinanceObserverInterface, FinanceChartInterface
             }
         }
     }
+
+    /**
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function renderData($start, $finish)
+    {
+        return $this->createObserverData($start, $finish);
+    }
 }

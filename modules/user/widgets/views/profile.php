@@ -17,7 +17,9 @@ use yii\helpers\Url;
             echo $e->getMessage();
         } ?>
         <h3 class="profile-username text-center"><?=$profile->full_name?></h3>
+    <?php if (!empty($user->email)):?>
         <p class="text-muted text-center"><?=$user->email?></p>
+    <?php endif; ?>
         <p class="text-muted text-center"><?=$profile->department?></p>
         <ul class="list-group list-group-unbordered">
     <?php if ($profile->phone):?>
@@ -25,9 +27,11 @@ use yii\helpers\Url;
                 <b><i class="fa fa-fw fa-phone"></i></b> <?=Html::a($profile->phone, Url::to('tel:'.$profile->phone), ['class'=>'pull-right'])?>
             </li>
     <?php endif; ?>
+    <?php if (!empty($user->email)):?>
             <li class="list-group-item" style="background: none;">
                 <b><i class="fa fa-fw fa-envelope"></i></b> <?=Html::a($user->email, Url::to('mailto:'.$user->email), ['class'=>'pull-right'])?>
             </li>
+    <?php endif;?>
         </ul>
     </div>
 </div>

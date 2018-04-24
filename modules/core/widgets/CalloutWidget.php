@@ -16,7 +16,7 @@ class CalloutWidget extends Widget
     public $message = '';
 
     protected $types = [
-        'error'   => 'danger',
+        'danger'   => 'danger',
         'info'    => 'info',
         'success' => 'success',
         'warning' => 'warning'

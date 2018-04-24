@@ -82,12 +82,15 @@ class ProfileForm extends FormModel
 
             if ($this->validate('avatar_file')) {
 
+                $avatar = user()->id .'__'. uniqid('avatar_');
+
+                $this->remove_avatars();
+
                 if (
                 $this->avatar_file
-                    ->saveAs($this->module->avatarDirs . '/avatar_' . user()->info->id . '.' . $this->avatar_file->extension, 1)
+                    ->saveAs($this->module->avatarDirs .  $avatar . '.' . $this->avatar_file->extension, 1)
                 ) {
-
-                    $this->avatar_file = 'avatar_' . user()->info->id . '.' . $this->avatar_file->extension;
+                    $this->avatar_file =  $avatar  . '.' . $this->avatar_file->extension;
                     return true;
                 }
             }
@@ -105,6 +108,25 @@ class ProfileForm extends FormModel
     public function formName()
     {
         return 'profile-form';
+    }
+
+
+    public function remove_avatars() {
+
+        foreach (new \GlobIterator(
+            \Yii::getAlias('@webroot/uploads/images/avatars/'.user()->id.'__*')
+                 ) as $item) {
+
+            /* @var \SplFileInfo $item*/
+            @unlink($item->getRealPath());
+        }
+        foreach (new \GlobIterator(
+                     \Yii::getAlias('@webroot/uploads/images/avatars/thumbs/'.user()->id.'__*')
+                 ) as $item) {
+
+            /* @var \SplFileInfo $item*/
+            @unlink($item->getRealPath());
+        }
     }
 
 

@@ -87,7 +87,7 @@ class Dictionary
             self::_init($dictionary);
         }
 
-        return self::$_data[$dictionary][$uid] ?? ['value' => null];
+        return self::$_data[$dictionary][$uid] ?? ['value' => $uid];
     }
 
 

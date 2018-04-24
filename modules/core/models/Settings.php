@@ -30,24 +30,6 @@ class Settings extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if ($this->module === self::USER_DATA) {
-
-            $this->user_id = user()->id;
-        }
-
-        if (user()->isGuest) return false;
-
-        return parent::beforeSave($insert);
-    }
-
-
-    /**
-     * @inheritdoc
      */
     public function rules()
     {

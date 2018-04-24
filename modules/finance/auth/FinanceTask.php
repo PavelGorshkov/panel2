@@ -16,20 +16,11 @@ class FinanceTask extends RbacItem
 {
     const TASK = '/finance/finance';
 
-    const OPERATION_CREATE = '/finance/finance/create';
-
-    const OPERATION_UPDATE = '/finance/finance/update';
-
-    const OPERATION_DELETE = '/finance/finance/delete';
-
     const OPERATION_READ = '/finance/finance/index';
 
     public $types = [
         self::TASK => Item::TYPE_ROLE,
         self::OPERATION_READ => Item::TYPE_PERMISSION,
-        self::OPERATION_CREATE => Item::TYPE_PERMISSION,
-        self::OPERATION_UPDATE => Item::TYPE_PERMISSION,
-        self::OPERATION_DELETE => Item::TYPE_PERMISSION,
     ];
 
 
@@ -40,10 +31,7 @@ class FinanceTask extends RbacItem
     {
         return [
             self::TASK => 'Финансовое обеспечение',
-            self::OPERATION_READ => 'Просмотр',
-            self::OPERATION_CREATE => '',
-            self::OPERATION_UPDATE => '',
-            self::OPERATION_DELETE => '',
+            self::OPERATION_READ => 'Просмотр финансовых показателей',
         ];
     }
 
@@ -60,9 +48,6 @@ class FinanceTask extends RbacItem
             ],
             self::TASK => [
                 self::OPERATION_READ,
-                self::OPERATION_CREATE,
-                self::OPERATION_UPDATE,
-                self::OPERATION_DELETE,
             ],
         ];
     }

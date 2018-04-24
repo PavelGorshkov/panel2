@@ -53,6 +53,5 @@ class EmailConfirmStatusHelper extends ListHelper
     public static function isConfirmedEmail(User $user)
     {
         return $user->email_confirm === self::EMAIL_CONFIRM_YES;
-
     }
 }

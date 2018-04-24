@@ -8,6 +8,7 @@ use app\modules\core\helpers\File;
 use app\modules\user\components\Roles;
 use app\modules\user\helpers\UserAccessLevelHelper;
 use app\modules\user\helpers\UserSettings;
+use yii\console\Application;
 use yii\web\Request;
 
 /**
@@ -39,10 +40,10 @@ class Module extends ParentModule
     public $defaultAvatar = 'default.png';
 
     /** @var int Подтверждение аккаунта по email */
-    public $emailAccountVerification = 1;
+    public $emailAccountVerification = 0;
 
     /** @var int Пользователь должен ли подтвердить свою учетную запись. */
-    public $enableConfirmation = 1;
+    public $enableConfirmation = 0;
 
     /** @var int Разрешить ли вход в систему без подтверждения. */
     public $enableUnconfirmedLogin = 0;
@@ -79,7 +80,7 @@ class Module extends ParentModule
     public $recoveryDisabled = 0;
 
     /** @var int */
-    public $registrationDisabled = 0;
+    public $registrationDisabled = 1;
 
     /** @var int Срок хранения сессии (в днях) */
     public $sessionLifeTimeDate = 1;
@@ -210,9 +211,15 @@ class Module extends ParentModule
 
         $this->setVersion('1.0.0');
 
+        if (!(app() instanceof Application)) {
 
-        $this->_startPage = $this->startWebPage;
-        $startPage = UserSettings::model()->startPage;
+            $this->_startPage = $this->startWebPage;
+            $startPage = UserSettings::model()->startPage;
+
+        } else {
+
+            $startPage = null;
+        }
 
         if (!empty($startPage)) {
 

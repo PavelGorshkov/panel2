@@ -223,7 +223,7 @@ try {
                     }
                 ],
             ]
-            ]
+        ]
     ]);
 } catch (Exception $e) {
 

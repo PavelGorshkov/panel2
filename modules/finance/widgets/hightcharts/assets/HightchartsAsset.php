@@ -3,21 +3,27 @@
 namespace app\modules\finance\widgets\hightcharts\assets;
 
 use yii\web\AssetBundle;
+use yii\web\YiiAsset;
 
 /**
- * Class DrilldownAssets
+ * Class HightchartsAssets
  * @package app\modules\finance\widgets\hightcharts\assets
  */
-class DrilldownAssets extends AssetBundle {
+class HightchartsAsset extends AssetBundle {
 
     public $sourcePath = '@bower/hightcharts';
 
+    public $css = [
+        'css/highcharts.css'
+    ];
+
     public $js = [
-        'modules/data.js',
-        'modules/drilldown.js',
+        'highcharts.js',
+        'highcharts-more.js',
+        'modules/exporting.js'
     ];
 
     public $depends = [
-        'app\modules\finance\widgets\hightcharts\assets\HightchartsRusAssets'
+        YiiAsset::class,
     ];
 }

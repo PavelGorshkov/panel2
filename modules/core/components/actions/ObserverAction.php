@@ -30,6 +30,8 @@ class ObserverAction extends Action
 
     protected $_controllers = [];
 
+    protected $title;
+
 
     /**
      * @throws ServerErrorHttpException
@@ -72,6 +74,8 @@ class ObserverAction extends Action
      */
     public function run()
     {
+        $this->title = $this->controller->view->getTitle();
+
         $content = [];
 
         foreach ($this->_controllers as $action => $data) {
@@ -97,6 +101,8 @@ class ObserverAction extends Action
         }
 
         if ($this->smallTitle) $this->controller->setSmallTitle($this->smallTitle);
+
+        $this->controller->setTitle($this->title);
 
         return $this->controller->render($this->view, ['content' => $content]);
     }

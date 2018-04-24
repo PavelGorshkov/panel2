@@ -22,22 +22,33 @@ class UserSettings extends Settings
      */
     public static function findAllData()
     {
-        $data = cache()->get('find_all_user_data');
+        $temp = self::find()
+            ->select(['param_name', 'param_value'])
+            ->where(['module' => self::USER_DATA, 'user_id' => (int) user()->id])
+            ->asArray()
+            ->all();
 
-        if ($data === false) {
-
-            $temp = self::find()
-                ->select(['param_name', 'param_value'])
-                ->where(['module' => self::USER_DATA, 'user_id' => (int)user()->id])
-                ->asArray()
-                ->all();
-
-            $data = ArrayHelper::map($temp, 'param_name', 'param_value');
-
-            cache()->set('find_all_user_data', $data, 3600);
-        }
+        $data = ArrayHelper::map($temp, 'param_name', 'param_value');
 
         return $data;
+    }
+
+
+    /**
+     * @inheritdoc
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if ($this->module === self::USER_DATA) {
+
+            $this->user_id = user()->id;
+        }
+
+        if (user()->isGuest) return false;
+
+        return parent::beforeSave($insert);
     }
 
 
@@ -61,8 +72,6 @@ class UserSettings extends Settings
         }
 
         $model->param_value = $value;
-
-        cache()->delete('find_all_user_data');
 
         return $model->save();
     }

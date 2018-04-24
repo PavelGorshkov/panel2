@@ -2,7 +2,7 @@
     use app\modules\core\widgets\BoxWidget;
     use app\modules\finance\interfaces\FinanceObserverInterface;
     use app\modules\finance\widgets\daterangepicker\RangeWidget;
-    use app\modules\finance\widgets\hightcharts\ChartWidget;
+    use app\modules\finance\widgets\hightcharts\FinChartWidget;
     use app\modules\finance\widgets\YearWidget;
     use yii\helpers\Url;
     use yii\helpers\Html;
@@ -21,7 +21,7 @@
             <?=YearWidget::widget($widgetYearData);?>
             <?=RangeWidget::widget();?>
 
-            <?php if($data = ChartWidget::widget(['model'=>$model])): ?>
+            <?php if($data = FinChartWidget::widget(['model'=>$model])): ?>
 
                 <h4>Динамика изменения с <?=$model->getActualStart();?> по <?=$model->getActualFinish();?></h4>
 

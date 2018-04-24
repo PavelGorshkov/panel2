@@ -2,8 +2,8 @@
 
 namespace app\modules\finance\models\dictionary;
 
-use app\modules\core\components\UisActiveRecord;
 use app\modules\finance\interfaces\DictionaryInterface;
+use app\modules\finance\models\UisActiveRecord;
 
 /**
  * Class DictionaryBase

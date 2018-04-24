@@ -2,7 +2,8 @@
 
 namespace app\modules\finance\models;
 
-use yii\behaviors\TimestampBehavior;
+use app\modules\finance\helpers\Dictionary;
+use yii\base\InvalidConfigException;
 use yii\db\Expression;
 
 /**
@@ -19,27 +20,7 @@ use yii\db\Expression;
  */
 class Balance extends Finance
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%finance__balance}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['kvd_id', 'begin_value', 'end_value', 'creating_date'], 'required'],
-            [['kvd_id'], 'integer'],
-            [['begin_value', 'end_value'], 'number'],
-            [['invoice', 'kbk', 'created_at', 'updated_at'], 'safe'],
-        ];
-    }
-
+    protected $_last_day = null;
 
     /**
      * @inheritdoc
@@ -60,44 +41,71 @@ class Balance extends Finance
 
 
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function behaviors()
+    public function rules()
     {
         return [
-            [
-                'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
-                'value' => new Expression('NOW()'),
-            ],
+            [['kvd_id', 'begin_value', 'end_value', 'creating_date'], 'required'],
+            [['kvd_id'], 'integer'],
+            [['begin_value', 'end_value'], 'number'],
+            [['invoice', 'kbk', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
+
     /**
-     * @param null $year
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%finance__balance}}';
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function findLastDay()
+    {
+        $this->_last_day = self::find()
+            ->select([new Expression('MAX(creating_date)')])
+            ->asArray()
+            ->scalar();
+
+        return !empty($this->_last_day);
+    }
+
+    /**
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public function getLastDay()
+    {
+        if (empty($this->_last_day)) return '';
+
+        return app()->formatter->asDate($this->_last_day, 'long');
+    }
+
+    /**
      * @return array
      */
-    public function getActualYears($year)
+    public function getDataForLastDay()
     {
-        $range = self::find()
-            ->select([
-                new Expression('MAX(YEAR(creating_date)) max_year'),
-                new Expression('MIN(YEAR(creating_date)) min_year')
-            ])
+        if (empty($this->_last_day)) return [];
+
+        $data = self::find()
             ->asArray()
-            ->groupBy('YEAR(creating_date)')
-            ->column();
+            ->select(
+                [
+                    'kvd_id',
+                    new Expression('SUM(begin_value) begin'),
+                    new Expression('SUM(end_value) end')
+                ])
+            ->groupBy('kvd_id')
+            ->where(['creating_date'=>$this->_last_day])
+            ->all();
 
-        $max = $range['max_year']??(integer)date('Y');
-        $min = $range['min_year']??(integer)date('Y');
-
-        $current = (!$year || ($year > $max)) ? $max : $year;
-
-        if (date('n') > 8) {
-            $max = $max + 1;
-        }
-
-        return [$min, $max, $current];
+        return $data;
     }
 }
